@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocols version="1.0" >
+    <catalog id="-1" value="com.game.login.packet.CM_Login"/>
+
+</protocols>

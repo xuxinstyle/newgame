@@ -1,3 +1,10 @@
 .idea
 .idea/uiDesigner.xml
 .idea/workspace.xml
+.idea/workspace.xml
+*.log
+newgame.iml
+.idea/workspace.xml
+.idea/misc.xml
+.idea/compiler.xml
+newgame.iml

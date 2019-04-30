@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                          http://www.springframework.org/schema/beans/spring-beans.xsd
+                          http://www.springframework.org/schema/context
+                          http://www.springframework.org/schema/context/spring-context.xsd
+                          http://www.springframework.org/schema/aop
+	                      http://www.springframework.org/schema/aop/spring-aop.xsd
+	                      http://www.springframework.org/schema/tx
+	                      http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:property-placeholder location="server.properties,jdbc.properties"/>
+        <!-- 自动扫描 -->
+        <context:component-scan base-package="com.game,com.socket"/>
+        <!-- 数据源配置-->
+
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="${jdbc.driverClassName}"/>
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.username}"/>
+            <property name="password" value="${jdbc.password}"/>
+
+        </bean>
+        <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+            <property name="dataSource" ref="dataSource"/>
+            <property name="packagesToScan" value="com.game.**.entity"/>
+            <property name="hibernateProperties">
+                <props>
+                    <prop key="current_session_context_class">thread</prop>
+                    <prop key="cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+                    <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                    <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                    <prop key="hibernate.hbm2ddl.auto">update</prop>
+                    <prop key="hibernate.show_sql">false</prop>
+                </props>
+            </property>
+        </bean>
+    <!--配置SqlSessionFactory-->
+    <!--<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        &lt;!&ndash;加载mybatis配置文件&ndash;&gt;
+        <property name="configLocation" value="mybatis.cfg.xml"/>
+        &lt;!&ndash;数据源&ndash;&gt;
+        <property name="dataSource" ref="dataSource"/>
+    </bean>-->
+
+    <!--事务控制器
+        对mybatis操作数据库事务控制，spring使用jdbc的事务控制类
+    -->
+    <!--<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        &lt;!&ndash;配置数据源
+        dataSource在applicationContext-dao.xml中配置了
+        &ndash;&gt;
+        <property name="dataSource" ref="dataSource" />
+    </bean>-->
+
+    <!--通知-->
+    <!--<tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            &lt;!&ndash;传播行为&ndash;&gt;
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="select*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>-->
+
+    <!--AOP-->
+    <!--<aop:config>
+        &lt;!&ndash;设置切入点&ndash;&gt;
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.system.service.impl.*.*(..))"/>
+    </aop:config>-->
+   <!-- <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list> <value>server.properties</value> </list>
+        </property>
+    </bean>-->
+    <bean id="serverConfigValue" class="com.game.ServerConfigValue">
+        <property name="port" value="${server.socket.port}"/>
+    </bean>
+    <bean id="identifyThreadPoolExecutor" class="com.socket.dispatcher.executor.IdentifyThreadPoolExecutor"/>
+    <bean id="actionDispatcher" class="com.socket.dispatcher.core.ActionDispatcher">
+        <constructor-arg name="executor" value="identifyThreadPoolExecutor"></constructor-arg>
+    </bean>
+
+    <import resource="applicationConfig.xml"/>
+
+</beans>

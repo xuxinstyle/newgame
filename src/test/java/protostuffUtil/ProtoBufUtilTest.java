@@ -1,0 +1,24 @@
+package protostuffUtil;
+
+import protostuffUtil.bean.Student;
+
+import java.util.Arrays;
+
+public class ProtoBufUtilTest {
+    public static void main(String[] args) {
+
+        Student student = new Student();
+        student.setName("lance");
+        student.setAge(28);
+        student.setStudentNo("2011070122");
+        student.setSchoolName("BJUT");
+
+        byte[] serializerResult = ProtoStuffUtil.serializer(student);
+
+        System.out.println("serializer result:" + Arrays.toString(serializerResult));
+
+        Student deSerializerResult = ProtoStuffUtil.deserializer(serializerResult,Student.class);
+
+        System.out.println("deSerializerResult:" + deSerializerResult.toString());
+    }
+}
