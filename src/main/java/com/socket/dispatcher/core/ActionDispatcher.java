@@ -1,14 +1,20 @@
 package com.socket.dispatcher.core;
 
+import com.socket.Utils.JsonUtils;
 import com.socket.core.TSession;
 import com.socket.dispatcher.action.ActionDispatcherAdapter;
 import com.socket.dispatcher.anno.HandlerAnno;
+import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.executor.IIdentifyThreadPool;
 import org.apache.log4j.Logger;
+import org.msgpack.MessagePack;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
+import sun.plugin2.message.Message;
 
+import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +26,7 @@ import java.util.Map;
 @Component
 public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPostProcessor {
     private static Logger logger = Logger.getLogger(ActionDispatcher.class);
-    private Map<Class<?>, IHandlerInvoke> handlerMap = new HashMap<>();
+    private static Map<Class<?>, IHandlerInvoke> handlerMap = new HashMap<>();
 
     //线程池
     private final IIdentifyThreadPool executor;
@@ -35,21 +41,34 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
         executor.addSessionTask(session ,new IoHandleEvent(this, session, opIndex, packet, decodeTime));
     }
     public void doHandle(TSession session, int opIndex, Object packet, long decodeTime) {
-        System.out.println("到达dohandle");
-        IHandlerInvoke defintion = handlerMap.get(packet.getClass());
-        System.out.println("defintion="+defintion);
-        if(defintion == null){
-            throw  new NullPointerException("no any handlerDefintion found for packet :"
-            + packet.getClass().getSimpleName());
-        }
-        Object res = defintion.invoke(session, opIndex, packet);
-        if(res != null){
-            session.sendPacket(opIndex, res);
+        try {
+            if(logger.isDebugEnabled()){
+                logger.debug("到达dohandle:pack="+packet.getClass());
+            }
+            Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
+            Object unpack = MessagePack.unpack(MessagePack.pack(packet), aClass);
+            IHandlerInvoke defintion = handlerMap.get(aClass);
+            if(logger.isDebugEnabled()){
+                logger.debug("defintion="+defintion+" packet class:"+aClass);
+            }
+            if(defintion == null){
+                throw  new NullPointerException("no any handlerDefintion found for packet :"
+                + packet.getClass().getSimpleName());
+            }
+            Object res = defintion.invoke(session, opIndex, unpack);
+            if(res != null){
+                session.sendPacket(opIndex, res);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     public void registHandlerDefintion(Class<?> clz, IHandlerInvoke invoke) {
         IHandlerInvoke pre = handlerMap.put(clz, invoke);
+
+        System.out.println("put到handleMap中："+clz.getSimpleName()+" invoke:"+invoke.toString());
+        System.out.println("get handleMap :"+handlerMap);
         if(pre != null){
             throw new IllegalArgumentException("too much PolicyDefintion fro packet : "
             + clz.getSimpleName());
@@ -58,17 +77,13 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        //System.out.println("bean:"+bean+beanName);
         Class<?> clz = bean.getClass();
         Method[] methods = clz.getDeclaredMethods();
         for (Method method : methods) {
             if(method.isAnnotationPresent(HandlerAnno.class)){
                 HandlerDefintion def = HandlerDefintion.valueOf(bean, method);
-                try{
-                    IHandlerInvoke invoke = EnhanceUtil.createHandlerDefintion(def);
-                    registHandlerDefintion(def.getClz(), invoke);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+                registHandlerDefintion(def.getClz(), def);
             }
         }
         return bean;
@@ -76,7 +91,7 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        return null;
+        return bean;
     }
 
     public static final class IoHandleEvent implements Runnable{

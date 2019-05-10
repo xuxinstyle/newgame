@@ -1,8 +1,9 @@
 package com.game;
 
-import com.netty.core.EchoServerHandler;
-import com.netty.core.MsgpackDecoder;
-import com.netty.core.MsgpackEncoder;
+import com.socket.core.EchoServerHandler;
+import com.socket.core.MsgpackDecoder;
+import com.socket.core.MsgpackEncoder;
+import com.socket.dispatcher.config.RegistSerializerMessage;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -15,15 +16,13 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 public class start {
     private static ClassPathXmlApplicationContext applicationContext;
     public static void main(String[] args) {
         applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        new RegistSerializerMessage().init();
         applicationContext.start();
         int port = SpringContext.getServerConfigValue().getPort();
         bind(port);

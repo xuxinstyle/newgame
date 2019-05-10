@@ -3,6 +3,7 @@ package com.game;
 import com.socket.core.EchoServerHandler;
 import com.socket.core.MsgpackDecoder;
 import com.socket.core.MsgpackEncoder;
+import com.socket.dispatcher.config.RegistSerializerMessage;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -21,6 +22,7 @@ public class start {
     private static ClassPathXmlApplicationContext applicationContext;
     public static void main(String[] args) {
         applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        new RegistSerializerMessage().init();
         applicationContext.start();
         int port = SpringContext.getServerConfigValue().getPort();
         bind(port);

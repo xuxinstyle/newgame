@@ -86,7 +86,7 @@
     </bean>
     <bean id="identifyThreadPoolExecutor" class="com.socket.dispatcher.executor.IdentifyThreadPoolExecutor"/>
     <bean id="actionDispatcher" class="com.socket.dispatcher.core.ActionDispatcher">
-        <constructor-arg name="executor" value="identifyThreadPoolExecutor"></constructor-arg>
+        <constructor-arg name="executor" ref="identifyThreadPoolExecutor"></constructor-arg>
     </bean>
 
     <import resource="applicationConfig.xml"/>

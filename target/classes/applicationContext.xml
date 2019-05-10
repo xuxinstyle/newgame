@@ -15,7 +15,7 @@
 
     <context:property-placeholder location="server.properties,jdbc.properties"/>
         <!-- 自动扫描 -->
-        <context:component-scan base-package="com.game,com.netty"/>
+        <context:component-scan base-package="com.game,com.socket"/>
         <!-- 数据源配置-->
 
         <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -84,6 +84,11 @@
     <bean id="serverConfigValue" class="com.game.ServerConfigValue">
         <property name="port" value="${server.socket.port}"/>
     </bean>
+    <bean id="identifyThreadPoolExecutor" class="com.socket.dispatcher.executor.IdentifyThreadPoolExecutor"/>
+    <bean id="actionDispatcher" class="com.socket.dispatcher.core.ActionDispatcher">
+        <constructor-arg name="executor" ref="identifyThreadPoolExecutor"></constructor-arg>
+    </bean>
+
     <import resource="applicationConfig.xml"/>
 
 </beans>

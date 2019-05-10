@@ -27,18 +27,16 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
-
-        System.out.println((atomicInteger.addAndGet(1)) + "--->" + Thread.currentThread().getName() + ",The server receive  order : " + msg);
-
-        //TSession session = SessionUtil.getChannalSession(ctx.channel());     // 检测是否 自己注册的 客户端
-
-
+        if(logger.isDebugEnabled()){
+            logger.debug((atomicInteger.addAndGet(1)) + "--->" + Thread.currentThread().getName() + ",The server receive  order : " + msg);
+        }
+        //System.out.println((atomicInteger.addAndGet(1)) + "--->" + Thread.currentThread().getName() + ",The server receive  order : " + msg);
+        atomicInteger.addAndGet(1);
         /**
          * 如果传输的是 POJO 对象，则可以转成 List<Object>
          * list 中的每一个元素都是发送来的 POJO 对象的属性值
          * 注意：如果对方传输只是简单的 String 对象，则不能强转为 List<Object>
          */
-
         List<Object> objects =(List<Object>)msg;
         if(objects.size()<=0){
             logger.error("错了错了，传来的包为空！");
@@ -46,11 +44,8 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         }
         String opIndex = objects.get(0).toString();
         String time = objects.get(2).toString();
-
         TSession session = new TSession(ctx.channel(),actionDispatcher);
-        //IAction action = new Actionhandle();
         actionDispatcher.doHandle(session,Integer.parseInt(opIndex),objects.get(1),Long.parseLong(time));
-        System.out.println("到了ChannlActive最下面");
         /*for (Object obj : objects) {
             System.out.println("属性：" + obj);
         }*/
