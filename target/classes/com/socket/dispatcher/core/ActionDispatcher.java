@@ -42,21 +42,19 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     }
     public void doHandle(TSession session, int opIndex, Object packet, long decodeTime) {
         try {
-            System.out.println("到达dohandle:pack="+packet.getClass());
-
+            if(logger.isDebugEnabled()){
+                logger.debug("到达dohandle:pack="+packet.getClass());
+            }
             Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
             Object unpack = MessagePack.unpack(MessagePack.pack(packet), aClass);
-
-            ;
-
-            System.out.println(handlerMap);
             IHandlerInvoke defintion = handlerMap.get(aClass);
-            System.out.println("defintion="+defintion+" packet class:"+aClass);
+            if(logger.isDebugEnabled()){
+                logger.debug("defintion="+defintion+" packet class:"+aClass);
+            }
             if(defintion == null){
                 throw  new NullPointerException("no any handlerDefintion found for packet :"
                 + packet.getClass().getSimpleName());
             }
-
             Object res = defintion.invoke(session, opIndex, unpack);
             if(res != null){
                 session.sendPacket(opIndex, res);

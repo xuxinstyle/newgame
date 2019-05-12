@@ -8,3 +8,5 @@ newgame.iml
 .idea/misc.xml
 .idea/compiler.xml
 newgame.iml
+target/
+.idea/workspace.xml

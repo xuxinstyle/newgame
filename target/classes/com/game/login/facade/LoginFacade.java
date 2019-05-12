@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginFacade {
     Logger logger = Logger.getLogger(LoginFacade.class);
+
     @HandlerAnno
     public void login(TSession session, CM_Login req){
         System.out.println("进入到了facade中的login方法");
