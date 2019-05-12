@@ -54,24 +54,6 @@ public class RegistSerializerMessage {
                 }
                 idClassMap.put(id, clz);
             }
-
-            /*Resource resource = applicationContext.getResource(location);
-            SAXBuilder sb = new SAXBuilder();
-            Document document = sb.build(resource.getInputStream());
-            Element rootElement = document.getRootElement();
-            List<Element> child = (List<Element>) rootElement.getChild("catalog");
-            for (Element element : child){
-                Integer id = Integer.valueOf(element.getAttributeValue("id"));
-                String value = element.getAttributeValue("value");
-                Class<?> clz = Class.forName(value);
-                if(idClassMap.containsKey(id)){
-                    throw new IllegalArgumentException("协议id：["+id+"] 重复了！");
-                }
-                System.out.println("id:"+id+",clz:"+clz);
-                idClassMap.put(id, clz);
-
-            }*/
-
         }  catch (Exception e) {
             e.printStackTrace();
         }
