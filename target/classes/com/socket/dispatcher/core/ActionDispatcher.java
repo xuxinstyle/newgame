@@ -1,6 +1,7 @@
 package com.socket.dispatcher.core;
 
 import com.socket.Utils.JsonUtils;
+import com.socket.Utils.ProtoStuffUtil;
 import com.socket.core.TSession;
 import com.socket.dispatcher.action.ActionDispatcherAdapter;
 import com.socket.dispatcher.anno.HandlerAnno;
@@ -41,27 +42,26 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
         executor.addSessionTask(session ,new IoHandleEvent(this, session, opIndex, packet, decodeTime));
     }
     public void doHandle(TSession session, int opIndex, Object packet, long decodeTime) {
-        try {
-            if(logger.isDebugEnabled()){
-                logger.debug("到达dohandle:pack="+packet.getClass());
-            }
-            Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
-            Object unpack = MessagePack.unpack(MessagePack.pack(packet), aClass);
-            IHandlerInvoke defintion = handlerMap.get(aClass);
-            if(logger.isDebugEnabled()){
-                logger.debug("defintion="+defintion+" packet class:"+aClass);
-            }
-            if(defintion == null){
-                throw  new NullPointerException("no any handlerDefintion found for packet :"
-                + packet.getClass().getSimpleName());
-            }
-            Object res = defintion.invoke(session, opIndex, unpack);
-            if(res != null){
-                session.sendPacket(opIndex, res);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
+
+        Object pack = ProtoStuffUtil.deserializer((byte[]) packet, aClass);
+        if(logger.isDebugEnabled()){
+            logger.debug("到达dohandle:pack="+pack.getClass());
         }
+
+        IHandlerInvoke defintion = handlerMap.get(pack.getClass());
+        if(logger.isDebugEnabled()){
+            logger.debug("defintion="+defintion+" packet class:"+pack.getClass());
+        }
+        if(defintion == null){
+            throw  new NullPointerException("no any handlerDefintion found for packet :"
+            + packet.getClass().getSimpleName());
+        }
+        Object res = defintion.invoke(session, opIndex, pack);
+        if(res != null){
+            session.sendPacket(opIndex, res);
+        }
+
     }
 
     public void registHandlerDefintion(Class<?> clz, IHandlerInvoke invoke) {

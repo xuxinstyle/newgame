@@ -7,7 +7,7 @@ public class MyPack {
     //协议Id
     private Integer pId;
     //自己的协议包
-    private Object cm;
+    private byte[] packet;
     //发送时间
     private long time;
 
@@ -19,12 +19,12 @@ public class MyPack {
         this.pId = pId;
     }
 
-    public Object getCm() {
-        return cm;
+    public byte[] getPacket() {
+        return packet;
     }
 
-    public void setCm(Object cm) {
-        this.cm = cm;
+    public void setPacket(byte[] packet) {
+        this.packet = packet;
     }
 
     public long getTime() {

@@ -1,5 +1,6 @@
 package com.game.login.facade;
 
+import com.game.login.packet.CM_Connect;
 import com.game.login.packet.CM_Login;
 import com.socket.core.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
@@ -17,7 +18,9 @@ public class LoginFacade {
 
     @HandlerAnno
     public void login(TSession session, CM_Login req){
-        System.out.println("进入到了facade中的login方法");
         logger.info("进入到了facade中的login方法");
+        CM_Connect cm = new CM_Connect();
+        cm.setCode(2);
+        session.sendPacket(2,cm);
     }
 }

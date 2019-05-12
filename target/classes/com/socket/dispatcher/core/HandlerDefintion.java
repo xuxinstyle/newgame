@@ -44,7 +44,7 @@ public class HandlerDefintion implements IHandlerInvoke{
             case NOINDEX:
                 result = ReflectionUtils.invokeMethod(method, bean, session, packet);
         }
-        return null;
+        return result;
     }
     public static HandlerDefintion valueOf(Object bean, Method method){
         Class<?> clz = null;

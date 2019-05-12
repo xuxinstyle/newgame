@@ -1,5 +1,6 @@
 package com.socket.core;
 
+import com.socket.Utils.ProtoStuffUtil;
 import com.socket.dispatcher.action.IActionDispatcher;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
@@ -45,7 +46,7 @@ public class TSession {
             MyPack pack = new MyPack();
             pack.setTime(start);
             pack.setpId(opIndex);
-            pack.setCm(res);
+            pack.setPacket(ProtoStuffUtil.serializer(res));
             //actionDispatcher.send(this,pack);
             channel.writeAndFlush(pack);
         }catch (Exception e){

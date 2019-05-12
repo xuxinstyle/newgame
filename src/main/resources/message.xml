@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <protocols>
-
     <catalog id="1" value="com.game.login.packet.CM_Login"/>
+    <catalog id="2" value="com.game.login.packet.CM_Connect"/>
 </protocols>
