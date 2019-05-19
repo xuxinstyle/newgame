@@ -2,9 +2,11 @@ package com.socket.core;
 
 import com.socket.Utils.ProtoStuffUtil;
 import com.socket.dispatcher.action.IActionDispatcher;
+import com.socket.dispatcher.config.RegistSerializerMessage;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 
+import java.util.Map;
 
 
 /**
@@ -40,14 +42,23 @@ public class TSession {
         this.port = adds[1];
         //this.taskQueue = new ConcurrentId
     }
-    public void sendPacket(int opIndex, Object res) {
+    public void sendPacket(Object res) {
         try{
+            int opIndex = 0;
+            for (Map.Entry<Integer, Class<?>> entry :RegistSerializerMessage.idClassMap.entrySet()) {
+                if(entry.getValue().equals(res.getClass())){
+                    opIndex = entry.getKey();
+                }
+            }
+            if(opIndex == 0){
+                logger.error("发送协议错误，没有对应的协议id");
+                return;
+            }
             long start = System.nanoTime();
             MyPack pack = new MyPack();
             pack.setTime(start);
             pack.setpId(opIndex);
             pack.setPacket(ProtoStuffUtil.serializer(res));
-            //actionDispatcher.send(this,pack);
             channel.writeAndFlush(pack);
         }catch (Exception e){
             String msg = String.format("encode %s error.",res != null ? res.getClass().getSimpleName():"null");

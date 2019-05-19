@@ -20,6 +20,6 @@ public class LoginFacade {
     public void login(TSession session, CM_Login req){
         logger.info("进入到了facade中的login方法");
         CM_Connect cm = new CM_Connect();
-        session.sendPacket(2,cm);
+        session.sendPacket(cm);
     }
 }

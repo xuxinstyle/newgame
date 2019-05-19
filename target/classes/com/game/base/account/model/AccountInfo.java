@@ -2,8 +2,7 @@ package com.game.base.account.model;
 
 /**
  * @Author：xuxin
- * @Date: 2019/4/28 21:38
+ * @Date: 2019/5/18 16:26
  */
 public class AccountInfo {
-
 }

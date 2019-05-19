@@ -59,7 +59,7 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
         }
         Object res = defintion.invoke(session, opIndex, pack);
         if(res != null){
-            session.sendPacket(opIndex, res);
+            session.sendPacket( res);
         }
 
     }
