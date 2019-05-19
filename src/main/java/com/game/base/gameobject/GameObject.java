@@ -6,9 +6,9 @@ package com.game.base.gameobject;
  */
 public abstract class GameObject {
 
-    protected Long objectId;
+    protected long objectId;
     public abstract String gatName();
-    public Long getObjectId() {
+    public long getObjectId() {
         return objectId;
     }
 

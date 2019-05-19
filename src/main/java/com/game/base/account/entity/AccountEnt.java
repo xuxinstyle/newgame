@@ -1,10 +1,12 @@
-package com.game.base.account.model;
+package com.game.base.account.entity;
+
+import com.game.base.account.model.AccountInfo;
 
 /**
  * @Author：xuxin
  * @Date: 2019/4/28 21:04
  */
-public class Account {
+public class AccountEnt {
     /**
      * 账号Id
      */

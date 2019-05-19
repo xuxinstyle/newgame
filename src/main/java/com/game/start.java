@@ -32,7 +32,8 @@ public class start {
         /**
          * interface EventLoopGroup extends EventExecutorGroup extends ScheduledExecutorService extends ExecutorService
          * 配置服务端的 NIO 线程池,用于网络事件处理，实质上他们就是 Reactor 线程组
-         * bossGroup 用于服务端接受客户端连接，workerGroup 用于进行 SocketChannel 网络读写*/
+         * bossGroup 用于服务端接受客户端连接，workerGroup 用于进行 SocketChannel 网络读写
+         */
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {

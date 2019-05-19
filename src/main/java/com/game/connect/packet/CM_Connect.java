@@ -1,10 +1,10 @@
-package com.game.connection.packet;
+package com.game.connect.packet;
 
 import org.msgpack.annotation.Message;
 
 //连接服务器时客户端发生的协议
 @Message
-public class CM_Connection {
+public class CM_Connect {
     private static final int id = 1;
     private String context;
     public static int getId() {

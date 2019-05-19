@@ -2,16 +2,15 @@ package com.game.login.packet;
 
 import org.msgpack.annotation.Message;
 
-//登录协议
+/**
+  * @Author：xuxin
+  * @Date: 2019/5/18 15:53
+  * @Id 1
+  */
 @Message
 public class CM_Login {
-    private int code;
+    private String accountId;
 
-    public int getCode() {
-        return code;
-    }
+    private String passWord;
 
-    public void setCode(int code) {
-        this.code = code;
-    }
 }
