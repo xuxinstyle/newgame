@@ -1,5 +1,6 @@
 package com.game.login.facade;
 
+import com.game.SpringContext;
 import com.game.connect.packet.CM_Connect;
 import com.game.login.packet.CM_Login;
 import com.socket.core.TSession;
@@ -18,8 +19,10 @@ public class LoginFacade {
 
     @HandlerAnno
     public void login(TSession session, CM_Login req){
-        logger.info("进入到了facade中的login方法");
-        CM_Connect cm = new CM_Connect();
-        session.sendPacket(cm);
+        try {
+            SpringContext.getLoginService().login(session, req.getAccountId(), req.getPassWord());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

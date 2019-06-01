@@ -3,6 +3,7 @@ package com.game.register.facade;
 import com.game.SpringContext;
 import com.game.register.packet.CM_Register;
 import com.socket.core.TSession;
+import com.socket.dispatcher.anno.HandlerAnno;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class RegisterFacade {
+    @HandlerAnno
     public void register(TSession session, CM_Register req){
         try {
             SpringContext.getRegisterService().doRegister(req.getUsername(), req.getPassward(), session);

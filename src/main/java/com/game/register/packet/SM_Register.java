@@ -5,7 +5,7 @@ import org.msgpack.annotation.Message;
 /**
  * @Author：xuxin
  * @Date: 2019/5/29 18:36
- * @id
+ * @id 6
  */
 @Message
 public class SM_Register {

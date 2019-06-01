@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.game.base.account.mapper.AccountMapper">
   <resultMap id="BaseResultMap" type="com.game.base.account.entity.AccountEnt">
-    <id column="accountId" jdbcType="VARCHAR" property="accountid" />
+    <id column="accountId" jdbcType="VARCHAR" property="accountId" />
     <result column="passward" jdbcType="VARCHAR" property="passward" />
-    <result column="accountName" jdbcType="VARCHAR" property="accountname" />
-    <result column="nickName" jdbcType="VARCHAR" property="nickname" />
+    <result column="accountName" jdbcType="VARCHAR" property="accountName" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickName" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.game.base.account.entity.AccountEnt">
-    <result column="accountData" jdbcType="LONGVARBINARY" property="accountdata" />
+    <result column="accountData" jdbcType="LONGVARBINARY" property="accountData" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -110,11 +110,11 @@
     ,
     <include refid="Blob_Column_List" />
     from account
-    where accountId = #{accountid,jdbcType=VARCHAR}
+    where accountId = #{accountId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from account
-    where accountId = #{accountid,jdbcType=VARCHAR}
+    where accountId = #{accountId,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.game.base.account.mapper.AccountExample">
     delete from account
@@ -123,45 +123,45 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.game.base.account.entity.AccountEnt">
-    insert into account (accountId, passward, accountName, 
+    insert into account (accountId, passward, accountName,
       nickName, accountData)
-    values (#{accountid,jdbcType=VARCHAR}, #{passward,jdbcType=VARCHAR}, #{accountname,jdbcType=VARCHAR}, 
-      #{nickname,jdbcType=VARCHAR}, #{accountdata,jdbcType=LONGVARBINARY})
+    values (#{accountId,jdbcType=VARCHAR}, #{passward,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR},
+      #{nickName,jdbcType=VARCHAR}, #{accountData,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="com.game.base.account.entity.AccountEnt">
     insert into account
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="accountid != null">
+      <if test="accountId != null">
         accountId,
       </if>
       <if test="passward != null">
         passward,
       </if>
-      <if test="accountname != null">
+      <if test="accountName != null">
         accountName,
       </if>
-      <if test="nickname != null">
+      <if test="nickName != null">
         nickName,
       </if>
-      <if test="accountdata != null">
+      <if test="accountData != null">
         accountData,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="accountid != null">
-        #{accountid,jdbcType=VARCHAR},
+      <if test="accountId != null">
+        #{accountId,jdbcType=VARCHAR},
       </if>
       <if test="passward != null">
         #{passward,jdbcType=VARCHAR},
       </if>
-      <if test="accountname != null">
-        #{accountname,jdbcType=VARCHAR},
+      <if test="accountName != null">
+        #{accountName,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null">
-        #{nickname,jdbcType=VARCHAR},
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
       </if>
-      <if test="accountdata != null">
-        #{accountdata,jdbcType=LONGVARBINARY},
+      <if test="accountData != null">
+        #{accountData,jdbcType=LONGVARBINARY},
       </if>
     </trim>
   </insert>
@@ -174,20 +174,20 @@
   <update id="updateByExampleSelective" parameterType="map">
     update account
     <set>
-      <if test="record.accountid != null">
-        accountId = #{record.accountid,jdbcType=VARCHAR},
+      <if test="record.accountId != null">
+        accountId = #{record.accountId,jdbcType=VARCHAR},
       </if>
       <if test="record.passward != null">
         passward = #{record.passward,jdbcType=VARCHAR},
       </if>
-      <if test="record.accountname != null">
-        accountName = #{record.accountname,jdbcType=VARCHAR},
+      <if test="record.accountName != null">
+        accountName = #{record.accountName,jdbcType=VARCHAR},
       </if>
-      <if test="record.nickname != null">
-        nickName = #{record.nickname,jdbcType=VARCHAR},
+      <if test="record.nickName != null">
+        nickName = #{record.nickName,jdbcType=VARCHAR},
       </if>
-      <if test="record.accountdata != null">
-        accountData = #{record.accountdata,jdbcType=LONGVARBINARY},
+      <if test="record.accountData != null">
+        accountData = #{record.accountData,jdbcType=LONGVARBINARY},
       </if>
     </set>
     <if test="_parameter != null">
@@ -196,21 +196,21 @@
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update account
-    set accountId = #{record.accountid,jdbcType=VARCHAR},
+    set accountId = #{record.accountId,jdbcType=VARCHAR},
       passward = #{record.passward,jdbcType=VARCHAR},
-      accountName = #{record.accountname,jdbcType=VARCHAR},
-      nickName = #{record.nickname,jdbcType=VARCHAR},
-      accountData = #{record.accountdata,jdbcType=LONGVARBINARY}
+      accountName = #{record.accountName,jdbcType=VARCHAR},
+      nickName = #{record.nickName,jdbcType=VARCHAR},
+      accountData = #{record.accountData,jdbcType=LONGVARBINARY}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
     update account
-    set accountId = #{record.accountid,jdbcType=VARCHAR},
+    set accountId = #{record.accountId,jdbcType=VARCHAR},
       passward = #{record.passward,jdbcType=VARCHAR},
-      accountName = #{record.accountname,jdbcType=VARCHAR},
-      nickName = #{record.nickname,jdbcType=VARCHAR}
+      accountName = #{record.accountName,jdbcType=VARCHAR},
+      nickName = #{record.nickName,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -221,31 +221,31 @@
       <if test="passward != null">
         passward = #{passward,jdbcType=VARCHAR},
       </if>
-      <if test="accountname != null">
-        accountName = #{accountname,jdbcType=VARCHAR},
+      <if test="accountName != null">
+        accountName = #{accountName,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null">
-        nickName = #{nickname,jdbcType=VARCHAR},
+      <if test="nickName != null">
+        nickName = #{nickName,jdbcType=VARCHAR},
       </if>
-      <if test="accountdata != null">
-        accountData = #{accountdata,jdbcType=LONGVARBINARY},
+      <if test="accountData != null">
+        accountData = #{accountData,jdbcType=LONGVARBINARY},
       </if>
     </set>
-    where accountId = #{accountid,jdbcType=VARCHAR}
+    where accountId = #{accountId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.game.base.account.entity.AccountEnt">
     update account
     set passward = #{passward,jdbcType=VARCHAR},
-      accountName = #{accountname,jdbcType=VARCHAR},
-      nickName = #{nickname,jdbcType=VARCHAR},
-      accountData = #{accountdata,jdbcType=LONGVARBINARY}
-    where accountId = #{accountid,jdbcType=VARCHAR}
+      accountName = #{accountName,jdbcType=VARCHAR},
+      nickName = #{nickName,jdbcType=VARCHAR},
+      accountData = #{accountData,jdbcType=LONGVARBINARY}
+    where accountId = #{accountId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.game.base.account.entity.AccountEnt">
     update account
     set passward = #{passward,jdbcType=VARCHAR},
-      accountName = #{accountname,jdbcType=VARCHAR},
-      nickName = #{nickname,jdbcType=VARCHAR}
-    where accountId = #{accountid,jdbcType=VARCHAR}
+      accountName = #{accountName,jdbcType=VARCHAR},
+      nickName = #{nickName,jdbcType=VARCHAR}
+    where accountId = #{accountId,jdbcType=VARCHAR}
   </update>
 </mapper>

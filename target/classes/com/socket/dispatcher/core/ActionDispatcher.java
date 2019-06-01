@@ -69,8 +69,8 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     public void registHandlerDefintion(Class<?> clz, IHandlerInvoke invoke) {
         IHandlerInvoke pre = handlerMap.put(clz, invoke);
 
-        System.out.println("put到handleMap中："+clz.getSimpleName()+" invoke:"+invoke.toString());
-        System.out.println("get handleMap :"+handlerMap);
+        /*System.out.println("put到handleMap中："+clz.getSimpleName()+" invoke:"+invoke.toString());
+        System.out.println("get handleMap :"+handlerMap);*/
         if(pre != null){
             throw new IllegalArgumentException("too much PolicyDefintion fro packet : "
             + clz.getSimpleName());

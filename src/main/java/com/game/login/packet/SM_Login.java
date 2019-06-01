@@ -9,4 +9,14 @@ import org.msgpack.annotation.Message;
  */
 @Message
 public class SM_Login {
+    //登录状态 1 成功， 0 失败
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }
