@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.base.account.mapper.AccountMapper">
+  <resultMap id="BaseResultMap" type="com.game.base.account.entity.AccountEnt">
+    <id column="accountId" jdbcType="VARCHAR" property="accountid" />
+    <result column="passward" jdbcType="VARCHAR" property="passward" />
+    <result column="accountName" jdbcType="VARCHAR" property="accountname" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickname" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.game.base.account.entity.AccountEnt">
+    <result column="accountData" jdbcType="LONGVARBINARY" property="accountdata" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    accountId, passward, accountName, nickName
+  </sql>
+  <sql id="Blob_Column_List">
+    accountData
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.game.base.account.mapper.AccountExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.game.base.account.mapper.AccountExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from account
+    where accountId = #{accountid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from account
+    where accountId = #{accountid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.game.base.account.mapper.AccountExample">
+    delete from account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.game.base.account.entity.AccountEnt">
+    insert into account (accountId, passward, accountName, 
+      nickName, accountData)
+    values (#{accountid,jdbcType=VARCHAR}, #{passward,jdbcType=VARCHAR}, #{accountname,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{accountdata,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.game.base.account.entity.AccountEnt">
+    insert into account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="accountid != null">
+        accountId,
+      </if>
+      <if test="passward != null">
+        passward,
+      </if>
+      <if test="accountname != null">
+        accountName,
+      </if>
+      <if test="nickname != null">
+        nickName,
+      </if>
+      <if test="accountdata != null">
+        accountData,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="accountid != null">
+        #{accountid,jdbcType=VARCHAR},
+      </if>
+      <if test="passward != null">
+        #{passward,jdbcType=VARCHAR},
+      </if>
+      <if test="accountname != null">
+        #{accountname,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="accountdata != null">
+        #{accountdata,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.game.base.account.mapper.AccountExample" resultType="java.lang.Long">
+    select count(*) from account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update account
+    <set>
+      <if test="record.accountid != null">
+        accountId = #{record.accountid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.passward != null">
+        passward = #{record.passward,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountname != null">
+        accountName = #{record.accountname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nickname != null">
+        nickName = #{record.nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountdata != null">
+        accountData = #{record.accountdata,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update account
+    set accountId = #{record.accountid,jdbcType=VARCHAR},
+      passward = #{record.passward,jdbcType=VARCHAR},
+      accountName = #{record.accountname,jdbcType=VARCHAR},
+      nickName = #{record.nickname,jdbcType=VARCHAR},
+      accountData = #{record.accountdata,jdbcType=LONGVARBINARY}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update account
+    set accountId = #{record.accountid,jdbcType=VARCHAR},
+      passward = #{record.passward,jdbcType=VARCHAR},
+      accountName = #{record.accountname,jdbcType=VARCHAR},
+      nickName = #{record.nickname,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.game.base.account.entity.AccountEnt">
+    update account
+    <set>
+      <if test="passward != null">
+        passward = #{passward,jdbcType=VARCHAR},
+      </if>
+      <if test="accountname != null">
+        accountName = #{accountname,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        nickName = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="accountdata != null">
+        accountData = #{accountdata,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where accountId = #{accountid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.game.base.account.entity.AccountEnt">
+    update account
+    set passward = #{passward,jdbcType=VARCHAR},
+      accountName = #{accountname,jdbcType=VARCHAR},
+      nickName = #{nickname,jdbcType=VARCHAR},
+      accountData = #{accountdata,jdbcType=LONGVARBINARY}
+    where accountId = #{accountid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.game.base.account.entity.AccountEnt">
+    update account
+    set passward = #{passward,jdbcType=VARCHAR},
+      accountName = #{accountname,jdbcType=VARCHAR},
+      nickName = #{nickname,jdbcType=VARCHAR}
+    where accountId = #{accountid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -12,6 +12,10 @@ public class AccountEnt {
      */
     private String accountId;
     /**
+     * 密码
+     */
+    private String passward;
+    /**
      * 账号昵称
      */
     private String accountName;
@@ -34,6 +38,14 @@ public class AccountEnt {
         this.accountId = accountId;
     }
 
+    public String getPassward() {
+        return passward;
+    }
+
+    public void setPassward(String passward) {
+        this.passward = passward;
+    }
+
     public String getAccountName() {
         return accountName;
     }
@@ -48,5 +60,21 @@ public class AccountEnt {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public byte[] getAccountData() {
+        return accountData;
+    }
+
+    public void setAccountData(byte[] accountData) {
+        this.accountData = accountData;
+    }
+
+    public AccountInfo getAccountInfo() {
+        return accountInfo;
+    }
+
+    public void setAccountInfo(AccountInfo accountInfo) {
+        this.accountInfo = accountInfo;
     }
 }

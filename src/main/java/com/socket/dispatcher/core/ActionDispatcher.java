@@ -7,8 +7,10 @@ import com.socket.dispatcher.action.ActionDispatcherAdapter;
 import com.socket.dispatcher.anno.HandlerAnno;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.executor.IIdentifyThreadPool;
-import org.apache.log4j.Logger;
+
 import org.msgpack.MessagePack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
@@ -26,7 +28,7 @@ import java.util.Map;
  */
 @Component
 public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPostProcessor {
-    private static Logger logger = Logger.getLogger(ActionDispatcher.class);
+    private static Logger logger = LoggerFactory.getLogger(ActionDispatcher.class);
     private static Map<Class<?>, IHandlerInvoke> handlerMap = new HashMap<>();
 
     //线程池

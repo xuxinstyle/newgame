@@ -1,6 +1,8 @@
 package com.socket.dispatcher.core;
 
 import com.socket.core.TSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
@@ -12,6 +14,7 @@ import java.lang.reflect.Method;
  */
 public class HandlerDefintion implements IHandlerInvoke{
 
+    private Logger logger = LoggerFactory.getLogger(HandlerDefintion.class);
     private final Object bean;
     private final Method method;
     /**
@@ -33,9 +36,10 @@ public class HandlerDefintion implements IHandlerInvoke{
     }
     @Override
     public Object invoke(TSession session, int opIndex, Object packet) {
-
-        System.out.println("session:"+session+" opIndex:"+opIndex+" packet:"+packet);
-        System.out.println("method:"+method+" bean:"+bean);
+        if(logger.isDebugEnabled()) {
+            logger.debug("session:" + session + " opIndex:" + opIndex + " packet:" + packet);
+            logger.debug("method:" + method + " bean:" + bean);
+        }
         ReflectionUtils.makeAccessible(method);
         Object result = null;
         switch (indextype){
@@ -78,6 +82,7 @@ public class HandlerDefintion implements IHandlerInvoke{
         return indextype;
     }
 
+    @Override
     public String toString(){
         return String.format("[packet : %s][class : %s][method : %s]", clz.getSimpleName(),bean.getClass()
                 .getSimpleName(), method.getName());

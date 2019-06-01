@@ -6,14 +6,16 @@ import com.socket.dispatcher.core.ActionDispatcher;
 import com.socket.dispatcher.executor.IdentifyThreadPoolExecutor;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.apache.log4j.Logger;
+
 import org.msgpack.MessagePack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
-    Logger logger = Logger.getLogger(EchoServerHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChannelInboundHandlerAdapter.class);
     /**
      * 因为多线程，所以使用原子操作类来进行计数
      */

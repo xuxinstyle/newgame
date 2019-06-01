@@ -4,4 +4,6 @@
     <catalog id="2" value="com.game.connect.packet.CM_Connect"/>
     <catalog id="3" value="com.game.login.packet.SM_Login"/>
     <catalog id="4" value="com.game.connect.packet.SM_Connect"/>
+    <catalog id="5" value="com.game.register.packet.CM_Register"/>
+    <catalog id="6" value="com.game.register.packet.SM_Register"/>
 </protocols>

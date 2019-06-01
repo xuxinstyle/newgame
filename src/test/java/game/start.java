@@ -15,6 +15,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 
 public class start {
     public static void main(String[] args) {
@@ -54,6 +55,7 @@ public class start {
                             ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                             ch.pipeline().addLast("MessagePack Decoder", new MsgpackDecoder());
                             ch.pipeline().addLast(new EchoServerHandler());
+                            ch.pipeline().addLast(new IdleStateHandler(0,0,5));
                         }
                     });
 
