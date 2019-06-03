@@ -1,12 +1,14 @@
-package com.socket.core;
+package com.socket.core.session;
 
 import com.socket.Utils.ProtoStuffUtil;
+import com.socket.core.MyPack;
 import com.socket.dispatcher.action.IActionDispatcher;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -15,7 +17,8 @@ import java.util.Map;
  */
 public class TSession {
     private static final Logger logger = Logger.getLogger(TSession.class);
-
+    // 里面放在线的玩家账号信息 <信息标识，玩家的accountId>
+    private ConcurrentHashMap<String, String> attribute = new ConcurrentHashMap<>();
     private static int index = 0;
     private final int id = ++index;
     private final long createTime = System.currentTimeMillis();
@@ -64,5 +67,11 @@ public class TSession {
             String msg = String.format("encode %s error.",res != null ? res.getClass().getSimpleName():"null");
             logger.error(msg,e);
         }
+    }
+
+
+
+    public void setAttribute(String key, String value) {
+        attribute.put(key, value);
     }
 }

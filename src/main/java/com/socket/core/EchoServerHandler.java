@@ -1,6 +1,7 @@
 package com.socket.core;
 
-import com.socket.Utils.ProtoStuffUtil;
+import com.game.SpringContext;
+import com.socket.core.session.TSession;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.core.ActionDispatcher;
 import com.socket.dispatcher.executor.IdentifyThreadPoolExecutor;
@@ -58,6 +59,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         logger.info("-----客户端关闭:" + ctx.channel().remoteAddress());
         /**当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
         //cause.printStackTrace();
+
         ctx.close();
     }
 }

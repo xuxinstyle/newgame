@@ -1,9 +1,8 @@
 package com.game.login.facade;
 
 import com.game.SpringContext;
-import com.game.connect.packet.CM_Connect;
 import com.game.login.packet.CM_Login;
-import com.socket.core.TSession;
+import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;

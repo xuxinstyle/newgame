@@ -1,7 +1,7 @@
 package com.socket.dispatcher.executor;
 
 import com.socket.Utils.NameThreadFactory;
-import com.socket.core.TSession;
+import com.socket.core.session.TSession;
 
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;

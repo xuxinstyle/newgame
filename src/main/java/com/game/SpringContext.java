@@ -1,7 +1,9 @@
 package com.game;
 
 import com.game.base.account.service.AccountService;
+import com.game.connect.service.ConnectService;
 import com.game.login.service.LoginService;
+import com.game.scence.service.ScenceService;
 import com.game.register.service.RegisterService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +36,13 @@ public class SpringContext implements ApplicationContextAware {
     private RegisterService registerService;
     @Autowired
     private AccountService accountService;
-
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private ConnectService connectService;
+    @Autowired
+    private ScenceService scenceService;
+
 
 
     public static RegisterService getRegisterService(){
@@ -53,6 +59,14 @@ public class SpringContext implements ApplicationContextAware {
 
     public static LoginService getLoginService(){
         return instance.loginService;
+    }
+
+    public static ConnectService getConnectService(){
+        return instance.connectService;
+    }
+
+    public static ScenceService getScenceSerivce(){
+        return instance.scenceService;
     }
 
     @Override

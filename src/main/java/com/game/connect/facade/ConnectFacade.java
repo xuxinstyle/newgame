@@ -2,7 +2,7 @@ package com.game.connect.facade;
 
 import com.game.connect.packet.CM_Connect;
 import com.game.connect.packet.SM_Connect;
-import com.socket.core.TSession;
+import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;

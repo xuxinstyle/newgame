@@ -2,7 +2,7 @@ package com.game.register.facade;
 
 import com.game.SpringContext;
 import com.game.register.packet.CM_Register;
-import com.socket.core.TSession;
+import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package com.socket.Utils;
 
-import com.socket.core.TSession;
+import com.socket.core.session.TSession;
 import io.netty.channel.Channel;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;

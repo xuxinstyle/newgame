@@ -1,6 +1,6 @@
 package com.game.register.service;
 
-import com.socket.core.TSession;
+import com.socket.core.session.TSession;
 
 /**
  * @Author：xuxin

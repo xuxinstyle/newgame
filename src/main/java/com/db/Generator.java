@@ -1,4 +1,4 @@
-package com.game;
+package com.db;
 
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;

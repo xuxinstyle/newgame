@@ -1,6 +1,7 @@
 package com.game.base.account.service;
 
 import com.game.base.account.entity.AccountEnt;
+import com.socket.core.session.TSession;
 
 import java.util.List;
 
@@ -13,16 +14,24 @@ public interface AccountService {
      * 添加账号
      */
     void insert(String username, String passward);
+
+
     /**
-     * 删除账号
+     * 获取账号实体
+     * @param accountId
+     * @return
      */
-    void drop(String username);
+    AccountEnt getAccountEnt(String accountId);
+
     /**
-     * 修改账号
+     * 创建角色
+     * @param nickName
+     * @param career
+     * @param account
      */
-    void update(String username, String passward);
+    void createPlayer(TSession session, String nickName, String career, String accountId);
     /**
-     * 查询账号
+     * 保存修改
      */
-    List<AccountEnt> select(String username);
+    void save(AccountEnt accountEnt);
 }

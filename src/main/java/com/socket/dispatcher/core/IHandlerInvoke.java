@@ -1,6 +1,6 @@
 package com.socket.dispatcher.core;
 
-import com.socket.core.TSession;
+import com.socket.core.session.TSession;
 
 /**
  * @Author：xuxin

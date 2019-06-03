@@ -6,4 +6,8 @@
     <catalog id="4" value="com.game.connect.packet.SM_Connect"/>
     <catalog id="5" value="com.game.register.packet.CM_Register"/>
     <catalog id="6" value="com.game.register.packet.SM_Register"/>
+    <catalog id="7" value="com.game.base.account.packet.CM_CreatePlayer"/>
+    <catalog id="8" value="com.game.base.account.packet.SM_EnterCreatePlayer"/>
+    <catalog id="9" value="com.game.base.account.packet.SM_CreatePlayer"/>
+    <catalog id="10" value="com.game.scence.packet.CM_EnterInitScence"/>
 </protocols>

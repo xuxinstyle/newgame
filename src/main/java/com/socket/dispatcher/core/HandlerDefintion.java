@@ -1,6 +1,6 @@
 package com.socket.dispatcher.core;
 
-import com.socket.core.TSession;
+import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;

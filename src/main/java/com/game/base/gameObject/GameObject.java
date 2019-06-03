@@ -1,4 +1,4 @@
-package com.game.base.gameobject;
+package com.game.base.gameObject;
 
 /**
  * @Author：xuxin

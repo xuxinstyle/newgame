@@ -1,6 +1,6 @@
 package com.socket.core;
 
-import com.socket.Utils.ProtoStuffUtil;
+import com.socket.core.session.TSession;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.core.ActionDispatcher;
 import com.socket.dispatcher.executor.IdentifyThreadPoolExecutor;

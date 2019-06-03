@@ -1,18 +1,16 @@
 package com.game.base.account.mapper;
 
 import com.game.base.account.entity.AccountEnt;
-import com.game.base.account.mapper.AccountExample;
+import com.game.base.account.entity.AccountExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
-
 
 public interface AccountMapper {
-    long countByExample(AccountExample example);
+    int countByExample(AccountExample example);
 
     int deleteByExample(AccountExample example);
 
-    int deleteByPrimaryKey(String accountid);
+    int deleteByPrimaryKey(String accountId);
 
     int insert(AccountEnt record);
 
@@ -22,7 +20,7 @@ public interface AccountMapper {
 
     List<AccountEnt> selectByExample(AccountExample example);
 
-    AccountEnt selectByPrimaryKey(String accountid);
+    AccountEnt selectByPrimaryKey(String accountId);
 
     int updateByExampleSelective(@Param("record") AccountEnt record, @Param("example") AccountExample example);
 
