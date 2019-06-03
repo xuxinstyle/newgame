@@ -40,7 +40,9 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     }
     public void doHandle(TSession session, int opIndex, Object packet, long decodeTime) {
         Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
-
+        if(aClass==null){
+            return;
+        }
         Object pack = ProtoStuffUtil.deserializer((byte[]) packet, aClass);
         if(logger.isDebugEnabled()){
             logger.debug("到达dohandle:pack="+pack.getClass());

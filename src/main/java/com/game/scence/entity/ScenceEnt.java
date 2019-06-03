@@ -1,5 +1,7 @@
 package com.game.scence.entity;
 
+import java.util.List;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/3 11:16
@@ -14,6 +16,10 @@ public class ScenceEnt {
      */
     private String scenceName;
 
+    /**
+     * 在场景中的玩家账号Id
+     */
+    private List<String> accounts;
 
     public int getScenceId() {
         return scenceId;

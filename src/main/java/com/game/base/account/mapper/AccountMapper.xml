@@ -212,6 +212,7 @@
   <update id="updateByPrimaryKey" parameterType="com.game.base.account.entity.AccountEnt" >
     update account
     set passward = #{passward,jdbcType=VARCHAR}
+    accountdata = #{accountData,jdbcType=LONGVARBINARY}
     where account_id = #{accountId,jdbcType=VARCHAR}
   </update>
 </mapper>

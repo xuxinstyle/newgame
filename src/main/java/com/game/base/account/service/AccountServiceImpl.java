@@ -40,6 +40,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountEnt getAccountEnt(String accountId) {
         AccountEnt accountEnt = accountMapper.selectByPrimaryKey(accountId);
+        if(accountEnt==null){
+            return null;
+        }
         accountEnt.doDeserialize();
 
         return accountEnt;
@@ -47,10 +50,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void createPlayer(TSession session, String nickName, String career, String accountId) {
-        System.out.println("nickName:"+nickName+"  career:"+career+"  accountId:"+accountId);
+
         AccountEnt accountEnt = getAccountEnt(accountId);
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        System.out.println(accountInfo.toString());
         accountInfo.setNickName(nickName);
         accountInfo.setCareer(career);
         accountInfo.setSurviveStatus(1);
@@ -65,14 +67,24 @@ public class AccountServiceImpl implements AccountService {
          */
         SM_EnterInitScence res = new SM_EnterInitScence();
         res.setAccountId(accountId);
-        res.setType(accountInfo.getCurrentMapType());
+        res.setType(accountInfo.getCurrentMapType().getMapid());
         session.sendPacket(res);
     }
 
     @Override
     public void save(AccountEnt accountEnt) {
         accountEnt.doSerialize();
-        accountMapper.updateByPrimaryKey(accountEnt);
+        if(logger.isDebugEnabled()){
+            logger.debug(accountEnt.toString());
+        }
+        logger.info(accountEnt.toString());
+        logger.info(accountEnt.getAccountInfo().toString());
+
+        accountMapper.updateByPrimaryKeyWithBLOBs(accountEnt);
+        AccountEnt accountEnt1 = getAccountEnt(accountEnt.getAccountId());
+        if(logger.isDebugEnabled()){
+            logger.debug(accountEnt1.toString());
+        }
     }
 
 

@@ -9,5 +9,5 @@ import com.socket.core.session.TSession;
  * @Date: 2019/6/3 10:29
  */
 public interface ScenceService {
-    void enterMap(TSession session, String accountId, SceneType mapId);
+    void enterMap(TSession session, String accountId);
 }

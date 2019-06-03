@@ -30,7 +30,7 @@ public class LoginServiceImpl implements LoginService {
         }
         if (accountEnt.getPassward().equals(passward)) {
 
-            session.setAttribute(SessionUtil.ACCOUNT_ID, accountEnt.getAccountId());
+
             AccountInfo accountInfo = accountEnt.getAccountInfo();
 
             SM_Login sm = new SM_Login();

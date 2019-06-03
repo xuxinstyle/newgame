@@ -1,5 +1,7 @@
 package com.socket.core;
 
+import com.game.SpringContext;
+import com.socket.core.session.SessionUtil;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.core.ActionDispatcher;
@@ -45,7 +47,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         String opIndex = objects.get(0).toString();
         Object packet = objects.get(1);
         String time = objects.get(2).toString();
-        TSession session = new TSession(ctx.channel(),actionDispatcher);
+        TSession session = SessionUtil.getChannelSession(ctx.channel());
         Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
         byte[] unpack = MessagePack.unpack(MessagePack.pack(packet), byte[].class);
 
@@ -54,10 +56,21 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        if(!SessionUtil.createChannelSession(ctx.channel(), actionDispatcher)){
+            ctx.channel().close();
+            return;
+        }
+        TSession session = SessionUtil.getChannelSession(ctx.channel());
+
+    }
+
+    @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         logger.info("-----客户端关闭:" + ctx.channel().remoteAddress());
         /**当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
         //cause.printStackTrace();
+
         ctx.close();
     }
 }

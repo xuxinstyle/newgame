@@ -1,6 +1,7 @@
 package com.socket.core;
 
 import com.game.SpringContext;
+import com.socket.core.session.SessionUtil;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.core.ActionDispatcher;
@@ -46,12 +47,22 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         String opIndex = objects.get(0).toString();
         Object packet = objects.get(1);
         String time = objects.get(2).toString();
-        TSession session = new TSession(ctx.channel(),actionDispatcher);
+        TSession session = SessionUtil.getChannelSession(ctx.channel());
         Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
         byte[] unpack = MessagePack.unpack(MessagePack.pack(packet), byte[].class);
 
         //分发处理
         actionDispatcher.doHandle(session,Integer.parseInt(opIndex),unpack,Long.parseLong(time));
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        if(!SessionUtil.createChannelSession(ctx.channel(), actionDispatcher)){
+            ctx.channel().close();
+            return;
+        }
+        TSession session = SessionUtil.getChannelSession(ctx.channel());
+
     }
 
     @Override

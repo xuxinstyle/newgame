@@ -19,9 +19,10 @@ public class ScenceFacade {
     public void enterNoviceVillage(TSession session, CM_EnterInitScence req){
         try {
 
-            SpringContext.getScenceSerivce().enterMap(session,req.getAccountId(),req.getType());
+            SpringContext.getScenceSerivce().enterMap(session,req.getAccountId());
         }catch (Exception e){
-            logger.error("进入"+req.getType()+"地图失败",e.toString());
+            logger.error("进入地图失败",e.toString());
+            e.printStackTrace();
         }
     }
 }
