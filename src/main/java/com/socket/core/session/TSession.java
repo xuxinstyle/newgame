@@ -45,7 +45,7 @@ public class TSession {
         String[] adds = ip.split(":");
         this.inetIp = adds[0].substring(1);//FIXME:这里不太理解为什么
         this.port = adds[1];
-        //this.taskQueue = new ConcurrentId
+
     }
     public void sendPacket(Object res) {
         try{
@@ -72,6 +72,9 @@ public class TSession {
     }
     public void logout(){
         channel.close();
+    }
+    public boolean isActive(){
+        return channel.isActive();
     }
     public String getAccountId() {
         return accountId;

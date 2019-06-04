@@ -1,5 +1,6 @@
 package com.game;
 
+import com.executor.CommonExecutor;
 import com.resource.StorageManager;
 import com.socket.core.*;
 import com.socket.dispatcher.config.RegistSerializerMessage;
@@ -24,14 +25,13 @@ public class start {
     public static void main(String[] args) {
         applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         new RegistSerializerMessage().init();
-
+        CommonExecutor.start();
         StorageManager.init();
         applicationContext.start();
-
-
         int port = SpringContext.getServerConfigValue().getPort();
         bind(port);
     }
+
     //开启服务器监听端口
     public static void bind(int port) {
         /**
@@ -65,6 +65,7 @@ public class start {
                             //ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                             ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
                             ch.pipeline().addLast("MessagePack encoder", new MsgpackEncoder());
+                            /** maxFrameLength：单个包最大的长度  lengthFieldOffset：表示数据长度字段开始的偏移量  lengthFieldLength：数据长度字段的所占的字节数*/
                             ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                             ch.pipeline().addLast("MessagePack Decoder", new MsgpackDecoder());
                             ch.pipeline().addLast(new EchoServerHandler());

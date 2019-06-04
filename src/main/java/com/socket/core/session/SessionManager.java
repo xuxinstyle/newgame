@@ -35,5 +35,16 @@ public class SessionManager {
         accountSessionMap.remove(accountId);
 
     }
+    public void removeSession(String accountId){
+        accountSessionMap.remove(accountId);
+    }
+    public static void clearSession(){
+        for(Map.Entry<String, TSession> entry:accountSessionMap.entrySet()){
+            TSession session = entry.getValue();
+            if(!session.isActive()){
+                accountSessionMap.remove(entry.getKey());
+            }
+        }
+    }
 
 }

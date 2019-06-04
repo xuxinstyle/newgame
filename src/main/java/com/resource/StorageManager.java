@@ -39,7 +39,7 @@ public class StorageManager implements BeanPostProcessor {
     private static Map<String, InputStream> caches = new ConcurrentHashMap<>();
 
     public static void init(){
-        System.out.println("进入init");
+        //System.out.println("进入init");
         if(logger.isDebugEnabled()){
             logger.debug("进入init");
         }

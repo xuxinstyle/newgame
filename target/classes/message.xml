@@ -14,4 +14,7 @@
 
     <catalog id="10" value="com.game.scence.packet.CM_EnterInitScence"/>
     <catalog id="11" value="com.game.scence.packet.SM_EnterInitScence"/>
+    
+    <catalog id="12" value="com.game.login.packet.SM_Logout"/>
+
 </protocols>
