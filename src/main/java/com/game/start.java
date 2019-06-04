@@ -1,5 +1,6 @@
 package com.game;
 
+import com.resource.StorageManager;
 import com.socket.core.*;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.heartBeat.HeartBeatRequestHandler;
@@ -23,7 +24,11 @@ public class start {
     public static void main(String[] args) {
         applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         new RegistSerializerMessage().init();
+
+        StorageManager.init();
         applicationContext.start();
+
+
         int port = SpringContext.getServerConfigValue().getPort();
         bind(port);
     }
@@ -56,8 +61,8 @@ public class start {
                              * LengthFieldBasedFrameDecoder：长度域解码器——放在MsgpackDecoder解码器前面
                              * 关于 长度域编解码器处理半包消息，本文不做详细讲解，会有专门篇章进行说明
                              */
-                            ch.pipeline().addLast(new IMIdleStateHandler());
-                            ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
+                            //ch.pipeline().addLast(new IMIdleStateHandler());
+                            //ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                             ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
                             ch.pipeline().addLast("MessagePack encoder", new MsgpackEncoder());
                             ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));

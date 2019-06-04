@@ -76,7 +76,7 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        //System.out.println("bean:"+bean+beanName);
+
         Class<?> clz = bean.getClass();
         Method[] methods = clz.getDeclaredMethods();
         for (Method method : methods) {

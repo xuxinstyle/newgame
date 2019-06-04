@@ -65,6 +65,7 @@ public class AccountServiceImpl implements AccountService {
         /**
          * 请求进入场景地图
          */
+
         SM_EnterInitScence res = new SM_EnterInitScence();
         res.setAccountId(accountId);
         res.setType(accountInfo.getCurrentMapType().getMapid());

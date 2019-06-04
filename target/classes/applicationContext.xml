@@ -15,7 +15,7 @@
 
         <context:property-placeholder location="server.properties,jdbc.properties"/>
         <!-- 自动扫描 -->
-        <context:component-scan base-package="com.game,com.socket"/>
+        <context:component-scan base-package="com.game,com.socket,com.resource"/>
         <!-- 数据源配置-->
 
         <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -71,16 +71,7 @@
         </tx:attributes>
     </tx:advice>
 
-    <!--AOP-->
-    <!--<aop:config>
-        &lt;!&ndash;设置切入点&ndash;&gt;
-        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.system.service.impl.*.*(..))"/>
-    </aop:config>-->
-   <!-- <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list> <value>server.properties</value> </list>
-        </property>
-    </bean>-->
+
     <bean id="serverConfigValue" class="com.game.ServerConfigValue">
         <property name="port" value="${server.socket.port}"/>
     </bean>
@@ -99,6 +90,9 @@
         <property name="basePackage" value="com.**.mapper" />
         <property name="sqlSessionFactoryBeanName" value="sessionFactory" />
     </bean>
+    <!-- 静态资源配置-->
+
+
     <import resource="applicationConfig.xml"/>
 
 </beans>

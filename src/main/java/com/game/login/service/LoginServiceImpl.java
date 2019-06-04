@@ -4,13 +4,11 @@ import com.game.SpringContext;
 import com.game.base.account.entity.AccountEnt;
 import com.game.base.account.model.AccountInfo;
 import com.game.login.packet.SM_Login;
-import com.socket.core.session.SessionUtil;
+import com.socket.core.session.SessionManager;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @Author：xuxin
@@ -29,15 +27,17 @@ public class LoginServiceImpl implements LoginService {
             return;
         }
         if (accountEnt.getPassward().equals(passward)) {
-
-
+            if(SessionManager.getSessionByAccount(username)!=null){
+                SessionManager.logout(username);
+            }
             AccountInfo accountInfo = accountEnt.getAccountInfo();
-
             SM_Login sm = new SM_Login();
             sm.setStatus(1);
             sm.setAccountId(accountEnt.getAccountId());
             sm.setLastScenceId(accountInfo.getCurrentMapType().getMapid());
             session.sendPacket(sm);
+            session.setAccountId(username);
+            SessionManager.addAccountSessionMap(username, session);
             //进入场景地图 如果玩家没有昵称就显示取昵称的界面
             logger.info(accountEnt.getAccountId() + "登录成功！");
         } else {

@@ -7,9 +7,11 @@ import com.game.SpringContext;
 import com.game.base.account.entity.AccountEnt;
 import com.game.scence.packet.CM_EnterInitScence;
 import com.game.scence.packet.SM_EnterInitScence;
+import com.game.scence.resource.TestResource;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,6 +21,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScenceServiceImpl implements ScenceService {
     private static final Logger logger = LoggerFactory.getLogger(ScenceServiceImpl.class);
+
+    @Autowired
+    private ScenceManger scenceManger;
+
     @Override
     public void enterMap(TSession session, String accountId) {
         /**
@@ -45,6 +51,7 @@ public class ScenceServiceImpl implements ScenceService {
         if(logger.isDebugEnabled()){
             logger.debug("进入地图："+accountEnt.toString(),accountInfo);
         }
+
         SM_EnterInitScence sm = new SM_EnterInitScence();
         sm.setAccountId(accountId);
         sm.setType(accountInfo.getCurrentMapType().getMapid());
