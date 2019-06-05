@@ -9,5 +9,17 @@ import com.socket.core.session.TSession;
  * @Date: 2019/6/3 10:29
  */
 public interface ScenceService {
-    void enterMap(TSession session, String accountId);
+    /**
+     * 玩家刚创角时进入初始化场景
+     * @param session
+     * @param accountId
+     */
+    void enterInitMap(TSession session, String accountId);
+
+    /**
+     *
+     * @param session
+     * @param mapId
+     */
+    void enterMap(TSession session, int mapId);
 }

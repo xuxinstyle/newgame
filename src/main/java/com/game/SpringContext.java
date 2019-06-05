@@ -1,8 +1,8 @@
 package com.game;
 
-import com.game.base.account.service.AccountService;
+import com.game.role.account.service.AccountService;
 import com.game.base.core.service.IdentifyService;
-import com.game.base.player.service.PlayerService;
+import com.game.role.player.service.PlayerService;
 import com.game.connect.service.ConnectService;
 import com.game.login.service.LoginService;
 import com.game.scence.service.ScenceService;

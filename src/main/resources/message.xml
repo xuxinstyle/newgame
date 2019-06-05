@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <protocols>
+    <catalog id="-2" value="com.socket.heartBeat.HeartBeatRequestPack"/>
+    <catalog id="-1" value="com.socket.heartBeat.HeartBeatResponsePack"/>
+
     <catalog id="1" value="com.game.login.packet.CM_Login"/>
     <catalog id="2" value="com.game.connect.packet.CM_Connect"/>
     <catalog id="3" value="com.game.login.packet.SM_Login"/>
@@ -8,13 +11,16 @@
     <catalog id="5" value="com.game.register.packet.CM_Register"/>
     <catalog id="6" value="com.game.register.packet.SM_Register"/>
 
-    <catalog id="7" value="com.game.base.account.packet.CM_CreatePlayer"/>
-    <catalog id="8" value="com.game.base.account.packet.SM_EnterCreatePlayer"/>
-    <catalog id="9" value="com.game.base.account.packet.SM_CreatePlayer"/>
+    <catalog id="7" value="com.game.role.account.packet.CM_CreatePlayer"/>
+    <catalog id="8" value="com.game.role.account.packet.SM_EnterCreatePlayer"/>
+    <catalog id="9" value="com.game.role.account.packet.SM_CreatePlayer"/>
 
     <catalog id="10" value="com.game.scence.packet.CM_EnterInitScence"/>
     <catalog id="11" value="com.game.scence.packet.SM_EnterInitScence"/>
     
     <catalog id="12" value="com.game.login.packet.SM_Logout"/>
     <catalog id="13" value="com.game.login.packet.SM_LoginNoAcount"/>
+
+    <catalog id="14" value="com.game.scence.packet.CM_Move"/>
+    <catalog id="15" value="com.game.scence.packet.SM_Move"/>
 </protocols>

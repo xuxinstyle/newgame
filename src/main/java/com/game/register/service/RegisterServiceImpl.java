@@ -1,14 +1,12 @@
 package com.game.register.service;
 
 import com.game.SpringContext;
-import com.game.base.account.entity.AccountEnt;
+import com.game.role.account.entity.AccountEnt;
 import com.game.register.packet.SM_Register;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @Author：xuxin

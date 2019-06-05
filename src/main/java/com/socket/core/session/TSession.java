@@ -28,7 +28,7 @@ public class TSession {
     private final String ip;
     private String inetIp;
     private final String port;
-    //private final ITaskQueue taskQueue;
+
     private final IActionDispatcher actionDispatcher;
     public TSession (Channel channel){
         this(channel, null);

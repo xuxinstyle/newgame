@@ -57,9 +57,8 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
             + packet.getClass().getSimpleName());
         }
         Object res = defintion.invoke(session, opIndex, pack);
-        if(res != null){
-            session.sendPacket( res);
-        }
+
+
 
     }
 

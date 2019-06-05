@@ -1,13 +1,12 @@
 package com.game.scence.service;
 
-import com.game.base.account.model.AccountInfo;
-import com.game.base.account.packet.SM_EnterCreatePlayer;
-import com.game.scence.constant.SceneType;
+import com.game.role.account.model.AccountInfo;
+import com.game.role.account.packet.SM_EnterCreatePlayer;
 import com.game.SpringContext;
-import com.game.base.account.entity.AccountEnt;
-import com.game.scence.packet.CM_EnterInitScence;
+import com.game.role.account.entity.AccountEnt;
+import com.game.scence.constant.SceneType;
 import com.game.scence.packet.SM_EnterInitScence;
-import com.game.scence.resource.TestResource;
+import com.game.scence.packet.SM_Move;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ public class ScenceServiceImpl implements ScenceService {
     private ScenceManger scenceManger;
 
     @Override
-    public void enterMap(TSession session, String accountId) {
+    public void enterInitMap(TSession session, String accountId) {
         /**
          * 如果没有角色信息，则进入创角页面
          */
@@ -43,6 +42,30 @@ public class ScenceServiceImpl implements ScenceService {
             logger.info("有角色信息！");
             doEnterMap(session, accountId);
         }
+    }
+
+    @Override
+    public void enterMap(TSession session, int mapId) {
+        String accountId = session.getAccountId();
+        if(accountId==null){
+            logger.warn("Session中的accountId为空");
+            return;
+        }
+        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+        AccountInfo accountInfo = accountEnt.getAccountInfo();
+        SceneType sceneType = SceneType.valueOf(mapId);
+        if(sceneType==null){
+            logger.warn("没有目标地图信息");
+            return;
+        }
+        accountInfo.setCurrentMapType(sceneType);
+        SpringContext.getAccountService().save(accountEnt);
+        if(logger.isDebugEnabled()){
+            logger.debug("切换地图成功");
+        }
+        SM_Move sm = new SM_Move();
+        sm.setStatus(1);
+        session.sendPacket(sm);
     }
 
     private void doEnterMap(TSession session, String accountId) {

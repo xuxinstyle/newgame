@@ -2,6 +2,7 @@ package com.game.scence.facade;
 
 import com.game.scence.packet.CM_EnterInitScence;
 import com.game.SpringContext;
+import com.game.scence.packet.CM_Move;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;
@@ -18,11 +19,20 @@ public class ScenceFacade {
     @HandlerAnno
     public void enterNoviceVillage(TSession session, CM_EnterInitScence req){
         try {
-
-            SpringContext.getScenceSerivce().enterMap(session,req.getAccountId());
+            SpringContext.getScenceSerivce().enterInitMap(session,req.getAccountId());
         }catch (Exception e){
             logger.error("进入地图失败",e.toString());
             e.printStackTrace();
         }
+    }
+    @HandlerAnno
+    public void enterMap(TSession session, CM_Move req){
+        try {
+            SpringContext.getScenceSerivce().enterMap(session, req.getMapId());
+        }catch (Exception e){
+            logger.error("进入地图失败",e.toString());
+            e.printStackTrace();
+        }
+
     }
 }

@@ -70,15 +70,18 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         logger.info("客户端关闭:" + ctx.channel().remoteAddress());
         TSession session = SessionUtil.getChannelSession(ctx.channel());
         session.getAccountId();
-        SessionManager.removeSession(session.getAccountId());
+        // SessionManager.removeSession(session.getAccountId());
         /**当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
-        //cause.printStackTrace();
+        ctx.channel().close();
+        cause.printStackTrace();
 
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-
+        TSession session = SessionUtil.getChannelSession(ctx.channel());
+        session.getAccountId();
+        SessionManager.removeSession(session.getAccountId());
         super.channelInactive(ctx);
     }
 }

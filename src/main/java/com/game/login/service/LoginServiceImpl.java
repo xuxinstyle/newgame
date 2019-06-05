@@ -1,8 +1,8 @@
 package com.game.login.service;
 
 import com.game.SpringContext;
-import com.game.base.account.entity.AccountEnt;
-import com.game.base.account.model.AccountInfo;
+import com.game.role.account.entity.AccountEnt;
+import com.game.role.account.model.AccountInfo;
 import com.game.login.packet.SM_Login;
 import com.game.login.packet.SM_LoginNoAcount;
 import com.socket.core.session.SessionManager;
@@ -41,16 +41,30 @@ public class LoginServiceImpl implements LoginService {
             SessionManager.logout(username);
         }
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        SM_Login sm = new SM_Login();
-        sm.setStatus(1);
-        sm.setAccountId(accountEnt.getAccountId());
-        sm.setLastScenceId(accountInfo.getLastLogoutMapType().getMapid());
-        session.sendPacket(sm);
-        session.setAccountId(username);
-        SessionManager.addAccountSessionMap(username, session);
-        //进入场景地图 如果玩家没有昵称就显示取昵称的界面
-        logger.info(accountEnt.getAccountId() + "登录成功！");
+        if(accountInfo.getAccountName()==null||accountInfo.getLastLogoutMapType()==null){
 
-
+            SM_Login sm = new SM_Login();
+            sm.setStatus(1);
+            sm.setAccountId(accountEnt.getAccountId());
+            session.sendPacket(sm);
+            session.setAccountId(username);
+            SessionManager.addAccountSessionMap(username, session);
+            accountInfo.setLastLoginTime(System.nanoTime());
+            SpringContext.getAccountService().save(accountEnt);
+            //进入场景地图 如果玩家没有昵称就显示取昵称的界面
+            logger.info(accountEnt.getAccountId() + "登录成功！");
+        }else{
+            accountInfo.setLastLoginTime(System.nanoTime());
+            SM_Login sm = new SM_Login();
+            sm.setStatus(1);
+            sm.setAccountId(accountEnt.getAccountId());
+            sm.setLastScenceId(accountInfo.getLastLogoutMapType().getMapid());
+            session.sendPacket(sm);
+            session.setAccountId(username);
+            SessionManager.addAccountSessionMap(username, session);
+            SpringContext.getAccountService().save(accountEnt);
+            //进入场景地图 如果玩家没有昵称就显示取昵称的界面
+            logger.info(accountEnt.getAccountId() + "登录成功！");
+        }
     }
 }
