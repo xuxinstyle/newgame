@@ -54,8 +54,10 @@ public class StorageManager implements BeanPostProcessor {
             registResourceCacah(def.getLocation());
             readXlsx(def,caches);
         }
-        logger.info(definitionMap.toString());
-        logger.info(caches.toString());
+        if(logger.isDebugEnabled()){
+            logger.debug(definitionMap.toString());
+            logger.debug(caches.toString());
+        }
         return bean;
     }
 

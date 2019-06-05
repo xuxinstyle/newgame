@@ -1,6 +1,7 @@
 package com.socket.core;
 
 import com.game.SpringContext;
+import com.socket.core.session.SessionManager;
 import com.socket.core.session.SessionUtil;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.config.RegistSerializerMessage;
@@ -67,6 +68,9 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         logger.info("客户端关闭:" + ctx.channel().remoteAddress());
+        TSession session = SessionUtil.getChannelSession(ctx.channel());
+        session.getAccountId();
+        SessionManager.removeSession(session.getAccountId());
         /**当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
         //cause.printStackTrace();
 

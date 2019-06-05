@@ -17,8 +17,10 @@ public class SessionManager {
     private static Map<String, TSession> accountSessionMap = new ConcurrentHashMap<>();
 
     public static TSession getSessionByAccount(String accountId){
+        if(logger.isDebugEnabled()){
+            logger.debug("");
+        }
         if(accountSessionMap.get(accountId)==null){
-            logger.info("该玩家没有已下线");
             return null;
         }
         return accountSessionMap.get(accountId);
@@ -35,7 +37,7 @@ public class SessionManager {
         accountSessionMap.remove(accountId);
 
     }
-    public void removeSession(String accountId){
+    public static void removeSession(String accountId){
         accountSessionMap.remove(accountId);
     }
     public static void clearSession(){

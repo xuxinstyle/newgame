@@ -3,7 +3,7 @@
   <mapper namespace="com.game.base.player.mapper.PlayerMapper" >
   <resultMap id="BaseResultMap" type="com.game.base.player.entity.PlayerEnt" >
     <id column="player_id" property="playerId" jdbcType="VARCHAR" />
-    <result column="account_id" property="account_id" jdbcType="VARCHAR" />
+    <result column="account_id" property="accountId" jdbcType="VARCHAR" />
     <result column="playerdata" property="playerData" jdbcType="LONGVARBINARY" />
   </resultMap>
 
@@ -15,12 +15,12 @@
   
   <insert id="insert" parameterType="com.game.base.player.entity.PlayerEnt" >
     insert into player (player_id, account_id, playerdata)
-    values (#{playerId,jdbcType=VARCHAR}, #{account_id,jdbcType=VARCHAR}, #{playerData,jdbcType=LONGVARBINARY} )
+    values (#{playerId,jdbcType=VARCHAR}, #{accountId,jdbcType=VARCHAR}, #{playerData,jdbcType=LONGVARBINARY} )
   </insert>
 
   <update id="updateByPrimaryKey" parameterType="com.game.base.player.entity.PlayerEnt" >
     update player
-    set account_id = #{account_id,jdbcType=VARCHAR}
+    set account_id = #{accountId,jdbcType=VARCHAR}
     playerdata = #{playerData,jdbcType=LONGVARBINARY}
     where player_id = #{playerId,jdbcType=VARCHAR}
   </update>
