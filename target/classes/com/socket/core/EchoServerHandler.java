@@ -62,15 +62,19 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
             return;
         }
         TSession session = SessionUtil.getChannelSession(ctx.channel());
-
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.info("-----客户端关闭:" + ctx.channel().remoteAddress());
+        logger.info("客户端关闭:" + ctx.channel().remoteAddress());
         /**当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
         //cause.printStackTrace();
 
-        ctx.close();
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+
+        super.channelInactive(ctx);
     }
 }

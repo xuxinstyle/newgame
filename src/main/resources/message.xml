@@ -16,5 +16,5 @@
     <catalog id="11" value="com.game.scence.packet.SM_EnterInitScence"/>
     
     <catalog id="12" value="com.game.login.packet.SM_Logout"/>
-
+    <catalog id="13" value="com.game.login.packet.SM_LoginNoAcount"/>
 </protocols>

@@ -54,7 +54,7 @@ public class ScenceServiceImpl implements ScenceService {
 
         SM_EnterInitScence sm = new SM_EnterInitScence();
         sm.setAccountId(accountId);
-        sm.setType(accountInfo.getCurrentMapType().getMapid());
+        sm.setType(accountInfo.getLastLogoutMapType().getMapid());
         session.sendPacket(sm);
     }
 
@@ -71,7 +71,7 @@ public class ScenceServiceImpl implements ScenceService {
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         logger.info(accountInfo.toString());
 
-        if(accountInfo.getNickName()==null||accountInfo.getNickName().equals("")){
+        if(accountInfo.getAccountName()==null||accountInfo.getAccountName().equals("")){
             return false;
         }
         return true;

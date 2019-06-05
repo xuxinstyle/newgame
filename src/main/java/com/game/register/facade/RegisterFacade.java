@@ -4,6 +4,8 @@ import com.game.SpringContext;
 import com.game.register.packet.CM_Register;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,11 +14,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class RegisterFacade {
+    private static final Logger logger = LoggerFactory.getLogger(RegisterFacade.class);
     @HandlerAnno
     public void register(TSession session, CM_Register req){
         try {
             SpringContext.getRegisterService().doRegister(req.getUsername(), req.getPassward(), session);
         }catch (Exception e){
+            logger.error("["+req.getUsername()+"]注册失败");
             e.printStackTrace();
         }
     }

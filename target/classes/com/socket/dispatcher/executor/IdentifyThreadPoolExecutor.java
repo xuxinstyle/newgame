@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class IdentifyThreadPoolExecutor extends ThreadPoolExecutor implements IIdentifyThreadPool{
 
     private static final int DEFAULT_INITIAL_THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors();
-    private static final int DEFAULT_KEEP_ALIVE = 30;
+    private static final int DEFAULT_KEEP_ALIVE = 20;
     public IdentifyThreadPoolExecutor(){
         super(DEFAULT_INITIAL_THREAD_POOL_SIZE, DEFAULT_INITIAL_THREAD_POOL_SIZE, DEFAULT_KEEP_ALIVE, TimeUnit.SECONDS,
                 new LinkedBlockingDeque<>(), new NameThreadFactory("IdentifyThread"));

@@ -1,10 +1,12 @@
 package com.db;
 
+import java.io.Serializable;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/3 15:42
  */
-public abstract class AbstractEntity implements IEntity{
+public abstract class AbstractEntity<T extends Comparable<T> & Serializable> implements IEntity<T>{
     @Override
     public void serialize() {
         doSerialize();

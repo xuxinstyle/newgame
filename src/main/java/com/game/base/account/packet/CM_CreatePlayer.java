@@ -18,13 +18,13 @@ public class CM_CreatePlayer {
     /**
      * 职业
      */
-    private String career;
+    private int career;
 
-    public String getCareer() {
+    public int getCareer() {
         return career;
     }
 
-    public void setCareer(String career) {
+    public void setCareer(int career) {
         this.career = career;
     }
 

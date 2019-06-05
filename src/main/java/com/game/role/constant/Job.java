@@ -11,6 +11,31 @@ public enum Job {
     ;
     private int jobType;
     private String name;
+    public static Job valueOf(int type){
+        Job[] values = Job.values();
+        for (Job job :values) {
+            if(job.jobType== type){
+                return job;
+            }
+        }
+        return null;
+    }
+    public int getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(int jobType) {
+        this.jobType = jobType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private Job(int type, String name){
         this.jobType = type;
         this.name = name;

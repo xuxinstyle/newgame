@@ -1,10 +1,13 @@
 package com.game.base.account.service;
 
+import com.game.SpringContext;
 import com.game.base.account.entity.AccountEnt;
 import com.game.base.account.entity.AccountExample;
 import com.game.base.account.mapper.AccountMapper;
 import com.game.base.account.model.AccountInfo;
 import com.game.base.account.packet.SM_CreatePlayer;
+import com.game.base.player.entity.PlayerEnt;
+import com.game.role.constant.Job;
 import com.game.scence.constant.SceneType;
 import com.game.scence.packet.SM_EnterInitScence;
 import com.socket.core.session.TSession;
@@ -14,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
+
 /**
  *
  * @Author：xuxin
@@ -31,7 +36,7 @@ public class AccountServiceImpl implements AccountService {
         AccountEnt accountEnt = new AccountEnt();
         accountEnt.setAccountId(username);
         accountEnt.setPassward(passward);
-        accountEnt.setAccountInfo(AccountInfo.valueOf());
+        accountEnt.setAccountInfo(AccountInfo.valueOf(null));
         accountEnt.doSerialize();
         accountMapper.insert(accountEnt);
     }
@@ -41,6 +46,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountEnt getAccountEnt(String accountId) {
         AccountEnt accountEnt = accountMapper.selectByPrimaryKey(accountId);
         if(accountEnt==null){
+            logger.warn("数据库中没有["+accountId+"]的账号信息");
             return null;
         }
         accountEnt.doDeserialize();
@@ -49,14 +55,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void createPlayer(TSession session, String nickName, String career, String accountId) {
+    public void createPlayer(TSession session, String nickName, int type, String accountId) {
 
         AccountEnt accountEnt = getAccountEnt(accountId);
-        AccountInfo accountInfo = accountEnt.getAccountInfo();
-        accountInfo.setNickName(nickName);
-        accountInfo.setCareer(career);
-        accountInfo.setSurviveStatus(1);
-        accountInfo.setCurrentMapType(SceneType.NoviceVillage);
+        AccountInfo accountInfo = AccountInfo.valueOf(nickName);
+        Set<Long> playerIds = accountInfo.getPlayerIds();
+        PlayerEnt player = SpringContext.getPlayerSerivce().createPlayer(accountId, Job.valueOf(type));
+        playerIds.add(player.getPlayerId());
+        accountEnt.setAccountInfo(accountInfo);
         save(accountEnt);
         SM_CreatePlayer sm = new SM_CreatePlayer();
         sm.setAccountId(accountId);
@@ -68,20 +74,24 @@ public class AccountServiceImpl implements AccountService {
 
         SM_EnterInitScence res = new SM_EnterInitScence();
         res.setAccountId(accountId);
-        res.setType(accountInfo.getCurrentMapType().getMapid());
+        res.setType(accountInfo.getLastLogoutMapType().getMapid());
         session.sendPacket(res);
     }
 
     @Override
     public void save(AccountEnt accountEnt) {
+        if(accountEnt==null){
+            logger.error("accountEnt为空，持久化失败");
+            return ;
+        }
         accountEnt.doSerialize();
         if(logger.isDebugEnabled()){
             logger.debug(accountEnt.toString());
+            logger.debug(accountEnt.getAccountInfo().toString());
         }
-        logger.info(accountEnt.toString());
-        logger.info(accountEnt.getAccountInfo().toString());
 
-        accountMapper.updateByPrimaryKeyWithBLOBs(accountEnt);
+
+        accountMapper.updateByPrimaryKey(accountEnt);
         AccountEnt accountEnt1 = getAccountEnt(accountEnt.getAccountId());
         if(logger.isDebugEnabled()){
             logger.debug(accountEnt1.toString());

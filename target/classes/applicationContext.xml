@@ -30,7 +30,7 @@
             <property name="packagesToScan" value="com.game.**.entity"/>
             <property name="hibernateProperties">
                 <props>
-                    <prop key="current_session_context_class">thread</prop>
+                    <prop key="current_session_context_class">executor</prop>
                     <prop key="cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
                     <prop key="hibernate.dialect">${hibernate.dialect}</prop>
                     <prop key="hibernate.cache.use_second_level_cache">false</prop>

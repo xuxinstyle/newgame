@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @Author：xuxin
  * @Date: 2019/4/28 21:04
  */
-public class AccountEnt extends AbstractEntity {
+public class AccountEnt extends AbstractEntity<String> {
     /**
      * 账号Id
      */
@@ -59,7 +59,7 @@ public class AccountEnt extends AbstractEntity {
     }
 
     @Override
-    public Serializable getId() {
+    public String getId() {
         return accountId;
     }
 

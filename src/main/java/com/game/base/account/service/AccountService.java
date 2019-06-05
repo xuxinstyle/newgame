@@ -29,7 +29,7 @@ public interface AccountService {
      * @param career
      * @param account
      */
-    void createPlayer(TSession session, String nickName, String career, String accountId);
+    void createPlayer(TSession session, String nickName, int type, String accountId);
     /**
      * 保存修改
      */
