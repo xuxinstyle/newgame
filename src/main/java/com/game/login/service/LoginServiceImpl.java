@@ -1,6 +1,7 @@
 package com.game.login.service;
 
 import com.game.SpringContext;
+import com.game.login.packet.SM_Logout;
 import com.game.role.account.entity.AccountEnt;
 import com.game.role.account.model.AccountInfo;
 import com.game.login.packet.SM_Login;
@@ -38,7 +39,7 @@ public class LoginServiceImpl implements LoginService {
         }
         /** 踢对方下线*/
         if(SessionManager.getSessionByAccount(username)!=null){
-            SessionManager.logout(username);
+            logout(session, username);
         }
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         if(accountInfo.getAccountName()==null||accountInfo.getLastLogoutMapType()==null){
@@ -66,5 +67,20 @@ public class LoginServiceImpl implements LoginService {
             //进入场景地图 如果玩家没有昵称就显示取昵称的界面
             logger.info(accountEnt.getAccountId() + "登录成功！");
         }
+    }
+
+    @Override
+    public void logout(TSession session, String accountId) {
+        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+        AccountInfo accountInfo = accountEnt.getAccountInfo();
+        accountInfo.setLastLogoutMapType(accountInfo.getCurrentMapType());
+        accountInfo.setLastLogoutTime(System.nanoTime());
+        SpringContext.getAccountService().save(accountEnt);
+
+        SM_Logout sm = new SM_Logout();
+        session.sendPacket(sm);
+        session.logout(accountId);
+        SpringContext.getSessionManager().removeSession(accountId);
+        SpringContext.getScenceSerivce().removeScenceAccountId(accountInfo.getCurrentMapType().getMapid(), accountId);
     }
 }

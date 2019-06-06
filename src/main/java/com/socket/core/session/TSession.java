@@ -1,5 +1,8 @@
 package com.socket.core.session;
 
+import com.game.SpringContext;
+import com.game.role.account.entity.AccountEnt;
+import com.game.role.account.model.AccountInfo;
 import com.socket.Utils.ProtoStuffUtil;
 import com.socket.core.MyPack;
 import com.socket.dispatcher.action.IActionDispatcher;
@@ -70,7 +73,8 @@ public class TSession {
             logger.error(msg,e);
         }
     }
-    public void logout(){
+    public void logout(String accountId){
+
         channel.close();
     }
     public boolean isActive(){

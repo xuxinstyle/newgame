@@ -4,14 +4,24 @@ import com.game.role.account.model.AccountInfo;
 import com.game.role.account.packet.SM_EnterCreatePlayer;
 import com.game.SpringContext;
 import com.game.role.account.entity.AccountEnt;
+import com.game.role.constant.Job;
+import com.game.role.player.entity.PlayerEnt;
+import com.game.role.player.model.Player;
 import com.game.scence.constant.SceneType;
 import com.game.scence.packet.SM_EnterInitScence;
-import com.game.scence.packet.SM_Move;
+import com.game.scence.packet.SM_EnterMap;
+import com.game.scence.packet.SM_ShowAccountInfo;
+import com.game.scence.packet.SM_ShowAllAccountInfo;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author：xuxin
@@ -58,13 +68,16 @@ public class ScenceServiceImpl implements ScenceService {
             logger.warn("没有目标地图信息");
             return;
         }
+        scenceManger.removeAccountId(accountInfo.getCurrentMapType().getMapid(), accountId);
         accountInfo.setCurrentMapType(sceneType);
         SpringContext.getAccountService().save(accountEnt);
+        scenceManger.setScenceAccountId(mapId, accountId);
         if(logger.isDebugEnabled()){
             logger.debug("切换地图成功");
         }
-        SM_Move sm = new SM_Move();
+        SM_EnterMap sm = new SM_EnterMap();
         sm.setStatus(1);
+        sm.setMapId(mapId);
         session.sendPacket(sm);
     }
 
@@ -74,7 +87,7 @@ public class ScenceServiceImpl implements ScenceService {
         if(logger.isDebugEnabled()){
             logger.debug("进入地图："+accountEnt.toString(),accountInfo);
         }
-
+        scenceManger.setScenceAccountId(accountInfo.getLastLogoutMapType().getMapid(), accountId);
         SM_EnterInitScence sm = new SM_EnterInitScence();
         sm.setAccountId(accountId);
         sm.setType(accountInfo.getLastLogoutMapType().getMapid());
@@ -100,5 +113,52 @@ public class ScenceServiceImpl implements ScenceService {
         return true;
     }
 
+    @Override
+    public void removeScenceAccountId(int mapdId, String accountId) {
+        scenceManger.removeAccountId(mapdId, accountId);
+    }
 
+    /**
+     * 以后显示的信息会增加，先暂时传这些数据
+     * @param session
+     * @param mapId
+     */
+    @Override
+    public void showAllAccountInfo(TSession session, int mapId) {
+        List<String> scenceAccountIds = scenceManger.getScenceAccountIds(mapId);
+        SM_ShowAllAccountInfo sm = new SM_ShowAllAccountInfo();
+        Map<String ,String> accountInfos = new HashMap<>(scenceAccountIds.size());
+        for (String accountId :scenceAccountIds) {
+            AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+            AccountInfo accountInfo = accountEnt.getAccountInfo();
+            accountInfos.put(accountId, accountInfo.getAccountName());
+        }
+        sm.setAccountMap(accountInfos);
+        session.sendPacket(sm);
+    }
+
+    @Override
+    public void showAccountInfo(TSession session, String accountId, int mapId) {
+        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+        AccountInfo accountInfo = accountEnt.getAccountInfo();
+        if(accountInfo==null){
+            logger.warn("没有 ["+accountId+"]的账号信息");
+            return;
+        }
+        List<Long> playerIds = accountInfo.getPlayerIds();
+        if(playerIds.size()<1){
+            logger.warn("玩家["+accountId+"]没有创建角色");
+            return;
+        }
+        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayer(playerIds.get(0));
+        Player player = playerEnt.getPlayer();
+        SM_ShowAccountInfo sm = new SM_ShowAccountInfo();
+        sm.setAccountId(accountId);
+        sm.setNickName(accountInfo.getAccountName());
+        sm.setCareer(Job.valueOf(player.getCareer()).getName());
+        sm.setLevel(player.getLevel());
+        sm.setPlayerName(player.getPlayerName());
+        session.sendPacket(sm);
+
+    }
 }

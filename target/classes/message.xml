@@ -21,6 +21,12 @@
     <catalog id="12" value="com.game.login.packet.SM_Logout"/>
     <catalog id="13" value="com.game.login.packet.SM_LoginNoAcount"/>
 
-    <catalog id="14" value="com.game.scence.packet.CM_Move"/>
-    <catalog id="15" value="com.game.scence.packet.SM_Move"/>
+    <catalog id="14" value="com.game.scence.packet.CM_EnterMap"/>
+    <catalog id="15" value="com.game.scence.packet.SM_EnterMap"/>
+
+    <catalog id="16" value="com.game.scence.packet.CM_ShowAllAccountInfo"/>
+    <catalog id="17" value="com.game.scence.packet.SM_ShowAllAccountInfo"/>
+    <catalog id="18" value="com.game.scence.packet.CM_ShowAccountInfo"/>
+    <catalog id="19" value="com.game.scence.packet.SM_ShowAccountInfo"/>
+
 </protocols>

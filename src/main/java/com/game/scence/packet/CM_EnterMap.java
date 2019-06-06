@@ -5,7 +5,7 @@ package com.game.scence.packet;
  * @Date: 2019/6/5 17:05
  * @Id
  */
-public class CM_Move {
+public class CM_EnterMap {
     /** 前往的地图Id*/
     private int mapId;
 

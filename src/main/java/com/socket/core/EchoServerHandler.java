@@ -80,8 +80,8 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         TSession session = SessionUtil.getChannelSession(ctx.channel());
-        session.getAccountId();
-        SessionManager.removeSession(session.getAccountId());
+        String accountId = session.getAccountId();
+        SessionManager.logout(session,accountId);
         super.channelInactive(ctx);
     }
 }

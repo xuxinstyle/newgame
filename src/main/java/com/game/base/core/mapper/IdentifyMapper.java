@@ -1,27 +1,28 @@
 package com.game.base.core.mapper;
 
 
+import com.game.base.core.entity.IdentifyEnt;
 import com.game.role.player.entity.PlayerEnt;
 
 public interface IdentifyMapper {
     /**
-     * 新增player数据
+     * 新增IdentifyEnt数据
      * @param record
      * @return
      */
-    int insertPlayerEnt(PlayerEnt record);
+    int insertPlayerEnt(IdentifyEnt record);
 
     /**
-     * 查询player数据
-     * @param player
+     * 查询IdentifyEnt数据
+     * @param typeId
      * @return
      */
-    PlayerEnt selectPlayerEnt(long player);
+    IdentifyEnt selectIdentifyEnt(int typeId);
 
     /**
      * 更新player数据
      * @param record
      * @return
      */
-    int updatePlayerEnt(PlayerEnt record);
+    int updateIdentifyEnt(IdentifyEnt record);
 }

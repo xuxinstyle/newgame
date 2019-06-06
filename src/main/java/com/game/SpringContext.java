@@ -7,6 +7,7 @@ import com.game.connect.service.ConnectService;
 import com.game.login.service.LoginService;
 import com.game.scence.service.ScenceService;
 import com.game.register.service.RegisterService;
+import com.socket.core.session.SessionManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -48,6 +49,12 @@ public class SpringContext implements ApplicationContextAware {
     private PlayerService playerService;
     @Autowired
     private IdentifyService identifyService;
+    @Autowired
+    private SessionManager sessionManager;
+
+    public static SessionManager getSessionManager(){
+        return instance.sessionManager;
+    }
 
     public static IdentifyService getIdentifyService(){
         return instance.identifyService;

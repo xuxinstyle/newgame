@@ -2,7 +2,9 @@ package com.game.role.account.model;
 
 import com.game.scence.constant.SceneType;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,7 +43,7 @@ public class AccountInfo {
     /**
      * 该账号下的PlayerId
      */
-    private Set<Long> playerIds;
+    private List<Long> playerIds;
 
     public static AccountInfo valueOf(String accountName){
         AccountInfo accountInfo = new AccountInfo();
@@ -50,7 +52,7 @@ public class AccountInfo {
         accountInfo.setLastLoginTime(0L);
         accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
         accountInfo.setLastLogoutTime(0L);
-        accountInfo.setPlayerIds(new HashSet<>());
+        accountInfo.setPlayerIds(new ArrayList<>());
         return accountInfo;
     }
 
@@ -102,11 +104,11 @@ public class AccountInfo {
         this.lastLogoutTime = lastLogoutTime;
     }
 
-    public Set<Long> getPlayerIds() {
+    public List<Long> getPlayerIds() {
         return playerIds;
     }
 
-    public void setPlayerIds(Set<Long> playerIds) {
+    public void setPlayerIds(List<Long> playerIds) {
         this.playerIds = playerIds;
     }
 
@@ -118,6 +120,7 @@ public class AccountInfo {
                 ", lastLoginTime=" + lastLoginTime +
                 ", lastLogoutTime=" + lastLogoutTime +
                 ", lastLogoutMapType=" + lastLogoutMapType +
+                ", currentMapType=" + currentMapType +
                 ", playerIds=" + playerIds +
                 '}';
     }

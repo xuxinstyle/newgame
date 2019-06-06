@@ -2,19 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
   <mapper namespace="com.game.base.core.mapper.IdentifyMapper" >
   <resultMap id="BaseResultMap" type="com.game.base.core.entity.IdentifyEnt" >
-    <id column="identify_id" property="identifyId" jdbcType="BIGINT" />
-    <result column="type_id" property="typeId" jdbcType="INT" />
+    <id column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="now_id" property="now" jdbcType="BIGINT" />
   </resultMap>
 
-  <select id="selectIdentifyEnt" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectIdentifyEnt" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select *
     from identify
-    where identify_id = #{identifyId,jdbcType=BIGINT}
+    where type_id = #{typeId,jdbcType=INTEGER}
   </select>
   
   <insert id="insertIdentifyEnt" parameterType="com.game.base.core.entity.IdentifyEnt" >
-    insert into identify (identify_id, typeId)
-    values (#{identifyId,jdbcType=BIGINT}, #{typeId,jdbcType=INT} )
+    insert into identify (type_id, now_id)
+    values (#{typeId,jdbcType=INTEGER}, #{now,jdbcType=BIGINT} )
   </insert>
 
 

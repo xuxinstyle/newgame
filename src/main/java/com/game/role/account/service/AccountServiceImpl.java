@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -59,7 +60,7 @@ public class AccountServiceImpl implements AccountService {
 
         AccountEnt accountEnt = getAccountEnt(accountId);
         AccountInfo accountInfo = AccountInfo.valueOf(nickName);
-        Set<Long> playerIds = accountInfo.getPlayerIds();
+        List<Long> playerIds = accountInfo.getPlayerIds();
         PlayerEnt player = SpringContext.getPlayerSerivce().createPlayer(accountId, Job.valueOf(type));
         playerIds.add(player.getPlayerId());
         accountEnt.setAccountInfo(accountInfo);

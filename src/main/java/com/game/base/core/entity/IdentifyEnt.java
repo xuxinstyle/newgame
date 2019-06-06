@@ -6,19 +6,11 @@ import com.db.AbstractEntity;
  * @Author：xuxin
  * @Date: 2019/6/5 18:33
  */
-public class IdentifyEnt extends AbstractEntity<Long> {
-    /** 实体的唯一标识Id */
-    private long identifyId;
+public class IdentifyEnt{
     /** 实体类型id */
     private int typeId;
-
-    public long getIdentifyId() {
-        return identifyId;
-    }
-
-    public void setIdentifyId(long identifyId) {
-        this.identifyId = identifyId;
-    }
+    /** 从这个数字开始增加*/
+    private long now;
 
     public int getTypeId() {
         return typeId;
@@ -28,18 +20,11 @@ public class IdentifyEnt extends AbstractEntity<Long> {
         this.typeId = typeId;
     }
 
-    @Override
-    public void doSerialize() {
-
+    public long getNow() {
+        return now;
     }
 
-    @Override
-    public void doDeserialize() {
-
-    }
-
-    @Override
-    public Long getId() {
-        return identifyId;
+    public void setNow(long now) {
+        this.now = now;
     }
 }

@@ -24,4 +24,11 @@ public enum EntityType {
         this.entityId = entityId;
     }
 
+    public int getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(int entityId) {
+        this.entityId = entityId;
+    }
 }

@@ -2,7 +2,8 @@ package com.game.scence.facade;
 
 import com.game.scence.packet.CM_EnterInitScence;
 import com.game.SpringContext;
-import com.game.scence.packet.CM_Move;
+import com.game.scence.packet.CM_EnterMap;
+import com.game.scence.packet.CM_ShowAllAccountInfo;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class ScenceFacade {
         }
     }
     @HandlerAnno
-    public void enterMap(TSession session, CM_Move req){
+    public void enterMap(TSession session, CM_EnterMap req){
         try {
             SpringContext.getScenceSerivce().enterMap(session, req.getMapId());
         }catch (Exception e){
@@ -34,5 +35,14 @@ public class ScenceFacade {
             e.printStackTrace();
         }
 
+    }
+    @HandlerAnno
+    public void showAllAccount(TSession session, CM_ShowAllAccountInfo req){
+        try {
+            SpringContext.getScenceSerivce().showAllAccountInfo(session, req.getMapId());
+        }catch (Exception e){
+            logger.error("请求查看场景中的账号信息失败",e.toString());
+            e.printStackTrace();
+        }
     }
 }

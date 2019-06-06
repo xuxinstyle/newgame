@@ -144,15 +144,15 @@ public class StorageManager implements BeanPostProcessor {
                 logger.error("静态资源表" + TestResource.class.getName() + "加载失败");
                 return null;
             }
-            TestResource testResource = new TestResource();
-            Field[] declaredFields = TestResource.class.getDeclaredFields();
+            Object object = clz.newInstance();
+            Field[] declaredFields = clz.getDeclaredFields();
             for (int i = 0; i < length; i++) {
                 if(logger.isDebugEnabled()){
-                    logger.debug(testResource.toString()+"resource:"+i+":"+resourceData.get(i));
+                    logger.debug(clz.toString()+"--resource:"+i+":"+resourceData.get(i));
                 }
-                declaredFields[i].set(testResource, resourceData.get(i));
+                declaredFields[i].set(object, resourceData.get(i));
             }
-            return testResource;
+            return object;
         } catch (Exception e) {
             logger.error("静态资源属性和List中的类型不匹配");
             e.printStackTrace();
