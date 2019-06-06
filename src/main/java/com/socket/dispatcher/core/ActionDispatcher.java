@@ -26,7 +26,7 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     private static Logger logger = LoggerFactory.getLogger(ActionDispatcher.class);
     private static Map<Class<?>, IHandlerInvoke> handlerMap = new HashMap<>();
 
-    //线程池
+    //TODO:线程池暂时还没用，后续准备用来分发
     private final IIdentifyThreadPool executor;
 
     public ActionDispatcher(IIdentifyThreadPool executor) {

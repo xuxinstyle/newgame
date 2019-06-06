@@ -3,6 +3,8 @@ package com.game.base.core.service;
 import com.game.base.core.entity.IdentifyEnt;
 import com.game.base.core.mapper.IdentifyMapper;
 import com.game.base.gameObject.constant.EntityType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @Component
 public class IdentifyService {
 
+    private static Logger logger = LoggerFactory.getLogger(IdentifyService.class);
+
     /**
      * 1
      */
@@ -25,7 +29,7 @@ public class IdentifyService {
     /**
      *
      */
-    private static AtomicLong index = new AtomicLong(10001);
+    private static AtomicLong index = new AtomicLong(10000);
     @Autowired
     private IdentifyMapper identifyMapper;
 
@@ -45,16 +49,26 @@ public class IdentifyService {
      * @param type
      * @return
      */
-    public long  getNextIdentify(EntityType type){
+    public synchronized long getNextIdentify(EntityType type){
         IdentifyEnt identifyEnt = identifyMapper.selectIdentifyEnt(type.getEntityId());
         if(identifyEnt==null){
-            IdentifyEnt identifyEnt1 = new IdentifyEnt();
-            identifyEnt1.setTypeId(type.getEntityId());
-            identifyEnt1.setNow(index.incrementAndGet());
-            identifyMapper.updateIdentifyEnt(identifyEnt1);
-            return identifyEnt1.getNow();
+            identifyEnt= new IdentifyEnt();
+            identifyEnt.setTypeId(type.getEntityId());
+            identifyEnt.setNow(index.incrementAndGet());
+            if(logger.isDebugEnabled()){
+                logger.debug("identify为null时objectId："+identifyEnt.getNow());
+
+            }
+
+            identifyMapper.insertIdentifyEnt(identifyEnt);
+
+            return identifyEnt.getNow();
         }
+
         long l = new AtomicLong(identifyEnt.getNow()).incrementAndGet();
+        if(logger.isDebugEnabled()){
+            logger.debug("identify不为null时objectId："+l);
+        }
         identifyEnt.setNow(l);
         identifyMapper.updateIdentifyEnt(identifyEnt);
         return l;

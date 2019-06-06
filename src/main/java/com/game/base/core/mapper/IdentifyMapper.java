@@ -10,7 +10,7 @@ public interface IdentifyMapper {
      * @param record
      * @return
      */
-    int insertPlayerEnt(IdentifyEnt record);
+    int insertIdentifyEnt(IdentifyEnt record);
 
     /**
      * 查询IdentifyEnt数据

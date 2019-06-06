@@ -3,6 +3,7 @@ package com.game.scence.facade;
 import com.game.scence.packet.CM_EnterInitScence;
 import com.game.SpringContext;
 import com.game.scence.packet.CM_EnterMap;
+import com.game.scence.packet.CM_ShowAccountInfo;
 import com.game.scence.packet.CM_ShowAllAccountInfo;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
@@ -40,6 +41,15 @@ public class ScenceFacade {
     public void showAllAccount(TSession session, CM_ShowAllAccountInfo req){
         try {
             SpringContext.getScenceSerivce().showAllAccountInfo(session, req.getMapId());
+        }catch (Exception e){
+            logger.error("请求查看场景中的账号信息失败",e.toString());
+            e.printStackTrace();
+        }
+    }
+    @HandlerAnno
+    public void showAllAccount(TSession session, CM_ShowAccountInfo req){
+        try {
+            SpringContext.getScenceSerivce().showAccountInfo(session,req.getAccountId(),req.getMapId() );
         }catch (Exception e){
             logger.error("请求查看场景中的账号信息失败",e.toString());
             e.printStackTrace();

@@ -36,13 +36,16 @@ public class ScenceManger {
         return accountIds;
     }
     // 这里问问要加同步吗
-    public  void setScenceAccountId(int mapId, String accountId){
+    public void setScenceAccountId(int mapId, String accountId){
 
         if (scenceAccountIdMap.get(mapId) == null) {
             List<String> accountIds = new ArrayList<>();
             scenceAccountIdMap.putIfAbsent(mapId, accountIds);
         }else {
             List<String> strings = scenceAccountIdMap.get(mapId);
+            if(strings.contains(accountId)){
+                return;
+            }
             strings.add(accountId);
         }
 

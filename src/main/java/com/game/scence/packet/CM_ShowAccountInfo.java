@@ -9,7 +9,7 @@ public class CM_ShowAccountInfo {
     /**
      * 账号Id
      */
-   private String accountId;
+    private String accountId;
 
     /**
      * 当前的地图
@@ -22,5 +22,13 @@ public class CM_ShowAccountInfo {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
+    }
+
+    public int getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(int mapId) {
+        this.mapId = mapId;
     }
 }

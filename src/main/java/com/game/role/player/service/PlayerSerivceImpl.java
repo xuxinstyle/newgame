@@ -44,6 +44,7 @@ public class PlayerSerivceImpl implements PlayerService {
     public PlayerEnt createPlayer(String accountId, Job type) {
         PlayerEnt playerEnt = new PlayerEnt();
         long playerId = SpringContext.getIdentifyService().getNextIdentify(EntityType.PLAYER);
+
         playerEnt.setPlayerId(playerId);
         playerEnt.setAccountId(accountId);
         Player player = Player.valueOf(playerId, accountId, type);
@@ -56,7 +57,10 @@ public class PlayerSerivceImpl implements PlayerService {
     private int getPlayerJobNum(String accountId, Job job){
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         List<Long> playerIds = accountEnt.getAccountInfo().getPlayerIds();
-        int num = 0;
+        if(playerIds==null){
+            return 1;
+        }
+        int num = 1;
         for (long playerId: playerIds){
             PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayer(playerId);
             Player player = playerEnt.getPlayer();

@@ -10,13 +10,13 @@ public class SM_ShowAllAccountInfo {
     /**
      * <账号Id，昵称>
      */
-    private Map<String , String> accountMap;
+    private String context;
 
-    public Map<String, String> getAccountMap() {
-        return accountMap;
+    public String getContext() {
+        return context;
     }
 
-    public void setAccountMap(Map<String, String> accountMap) {
-        this.accountMap = accountMap;
+    public void setContext(String context) {
+        this.context = context;
     }
 }

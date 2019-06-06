@@ -6,6 +6,7 @@ import com.game.role.account.entity.AccountEnt;
 import com.game.role.account.model.AccountInfo;
 import com.game.login.packet.SM_Login;
 import com.game.login.packet.SM_LoginNoAcount;
+import com.game.scence.constant.SceneType;
 import com.socket.core.session.SessionManager;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
@@ -52,6 +53,7 @@ public class LoginServiceImpl implements LoginService {
             SessionManager.addAccountSessionMap(username, session);
             accountInfo.setLastLoginTime(System.nanoTime());
             SpringContext.getAccountService().save(accountEnt);
+            SpringContext.getScenceSerivce().setScenceAccountId(1,username);
             //进入场景地图 如果玩家没有昵称就显示取昵称的界面
             logger.info(accountEnt.getAccountId() + "登录成功！");
         }else{
@@ -59,11 +61,15 @@ public class LoginServiceImpl implements LoginService {
             SM_Login sm = new SM_Login();
             sm.setStatus(1);
             sm.setAccountId(accountEnt.getAccountId());
+            if(accountInfo.getLastLogoutMapType()==null){
+                accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
+            }
             sm.setLastScenceId(accountInfo.getLastLogoutMapType().getMapid());
             session.sendPacket(sm);
             session.setAccountId(username);
             SessionManager.addAccountSessionMap(username, session);
             SpringContext.getAccountService().save(accountEnt);
+            SpringContext.getScenceSerivce().setScenceAccountId(accountInfo.getLastLogoutMapType().getMapid(),username);
             //进入场景地图 如果玩家没有昵称就显示取昵称的界面
             logger.info(accountEnt.getAccountId() + "登录成功！");
         }

@@ -68,7 +68,11 @@ public class ScenceServiceImpl implements ScenceService {
             logger.warn("没有目标地图信息");
             return;
         }
-        scenceManger.removeAccountId(accountInfo.getCurrentMapType().getMapid(), accountId);
+        SceneType currentMapType = accountInfo.getCurrentMapType();
+        if(currentMapType!=null){
+            scenceManger.removeAccountId(accountInfo.getCurrentMapType().getMapid(), accountId);
+        }
+
         accountInfo.setCurrentMapType(sceneType);
         SpringContext.getAccountService().save(accountEnt);
         scenceManger.setScenceAccountId(mapId, accountId);
@@ -87,6 +91,7 @@ public class ScenceServiceImpl implements ScenceService {
         if(logger.isDebugEnabled()){
             logger.debug("进入地图："+accountEnt.toString(),accountInfo);
         }
+
         scenceManger.setScenceAccountId(accountInfo.getLastLogoutMapType().getMapid(), accountId);
         SM_EnterInitScence sm = new SM_EnterInitScence();
         sm.setAccountId(accountId);
@@ -133,8 +138,21 @@ public class ScenceServiceImpl implements ScenceService {
             AccountInfo accountInfo = accountEnt.getAccountInfo();
             accountInfos.put(accountId, accountInfo.getAccountName());
         }
-        sm.setAccountMap(accountInfos);
+        String context = parse(accountInfos);
+        sm.setContext(context);
+        if(logger.isDebugEnabled()){
+            logger.debug(sm.toString());
+            logger.debug(session.getAccountId());
+        }
         session.sendPacket(sm);
+    }
+
+    private String parse(Map<String,String> accountInfos) {
+        StringBuffer context = new StringBuffer("");
+        for(Map.Entry<String,String> entry:accountInfos.entrySet()){
+            context.append("accountId:"+entry.getKey()+"  昵称："+entry.getValue());
+        }
+        return context.toString();
     }
 
     @Override
@@ -160,5 +178,15 @@ public class ScenceServiceImpl implements ScenceService {
         sm.setPlayerName(player.getPlayerName());
         session.sendPacket(sm);
 
+    }
+
+    @Override
+    public void setScenceAccountId(int mapId, String accountId) {
+        scenceManger.setScenceAccountId(mapId, accountId);
+    }
+
+    @Override
+    public void removeAccountId(int mapId, String accountId) {
+        scenceManger.removeAccountId(mapId,accountId);
     }
 }

@@ -16,6 +16,10 @@
     insert into identify (type_id, now_id)
     values (#{typeId,jdbcType=INTEGER}, #{now,jdbcType=BIGINT} )
   </insert>
-
+  <update id="updateIdentifyEnt" parameterType="com.game.base.core.entity.IdentifyEnt" >
+    update identify
+    set now_id = #{now,jdbcType=BIGINT}
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </update>
 
 </mapper>

@@ -39,6 +39,28 @@ public interface ScenceService {
      */
     void showAllAccountInfo(TSession session, int mapId);
 
+    /**
+     * 查看场景中所有的玩家信息
+     * @param session
+     * @param accountId
+     * @param mapId
+     */
+
     void showAccountInfo(TSession session, String accountId, int mapId);
+
+    /**
+     * 将玩家信息放到场景中
+     * @param mapId
+     * @param accountId
+     */
+    void setScenceAccountId(int mapId, String accountId);
+
+    /**
+     * 一出场景中的玩家信息
+     * @param mapId
+     * @param accountId
+     */
+    public void removeAccountId(int mapId, String accountId);
+
 
 }

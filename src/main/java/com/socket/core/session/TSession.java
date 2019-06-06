@@ -56,6 +56,7 @@ public class TSession {
             for (Map.Entry<Integer, Class<?>> entry :RegistSerializerMessage.idClassMap.entrySet()) {
                 if(entry.getValue().equals(res.getClass())){
                     opIndex = entry.getKey();
+                    break;
                 }
             }
             if(opIndex == 0){
