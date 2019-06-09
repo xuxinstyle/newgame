@@ -1,10 +1,7 @@
 package com.game.scence.facade;
 
-import com.game.scence.packet.CM_EnterInitScence;
+import com.game.scence.packet.*;
 import com.game.SpringContext;
-import com.game.scence.packet.CM_EnterMap;
-import com.game.scence.packet.CM_ShowAccountInfo;
-import com.game.scence.packet.CM_ShowAllAccountInfo;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;
@@ -19,24 +16,15 @@ import org.springframework.stereotype.Component;
 public class ScenceFacade {
     private static final Logger logger = LoggerFactory.getLogger(ScenceFacade.class);
     @HandlerAnno
-    public void enterNoviceVillage(TSession session, CM_EnterInitScence req){
-        try {
-            SpringContext.getScenceSerivce().enterInitMap(session,req.getAccountId());
-        }catch (Exception e){
-            logger.error("进入地图失败",e.toString());
-            e.printStackTrace();
-        }
-    }
-    @HandlerAnno
     public void enterMap(TSession session, CM_EnterMap req){
         try {
-            SpringContext.getScenceSerivce().enterMap(session, req.getMapId());
+            SpringContext.getScenceSerivce().enterMap(session,req.getAccountId(),req.getMapId());
         }catch (Exception e){
             logger.error("进入地图失败",e.toString());
             e.printStackTrace();
         }
-
     }
+
     @HandlerAnno
     public void showAllAccount(TSession session, CM_ShowAllAccountInfo req){
         try {
@@ -52,6 +40,15 @@ public class ScenceFacade {
             SpringContext.getScenceSerivce().showAccountInfo(session,req.getAccountId(),req.getMapId() );
         }catch (Exception e){
             logger.error("请求查看场景中的账号信息失败",e.toString());
+            e.printStackTrace();
+        }
+    }
+    @HandlerAnno
+    public void move(TSession session, CM_Move cm){
+        try{
+            SpringContext.getScenceSerivce().move(session, cm.getX(), cm.getY());
+        }catch (Exception e){
+            logger.error("请求移动失败",e.toString());
             e.printStackTrace();
         }
     }

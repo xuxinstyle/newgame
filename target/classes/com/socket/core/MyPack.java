@@ -8,8 +8,6 @@ public class MyPack {
     private Integer pId;
     //自己的协议包
     private byte[] packet;
-    //发送时间
-    private long time;
 
     public Integer getpId() {
         return pId;
@@ -27,11 +25,4 @@ public class MyPack {
         this.packet = packet;
     }
 
-    public long getTime() {
-        return time;
-    }
-
-    public void setTime(long time) {
-        this.time = time;
-    }
 }

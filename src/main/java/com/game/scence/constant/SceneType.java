@@ -27,15 +27,9 @@ public enum SceneType {
         return mapName;
     }
 
-    public void setMapName(String mapName) {
-        this.mapName = mapName;
-    }
 
     public int getMapid() {
         return mapid;
     }
 
-    public void setMapid(int mapid) {
-        this.mapid = mapid;
-    }
 }

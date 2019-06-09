@@ -13,7 +13,7 @@ public interface LoginService {
      * @param username
      * @param passward
      */
-    void login(TSession session, String username, String passward);
+    void login(TSession session, String username, String passward) throws InterruptedException;
 
     /**
      * 登出操作

@@ -7,9 +7,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class Player extends GameObject {
 
-    // 账号Id
+    /**
+     * 账号Id
+     */
     private String accountId;
-    // 角色姓名
+    /**
+     * 角色姓名
+     */
     private String playerName;
     /**
      *  玩家职业
@@ -23,6 +27,15 @@ public class Player extends GameObject {
      *  玩家的生存状态 生存，死亡 1 生存，2 死亡
      */
     private int surviveStatus;
+    /**
+     * 角色当前位置x坐标
+     */
+    private int x;
+    /**
+     * 角色当前位置y坐标
+     */
+    private int y;
+
     public static Player valueOf(long playerId, String accountId, Job type){
         Player player = new Player();
         player.setLevel(1);
@@ -31,12 +44,33 @@ public class Player extends GameObject {
         player.setAccountId(accountId);
         player.setPlayerName(type.name());
         player.setSurviveStatus(1);
+        int x = (int) (1 + Math.random() * (10));
+        int y = (int) (1 + Math.random() * (10));
+        player.setX(x);
+        player.setY(y);
         return player;
     }
+
 
     @Override
     public String gatName() {
         return playerName;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public String getAccountId() {

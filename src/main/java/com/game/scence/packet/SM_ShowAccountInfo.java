@@ -5,6 +5,7 @@ package com.game.scence.packet;
  * @Date: 2019/6/6 10:11
  */
 public class SM_ShowAccountInfo {
+
     /**
      * 账号Id
      */

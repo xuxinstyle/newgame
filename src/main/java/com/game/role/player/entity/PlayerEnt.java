@@ -56,16 +56,16 @@ public class PlayerEnt extends AbstractEntity<Long> {
         this.player = player;
     }
 
+    @Override
+    public Long getId() {
+        return playerId;
+    }
+
     public byte[] getPlayerData() {
         return playerData;
     }
 
     public void setPlayerData(byte[] playerData) {
         this.playerData = playerData;
-    }
-
-    @Override
-    public Long getId() {
-        return playerId;
     }
 }

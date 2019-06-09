@@ -20,6 +20,7 @@ public class AccountFacade {
         try {
             SpringContext.getAccountService().createPlayer(session, req.getNickName(), req.getCareer(), req.getAccountId());
         }catch (Exception e){
+            e.printStackTrace();
             logger.error(req.getAccountId()+"创键角色失败"+e.toString());
         }
     }

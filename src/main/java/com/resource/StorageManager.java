@@ -3,6 +3,7 @@ package com.resource;
 import com.game.scence.resource.TestResource;
 import com.resource.anno.Resource;
 import com.resource.other.ResourceDefinition;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -31,11 +32,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class StorageManager implements BeanPostProcessor {
     private static final Logger logger = LoggerFactory.getLogger(StorageManager.class);
-    // 静态类容器
+    /**
+     * 静态类容器
+     */
     private Map<Class<?>, ResourceDefinition> definitionMap = new ConcurrentHashMap<>();
-    // 静态资源存储容器
+    /**
+     * 静态资源存储容器
+     */
     private static Map<Class<?>, Storage<?,?>> storageMap = new ConcurrentHashMap<>();
-    // csv读取的缓存流容器
+    /**
+     * csv读取的缓存流容器
+     */
     private static Map<String, InputStream> caches = new ConcurrentHashMap<>();
 
     public static void init(){
@@ -76,11 +83,9 @@ public class StorageManager implements BeanPostProcessor {
                 Workbook wb;
                 // 根据文件后缀（xls/xlsx）进行判断
                 if ("xls".equals(split[1])) {
-                    //FileInputStream fis = new FileInputStream(excel);
                     // 文件流对象
                     wb = new HSSFWorkbook(inputStream);
                 } else if ("xlsx".equals(split[1])) {
-                    //FileInputStream fis = new FileInputStream(excel);
                     wb = new XSSFWorkbook(inputStream);
                 } else {
                     logger.error("文件类型错误!");
@@ -90,7 +95,7 @@ public class StorageManager implements BeanPostProcessor {
                 //读取sheet 0
                 int firstRowIndex = sheet.getFirstRowNum() + 1;   //第一行是列名，所以不读
                 int lastRowIndex = sheet.getLastRowNum();
-
+                Map<String,Object> map = new HashMap<>();
                 for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {
                     //遍历行
                     Row row = sheet.getRow(rIndex);
@@ -105,9 +110,13 @@ public class StorageManager implements BeanPostProcessor {
                                 resourceData.add(cell.toString());
                             }
                         }
-                        putStorage(def, resourceData);
+
+                        Object parse = parse(def.getClz(), resourceData);
+                        map.put(resourceData.get(0),parse);
+
                     }
                 }
+                putStorage(def, map);
             } else {
                 logger.error("找不到指定的文件");
 
@@ -124,16 +133,17 @@ public class StorageManager implements BeanPostProcessor {
         Storage<?, ?> storage = getStorage(clz);
         return (T)storage.getData().getValues().get(key);
     }
-    private void putStorage(ResourceDefinition def, List<String> resourceData) {
+    private void putStorage(ResourceDefinition def, Map<String,Object> map) {
         Class<?> clz = def.getClz();
         // <主键， Object>
-        Map<String,Object> map = new HashMap<>();
-        Object parse = parse(clz, resourceData);
-        map.put(resourceData.get(0), parse);
+
+        // TODO: 将来这里要修改成加了id注解的字段
+
         StorageData<String,Object> data = new StorageData<>();
         data.setValues(map);
         Storage<String,Object> storage = new Storage<>();
         storage.setData(data);
+
         storageMap.put(def.getClz(), storage);
     }
 
@@ -192,7 +202,7 @@ public class StorageManager implements BeanPostProcessor {
     public static Object getResource( Class<?> clz, String id){
         Object object = storageMap.get(clz).getData().getValues().get(id);
         if(object==null||!object.getClass().equals(clz)){
-            logger.error("获取资源对象失败！"+"object的class："+object.getClass()+"clz的class:"+clz);
+            logger.error("获取资源对象失败！");
             return null;
         }
         return object;

@@ -9,6 +9,15 @@ public class CM_EnterMap {
     /** 前往的地图Id*/
     private int mapId;
 
+    private String accountId;
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
     public int getMapId() {
         return mapId;
     }

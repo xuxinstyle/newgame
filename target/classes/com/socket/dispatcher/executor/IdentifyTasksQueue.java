@@ -5,10 +5,10 @@ import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
+ * TODO: 这里还没用上，后续加了线程池再用
  * @Author：xuxin
  * @Date: 2019/4/29 15:16
  */
-// TODO: 这里还没用上，后续加了线程池再用
 public class IdentifyTasksQueue implements ITaskQueue {
     private static int index = 0;
     private final int indentfy = ++index;

@@ -26,17 +26,14 @@ public class Storage<K, V> extends Observable implements ApplicationContextAware
      */
     private StorageData<K, V> data = new StorageData<>();
 
-   /* public Collection<V> getAll(){
-        //根据clz获取到Storage
-        return Collections.unmodifiableCollection(data.getValues().values());
-    }*/
-   // 根据资源表的唯一标识id获取到List
+    /**
+     * @param k
+     * @return
+     */
     public V get(K k){
-        //根据clz获取到Storage
         return data.getValues().get(k);
     }
 
-    private Map<K, List<V>> dataList = new HashMap<>();
 
     public StorageData<K, V> getData() {
         return data;
@@ -44,14 +41,6 @@ public class Storage<K, V> extends Observable implements ApplicationContextAware
 
     public void setData(StorageData<K, V> data) {
         this.data = data;
-    }
-
-    public Map<K, List<V>> getDataList() {
-        return dataList;
-    }
-
-    public void setDataList(Map<K, List<V>> dataList) {
-        this.dataList = dataList;
     }
 
     private ApplicationContext applicationContext;

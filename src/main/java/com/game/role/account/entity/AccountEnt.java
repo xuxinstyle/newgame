@@ -4,6 +4,8 @@ import com.db.AbstractEntity;
 import com.game.role.account.model.AccountInfo;
 import com.socket.Utils.ProtoStuffUtil;
 
+import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.persistence.Transient;
 import java.util.Arrays;
 
@@ -40,14 +42,6 @@ public class AccountEnt extends AbstractEntity<String> {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
-    }
-
-    public byte[] getAccountData() {
-        return accountData;
-    }
-
-    public void setAccountData(byte[] accountData) {
-        this.accountData = accountData;
     }
 
     public AccountInfo getAccountInfo() {

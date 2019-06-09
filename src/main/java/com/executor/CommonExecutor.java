@@ -18,7 +18,7 @@ public class CommonExecutor {
             public void run() {
                 SessionManager.clearSession();
             }
-        }, 5,5,TimeUnit.MINUTES);
+        }, 1,5,TimeUnit.MINUTES);
     }
 
 }

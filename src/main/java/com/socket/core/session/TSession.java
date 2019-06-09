@@ -24,8 +24,6 @@ public class TSession {
     private static final Logger logger = Logger.getLogger(TSession.class);
     // 里面放在线的玩家账号信息 <信息标识，玩家的accountId>
     private String accountId ;
-    private static int index = 0;
-    private final int id = ++index;
     private final long createTime = System.currentTimeMillis();
     private final Channel channel;
     private final String ip;
@@ -63,9 +61,7 @@ public class TSession {
                 logger.error("发送协议错误，没有对应的协议id");
                 return;
             }
-            long start = System.nanoTime();
             MyPack pack = new MyPack();
-            pack.setTime(start);
             pack.setpId(opIndex);
             pack.setPacket(ProtoStuffUtil.serializer(res));
             channel.writeAndFlush(pack);

@@ -2,6 +2,7 @@ package com.game.scence.service;
 
 
 import com.game.scence.constant.SceneType;
+import com.game.scence.resource.MapResource;
 import com.socket.core.session.TSession;
 
 import java.util.List;
@@ -16,14 +17,14 @@ public interface ScenceService {
      * @param session
      * @param accountId
      */
-    void enterInitMap(TSession session, String accountId);
+    void enterMap(TSession session, String accountId, int mapId);
 
     /**
      *
      * @param session
      * @param mapId
      */
-    void enterMap(TSession session, int mapId);
+    void doEnterMap(TSession session,String accountId, int mapId);
 
     /**
      * 移除场景中的账号信息
@@ -56,11 +57,12 @@ public interface ScenceService {
     void setScenceAccountId(int mapId, String accountId);
 
     /**
-     * 一出场景中的玩家信息
-     * @param mapId
-     * @param accountId
+     * 处理移动请求
+     * @param session
+     * @param x
+     * @param y
      */
-    public void removeAccountId(int mapId, String accountId);
+    void move(TSession session, int x, int y);
 
-
+    MapResource getMapResource(int mapId);
 }

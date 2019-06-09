@@ -4,9 +4,8 @@ import com.game.SpringContext;
 import com.socket.core.session.SessionManager;
 import com.socket.core.session.SessionUtil;
 import com.socket.core.session.TSession;
-import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.core.ActionDispatcher;
-import com.socket.dispatcher.executor.IdentifyThreadPoolExecutor;
+import com.socket.dispatcher.executor.DistributionThreadPoolExecutor;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -19,12 +18,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(ChannelInboundHandlerAdapter.class);
-    /**
-     * 因为多线程，所以使用原子操作类来进行计数
-     */
-    private static AtomicInteger atomicInteger = new AtomicInteger();
-    private static final IdentifyThreadPoolExecutor identifyThreadPoolExecutor = new IdentifyThreadPoolExecutor();
-    private static final ActionDispatcher actionDispatcher = new ActionDispatcher(identifyThreadPoolExecutor);
+
+    private static final ActionDispatcher actionDispatcher = new ActionDispatcher();
     /**
      * 收到客户端消息，自动触发
      *
@@ -34,26 +29,17 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
-        if(logger.isDebugEnabled()){
-            logger.debug((atomicInteger.addAndGet(1)) + "--->" + Thread.currentThread().getName() + ",The server receive  order : " + msg);
-        }
-        atomicInteger.addAndGet(1);
-
         List<Object> objects =(List<Object>)msg;
         if(objects.size()<=0){
             logger.error("错了错了，传来的包为空！");
             return;
         }
-        String opIndex = objects.get(0).toString();
-        Object packet = objects.get(1);
-        String time = objects.get(2).toString();
         TSession session = SessionUtil.getChannelSession(ctx.channel());
-        Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
-        byte[] unpack = MessagePack.unpack(MessagePack.pack(packet), byte[].class);
+        int opIndex = MessagePack.unpack(MessagePack.pack(objects.get(0)), Integer.class);
+        byte[] unpack = MessagePack.unpack(MessagePack.pack(objects.get(1)), byte[].class);
 
         //分发处理
-        actionDispatcher.doHandle(session,Integer.parseInt(opIndex),unpack,Long.parseLong(time));
+        actionDispatcher.doHandle(session,opIndex,unpack);
     }
 
     @Override
@@ -62,7 +48,6 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
             ctx.channel().close();
             return;
         }
-        TSession session = SessionUtil.getChannelSession(ctx.channel());
     }
 
     @Override
@@ -81,7 +66,9 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         TSession session = SessionUtil.getChannelSession(ctx.channel());
         String accountId = session.getAccountId();
-        SessionManager.logout(session,accountId);
+        if(accountId!=null){
+            SpringContext.getLoginService().logout(session,accountId);
+        }
         super.channelInactive(ctx);
     }
 }

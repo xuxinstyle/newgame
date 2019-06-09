@@ -2,6 +2,7 @@ package com.game.role.player.service;
 
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.constant.Job;
+import com.game.role.player.model.Player;
 
 public interface PlayerService {
     /**
@@ -28,5 +29,11 @@ public interface PlayerService {
      */
     PlayerEnt createPlayer(String accountId, Job type);
 
+    /**
+     * 获取角色
+     * @param accountId
+     * @return
+     */
+    Player getPlayer(String accountId);
 
 }

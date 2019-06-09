@@ -26,19 +26,10 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     private static Logger logger = LoggerFactory.getLogger(ActionDispatcher.class);
     private static Map<Class<?>, IHandlerInvoke> handlerMap = new HashMap<>();
 
-    //TODO:线程池暂时还没用，后续准备用来分发
-    private final IIdentifyThreadPool executor;
+    public ActionDispatcher() {
 
-    public ActionDispatcher(IIdentifyThreadPool executor) {
-        this.executor = executor;
     }
-
-    @Override
-    public void handle(TSession session, int opIndex, Object packet, long decodeTime) {
-        //doHandle(session, opIndex, packet,decodeTime);
-        executor.addSessionTask(session ,new IoHandleEvent(this, session, opIndex, packet, decodeTime));
-    }
-    public void doHandle(TSession session, int opIndex, Object packet, long decodeTime) {
+    public void doHandle(TSession session, int opIndex, Object packet) {
         Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
         if(aClass==null){
             return;
@@ -57,16 +48,10 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
             + packet.getClass().getSimpleName());
         }
         Object res = defintion.invoke(session, opIndex, pack);
-
-
-
     }
 
     public void registHandlerDefintion(Class<?> clz, IHandlerInvoke invoke) {
         IHandlerInvoke pre = handlerMap.put(clz, invoke);
-
-        /*System.out.println("put到handleMap中："+clz.getSimpleName()+" invoke:"+invoke.toString());
-        System.out.println("get handleMap :"+handlerMap);*/
         if(pre != null){
             throw new IllegalArgumentException("too much PolicyDefintion fro packet : "
             + clz.getSimpleName());
@@ -91,7 +76,7 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         return bean;
     }
-
+    /** TODO:此处还没用到，打算用来做协议分发到各线程池*/
     public static final class IoHandleEvent implements Runnable{
 
         private final TSession session;
@@ -111,7 +96,7 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
         @Override
         public void run() {
             try {
-                dispatcher.doHandle(session, opIndex, packet, decodeTime);
+                dispatcher.doHandle(session, opIndex, packet);
             }catch (Exception e){
                 logger.error("消息[" + packet.getClass() + "[处理异常" , e);
             }

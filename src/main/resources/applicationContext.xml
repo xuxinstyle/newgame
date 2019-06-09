@@ -75,10 +75,8 @@
     <bean id="serverConfigValue" class="com.game.ServerConfigValue">
         <property name="port" value="${server.socket.port}"/>
     </bean>
-    <bean id="identifyThreadPoolExecutor" class="com.socket.dispatcher.executor.IdentifyThreadPoolExecutor"/>
-    <bean id="actionDispatcher" class="com.socket.dispatcher.core.ActionDispatcher">
-        <constructor-arg name="executor" ref="identifyThreadPoolExecutor"></constructor-arg>
-    </bean>
+    <!--<bean id="actionDispatcher" class="com.socket.dispatcher.core.ActionDispatcher">
+    </bean>-->
 
     <!--Mapper批量扫描，从Mapper包扫描接口，自动创建代理对象，并在Spring容器中自动注册
     使用 Mybatis与Spring整合包的这个 Mapper 扫描器后， Mybatis 配置文件里的扫描器，就可以取消掉了

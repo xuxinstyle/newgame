@@ -24,16 +24,9 @@ public enum Job {
         return jobType;
     }
 
-    public void setJobType(int jobType) {
-        this.jobType = jobType;
-    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     private Job(int type, String name){

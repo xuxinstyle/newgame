@@ -23,7 +23,7 @@ public class LoginServiceImpl implements LoginService {
     private static final Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);
 
     @Override
-    public void login(TSession session, String username, String passward) {
+    public void login(TSession session, String username, String passward) throws InterruptedException {
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(username);
         if(accountEnt==null){
             SM_LoginNoAcount sm = new SM_LoginNoAcount();
@@ -39,54 +39,53 @@ public class LoginServiceImpl implements LoginService {
             return;
         }
         /** 踢对方下线*/
-        if(SessionManager.getSessionByAccount(username)!=null){
-            logout(session, username);
+        TSession tSession = SessionManager.getSessionByAccount(username);
+        if(tSession!=null){
+            SM_Logout sm = new SM_Logout();
+            tSession.sendPacket(sm);
+            while(SessionManager.getSessionByAccount(username)!=null){
+                Thread.sleep(500);
+            }
         }
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        if(accountInfo.getAccountName()==null||accountInfo.getLastLogoutMapType()==null){
-
-            SM_Login sm = new SM_Login();
-            sm.setStatus(1);
-            sm.setAccountId(accountEnt.getAccountId());
-            session.sendPacket(sm);
-            session.setAccountId(username);
-            SessionManager.addAccountSessionMap(username, session);
-            accountInfo.setLastLoginTime(System.nanoTime());
-            SpringContext.getAccountService().save(accountEnt);
-            SpringContext.getScenceSerivce().setScenceAccountId(1,username);
-            //进入场景地图 如果玩家没有昵称就显示取昵称的界面
-            logger.info(accountEnt.getAccountId() + "登录成功！");
-        }else{
-            accountInfo.setLastLoginTime(System.nanoTime());
-            SM_Login sm = new SM_Login();
-            sm.setStatus(1);
-            sm.setAccountId(accountEnt.getAccountId());
-            if(accountInfo.getLastLogoutMapType()==null){
-                accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
-            }
-            sm.setLastScenceId(accountInfo.getLastLogoutMapType().getMapid());
-            session.sendPacket(sm);
-            session.setAccountId(username);
-            SessionManager.addAccountSessionMap(username, session);
-            SpringContext.getAccountService().save(accountEnt);
-            SpringContext.getScenceSerivce().setScenceAccountId(accountInfo.getLastLogoutMapType().getMapid(),username);
-            //进入场景地图 如果玩家没有昵称就显示取昵称的界面
-            logger.info(accountEnt.getAccountId() + "登录成功！");
+        accountInfo.setLastLoginTime(System.nanoTime());
+        SM_Login sm = new SM_Login();
+        sm.setStatus(1);
+        sm.setAccountId(accountEnt.getAccountId());
+        if(accountInfo.getLastLogoutMapType()==null){
+            accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
         }
+        sm.setLastScenceId(accountInfo.getLastLogoutMapType().getMapid());
+        session.sendPacket(sm);
+        /** 将accountId放到session中,并将session放到缓存中管理*/
+        SessionManager.addAccountSessionMap(username, session);
+        SpringContext.getAccountService().save(accountEnt);
+        /** 将账号id放到场景地图的缓存中*/
+        SpringContext.getScenceSerivce().setScenceAccountId(accountInfo.getLastLogoutMapType().getMapid(),username);
+        /**进入场景地图 如果玩家没有昵称就显示取昵称的界面*/
+        logger.info(accountEnt.getAccountId() + "登录成功！");
+        /** FIXME: 这里可以直接跳转到进入地图的逻辑，可以省流量*/
     }
 
     @Override
     public void logout(TSession session, String accountId) {
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+        if(accountEnt==null){
+            logger.error("没有账号信息");
+            return;
+        }
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        accountInfo.setLastLogoutMapType(accountInfo.getCurrentMapType());
-        accountInfo.setLastLogoutTime(System.nanoTime());
-        SpringContext.getAccountService().save(accountEnt);
+        if(accountInfo.getCurrentMapType()==null){
+            accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
+        }else {
+            accountInfo.setLastLogoutMapType(accountInfo.getCurrentMapType());
+            accountInfo.setLastLogoutTime(System.nanoTime());
+            SpringContext.getAccountService().save(accountEnt);
 
-        SM_Logout sm = new SM_Logout();
-        session.sendPacket(sm);
-        session.logout(accountId);
-        SpringContext.getSessionManager().removeSession(accountId);
-        SpringContext.getScenceSerivce().removeScenceAccountId(accountInfo.getCurrentMapType().getMapid(), accountId);
+
+            session.logout(accountId);
+            SpringContext.getSessionManager().removeSession(accountId);
+            SpringContext.getScenceSerivce().removeScenceAccountId(accountInfo.getCurrentMapType().getMapid(), accountId);
+        }
     }
 }

@@ -33,7 +33,7 @@ public class EnhanceUtil {
         enhancedClz.addConstructor(constructor);
         CtMethod ctMethod = new CtMethod(
                 classPool.get(Object.class.getCanonicalName()),
-                "invoke",
+                "rand",
                 classPool.get(new String[]{TSession.class.getCanonicalName(), int.class.getCanonicalName(),
                         Object.class.getCanonicalName()}), enhancedClz);
         ctMethod.setModifiers(Modifier.PUBLIC+Modifier.FINAL);

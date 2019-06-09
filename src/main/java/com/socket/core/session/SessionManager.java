@@ -32,25 +32,10 @@ public class SessionManager {
     }
 
     public static void addAccountSessionMap(String accountId, TSession session) {
+        session.setAccountId(accountId);
         accountSessionMap.putIfAbsent(accountId, session);
     }
 
-    public static void logout(TSession session, String accountId) {
-        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
-        AccountInfo accountInfo = accountEnt.getAccountInfo();
-        accountInfo.setLastLogoutMapType(accountInfo.getCurrentMapType());
-        accountInfo.setLastLogoutTime(System.nanoTime());
-        SpringContext.getAccountService().save(accountEnt);
-        TSession sessionByAccount = getSessionByAccount(accountId);
-        SM_Logout sm = new SM_Logout();
-        sessionByAccount.sendPacket(sm);
-        sessionByAccount.logout(accountId);
-        accountSessionMap.remove(accountId);
-        if(accountInfo==null){
-            return;
-        }
-        SpringContext.getScenceSerivce().removeScenceAccountId(accountInfo.getCurrentMapType().getMapid(), accountId);
-    }
 
     public void removeSession(String accountId) {
         accountSessionMap.remove(accountId);

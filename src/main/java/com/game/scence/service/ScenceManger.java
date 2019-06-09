@@ -35,12 +35,18 @@ public class ScenceManger {
         List<String> accountIds = scenceAccountIdMap.get(mapId);
         return accountIds;
     }
-    // 这里问问要加同步吗
+
+    /**
+     * 这里问问要加同步吗
+     * @param mapId
+     * @param accountId
+     */
     public void setScenceAccountId(int mapId, String accountId){
 
         if (scenceAccountIdMap.get(mapId) == null) {
             List<String> accountIds = new ArrayList<>();
-            scenceAccountIdMap.putIfAbsent(mapId, accountIds);
+            accountIds.add(accountId);
+            scenceAccountIdMap.put(mapId, accountIds);
         }else {
             List<String> strings = scenceAccountIdMap.get(mapId);
             if(strings.contains(accountId)){

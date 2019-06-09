@@ -15,6 +15,6 @@ public class StorageData<K, V> {
     }
 
     public void setValues(Map<K, V> values) {
-        this.values = values;
+        this.values.putAll(values);
     }
 }
