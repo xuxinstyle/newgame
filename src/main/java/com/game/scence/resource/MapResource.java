@@ -10,11 +10,30 @@ import org.springframework.stereotype.Component;
 @Component
 @Resource
 public class MapResource {
-    // 这里的属性必须为public的权限
-    // 地图id
+    /** 这里的属性必须为public的权限*/
+    /** 地图id*/
     public int id;
-    //地图实际形状
+
+    public int initX;
+    public int initY;
+    /** 地图实际形状*/
     public String context;
+
+    public int getInitX() {
+        return initX;
+    }
+
+    public void setInitX(int initX) {
+        this.initX = initX;
+    }
+
+    public int getInitY() {
+        return initY;
+    }
+
+    public void setInitY(int initY) {
+        this.initY = initY;
+    }
 
     public int getId() {
         return id;
