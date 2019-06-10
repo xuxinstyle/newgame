@@ -19,4 +19,12 @@ public class FieldInfo {
         this.index = index;
         this.field = field;
     }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public Field getField() {
+        return field;
+    }
 }

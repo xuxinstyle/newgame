@@ -11,10 +11,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.core.convert.TypeDescriptor;
-import org.springframework.util.ReflectionUtils;
+import org.springframework.core.convert.support.DefaultConversionService;
 
 import java.io.File;
 import java.io.InputStream;
@@ -30,13 +31,12 @@ import java.util.Map;
  */
 public class ReadXlsx {
     private static final Logger logger = LoggerFactory.getLogger(ReadXlsx.class);
-
-    @Autowired
-    private ConversionService conversionService;
-
     private final static TypeDescriptor sourceType = TypeDescriptor.valueOf(String.class);
 
-    public void readXlsx(ResourceDefinition def, Map<String, InputStream> caches){
+    @Autowired
+    private static ConversionService conversionService = new DefaultConversionService();
+
+    public void readXlsx(ResourceDefinition def, Map<String, InputStream> caches) {
         try {
             String location = def.getLocation();
             InputStream inputStream = caches.get(location);
@@ -60,17 +60,46 @@ public class ReadXlsx {
                     logger.error("文件类型错误!");
                     return;
                 }
+
                 /**开始解析*/
                 Sheet sheet = wb.getSheetAt(0);
+                /* 读取表头*/
+                int firstIndex = sheet.getFirstRowNum();
+                /** 遍历行*/
+                Row row = sheet.getRow(firstIndex);
+                if (row != null) {
+                    int firstCellIndex = row.getFirstCellNum();
+                    int lastCellIndex = row.getLastCellNum();
+                    List<String> holderName = new ArrayList<>();
+                    for (int cIndex = firstCellIndex; cIndex < lastCellIndex; cIndex++) {
+                        //遍历列
+                        Cell cell = row.getCell(cIndex);
+                        if (cell != null) {
+                            holderName.add(cell.toString());
+                        }
+                    }
+                    List<FieldInfo> fieldList = new ArrayList<>();
+                    for(int i = 0;i<holderName.size();i++) {
+                        Field declaredField = def.getClz().getDeclaredField(holderName.get(i));
+                        if(declaredField==null){
+                            if(logger.isDebugEnabled()){
+                                logger.debug("类{}中没有字段{}",def.getClz().getSimpleName(),holderName.get(i));
+                            }
+                            continue;
+                        }
+                        fieldList.add(new FieldInfo(i,declaredField));
+                    }
+                    ReadHolder.getFieldInfoMap().put(def.getClz(), fieldList);
+                }
 
 
                 /**第一行是列名，所以不读*/
                 int firstRowIndex = sheet.getFirstRowNum() + 2;
                 int lastRowIndex = sheet.getLastRowNum();
-                Map<Object,Object> map = new HashMap<>();
+                Map<Object, Object> map = new HashMap<>();
                 for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {
                     /** 遍历行*/
-                    Row row = sheet.getRow(rIndex);
+                    row = sheet.getRow(rIndex);
                     if (row != null) {
                         int firstCellIndex = row.getFirstCellNum();
                         int lastCellIndex = row.getLastCellNum();
@@ -84,14 +113,14 @@ public class ReadXlsx {
                         }
                         Object index = getIndex(def.getClz(), resourceData);
                         Object parse = parse(def.getClz(), resourceData);
-                        map.put(index,parse);
+                        map.put(index, parse);
 
                     }
                 }
                 StorageManager.putStorage(def, map);
             } else {
-                logger.error("找不到[{}]资源文件",location);
-                return ;
+                logger.error("找不到[{}]资源文件", location);
+                return;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,14 +129,29 @@ public class ReadXlsx {
 
     private Object getIndex(Class<?> clz, List<String> resourceData) {
         try {
-            Field id = clz.getDeclaredField("id");
-            TypeDescriptor typeDescriptor = new TypeDescriptor(id);
-            Object value = conversionService.convert(resourceData.get(0), sourceType, typeDescriptor);
-        } catch (NoSuchFieldException e) {
-            logger.error("资源[{}]没有字段名为id的属性",clz.getSimpleName());
+
+
+            List<FieldInfo> fieldInfos = ReadHolder.getFieldInfoMap().get(clz);
+            for(FieldInfo fieldInfo:fieldInfos){
+                if("id".equals(fieldInfo.getField().getName())){
+                    TypeDescriptor typeDescriptor = new TypeDescriptor(fieldInfo.getField());
+                    String resource =resourceData.get(fieldInfo.getIndex());
+                    String concat = resource;
+                    if(fieldInfo.getField().getType().equals(int.class)||fieldInfo.getField().getType().equals(Integer.class)){
+                        concat = resource.replace(".0", "");
+                    }
+                    resource = concat;
+                    Object value = conversionService.convert(resource, sourceType, typeDescriptor);
+                    return value;
+                }
+            }
+
+        } catch (Exception e) {
+            logger.error("资源[{}]没有字段名为id的属性", clz.getSimpleName());
             e.printStackTrace();
 
         }
+        return null;
     }
 
     private Object parse(Class<?> clz, List<String> resourceData) {
@@ -118,13 +162,11 @@ public class ReadXlsx {
                 return null;
             }
             Object instance = clz.newInstance();
-            Field[] declaredFields = clz.getDeclaredFields();
-            for (int i = 0; i < length; i++) {
-                if(logger.isDebugEnabled()){
-                    logger.debug(clz.toString()+"--resource:"+i+":"+resourceData.get(i));
-                }
-                if(!inject( instance,declaredFields[i], resourceData.get(i))){
-                    break;
+            Map<Class<?>, List<FieldInfo>> fieldInfoMap = ReadHolder.getFieldInfoMap();
+            List<FieldInfo> fieldInfos = fieldInfoMap.get(clz);
+            for (FieldInfo fieldInfo : fieldInfos) {
+                if (!inject(instance, fieldInfo.getField(), resourceData.get(fieldInfo.getIndex()))) {
+                    logger.error("注入静态资源[{}]的属性[{}]错误", clz.getSimpleName(), fieldInfo.getField().getName());
                 }
             }
             return instance;
@@ -139,16 +181,21 @@ public class ReadXlsx {
     private boolean inject(Object instance, Field field, String context) {
         try {
             TypeDescriptor typeDescriptor = new TypeDescriptor(field);
+            String concat = context;
+            if(field.getType().equals(int.class)||field.getType().equals(Integer.class)){
+                concat = context.replace(".0", "");
+            }
+            context = concat;
             Object value = conversionService.convert(context, sourceType, typeDescriptor);
-            field.set(instance,value);
+            field.set(instance, value);
             return true;
 
-        } catch (ConverterNotFoundException e){
-            logger.error("静态资源[{}]属性[{}]的转换器不存在",instance.getClass().getSimpleName(), field.getName());
+        } catch (ConverterNotFoundException e) {
+            logger.error("静态资源[{}]属性[{}]的转换器不存在", instance.getClass().getSimpleName(), field.getName());
             e.printStackTrace();
 
-        } catch(Exception e) {
-            logger.error("属性[{}]注入失败",field);
+        } catch (Exception e) {
+            logger.error("属性[{}]注入失败", field);
             e.printStackTrace();
 
         }
