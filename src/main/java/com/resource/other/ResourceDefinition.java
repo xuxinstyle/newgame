@@ -1,5 +1,10 @@
 package com.resource.other;
 
+import org.apache.commons.collections.map.HashedMap;
+
+import java.lang.reflect.Field;
+import java.util.Map;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/4 10:31
@@ -19,7 +24,6 @@ public class ResourceDefinition {
 
     public ResourceDefinition(Class<?> clz) {
         this.clz = clz;
-
         location = FILE_PATH + clz.getSimpleName()+".xlsx";
     }
 

@@ -2,67 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f735de95-27ac-4b29-9219-0a0ed9975074" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/db/HibernateDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/packet/CM_Move.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/packet/SM_Move.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/resource/reader/ReadXlsx.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/开发计划.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/开发计划.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/db/Generator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/executor/CommonExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/executor/CommonExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/core/entity/IdentifyEnt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/core/entity/IdentifyEnt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/gameObject/constant/EntityType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/gameObject/constant/EntityType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/login/service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/login/service/LoginService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/login/service/LoginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/login/service/LoginServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/account/entity/AccountEnt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/account/entity/AccountEnt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/account/facade/AccountFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/account/facade/AccountFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/account/service/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/account/service/AccountServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/constant/Job.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/constant/Job.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/player/entity/PlayerEnt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/player/entity/PlayerEnt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/player/mapper/PlayerMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/player/mapper/PlayerMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/player/service/PlayerSerivceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/player/service/PlayerSerivceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/player/service/PlayerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/player/service/PlayerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/constant/SceneType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/constant/SceneType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/facade/ScenceFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/facade/ScenceFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/packet/CM_EnterInitScence.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/packet/CM_EnterMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/packet/CM_EnterMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/packet/SM_EnterInitScence.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/packet/SM_EnterMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/packet/SM_EnterMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/packet/SM_ShowAccountInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/packet/SM_ShowAccountInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceManger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceManger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/resource/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/resource/Storage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/resource/StorageData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/resource/StorageData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/resource/StorageManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/resource/StorageManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/resource/core/ResourceManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/resource/core/ResourceManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/resource/reader/ReadXlsx.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/socket/core/EchoServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/socket/core/EchoServerHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/socket/core/MyPack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/socket/core/MyPack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/socket/core/session/SessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/socket/core/session/SessionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/socket/core/session/TSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/socket/core/session/TSession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/socket/dispatcher/action/ActionDispatcherAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/socket/dispatcher/action/ActionDispatcherAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/socket/dispatcher/core/ActionDispatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/socket/dispatcher/core/ActionDispatcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/socket/dispatcher/core/EnhanceUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/socket/dispatcher/core/EnhanceUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/socket/dispatcher/executor/IdentifyTasksQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/socket/dispatcher/executor/IdentifyTasksQueue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/socket/dispatcher/executor/IdentifyThreadPoolExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/socket/dispatcher/executor/DistributionThreadPoolExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tool/mybatisgenerator/Generator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/applicationContext.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/applicationContext.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/generatorConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/generatorConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/message.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/message.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/resource/other/ResourceDefinition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/resource/other/ResourceDefinition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/resource/MapResource.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/resource/MapResource.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/resource/TestResource.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/resource/TestResource.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/applicationContext.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/applicationContext.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/socket/core/EchoServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/socket/core/EchoServerHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/socket/core/MyPack.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/socket/core/MyPack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/socket/dispatcher/action/ActionDispatcherAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/socket/dispatcher/action/ActionDispatcherAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/socket/dispatcher/core/ActionDispatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/socket/dispatcher/core/ActionDispatcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/socket/dispatcher/core/EnhanceUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/socket/dispatcher/core/EnhanceUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/socket/dispatcher/executor/IdentifyTasksQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/socket/dispatcher/executor/IdentifyTasksQueue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/socket/dispatcher/executor/IdentifyThreadPoolExecutor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tool/mybatisgenerator/Generator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/generatorConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/generatorConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/message.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/message.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/gamedb/target/" />
@@ -81,11 +26,53 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="LoginServiceImpl.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LoginServiceImpl.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/game/login/service/LoginServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="86" column="24" selection-start-line="86" selection-start-column="24" selection-end-line="86" selection-end-column="24" />
+            <state relative-caret-position="1368">
+              <caret line="83" selection-start-line="83" selection-end-line="83" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResourceManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/resource/core/ResourceManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="209">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StorageManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/resource/StorageManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1064">
+              <caret line="82" column="5" selection-start-line="82" selection-start-column="5" selection-end-line="82" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ReadXlsx.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/resource/reader/ReadXlsx.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="242">
+              <caret line="101" column="69" selection-start-line="101" selection-start-column="69" selection-end-line="101" selection-end-column="69" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResourceDefinition.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/resource/other/ResourceDefinition.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="418">
+              <caret line="25" column="23" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -102,19 +89,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SM_Logout.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/login/packet/SM_Logout.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="EchoServerHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/socket/core/EchoServerHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
+            <state relative-caret-position="855">
               <caret line="59" selection-start-line="59" selection-end-line="59" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -126,7 +104,7 @@
       <file leaf-file-name="TSession.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/socket/core/session/TSession.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
+            <state relative-caret-position="703">
               <caret line="52" selection-start-line="52" selection-end-line="52" />
             </state>
           </provider>
@@ -135,7 +113,7 @@
       <file leaf-file-name="LoginFacade.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/game/login/facade/LoginFacade.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
+            <state relative-caret-position="380">
               <caret line="25" selection-start-line="25" selection-end-line="25" />
             </state>
           </provider>
@@ -144,35 +122,8 @@
       <file leaf-file-name="SessionManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/socket/core/session/SessionManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
+            <state relative-caret-position="475">
               <caret line="34" selection-start-line="34" selection-end-line="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ScenceFacade.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/facade/ScenceFacade.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="627">
-              <caret line="39" column="53" selection-start-line="39" selection-start-column="53" selection-end-line="39" selection-end-column="53" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ScenceServiceImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceServiceImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3458">
-              <caret line="201" column="35" selection-start-line="201" selection-start-column="35" selection-end-line="201" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SM_ShowAccountInfo.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/packet/SM_ShowAccountInfo.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -251,8 +202,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/account/model/AccountInfo.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/base/core/mapper/IdentifyMapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/base/core/service/IdentifyService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/scence/packet/CM_ShowAccountInfo.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/scence/packet/SM_ShowAllAccountInfo.java" />
@@ -286,7 +235,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/game/role/player/mapper/PlayerMapper.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/resource/StorageData.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/resource/Storage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/resource/StorageManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/scence/facade/ScenceFacade.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/socket/core/session/SessionManager.java" />
@@ -302,6 +250,9 @@
         <option value="$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/login/service/LoginServiceImpl.java" />
         <option value="$PROJECT_DIR$/doc/开发计划.md" />
+        <option value="$PROJECT_DIR$/src/main/java/com/resource/other/ResourceDefinition.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/resource/StorageManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/resource/reader/ReadXlsx.java" />
       </list>
     </option>
   </component>
@@ -349,10 +300,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="18" />
-    <option name="y" value="14" />
-    <option name="width" value="1135" />
-    <option name="height" value="775" />
+    <option name="x" value="332" />
+    <option name="y" value="31" />
+    <option name="width" value="1184" />
+    <option name="height" value="751" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -364,6 +315,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -448,6 +401,55 @@
               <item name="newgame" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="resource" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="resource" type="462c0819:PsiDirectoryNode" />
+              <item name="anno" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="resource" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="resource" type="462c0819:PsiDirectoryNode" />
+              <item name="other" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="resource" type="462c0819:PsiDirectoryNode" />
+              <item name="reader" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -463,8 +465,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -472,7 +472,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../client" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -676,21 +676,21 @@
       <workItem from="1559782974838" duration="36837000" />
       <workItem from="1559990702545" duration="26421000" />
       <workItem from="1560017507765" duration="136000" />
-      <workItem from="1560086552026" duration="1902000" />
+      <workItem from="1560086552026" duration="6918000" />
+      <workItem from="1560128650586" duration="659000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="357639000" />
+    <option name="totallyTimeSpent" value="363314000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="18" y="14" width="1135" height="775" extended-state="0" />
+    <frame x="200" y="17" width="1184" height="751" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="5" />
       <window_info anchor="bottom" id="FindBugs-IDEA" order="6" sideWeight="0.812093" weight="0.32994923" />
-      <window_info anchor="bottom" id="Messages" order="6" sideWeight="0.18697675" weight="0.35871404" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
@@ -703,34 +703,35 @@
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3275862" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3488372" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.33985764" />
       <window_info anchor="right" id="Database" order="7" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.24934153" />
       <window_info id="UI Designer" order="2" />
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" anchor="bottom" x="375" y="81" width="568" height="553" id="Debug" order="12" sideWeight="0.81302327" side_tool="true" visible="true" weight="0.3888025" />
+      <window_info anchor="bottom" x="375" y="81" width="568" height="553" id="Debug" order="12" sideWeight="0.81302327" side_tool="true" weight="0.43295637" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49488372" weight="0.6480541" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Messages" order="6" sideWeight="0.18697675" weight="0.35871404" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24886535" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49488372" weight="0.6480541" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.6527778" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24886535" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.013605442" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32872504" />
       <window_info anchor="right" id="Theme Preview" order="8" />
-      <window_info anchor="bottom" id="Message" order="0" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.35120642" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.24934153" />
       <window_info anchor="bottom" id="TODO" order="5" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32872504" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.013605442" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="2" />
       <window_info anchor="bottom" id="Spring" order="10" weight="0.32872504" />
@@ -744,7 +745,7 @@
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info active="true" anchor="right" id="Debug" order="9" side_tool="true" visible="true" weight="0.17962466" />
       <window_info id="Capture Tool" order="4" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.6527778" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Messages" order="6" visible="true" weight="0.27045074" />
       <window_info anchor="right" id="Maven Projects" order="6" weight="0.4337138" />
       <window_info id="Favorites" order="6" side_tool="true" />
@@ -831,27 +832,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/player/mapper/PlayerMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="25" column="15" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/player/mapper/PlayerMapper.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="22" column="51" selection-start-line="22" selection-start-column="51" selection-end-line="22" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/resource/MapResource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="74">
-          <caret line="26" column="18" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/resource/Storage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-210">
@@ -975,13 +955,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
           <caret line="21" column="58" selection-start-line="21" selection-start-column="58" selection-end-line="21" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/resource/StorageManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="138" selection-start-line="138" selection-end-line="138" />
         </state>
       </provider>
     </entry>
@@ -1167,21 +1140,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/socket/core/session/TSession.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
+        <state relative-caret-position="703">
           <caret line="52" selection-start-line="52" selection-end-line="52" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/game/login/facade/LoginFacade.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
+        <state relative-caret-position="380">
           <caret line="25" selection-start-line="25" selection-end-line="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/socket/core/EchoServerHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
+        <state relative-caret-position="855">
           <caret line="59" selection-start-line="59" selection-end-line="59" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1191,15 +1164,49 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/socket/core/session/SessionManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
+        <state relative-caret-position="475">
           <caret line="34" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/resource/core/ResourceManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/game/login/service/LoginServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="86" column="24" selection-start-line="86" selection-start-column="24" selection-end-line="86" selection-end-column="24" />
+        <state relative-caret-position="1368">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/resource/other/ResourceDefinition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="25" column="23" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/resource/StorageManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1064">
+          <caret line="82" column="5" selection-start-line="82" selection-start-column="5" selection-end-line="82" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/resource/reader/ReadXlsx.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="101" column="69" selection-start-line="101" selection-start-column="69" selection-end-line="101" selection-end-column="69" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

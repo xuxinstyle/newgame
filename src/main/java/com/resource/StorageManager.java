@@ -3,6 +3,7 @@ package com.resource;
 import com.game.scence.resource.TestResource;
 import com.resource.anno.Resource;
 import com.resource.other.ResourceDefinition;
+import com.resource.reader.ReadXlsx;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -46,7 +47,6 @@ public class StorageManager implements BeanPostProcessor {
     private static Map<String, InputStream> caches = new ConcurrentHashMap<>();
 
     public static void init(){
-        //System.out.println("进入init");
         if(logger.isDebugEnabled()){
             logger.debug("进入init");
         }
@@ -59,7 +59,7 @@ public class StorageManager implements BeanPostProcessor {
             ResourceDefinition def = ResourceDefinition.valueOf(bean);
             registResourceDefintion(def.getClz(), def);
             registResourceCacah(def.getLocation());
-            readXlsx(def,caches);
+            ReadXlsx.readXlsx(def,caches);
         }
         if(logger.isDebugEnabled()){
             logger.debug(definitionMap.toString());
@@ -72,72 +72,20 @@ public class StorageManager implements BeanPostProcessor {
 
     }
 
-    public void readXlsx(ResourceDefinition def, Map<String, InputStream> caches){
-        try {
-            String location = def.getLocation();
-            InputStream inputStream = caches.get(location);
-            File excel = new File(location);
-            if (excel.isFile() && excel.exists()) { //判断文件是否存在
-                String[] split = excel.getName().split("\\.");
-                // .是特殊字符，需要转义！！！！！
-                Workbook wb;
-                // 根据文件后缀（xls/xlsx）进行判断
-                if ("xls".equals(split[1])) {
-                    // 文件流对象
-                    wb = new HSSFWorkbook(inputStream);
-                } else if ("xlsx".equals(split[1])) {
-                    wb = new XSSFWorkbook(inputStream);
-                } else {
-                    logger.error("文件类型错误!");
-                    return;
-                } //开始解析
-                Sheet sheet = wb.getSheetAt(0);
-                //读取sheet 0
-                int firstRowIndex = sheet.getFirstRowNum() + 1;   //第一行是列名，所以不读
-                int lastRowIndex = sheet.getLastRowNum();
-                Map<String,Object> map = new HashMap<>();
-                for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {
-                    //遍历行
-                    Row row = sheet.getRow(rIndex);
-                    if (row != null) {
-                        int firstCellIndex = row.getFirstCellNum();
-                        int lastCellIndex = row.getLastCellNum();
-                        List<String> resourceData = new ArrayList<>();
-                        for (int cIndex = firstCellIndex; cIndex < lastCellIndex; cIndex++) {
-                            //遍历列
-                            Cell cell = row.getCell(cIndex);
-                            if (cell != null) {
-                                resourceData.add(cell.toString());
-                            }
-                        }
 
-                        Object parse = parse(def.getClz(), resourceData);
-                        map.put(resourceData.get(0),parse);
-
-                    }
-                }
-                putStorage(def, map);
-            } else {
-                logger.error("找不到指定的文件");
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     public Storage<?, ?> getStorage(Class clz){
         return storageMap.get(clz);
     }
-    // 根据主键和clz获取Resource对象
+    /** 根据主键和clz获取Resource对象*/
     public <T> T getResource(Object key, Class<T> clz){
         Storage<?, ?> storage = getStorage(clz);
         return (T)storage.getData().getValues().get(key);
     }
-    private void putStorage(ResourceDefinition def, Map<String,Object> map) {
+    public static void putStorage(ResourceDefinition def, Map<String,Object> map) {
         Class<?> clz = def.getClz();
-        // <主键， Object>
+        /** <主键， Object>*/
 
-        // TODO: 将来这里要修改成加了id注解的字段
+        /** TODO: 将来这里要修改成加了id注解的字段*/
 
         StorageData<String,Object> data = new StorageData<>();
         data.setValues(map);
@@ -147,29 +95,7 @@ public class StorageManager implements BeanPostProcessor {
         storageMap.put(def.getClz(), storage);
     }
 
-    private Object parse(Class<?> clz, List<String> resourceData) {
-        try {
-            int length = clz.getDeclaredFields().length;
-            if (resourceData.size() != length) {
-                logger.error("静态资源表" + TestResource.class.getName() + "加载失败");
-                return null;
-            }
-            Object object = clz.newInstance();
-            Field[] declaredFields = clz.getDeclaredFields();
-            for (int i = 0; i < length; i++) {
-                if(logger.isDebugEnabled()){
-                    logger.debug(clz.toString()+"--resource:"+i+":"+resourceData.get(i));
-                }
-                declaredFields[i].set(object, resourceData.get(i));
-            }
-            return object;
-        } catch (Exception e) {
-            logger.error("静态资源属性和List中的类型不匹配");
-            e.printStackTrace();
-            return null;
-        }
 
-    }
 
     private void registResourceCacah(String loaction) {
         try {
