@@ -1,5 +1,6 @@
 package com.game.role.account.service;
 
+import com.db.HibernateDao;
 import com.game.SpringContext;
 import com.game.role.account.entity.AccountEnt;
 import com.game.role.account.mapper.AccountMapper;
@@ -24,9 +25,11 @@ import java.util.List;
 
 @Component
 public class AccountServiceImpl implements AccountService {
-    private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
     @Autowired
-    private AccountMapper accountMapper;
+    private HibernateDao hibernateDao;
+    private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
+    //@Autowired
+    //private AccountMapper accountMapper;
 
     @Override
     public void insert(String username, String passward) {
@@ -35,13 +38,15 @@ public class AccountServiceImpl implements AccountService {
         accountEnt.setPassward(passward);
         accountEnt.setAccountInfo(AccountInfo.valueOf(null));
         accountEnt.doSerialize();
-        accountMapper.insertAccountEnt(accountEnt);
+        hibernateDao.save(AccountEnt.class, accountEnt);
+        //accountMapper.insertAccountEnt(accountEnt);
     }
 
 
     @Override
     public AccountEnt getAccountEnt(String accountId) {
-        AccountEnt accountEnt = accountMapper.selectAccountEnt(accountId);
+        AccountEnt accountEnt = hibernateDao.find(AccountEnt.class, accountId);
+        //AccountEnt accountEnt = accountMapper.selectAccountEnt(accountId);
         if(accountEnt==null){
             logger.warn("数据库中没有["+accountId+"]的账号信息");
             return null;
@@ -86,8 +91,8 @@ public class AccountServiceImpl implements AccountService {
             logger.debug(accountEnt.getAccountInfo().toString());
         }
 
-
-        accountMapper.updateAccountEnt(accountEnt);
+        hibernateDao.saveOrUpdate(AccountEnt.class,accountEnt);
+        //accountMapper.updateAccountEnt(accountEnt);
         AccountEnt accountEnt1 = getAccountEnt(accountEnt.getAccountId());
         if(logger.isDebugEnabled()){
             logger.debug(accountEnt1.toString());

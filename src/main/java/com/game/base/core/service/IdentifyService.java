@@ -1,5 +1,6 @@
 package com.game.base.core.service;
 
+import com.db.HibernateDao;
 import com.game.base.core.entity.IdentifyEnt;
 import com.game.base.core.mapper.IdentifyMapper;
 import com.game.base.gameObject.constant.EntityType;
@@ -21,7 +22,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class IdentifyService {
 
     private static Logger logger = LoggerFactory.getLogger(IdentifyService.class);
-
+    @Autowired(required = false)
+    private HibernateDao hibernateDao;
     /**
      * 1
      */
@@ -30,8 +32,8 @@ public class IdentifyService {
      *
      */
     private static AtomicLong index = new AtomicLong(10000);
-    @Autowired
-    private IdentifyMapper identifyMapper;
+    //@Autowired
+    //private IdentifyMapper identifyMapper;
 
     /**
      * 1
@@ -50,7 +52,9 @@ public class IdentifyService {
      * @return
      */
     public synchronized long getNextIdentify(EntityType type){
-        IdentifyEnt identifyEnt = identifyMapper.selectIdentifyEnt(type.getEntityId());
+
+        //IdentifyEnt identifyEnt = identifyMapper.selectIdentifyEnt(type.getEntityId());
+        IdentifyEnt identifyEnt = hibernateDao.find(IdentifyEnt.class, type.getEntityId());
         if(identifyEnt==null){
             identifyEnt= new IdentifyEnt();
             identifyEnt.setTypeId(type.getEntityId());
@@ -59,8 +63,8 @@ public class IdentifyService {
                 logger.debug("identify为null时objectId："+identifyEnt.getNow());
 
             }
-
-            identifyMapper.insertIdentifyEnt(identifyEnt);
+            hibernateDao.saveOrUpdate(IdentifyEnt.class, identifyEnt);
+            //identifyMapper.insertIdentifyEnt(identifyEnt);
 
             return identifyEnt.getNow();
         }
@@ -70,7 +74,8 @@ public class IdentifyService {
             logger.debug("identify不为null时objectId："+l);
         }
         identifyEnt.setNow(l);
-        identifyMapper.updateIdentifyEnt(identifyEnt);
+        hibernateDao.update(IdentifyEnt.class, identifyEnt);
+        //identifyMapper.updateIdentifyEnt(identifyEnt);
         return l;
     }
 }
