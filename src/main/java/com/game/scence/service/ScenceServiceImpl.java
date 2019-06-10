@@ -58,7 +58,9 @@ public class ScenceServiceImpl implements ScenceService {
         }
     }
 
-    private Player setPosition(String accountId, AccountInfo accountInfo) {
+    private Player setPosition(String accountId, MapResource mapResource) {
+        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+        AccountInfo accountInfo = accountEnt.getAccountInfo();
         List<Long> playerIds = accountInfo.getPlayerIds();
         if(playerIds==null||playerIds.size()==0){
             logger.warn("玩家{}没有角色信息",accountId);
@@ -71,13 +73,9 @@ public class ScenceServiceImpl implements ScenceService {
             logger.warn("玩家{}没有角色信息",accountId);
             return null;
         }
-
-        RandPosition randPosition = new RandPosition(accountId).rand();
-        int x = randPosition.getX();
-        int y = randPosition.getY();
-
-        player.setX(x);
-        player.setY(y);
+        /** 初始化位置*/
+        player.setX(mapResource.getInitX());
+        player.setY(mapResource.getInitY());
         SpringContext.getPlayerSerivce().save(playerEnt);
         return player;
     }
@@ -109,7 +107,10 @@ public class ScenceServiceImpl implements ScenceService {
         if(mapResource ==null){
             logger.warn("{}资源加载错误", MapResource.class);
         }
-        Player player = setPosition(accountId, accountInfo);
+        if(logger.isDebugEnabled()){
+            logger.debug(mapResource.toString());
+        }
+        Player player = setPosition(accountId, mapResource);
         SpringContext.getAccountService().save(accountEnt);
         SM_EnterMap sm = new SM_EnterMap();
         sm.setX(player.getX());
