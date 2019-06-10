@@ -3,24 +3,29 @@ package com.game.role.player.entity;
 import com.db.AbstractEntity;
 import com.game.role.player.model.Player;
 import com.socket.Utils.ProtoStuffUtil;
+import org.hibernate.annotations.Table;
 
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * @Author：xuxin
  * @Date: 2019/4/28 18:13
  */
+@Entity(name="player")
+@Table(appliesTo = "player", comment = "唯一标识id")
 public class PlayerEnt extends AbstractEntity<Long> {
-
+    @Id
+    @Column(columnDefinition = "bigint default 10000 comment '角色id'", nullable = false)
     private long playerId;
 
+    @Column(columnDefinition = "varchar(255) character set utf8 collate utf8_bin comment '账号Id'",nullable = false)
     private String accountId;
 
     @Transient
     private Player player;
-
+    @Lob
+    @Column(columnDefinition = "blob comment '角色数据'")
     private byte[] playerData;
-
 
     @Override
     public void doSerialize() {

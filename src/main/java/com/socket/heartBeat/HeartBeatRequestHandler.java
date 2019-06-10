@@ -12,7 +12,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class HeartBeatRequestHandler extends SimpleChannelInboundHandler<HeartBeatRequestPack> {
     public static final HeartBeatRequestHandler INSTANCE = new HeartBeatRequestHandler();
 
-    private  HeartBeatRequestHandler(){
+    public  HeartBeatRequestHandler(){
 
     }
     @Override

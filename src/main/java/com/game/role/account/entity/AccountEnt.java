@@ -3,24 +3,29 @@ package com.game.role.account.entity;
 import com.db.AbstractEntity;
 import com.game.role.account.model.AccountInfo;
 import com.socket.Utils.ProtoStuffUtil;
+import org.hibernate.annotations.Table;
 
-import javax.persistence.Column;
-import javax.persistence.Lob;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.Arrays;
 
 /**
  * @Author：xuxin
  * @Date: 2019/4/28 21:04
  */
+@Entity(name = "account")
+@Table(appliesTo = "account", comment = "账号信息")
 public class AccountEnt extends AbstractEntity<String> {
     /**
      * 账号Id
      */
+    @Id
+    @Column(columnDefinition = "varchar(255) character set utf8 collate utf8_bin comment '账号Id'",nullable = false)
     private String accountId;
     /**
      * 密码
      */
+    @Lob
+    @Column(columnDefinition = "varchar(255) character set utf8 collate utf8_bin comment '密码'",nullable = false)
     private String passward;
 
     private byte[] accountData;

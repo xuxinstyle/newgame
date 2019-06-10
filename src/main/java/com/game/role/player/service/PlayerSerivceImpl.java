@@ -1,5 +1,6 @@
 package com.game.role.player.service;
 
+import com.db.HibernateDao;
 import com.game.SpringContext;
 import com.game.base.gameObject.constant.EntityType;
 import com.game.role.account.entity.AccountEnt;
@@ -22,18 +23,21 @@ import java.util.List;
 @Component
 public class PlayerSerivceImpl implements PlayerService {
     private static Logger logger = LoggerFactory.getLogger(PlayerSerivceImpl.class);
+    //@Autowired
+    //private PlayerMapper playerMapper;
     @Autowired
-    private PlayerMapper playerMapper;
-
+    private HibernateDao hibernateDao;
     @Override
     public void save(PlayerEnt playerEnt) {
         playerEnt.doSerialize();
-        playerMapper.updatePlayerEnt(playerEnt);
+        hibernateDao.update(PlayerEnt.class, playerEnt);
+        //playerMapper.updatePlayerEnt(playerEnt);
     }
 
     @Override
     public PlayerEnt getPlayer(long playerId) {
-        PlayerEnt playerEnt = playerMapper.selectPlayerEnt(playerId);
+        PlayerEnt playerEnt = hibernateDao.find(PlayerEnt.class, playerId);
+        //PlayerEnt playerEnt = playerMapper.selectPlayerEnt(playerId);
         playerEnt.doDeserialize();
         return playerEnt;
     }
@@ -41,7 +45,8 @@ public class PlayerSerivceImpl implements PlayerService {
     @Override
     public void insert(PlayerEnt playerEnt) {
         playerEnt.doSerialize();
-        playerMapper.insertPlayerEnt(playerEnt);
+        hibernateDao.save(PlayerEnt.class, playerEnt);
+        //playerMapper.insertPlayerEnt(playerEnt);
     }
 
     @Override
