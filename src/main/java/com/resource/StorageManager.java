@@ -1,16 +1,8 @@
 package com.resource;
 
-import com.game.scence.resource.TestResource;
 import com.resource.anno.Resource;
 import com.resource.other.ResourceDefinition;
 import com.resource.reader.ReadXlsx;
-import org.apache.commons.collections.map.HashedMap;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -21,8 +13,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -59,7 +49,8 @@ public class StorageManager implements BeanPostProcessor {
             ResourceDefinition def = ResourceDefinition.valueOf(bean);
             registResourceDefintion(def.getClz(), def);
             registResourceCacah(def.getLocation());
-            ReadXlsx.readXlsx(def,caches);
+            ReadXlsx readXlsx = new ReadXlsx();
+            readXlsx.readXlsx(def,caches);
         }
         if(logger.isDebugEnabled()){
             logger.debug(definitionMap.toString());
@@ -125,8 +116,9 @@ public class StorageManager implements BeanPostProcessor {
     public static Map<Class<?>, Storage<?, ?>> getStorageMap() {
         return storageMap;
     }
-    public static Object getResource( Class<?> clz, String id){
-        Object object = storageMap.get(clz).getData().getValues().get(id);
+
+    public static Object getResource( Class<?> clz, Object key){
+        Object object = storageMap.get(clz).getData().getValues().get(key);
         if(object==null||!object.getClass().equals(clz)){
             logger.error("获取资源对象失败！");
             return null;

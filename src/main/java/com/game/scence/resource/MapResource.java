@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 public class MapResource {
     // 这里的属性必须为public的权限
     // 地图id
-    public String mapId;
+    public int mapId;
     //地图实际形状
     public String context;
 
-    public String getMapId() {
+    public int getMapId() {
         return mapId;
     }
 
-    public void setMapId(String mapId) {
+    public void setMapId(int mapId) {
         this.mapId = mapId;
     }
 

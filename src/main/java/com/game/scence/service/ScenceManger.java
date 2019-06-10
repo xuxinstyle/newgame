@@ -1,12 +1,9 @@
 package com.game.scence.service;
 
 import com.game.scence.constant.SceneType;
-import com.game.scence.resource.TestResource;
-import com.resource.Storage;
 import com.resource.StorageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
