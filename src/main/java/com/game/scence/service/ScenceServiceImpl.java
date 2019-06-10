@@ -109,6 +109,9 @@ public class ScenceServiceImpl implements ScenceService {
         if(mapResource ==null){
             logger.warn("{}资源加载错误", MapResource.class);
         }
+        if(logger.isDebugEnabled()){
+            logger.debug(mapResource.toString());
+        }
         Player player = setPosition(accountId, accountInfo);
         SpringContext.getAccountService().save(accountEnt);
         SM_EnterMap sm = new SM_EnterMap();

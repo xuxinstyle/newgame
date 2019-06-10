@@ -25,8 +25,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ReadHolder {
 
     private static final Logger logger = LoggerFactory.getLogger(ReadHolder.class);
-
+    /**<class对象，对应类的字段列表>*/
     private static Map<Class<?> ,List<FieldInfo>> fieldInfoMap = new ConcurrentHashMap<>();
+
+    public static Map<Class<?>, List<FieldInfo>> getFieldInfoMap() {
+        return fieldInfoMap;
+    }
+
+    public static void setFieldInfoMap(Map<Class<?>, List<FieldInfo>> fieldInfoMap) {
+        ReadHolder.fieldInfoMap = fieldInfoMap;
+    }
 
     public void read(ResourceDefinition def, Map<String, InputStream> caches){
         try {
@@ -60,7 +68,7 @@ public class ReadHolder {
                 Row row = sheet.getRow(firstIndex);
                 if (row != null) {
                     int firstCellIndex = row.getFirstCellNum();
-                    int lastCellIndex = row.getLastCellNum();
+                    int lastCellIndex = firstCellIndex;
                     List<String> holderName = new ArrayList<>();
                     for (int cIndex = firstCellIndex; cIndex < lastCellIndex; cIndex++) {
                         //遍历列

@@ -1,7 +1,9 @@
 package com.resource;
 
+import com.game.scence.resource.MapResource;
 import com.resource.anno.Resource;
 import com.resource.other.ResourceDefinition;
+import com.resource.reader.ReadHolder;
 import com.resource.reader.ReadXlsx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +51,8 @@ public class StorageManager implements BeanPostProcessor {
             ResourceDefinition def = ResourceDefinition.valueOf(bean);
             registResourceDefintion(def.getClz(), def);
             registResourceCacah(def.getLocation());
+            /*ReadHolder readHolder = new ReadHolder();
+            readHolder.read(def,caches);*/
             ReadXlsx readXlsx = new ReadXlsx();
             readXlsx.readXlsx(def,caches);
         }
@@ -72,15 +76,15 @@ public class StorageManager implements BeanPostProcessor {
         Storage<?, ?> storage = getStorage(clz);
         return (T)storage.getData().getValues().get(key);
     }
-    public static void putStorage(ResourceDefinition def, Map<String,Object> map) {
+    public static void putStorage(ResourceDefinition def, Map<Object,Object> map) {
         Class<?> clz = def.getClz();
         /** <主键， Object>*/
 
         /** TODO: 将来这里要修改成加了id注解的字段*/
 
-        StorageData<String,Object> data = new StorageData<>();
+        StorageData<Object,Object> data = new StorageData<>();
         data.setValues(map);
-        Storage<String,Object> storage = new Storage<>();
+        Storage<Object,Object> storage = new Storage<>();
         storage.setData(data);
 
         storageMap.put(def.getClz(), storage);
@@ -118,6 +122,9 @@ public class StorageManager implements BeanPostProcessor {
     }
 
     public static Object getResource( Class<?> clz, Object key){
+        if(logger.isDebugEnabled()){
+            logger.debug(storageMap.get(MapResource.class).getData().getValues().toString());
+        }
         Object object = storageMap.get(clz).getData().getValues().get(key);
         if(object==null||!object.getClass().equals(clz)){
             logger.error("获取资源对象失败！");
