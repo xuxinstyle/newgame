@@ -9,7 +9,9 @@ public enum SceneType {
     FIELD(2,"野外");
 
     private int mapid;
+
     private String mapName;
+
     public static SceneType valueOf(int mapid){
         for(SceneType type:SceneType.values()){
             if(type.getMapid()==mapid){
@@ -26,7 +28,6 @@ public enum SceneType {
     public String getMapName() {
         return mapName;
     }
-
 
     public int getMapid() {
         return mapid;

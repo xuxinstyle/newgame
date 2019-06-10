@@ -106,8 +106,8 @@ public class ScenceServiceImpl implements ScenceService {
         }
 
         MapResource mapResource = getMapResource(mapId);
-        if(mapResource==null){
-            logger.warn("{}资源加载错误",MapResource.class);
+        if(mapResource ==null){
+            logger.warn("{}资源加载错误", MapResource.class);
         }
         Player player = setPosition(accountId, accountInfo);
         SpringContext.getAccountService().save(accountEnt);
@@ -260,7 +260,7 @@ public class ScenceServiceImpl implements ScenceService {
 
     @Override
     public MapResource getMapResource(int mapId) {
-        return (MapResource) StorageManager.getResource(MapResource.class, mapId + ".0");
+        return (MapResource) StorageManager.getResource(MapResource.class, mapId );
     }
 
     private boolean checkMove(String accountId, int x, int y) {

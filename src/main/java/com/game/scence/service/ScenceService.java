@@ -1,11 +1,8 @@
 package com.game.scence.service;
 
 
-import com.game.scence.constant.SceneType;
 import com.game.scence.resource.MapResource;
 import com.socket.core.session.TSession;
-
-import java.util.List;
 
 /**
  * @Author：xuxin
