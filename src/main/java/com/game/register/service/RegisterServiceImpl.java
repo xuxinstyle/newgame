@@ -1,7 +1,7 @@
 package com.game.register.service;
 
 import com.game.SpringContext;
-import com.game.role.account.entity.AccountEnt;
+import com.game.user.account.entity.AccountEnt;
 import com.game.register.packet.SM_Register;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;

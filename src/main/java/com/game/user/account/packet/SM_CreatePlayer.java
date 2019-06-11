@@ -1,4 +1,4 @@
-package com.game.role.account.packet;
+package com.game.user.account.packet;
 
 /**
  * @Author：xuxin

@@ -2,7 +2,6 @@ package com.game.base.core.service;
 
 import com.db.HibernateDao;
 import com.game.base.core.entity.IdentifyEnt;
-import com.game.base.core.mapper.IdentifyMapper;
 import com.game.base.gameObject.constant.EntityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,8 +51,6 @@ public class IdentifyService {
      * @return
      */
     public synchronized long getNextIdentify(EntityType type){
-
-        //IdentifyEnt identifyEnt = identifyMapper.selectIdentifyEnt(type.getEntityId());
         IdentifyEnt identifyEnt = hibernateDao.find(IdentifyEnt.class, type.getEntityId());
         if(identifyEnt==null){
             identifyEnt= new IdentifyEnt();
@@ -61,21 +58,16 @@ public class IdentifyService {
             identifyEnt.setNow(index.incrementAndGet());
             if(logger.isDebugEnabled()){
                 logger.debug("identify为null时objectId："+identifyEnt.getNow());
-
             }
             hibernateDao.saveOrUpdate(IdentifyEnt.class, identifyEnt);
-            //identifyMapper.insertIdentifyEnt(identifyEnt);
-
             return identifyEnt.getNow();
         }
-
         long l = new AtomicLong(identifyEnt.getNow()).incrementAndGet();
         if(logger.isDebugEnabled()){
             logger.debug("identify不为null时objectId："+l);
         }
         identifyEnt.setNow(l);
         hibernateDao.update(IdentifyEnt.class, identifyEnt);
-        //identifyMapper.updateIdentifyEnt(identifyEnt);
         return l;
     }
 }

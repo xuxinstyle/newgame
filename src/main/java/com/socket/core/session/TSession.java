@@ -1,8 +1,5 @@
 package com.socket.core.session;
 
-import com.game.SpringContext;
-import com.game.role.account.entity.AccountEnt;
-import com.game.role.account.model.AccountInfo;
 import com.socket.Utils.ProtoStuffUtil;
 import com.socket.core.MyPack;
 import com.socket.dispatcher.action.IActionDispatcher;
@@ -10,10 +7,7 @@ import com.socket.dispatcher.config.RegistSerializerMessage;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -23,13 +17,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TSession {
     private static final Logger logger = Logger.getLogger(TSession.class);
     // 里面放在线的玩家账号信息 <信息标识，玩家的accountId>
+    private static int index = 0;
+    private final int id = index++;
     private String accountId ;
     private final long createTime = System.currentTimeMillis();
     private final Channel channel;
     private final String ip;
     private String inetIp;
     private final String port;
-
+    private int mapId;
     private final IActionDispatcher actionDispatcher;
     public TSession (Channel channel){
         this(channel, null);
@@ -83,5 +79,17 @@ public class TSession {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(int mapId) {
+        this.mapId = mapId;
     }
 }

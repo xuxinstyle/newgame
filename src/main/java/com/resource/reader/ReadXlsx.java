@@ -64,7 +64,7 @@ public class ReadXlsx {
                 /**开始解析*/
                 Sheet sheet = wb.getSheetAt(0);
                 /* 读取表头*/
-                int firstIndex = sheet.getFirstRowNum();
+                int firstIndex = sheet.getFirstRowNum()+1;
                 /** 遍历行*/
                 Row row = sheet.getRow(firstIndex);
                 if (row != null) {
@@ -94,7 +94,7 @@ public class ReadXlsx {
 
 
                 /**第一行是列名，所以不读*/
-                int firstRowIndex = sheet.getFirstRowNum() + 2;
+                int firstRowIndex = sheet.getFirstRowNum() + 3;
                 int lastRowIndex = sheet.getLastRowNum();
                 Map<Object, Object> map = new HashMap<>();
                 for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {

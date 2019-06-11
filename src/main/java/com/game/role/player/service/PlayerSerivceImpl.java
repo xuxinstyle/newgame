@@ -3,10 +3,9 @@ package com.game.role.player.service;
 import com.db.HibernateDao;
 import com.game.SpringContext;
 import com.game.base.gameObject.constant.EntityType;
-import com.game.role.account.entity.AccountEnt;
-import com.game.role.account.model.AccountInfo;
+import com.game.user.account.entity.AccountEnt;
+import com.game.user.account.model.AccountInfo;
 import com.game.role.player.entity.PlayerEnt;
-import com.game.role.player.mapper.PlayerMapper;
 import com.game.role.player.model.Player;
 import com.game.role.constant.Job;
 import org.slf4j.Logger;
@@ -14,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,21 +23,17 @@ import java.util.List;
 @Component
 public class PlayerSerivceImpl implements PlayerService {
     private static Logger logger = LoggerFactory.getLogger(PlayerSerivceImpl.class);
-    //@Autowired
-    //private PlayerMapper playerMapper;
     @Autowired
     private HibernateDao hibernateDao;
     @Override
     public void save(PlayerEnt playerEnt) {
         playerEnt.doSerialize();
         hibernateDao.update(PlayerEnt.class, playerEnt);
-        //playerMapper.updatePlayerEnt(playerEnt);
     }
 
     @Override
     public PlayerEnt getPlayer(long playerId) {
         PlayerEnt playerEnt = hibernateDao.find(PlayerEnt.class, playerId);
-        //PlayerEnt playerEnt = playerMapper.selectPlayerEnt(playerId);
         playerEnt.doDeserialize();
         return playerEnt;
     }
@@ -46,7 +42,6 @@ public class PlayerSerivceImpl implements PlayerService {
     public void insert(PlayerEnt playerEnt) {
         playerEnt.doSerialize();
         hibernateDao.save(PlayerEnt.class, playerEnt);
-        //playerMapper.insertPlayerEnt(playerEnt);
     }
 
     @Override
@@ -79,7 +74,7 @@ public class PlayerSerivceImpl implements PlayerService {
         return num;
     }
     @Override
-    public Player getPlayer(String accountId){
+    public List<Player> getPlayer(String accountId){
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         List<Long> playerIds = accountInfo.getPlayerIds();
@@ -87,12 +82,12 @@ public class PlayerSerivceImpl implements PlayerService {
             logger.warn("玩家{}没有角色信息",accountId);
             return null;
         }
-        Long playerId = playerIds.get(0);
-        PlayerEnt player = SpringContext.getPlayerSerivce().getPlayer(playerId);
-        if(player==null){
-            logger.warn("玩家{}没有角色信息",accountId);
-            return null;
+        List<Player> players = new ArrayList<>();
+        for(long playerId:playerIds){
+            PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayer(playerId);
+            Player player = playerEnt.getPlayer();
+            players.add(player);
         }
-        return player.getPlayer();
+        return players;
     }
 }

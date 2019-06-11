@@ -52,4 +52,13 @@ public class ScenceFacade {
             e.printStackTrace();
         }
     }
+    @HandlerAnno
+    public void operate(TSession session, CM_OnlinePlayerOperate cm){
+        try{
+            SpringContext.getScenceSerivce().showMap(cm.getMapId());
+        }catch (Exception e){
+            logger.error("请求移动失败",e.toString());
+            e.printStackTrace();
+        }
+    }
 }

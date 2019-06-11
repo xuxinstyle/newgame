@@ -1,11 +1,9 @@
-package com.game.role.account.model;
+package com.game.user.account.model;
 
 import com.game.scence.constant.SceneType;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 放账号的信息，如属性等
@@ -50,6 +48,7 @@ public class AccountInfo {
         accountInfo.setAccountName(accountName);
         accountInfo.setCreateTime(System.nanoTime());
         accountInfo.setLastLoginTime(0L);
+        accountInfo.setCurrentMapType(SceneType.NoviceVillage);
         accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
         accountInfo.setLastLogoutTime(0L);
         accountInfo.setPlayerIds(new ArrayList<>());

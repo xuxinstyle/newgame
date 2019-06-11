@@ -1,7 +1,7 @@
-package com.game.role.account.facade;
+package com.game.user.account.facade;
 
 import com.game.SpringContext;
-import com.game.role.account.packet.CM_CreatePlayer;
+import com.game.user.account.packet.CM_CreatePlayer;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ public class AccountFacade {
     @HandlerAnno
     public void createPlayer(TSession session, CM_CreatePlayer req){
         try {
-            SpringContext.getAccountService().createPlayer(session, req.getNickName(), req.getCareer(), req.getAccountId());
+            SpringContext.getAccountService().createFirstPlayer(session, req.getNickName(), req.getCareer(), req.getAccountId());
         }catch (Exception e){
             e.printStackTrace();
             logger.error(req.getAccountId()+"创键角色失败"+e.toString());

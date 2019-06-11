@@ -4,6 +4,8 @@ package com.game.scence.constant;
  * @Author：xuxin
  * @Date: 2019/6/3 11:24
  */
+
+//TODO:加练功房和副本
 public enum SceneType {
     NoviceVillage(1,"新手村"),
     FIELD(2,"野外");

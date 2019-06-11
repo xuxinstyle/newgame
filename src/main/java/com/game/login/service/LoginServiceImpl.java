@@ -2,8 +2,8 @@ package com.game.login.service;
 
 import com.game.SpringContext;
 import com.game.login.packet.SM_Logout;
-import com.game.role.account.entity.AccountEnt;
-import com.game.role.account.model.AccountInfo;
+import com.game.user.account.entity.AccountEnt;
+import com.game.user.account.model.AccountInfo;
 import com.game.login.packet.SM_Login;
 import com.game.login.packet.SM_LoginNoAcount;
 import com.game.scence.constant.SceneType;
@@ -39,6 +39,7 @@ public class LoginServiceImpl implements LoginService {
             return;
         }
         /** 踢对方下线*/
+        /** TODO: */
         TSession tSession = SessionManager.getSessionByAccount(username);
         if(tSession!=null){
             SM_Logout sm = new SM_Logout();
@@ -59,12 +60,9 @@ public class LoginServiceImpl implements LoginService {
         session.sendPacket(sm);
         /** 将accountId放到session中,并将session放到缓存中管理*/
         SessionManager.addAccountSessionMap(username, session);
+
         SpringContext.getAccountService().save(accountEnt);
-        /** 将账号id放到场景地图的缓存中*/
-        SpringContext.getScenceSerivce().setScenceAccountId(accountInfo.getLastLogoutMapType().getMapid(),username);
-        /**进入场景地图 如果玩家没有昵称就显示取昵称的界面*/
         logger.info(accountEnt.getAccountId() + "登录成功！");
-        /** FIXME: 这里可以直接跳转到进入地图的逻辑，可以省流量*/
     }
 
     @Override
@@ -81,11 +79,10 @@ public class LoginServiceImpl implements LoginService {
             accountInfo.setLastLogoutMapType(accountInfo.getCurrentMapType());
             accountInfo.setLastLogoutTime(System.nanoTime());
             SpringContext.getAccountService().save(accountEnt);
-
-
             session.logout(accountId);
             SpringContext.getSessionManager().removeSession(accountId);
             SpringContext.getScenceSerivce().removeScenceAccountId(accountInfo.getCurrentMapType().getMapid(), accountId);
+
         }
     }
 }

@@ -9,7 +9,7 @@ import com.socket.core.session.TSession;
 public interface IActionDispatcher {
     void open(TSession session);
     void connect(TSession session);
-    void handle(TSession session, int opIndex, Object packet,long decodeTime);
-    void send(TSession session, int opIndex, Object packet, long encodeTime);
+    void handle(TSession session, int opIndex, Object packet);
+    void send(TSession session, int opIndex, Object packet);
     void close(TSession session);
 }

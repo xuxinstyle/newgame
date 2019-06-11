@@ -1,6 +1,6 @@
-package com.game.role.account.service;
+package com.game.user.account.service;
 
-import com.game.role.account.entity.AccountEnt;
+import com.game.user.account.entity.AccountEnt;
 import com.socket.core.session.TSession;
 
 /**
@@ -27,7 +27,7 @@ public interface AccountService {
      * @param career
      * @param account
      */
-    void createPlayer(TSession session, String nickName, int type, String accountId);
+    void createFirstPlayer(TSession session, String nickName, int type, String accountId);
     /**
      * 保存修改
      */

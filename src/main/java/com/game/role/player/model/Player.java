@@ -42,7 +42,7 @@ public class Player extends GameObject {
         player.setCareer(type.getJobType());
         player.setObjectId(playerId);
         player.setAccountId(accountId);
-        player.setPlayerName(type.name());
+        player.setPlayerName(type.getJobName());
         player.setSurviveStatus(1);
         int x = (int) (1 + Math.random() * (10));
         int y = (int) (1 + Math.random() * (10));

@@ -23,7 +23,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg){
         try{
             /*System.out.println("接收客户端消息");
-            System.out.println((atomicInteger.addAndGet(1)) + "--->" + Thread.currentThread().getName() + ",The server receive  order : " + msg);
+            System.out.println((atomicInteger.addAndGet(1)) + "--->" + Thread.currentThread().getJobName() + ",The server receive  order : " + msg);
             com.socket.core.CMessagePack mspack= (CMessagePack)msg;
             if(mspack.getMsgIndex() == 1){
                 TestBean testBean = ProtoStuffUtil.deserializer(mspack.getDate(),TestBean.class);

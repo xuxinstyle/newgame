@@ -1,11 +1,11 @@
-package com.game.role.account.service;
+package com.game.user.account.service;
 
 import com.db.HibernateDao;
 import com.game.SpringContext;
-import com.game.role.account.entity.AccountEnt;
-import com.game.role.account.mapper.AccountMapper;
-import com.game.role.account.model.AccountInfo;
-import com.game.role.account.packet.SM_CreatePlayer;
+import com.game.user.account.entity.AccountEnt;
+
+import com.game.user.account.model.AccountInfo;
+import com.game.user.account.packet.SM_CreatePlayer;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.constant.Job;
 import com.game.scence.constant.SceneType;
@@ -28,8 +28,7 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private HibernateDao hibernateDao;
     private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
-    //@Autowired
-    //private AccountMapper accountMapper;
+
 
     @Override
     public void insert(String username, String passward) {
@@ -39,14 +38,13 @@ public class AccountServiceImpl implements AccountService {
         accountEnt.setAccountInfo(AccountInfo.valueOf(null));
         accountEnt.doSerialize();
         hibernateDao.save(AccountEnt.class, accountEnt);
-        //accountMapper.insertAccountEnt(accountEnt);
     }
 
 
     @Override
     public AccountEnt getAccountEnt(String accountId) {
         AccountEnt accountEnt = hibernateDao.find(AccountEnt.class, accountId);
-        //AccountEnt accountEnt = accountMapper.selectAccountEnt(accountId);
+
         if(accountEnt==null){
             logger.warn("数据库中没有["+accountId+"]的账号信息");
             return null;
@@ -60,7 +58,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void createPlayer(TSession session, String nickName, int type, String accountId) {
+    public void createFirstPlayer(TSession session, String nickName, int type, String accountId) {
 
         AccountEnt accountEnt = getAccountEnt(accountId);
         AccountInfo accountInfo = AccountInfo.valueOf(nickName);
@@ -90,9 +88,7 @@ public class AccountServiceImpl implements AccountService {
             logger.debug(accountEnt.toString());
             logger.debug(accountEnt.getAccountInfo().toString());
         }
-
         hibernateDao.saveOrUpdate(AccountEnt.class,accountEnt);
-        //accountMapper.updateAccountEnt(accountEnt);
         AccountEnt accountEnt1 = getAccountEnt(accountEnt.getAccountId());
         if(logger.isDebugEnabled()){
             logger.debug(accountEnt1.toString());

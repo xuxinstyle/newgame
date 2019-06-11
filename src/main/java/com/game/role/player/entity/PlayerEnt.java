@@ -12,7 +12,7 @@ import javax.persistence.*;
  * @Date: 2019/4/28 18:13
  */
 @Entity(name="player")
-@Table(appliesTo = "player", comment = "唯一标识id")
+/*@Table(appliesTo = "player", comment = "角色信息")*/
 public class PlayerEnt extends AbstractEntity<Long> {
     @Id
     @Column(columnDefinition = "bigint default 10000 comment '角色id'", nullable = false)

@@ -1,7 +1,6 @@
 package com.game;
 
-import com.executor.CommonExecutor;
-import com.resource.StorageManager;
+import com.game.base.executor.common.CommonExecutor;
 import com.socket.core.*;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.heartBeat.HeartBeatRequestHandler;
@@ -18,6 +17,8 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -26,13 +27,22 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class Start {
     private static ClassPathXmlApplicationContext applicationContext;
+    private static final Logger logger = LoggerFactory.getLogger(Start.class);
+
+
     public static void main(String[] args) {
+        logger.info("开始初始化applicationContext...");
         applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        logger.info("开始注册协议....");
         new RegistSerializerMessage().init();
         CommonExecutor.start();
-        StorageManager.init();
+        logger.info("开始初始化账号线程池...");
+        SpringContext.getAccountExecutorService().init();
+        // StorageManager.init();
         applicationContext.start();
+        logger.info("初始化完毕...");
         int port = SpringContext.getServerConfigValue().getPort();
+
         bind(port);
     }
 
@@ -73,15 +83,15 @@ public class Start {
                             ch.pipeline().addLast("MessagePack Decoder", new MsgpackDecoder());
                             ch.pipeline().addLast(new EchoServerHandler());
                             ch.pipeline().addLast(new HeartBeatRequestHandler());
-                            //ch.pipeline().addLast(new IMIdleStateHandler());
+                            ch.pipeline().addLast(new IMIdleStateHandler());
 
                         }
                     });
 
             /**服务器启动辅助类配置完成后，调用 bind 方法绑定监听端口，调用 sync 方法同步等待绑定操作完成*/
             ChannelFuture f = b.bind(port).sync();
+            logger.info(Thread.currentThread().getName() + ",服务器开始监听端口，等待客户端连接.........");
 
-            System.out.println(Thread.currentThread().getName() + ",服务器开始监听端口，等待客户端连接.........");
 
             /**下面会进行阻塞，等待服务器连接关闭之后 main 方法退出，程序结束* */
             f.channel().closeFuture().sync();

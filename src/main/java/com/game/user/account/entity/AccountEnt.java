@@ -1,7 +1,7 @@
-package com.game.role.account.entity;
+package com.game.user.account.entity;
 
 import com.db.AbstractEntity;
-import com.game.role.account.model.AccountInfo;
+import com.game.user.account.model.AccountInfo;
 import com.socket.Utils.ProtoStuffUtil;
 import org.hibernate.annotations.Table;
 
@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @Date: 2019/4/28 21:04
  */
 @Entity(name = "account")
-@Table(appliesTo = "account", comment = "账号信息")
+/*@Table(appliesTo = "account", comment = "账号信息")*/
 public class AccountEnt extends AbstractEntity<String> {
     /**
      * 账号Id
@@ -24,11 +24,13 @@ public class AccountEnt extends AbstractEntity<String> {
     /**
      * 密码
      */
-    @Lob
     @Column(columnDefinition = "varchar(255) character set utf8 collate utf8_bin comment '密码'",nullable = false)
     private String passward;
 
+    @Lob
+    @Column(columnDefinition = "blob comment '账号基本数据'",nullable = false)
     private byte[] accountData;
+
     @Transient
     private AccountInfo accountInfo;
 

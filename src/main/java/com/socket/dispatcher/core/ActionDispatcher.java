@@ -1,5 +1,11 @@
 package com.socket.dispatcher.core;
 
+import com.game.SpringContext;
+import com.game.base.executor.account.MessageCommond;
+import com.game.base.executor.common.CommonExecutor;
+import com.game.connect.packet.CM_Connect;
+import com.game.login.packet.CM_Login;
+import com.game.register.packet.CM_Register;
 import com.socket.Utils.ProtoStuffUtil;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.action.ActionDispatcherAdapter;
@@ -10,6 +16,7 @@ import com.socket.dispatcher.executor.IIdentifyThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
@@ -26,28 +33,54 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     private static Logger logger = LoggerFactory.getLogger(ActionDispatcher.class);
     private static Map<Class<?>, IHandlerInvoke> handlerMap = new HashMap<>();
 
-    public ActionDispatcher() {
 
-    }
-    public void doHandle(TSession session, int opIndex, Object packet) {
+    @Override
+    public void handle(TSession session, int opIndex, Object packet) {
         Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
         if(aClass==null){
             return;
         }
+        /** 心跳包*/
+        if(opIndex<0){
+            if(logger.isDebugEnabled()){
+                //logger.debug("心跳包.....");
+            }
+            return;
+        }
         Object pack = ProtoStuffUtil.deserializer((byte[]) packet, aClass);
-        if(logger.isDebugEnabled()){
-            logger.debug("到达dohandle:pack="+pack.getClass());
+
+        if(session.getAccountId()==null){
+            CommonExecutor.addTask(session,opIndex, pack);
+
+        }else{
+            MessageCommond messageCommond = new MessageCommond(session, opIndex, pack, session.getAccountId());
+            SpringContext.getAccountExecutorService().submit(messageCommond);
         }
 
-        IHandlerInvoke defintion = handlerMap.get(pack.getClass());
+    }
+
+    public static void doHandle(TSession session, int opIndex, Object packet) {
+        /*Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
+        if(aClass==null){
+            return;
+        }
+        Object pack = ProtoStuffUtil.deserializer((byte[]) packet, aClass);*/
         if(logger.isDebugEnabled()){
-            logger.debug("defintion="+defintion+" packet class:"+pack.getClass());
+            logger.debug("到达dohandle:pack="+packet.getClass());
+        }
+
+        IHandlerInvoke defintion = handlerMap.get(packet.getClass());
+        if(logger.isDebugEnabled()){
+            logger.debug("defintion="+defintion+" packet class:"+packet.getClass());
         }
         if(defintion == null){
             throw  new NullPointerException("no any handlerDefintion found for packet :"
             + packet.getClass().getSimpleName());
         }
-        Object res = defintion.invoke(session, opIndex, pack);
+        Object res = defintion.invoke(session, opIndex, packet);
+        if(res != null){
+            session.sendPacket(res);
+        }
     }
 
     public void registHandlerDefintion(Class<?> clz, IHandlerInvoke invoke) {
@@ -84,11 +117,8 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
 
         private final ActionDispatcher dispatcher;
         private final int opIndex;
-        private final long decodeTime;
-        IoHandleEvent(ActionDispatcher dispatcher, TSession session, int opIndex, Object packet,
-                      long decodeTime){
+        IoHandleEvent(ActionDispatcher dispatcher, TSession session, int opIndex, Object packet){
             this.dispatcher =dispatcher;
-            this.decodeTime = decodeTime;
             this.session = session;
             this.opIndex = opIndex;
             this.packet = packet;
@@ -117,10 +147,6 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
 
         public int getOpIndex() {
             return opIndex;
-        }
-
-        public long getDecodeTime() {
-            return decodeTime;
         }
     }
 

@@ -20,7 +20,6 @@ public class MsgpackEncoder extends MessageToByteEncoder<Object> {
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, Object o, ByteBuf byteBuf) throws Exception {
         MessagePack messagePack = new MessagePack();
-
         /** 序列化对象*/
         byte[] raw = messagePack.write(o);
         byteBuf.writeBytes(raw);
