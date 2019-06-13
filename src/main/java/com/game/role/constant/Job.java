@@ -10,7 +10,7 @@ public enum Job {
     TAOIST(3,"道士"),
     ;
     private int jobType;
-    private String name;
+    private String jobName;
     public static Job valueOf(int type){
         Job[] values = Job.values();
         for (Job job :values) {
@@ -25,12 +25,12 @@ public enum Job {
     }
 
 
-    public String getName() {
-        return name;
+    public String getJobName() {
+        return jobName;
     }
 
-    private Job(int type, String name){
+    private Job(int type, String jobName){
         this.jobType = type;
-        this.name = name;
+        this.jobName = jobName;
     }
 }

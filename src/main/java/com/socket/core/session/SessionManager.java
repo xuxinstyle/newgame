@@ -1,9 +1,5 @@
 package com.socket.core.session;
 
-import com.game.SpringContext;
-import com.game.login.packet.SM_Logout;
-import com.game.role.account.entity.AccountEnt;
-import com.game.role.account.model.AccountInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -18,15 +14,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class SessionManager {
     private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
-    // <玩家账号Id, Session>
+    /** <玩家账号Id, Session> */
     private static Map<String, TSession> accountSessionMap = new ConcurrentHashMap<>();
 
     public static TSession getSessionByAccount(String accountId) {
         if (logger.isDebugEnabled()) {
             logger.debug("");
-        }
-        if (accountSessionMap.get(accountId) == null) {
-            return null;
         }
         return accountSessionMap.get(accountId);
     }
@@ -52,5 +45,7 @@ public class SessionManager {
     public Map<String, TSession> getAccountSessionMap(){
         return accountSessionMap;
     }
+
+
 
 }

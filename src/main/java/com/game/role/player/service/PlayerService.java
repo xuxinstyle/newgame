@@ -4,6 +4,8 @@ import com.game.role.player.entity.PlayerEnt;
 import com.game.role.constant.Job;
 import com.game.role.player.model.Player;
 
+import java.util.List;
+
 public interface PlayerService {
     /**
      * 保存玩家数据
@@ -34,6 +36,6 @@ public interface PlayerService {
      * @param accountId
      * @return
      */
-    Player getPlayer(String accountId);
+    List<Player> getPlayer(String accountId);
 
 }

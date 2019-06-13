@@ -16,10 +16,19 @@ public class SM_EnterMap {
     /**
      * 账号Id
      */
+    private String position;
     private String accountId;
 
     private int x;
     private int y;
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
     public String getAccountId() {
         return accountId;

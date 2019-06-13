@@ -1,12 +1,14 @@
 package com.game.scence.service;
 
+import com.game.SpringContext;
+import com.game.role.player.model.Player;
 import com.game.scence.constant.SceneType;
-import com.resource.StorageManager;
+import com.game.scence.model.ScenceInfo;
+import com.resource.core.StorageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,15 +24,15 @@ public class ScenceManger {
     /**
      * 放场景中的玩家信息
      */
-    private static Map<Integer, List<String>> scenceAccountIdMap = new ConcurrentHashMap<>(SceneType.values().length);
+    private static Map<Integer, ScenceInfo> scenceAccountIdMap = new ConcurrentHashMap<>(SceneType.values().length);
 
     public Object getResource(String id, Class<?> clz){
         return StorageManager.getResource(clz, id);
     }
 
-    public List<String> getScenceAccountIds(int mapId){
-        List<String> accountIds = scenceAccountIdMap.get(mapId);
-        return accountIds;
+    public ScenceInfo getScenceInfo(int mapId){
+        ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);
+        return scenceInfo;
     }
 
     /**
@@ -38,32 +40,32 @@ public class ScenceManger {
      * @param mapId
      * @param accountId
      */
-    public void setScenceAccountId(int mapId, String accountId){
+    public void setScenceInfo(int mapId, String accountId){
 
         if (scenceAccountIdMap.get(mapId) == null) {
-            List<String> accountIds = new ArrayList<>();
-            accountIds.add(accountId);
-            scenceAccountIdMap.put(mapId, accountIds);
+            ScenceInfo scenceInfo = ScenceInfo.valueOf(mapId,accountId);
+            scenceAccountIdMap.put(mapId, scenceInfo);
         }else {
-            List<String> strings = scenceAccountIdMap.get(mapId);
-            if(strings.contains(accountId)){
-                return;
-            }
-            strings.add(accountId);
+            ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);
+            List<Player> player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+            scenceInfo.setPlayers(player);
         }
 
     }
 
     public void removeAccountId(int mapId, String accountId){
-        List<String> strings = scenceAccountIdMap.get(mapId);
-        if(strings==null){
-            logger.warn("没有["+mapId+"]场景的信息，移除玩家信息失败");
+        ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);
+        if(scenceInfo==null){
             return;
         }
-        if(!strings.contains(accountId)){
-            logger.warn("在["+mapId+"]场景中没有["+accountId+"]的信息，移除信息失败");
-            return;
+        List<Player> players = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        for(Player player:players) {
+            scenceInfo.remove(player);
         }
-        strings.remove(accountId);
+    }
+
+    public void refreshScenceInfo(int mapId, Player player) {
+        ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);
+        scenceInfo.refresh(player);
     }
 }

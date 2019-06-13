@@ -20,12 +20,12 @@ public class ActionDispatcherAdapter implements IActionDispatcher {
     }
 
     @Override
-    public void handle(TSession session, int opIndex, Object packet, long decodeTime) {
+    public void handle(TSession session, int opIndex, Object packet) {
 
     }
 
     @Override
-    public void send(TSession session, int opIndex, Object packet, long encodeTime) {
+    public void send(TSession session, int opIndex, Object packet) {
 
     }
 

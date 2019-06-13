@@ -1,6 +1,7 @@
 package com.socket.heartBeat;
 
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
@@ -20,8 +21,19 @@ public class IMIdleStateHandler extends IdleStateHandler {
     }
 
     @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        super.userEventTriggered(ctx, evt);
+        if(evt instanceof IdleStateEvent){
+            IdleStateEvent e = (IdleStateEvent) evt;
+            if(e.state() == IdleState.ALL_IDLE){
+                logger.info("连接超时.....");
+                ctx.channel().close();
+            }
+        }
+    }
+
+    @Override
     protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception {
-        logger.info(READER_IDLE_TIME+"秒内未读到数据关闭连接");
-        ctx.channel().close();
+
     }
 }

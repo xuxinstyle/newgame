@@ -1,9 +1,12 @@
 package com.socket.core;
 
+import com.socket.core.session.SessionUtil;
+import com.socket.core.session.TSession;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import org.msgpack.MessagePack;
+import org.msgpack.type.Value;
 
 import java.util.List;
 
@@ -27,9 +30,8 @@ public class MsgpackDecoder extends MessageToMessageDecoder<ByteBuf> {
         int length = byteBuf.readableBytes();
         byte[] array = new byte[length];
         byteBuf.getBytes(byteBuf.readerIndex(), array, 0, length);
-
         MessagePack messagePack = new MessagePack();
-        list.add(messagePack.read(array));
-
+        MyPack myPack = messagePack.read(array, MyPack.class);
+        list.add(myPack);
     }
 }

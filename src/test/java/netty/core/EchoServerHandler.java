@@ -22,18 +22,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg){
         try{
-            /*System.out.println("接收客户端消息");
-            System.out.println((atomicInteger.addAndGet(1)) + "--->" + Thread.currentThread().getName() + ",The server receive  order : " + msg);
-            com.socket.core.CMessagePack mspack= (CMessagePack)msg;
-            if(mspack.getMsgIndex() == 1){
-                TestBean testBean = ProtoStuffUtil.deserializer(mspack.getDate(),TestBean.class);
-                System.out.println(testBean.toString());
-            }
-            if(mspack.getMsgIndex() == 2){
-                System.out.println(mspack.toString());
-            }*/
-            /*//返回消息给客户端
-            ctx.writeAndFlush(mspack);*/
+
         }catch (Exception e){
             System.out.println("服务端channelRead异常");
             e.printStackTrace();

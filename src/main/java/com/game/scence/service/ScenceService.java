@@ -62,4 +62,7 @@ public interface ScenceService {
     void move(TSession session, int x, int y);
 
     MapResource getMapResource(int mapId);
+
+    void showMap(int mapId);
+
 }

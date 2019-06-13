@@ -13,7 +13,7 @@ import javax.persistence.Id;
  * @Date: 2019/6/5 18:33
  */
 @Entity(name="identify")
-@Table(appliesTo = "identify", comment = "唯一标识id")
+/*@Table(appliesTo = "identify", comment = "唯一标识id")*/
 public class IdentifyEnt extends AbstractEntity<Integer>{
     /** 实体类型id */
     @Id

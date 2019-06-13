@@ -10,16 +10,19 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import org.msgpack.MessagePack;
+import org.msgpack.type.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(ChannelInboundHandlerAdapter.class);
 
-    private static final ActionDispatcher actionDispatcher = new ActionDispatcher();
+    private ActionDispatcher actionDispatcher = new ActionDispatcher();
     /**
      * 收到客户端消息，自动触发
      *
@@ -29,17 +32,18 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        List<Object> objects =(List<Object>)msg;
-        if(objects.size()<=0){
-            logger.error("错了错了，传来的包为空！");
+        MyPack pack = (MyPack) msg;
+        if(pack==null||pack.getpId()==null||pack.getPacket()==null){
+            logger.error("传来的空包...");
             return;
         }
+        //logger.info("线程："+Thread.currentThread().getName());
         TSession session = SessionUtil.getChannelSession(ctx.channel());
-        int opIndex = MessagePack.unpack(MessagePack.pack(objects.get(0)), Integer.class);
-        byte[] unpack = MessagePack.unpack(MessagePack.pack(objects.get(1)), byte[].class);
-
+        if(session==null){
+            return;
+        }
         //分发处理
-        actionDispatcher.doHandle(session,opIndex,unpack);
+        actionDispatcher.handle(session,pack.getpId(),pack.getPacket());
     }
 
     @Override
@@ -53,12 +57,10 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         logger.info("客户端关闭:" + ctx.channel().remoteAddress());
-        TSession session = SessionUtil.getChannelSession(ctx.channel());
-        session.getAccountId();
-        // SessionManager.removeSession(session.getAccountId());
         /**当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
+        // cause.printStackTrace();
         ctx.channel().close();
-        cause.printStackTrace();
+
 
     }
 

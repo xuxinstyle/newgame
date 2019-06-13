@@ -1,6 +1,6 @@
 package com.resource.reader;
 
-import com.resource.StorageManager;
+import com.resource.core.StorageManager;
 import com.resource.other.ResourceDefinition;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -12,10 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ConversionServiceFactoryBean;
+
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.support.DefaultConversionService;
+import org.springframework.core.convert.support.GenericConversionService;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.InputStream;
@@ -29,6 +32,7 @@ import java.util.Map;
  * @Author：xuxin
  * @Date: 2019/6/9 23:00
  */
+@Component
 public class ReadXlsx {
     private static final Logger logger = LoggerFactory.getLogger(ReadXlsx.class);
     private final static TypeDescriptor sourceType = TypeDescriptor.valueOf(String.class);
@@ -64,7 +68,7 @@ public class ReadXlsx {
                 /**开始解析*/
                 Sheet sheet = wb.getSheetAt(0);
                 /* 读取表头*/
-                int firstIndex = sheet.getFirstRowNum();
+                int firstIndex = sheet.getFirstRowNum()+1;
                 /** 遍历行*/
                 Row row = sheet.getRow(firstIndex);
                 if (row != null) {
@@ -92,9 +96,8 @@ public class ReadXlsx {
                     ReadHolder.getFieldInfoMap().put(def.getClz(), fieldList);
                 }
 
-
                 /**第一行是列名，所以不读*/
-                int firstRowIndex = sheet.getFirstRowNum() + 2;
+                int firstRowIndex = sheet.getFirstRowNum() + 3;
                 int lastRowIndex = sheet.getLastRowNum();
                 Map<Object, Object> map = new HashMap<>();
                 for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {
@@ -129,7 +132,6 @@ public class ReadXlsx {
 
     private Object getIndex(Class<?> clz, List<String> resourceData) {
         try {
-
 
             List<FieldInfo> fieldInfos = ReadHolder.getFieldInfoMap().get(clz);
             for(FieldInfo fieldInfo:fieldInfos){
@@ -189,15 +191,12 @@ public class ReadXlsx {
             Object value = conversionService.convert(context, sourceType, typeDescriptor);
             field.set(instance, value);
             return true;
-
         } catch (ConverterNotFoundException e) {
             logger.error("静态资源[{}]属性[{}]的转换器不存在", instance.getClass().getSimpleName(), field.getName());
             e.printStackTrace();
-
         } catch (Exception e) {
             logger.error("属性[{}]注入失败", field);
             e.printStackTrace();
-
         }
         return false;
     }
