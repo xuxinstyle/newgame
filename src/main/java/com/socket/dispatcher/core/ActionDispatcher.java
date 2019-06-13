@@ -1,9 +1,9 @@
 package com.socket.dispatcher.core;
 
 import com.game.SpringContext;
-import com.game.base.executor.account.MessageCommond;
+import com.game.base.executor.account.command.MessageCommand;
 import com.game.base.executor.common.CommonExecutor;
-import com.game.connect.packet.CM_Connect;
+import com.game.base.executor.common.command.LoginCommand;
 import com.game.login.packet.CM_Login;
 import com.game.register.packet.CM_Register;
 import com.socket.Utils.ProtoStuffUtil;
@@ -11,12 +11,10 @@ import com.socket.core.session.TSession;
 import com.socket.dispatcher.action.ActionDispatcherAdapter;
 import com.socket.dispatcher.anno.HandlerAnno;
 import com.socket.dispatcher.config.RegistSerializerMessage;
-import com.socket.dispatcher.executor.IIdentifyThreadPool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +29,7 @@ import java.util.Map;
 @Component
 public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPostProcessor {
     private static Logger logger = LoggerFactory.getLogger(ActionDispatcher.class);
+
     private static Map<Class<?>, IHandlerInvoke> handlerMap = new HashMap<>();
 
 
@@ -42,29 +41,27 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
         }
         /** 心跳包*/
         if(opIndex<0){
-            if(logger.isDebugEnabled()){
-                //logger.debug("心跳包.....");
-            }
             return;
         }
         Object pack = ProtoStuffUtil.deserializer((byte[]) packet, aClass);
 
         if(session.getAccountId()==null){
-            CommonExecutor.addTask(session,opIndex, pack);
+            if(pack instanceof CM_Login){ // pack instanceof CM_Register
+                LoginCommand command = LoginCommand.valueOf(session, opIndex, pack);
+                SpringContext.getCommonExecutorService().submit(command);
+            } else{
+                doHandle(session,opIndex,pack);
+            }
 
         }else{
-            MessageCommond messageCommond = new MessageCommond(session, opIndex, pack, session.getAccountId());
+            MessageCommand messageCommond = new MessageCommand(session, opIndex, pack, session.getAccountId());
             SpringContext.getAccountExecutorService().submit(messageCommond);
         }
 
     }
 
     public static void doHandle(TSession session, int opIndex, Object packet) {
-        /*Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
-        if(aClass==null){
-            return;
-        }
-        Object pack = ProtoStuffUtil.deserializer((byte[]) packet, aClass);*/
+
         if(logger.isDebugEnabled()){
             logger.debug("到达dohandle:pack="+packet.getClass());
         }
@@ -109,47 +106,6 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         return bean;
     }
-    /** TODO:此处还没用到，打算用来做协议分发到各线程池*/
-    public static final class IoHandleEvent implements Runnable{
-
-        private final TSession session;
-        private final Object packet;
-
-        private final ActionDispatcher dispatcher;
-        private final int opIndex;
-        IoHandleEvent(ActionDispatcher dispatcher, TSession session, int opIndex, Object packet){
-            this.dispatcher =dispatcher;
-            this.session = session;
-            this.opIndex = opIndex;
-            this.packet = packet;
-        }
-        @Override
-        public void run() {
-            try {
-                dispatcher.doHandle(session, opIndex, packet);
-            }catch (Exception e){
-                logger.error("消息[" + packet.getClass() + "[处理异常" , e);
-            }
-        }
-
-        public TSession getSession() {
-            return session;
-        }
-
-        public Object getPacket() {
-            return packet;
-        }
-
-
-        public ActionDispatcher getDispatcher() {
-            return dispatcher;
-        }
-
-        public int getOpIndex() {
-            return opIndex;
-        }
-    }
-
 
 }
 

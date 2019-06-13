@@ -1,9 +1,10 @@
-package com.resource;
+package com.resource.core;
 
 import com.game.scence.resource.MapResource;
+import com.resource.Storage;
+import com.resource.StorageData;
 import com.resource.anno.Resource;
 import com.resource.other.ResourceDefinition;
-import com.resource.reader.ReadHolder;
 import com.resource.reader.ReadXlsx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,11 +39,6 @@ public class StorageManager implements BeanPostProcessor {
      */
     private static Map<String, InputStream> caches = new ConcurrentHashMap<>();
 
-    public static void init(){
-        if(logger.isDebugEnabled()){
-            logger.debug("进入init");
-        }
-    }
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 
@@ -51,8 +47,6 @@ public class StorageManager implements BeanPostProcessor {
             ResourceDefinition def = ResourceDefinition.valueOf(bean);
             registResourceDefintion(def.getClz(), def);
             registResourceCacah(def.getLocation());
-            /*ReadHolder readHolder = new ReadHolder();
-            readHolder.read(def,caches);*/
             ReadXlsx readXlsx = new ReadXlsx();
             readXlsx.readXlsx(def,caches);
         }

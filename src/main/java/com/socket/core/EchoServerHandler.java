@@ -37,6 +37,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
             logger.error("传来的空包...");
             return;
         }
+        //logger.info("线程："+Thread.currentThread().getName());
         TSession session = SessionUtil.getChannelSession(ctx.channel());
         if(session==null){
             return;
@@ -57,7 +58,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         logger.info("客户端关闭:" + ctx.channel().remoteAddress());
         /**当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
-        cause.printStackTrace();
+        // cause.printStackTrace();
         ctx.channel().close();
 
 

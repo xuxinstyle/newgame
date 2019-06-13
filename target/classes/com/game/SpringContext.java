@@ -1,6 +1,7 @@
 package com.game;
 
 import com.game.base.executor.account.AccountExecutorService;
+import com.game.base.executor.common.CommonExecutorService;
 import com.game.user.account.service.AccountService;
 import com.game.base.core.service.IdentifyService;
 import com.game.role.player.service.PlayerService;
@@ -54,8 +55,12 @@ public class SpringContext implements ApplicationContextAware {
     private SessionManager sessionManager;
     @Autowired
     private AccountExecutorService accountExecutorService;
+    @Autowired
+    private CommonExecutorService commonExecutorService;
 
-
+    public static CommonExecutorService getCommonExecutorService() {
+        return instance.commonExecutorService;
+    }
     public static AccountExecutorService getAccountExecutorService(){
         return instance.accountExecutorService;
     }

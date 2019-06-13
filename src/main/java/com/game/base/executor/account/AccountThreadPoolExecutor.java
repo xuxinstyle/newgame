@@ -1,7 +1,6 @@
 package com.game.base.executor.account;
 
-import com.game.base.executor.account.Impl.AbstractAccountCommond;
-import com.socket.core.session.TSession;
+import com.game.base.executor.account.Impl.AbstractAccountCommand;
 import com.socket.dispatcher.executor.NameThreadFactory;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +28,7 @@ public class AccountThreadPoolExecutor{
         }
     }
 
-    public void addTask(AbstractAccountCommond accountCommond){
+    public void addTask(AbstractAccountCommand accountCommond){
         Object key = accountCommond.getKey();
         int modIndex = accountCommond.modIndex(DEFAULT_INITIAL_THREAD_POOL_SIZE);
         ACCOUNT_SERVICE[modIndex].submit(() -> {

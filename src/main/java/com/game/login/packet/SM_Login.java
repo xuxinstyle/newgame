@@ -9,7 +9,7 @@ import org.msgpack.annotation.Message;
  */
 @Message
 public class SM_Login {
-    //登录状态 1 成功， 0 失败
+    /**登录状态 1 成功， 0 失败：密码错误 -1  有玩家在线 */
     private int status;
     /**
      * 玩家账号Id

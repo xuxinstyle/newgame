@@ -7,6 +7,7 @@ import com.game.user.account.model.AccountInfo;
 import com.game.login.packet.SM_Login;
 import com.game.login.packet.SM_LoginNoAcount;
 import com.game.scence.constant.SceneType;
+import com.game.util.MD5Util;
 import com.socket.core.session.SessionManager;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
@@ -24,44 +25,54 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public void login(TSession session, String username, String passward) throws InterruptedException {
-        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(username);
+
+        int serverId = SpringContext.getServerConfigValue().getServerId();
+        String passwardDB = MD5Util.inputPassToDbPass(passward, MD5Util.saltDB);
+
+        String usernameDB = username+"_"+serverId;
+        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(usernameDB);
         if(accountEnt==null){
             SM_LoginNoAcount sm = new SM_LoginNoAcount();
             session.sendPacket(sm);
             return ;
         }
-        if (accountEnt.getPassward()==null||accountEnt.getPassward().isEmpty()||!accountEnt.getPassward().equals(passward)) {
+        if (accountEnt.getPassward()==null||accountEnt.getPassward().isEmpty()||!accountEnt.getPassward().equals(passwardDB)) {
             SM_Login sm = new SM_Login();
             sm.setStatus(0);
-            sm.setAccountId(username);
+            sm.setAccountId(usernameDB);
             session.sendPacket(sm);
-            logger.info(accountEnt.getAccountId() + "密码错误！");
             return;
         }
         /** 踢对方下线*/
-        /** TODO: */
-        TSession tSession = SessionManager.getSessionByAccount(username);
+
+        /** 本项目设计时考虑多线程所以在分发时将登录操作单独放在一个线程中执行 有可能一个号刚登录进来还没已经清理了上个登录的登录信息， 后面又来一个登录的 发现没有登录信息，所以直接就进入到游戏中*/
+        TSession tSession = SessionManager.getSessionByAccount(usernameDB);
         if(tSession!=null){
             SM_Logout sm = new SM_Logout();
             tSession.sendPacket(sm);
-            while(SessionManager.getSessionByAccount(username)!=null){
-                Thread.sleep(500);
-            }
+            SM_Login sm_login = new  SM_Login();
+            sm_login.setAccountId(usernameDB);
+            sm_login.setStatus(-1);
+            session.sendPacket(sm_login);
+            return;
+            /** 当两个玩家同时登一个已经登录的号时，并同时进入while中，当已经登录的号被顶掉时
+             可能两个号同时出while就可能存在两个号都登录 也可能有一个不能出while就一直在while中循环知道对方退出登录*/
         }
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         accountInfo.setLastLoginTime(System.nanoTime());
         SM_Login sm = new SM_Login();
-        sm.setStatus(1);
-        sm.setAccountId(accountEnt.getAccountId());
+
         if(accountInfo.getLastLogoutMapType()==null){
             accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
         }
         sm.setLastScenceId(accountInfo.getLastLogoutMapType().getMapid());
-        session.sendPacket(sm);
         /** 将accountId放到session中,并将session放到缓存中管理*/
-        SessionManager.addAccountSessionMap(username, session);
-
+        SessionManager.addAccountSessionMap(usernameDB, session);
         SpringContext.getAccountService().save(accountEnt);
+
+        sm.setStatus(1);
+        sm.setAccountId(accountEnt.getAccountId());
+        session.sendPacket(sm);
         logger.info(accountEnt.getAccountId() + "登录成功！");
     }
 

@@ -1,12 +1,14 @@
 package com.game.base.executor.account.Impl;
 
+import com.game.base.executor.AbstractCommand;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/11 17:25
  */
-public abstract class AbstractAccountCommond extends AbstractCommand{
+public abstract class AbstractAccountCommand extends AbstractCommand {
     private String accountId;
-    public AbstractAccountCommond(String accountId){
+    public AbstractAccountCommand(String accountId){
         this.accountId = accountId;
     }
 

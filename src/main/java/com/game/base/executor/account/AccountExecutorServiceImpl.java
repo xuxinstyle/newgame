@@ -1,6 +1,6 @@
 package com.game.base.executor.account;
 
-import com.game.base.executor.account.Impl.AbstractAccountCommond;
+import com.game.base.executor.account.Impl.AbstractAccountCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ public class AccountExecutorServiceImpl implements AccountExecutorService{
     }
 
     @Override
-    public void submit(AbstractAccountCommond commond) {
+    public void submit(AbstractAccountCommand commond) {
         accountThreadPoolExecutor.addTask(commond);
     }
 }

@@ -23,8 +23,8 @@ import java.util.Map;
  */
 
 public class RegistSerializerMessage {
-    //private static final ApplicationContext applicationContext =  new ClassPathXmlApplicationContext("message.xml");
-    private static final String location = "src\\main\\resources\\message.xml";
+
+    private static final String location = "src/main/resources/message.xml";
 
     public static final Map<Integer, Class<?>> idClassMap = new HashMap<Integer, Class<?>>();
 

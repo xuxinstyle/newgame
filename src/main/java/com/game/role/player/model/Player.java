@@ -1,11 +1,13 @@
 package com.game.role.player.model;
 
 import com.game.base.gameObject.GameObject;
+import com.game.base.gameObject.constant.ObjectType;
+import com.game.base.gameObject.model.Creature;
 import com.game.role.constant.Job;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Player extends GameObject {
+public class Player extends Creature<Player> {
 
     /**
      * 账号Id
@@ -51,11 +53,6 @@ public class Player extends GameObject {
         return player;
     }
 
-
-    @Override
-    public String gatName() {
-        return playerName;
-    }
 
     public int getX() {
         return x;
@@ -111,5 +108,15 @@ public class Player extends GameObject {
 
     public void setSurviveStatus(int surviveStatus) {
         this.surviveStatus = surviveStatus;
+    }
+
+    @Override
+    public ObjectType getObjectType() {
+        return ObjectType.PLAYER;
+    }
+
+    @Override
+    public String getName() {
+        return playerName;
     }
 }

@@ -26,7 +26,7 @@ public class SessionManager {
 
     public static void addAccountSessionMap(String accountId, TSession session) {
         session.setAccountId(accountId);
-        accountSessionMap.put(accountId, session);
+        accountSessionMap.putIfAbsent(accountId, session);
     }
 
 

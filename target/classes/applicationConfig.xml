@@ -6,5 +6,6 @@
 
     <bean id="serverConfigValue" class="com.game.ServerConfigValue">
         <property name="port" value="${server.socket.port}"/>
+        <property name="serverId" value="${server.config.serverId}"/>
     </bean>
 </beans>

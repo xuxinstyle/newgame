@@ -35,10 +35,10 @@ public class Start {
         applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         logger.info("开始注册协议....");
         new RegistSerializerMessage().init();
-        CommonExecutor.start();
+        logger.info("开始初始化通用线程池");
+        SpringContext.getCommonExecutorService().init();
         logger.info("开始初始化账号线程池...");
         SpringContext.getAccountExecutorService().init();
-        // StorageManager.init();
         applicationContext.start();
         logger.info("初始化完毕...");
         int port = SpringContext.getServerConfigValue().getPort();
@@ -68,7 +68,7 @@ public class Start {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            System.out.println(Thread.currentThread().getName() + ",服务器初始化通道...");
+                            logger.info(Thread.currentThread().getName() + ",服务器初始化通道...");
                             /**
                              * 为了处理半包消息，添加如下两个 Netty 内置的编解码器
                              * LengthFieldPrepender：前置长度域编码器——放在MsgpackEncoder编码器前面

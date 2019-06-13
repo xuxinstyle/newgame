@@ -11,7 +11,7 @@ import com.game.scence.resource.MapResource;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.user.account.packet.SM_EnterCreatePlayer;
-import com.resource.StorageManager;
+import com.resource.core.StorageManager;
 import com.socket.core.session.SessionManager;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
@@ -50,13 +50,13 @@ public class ScenceServiceImpl implements ScenceService {
             sm.setAccountId(accountId);
 
             session.sendPacket(sm);
-            logger.info("没有角色信息");
+            logger.info("玩家[{}]进入创角",accountId);
             return;
         }
         /**
          * 如果有角色信息，则进入玩家上次在的地图
          */
-        logger.info("有角色信息！");
+        logger.info("玩家[{}]有角色信息！开始进图地图",accountId);
         doEnterMap(session, accountId, mapId);
 
     }
@@ -153,8 +153,9 @@ public class ScenceServiceImpl implements ScenceService {
          * 如玩家没有昵称，则说明没有创角色信息
          */
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        logger.info(accountInfo.toString());
-
+        if(logger.isDebugEnabled()) {
+            logger.debug(accountInfo.toString());
+        }
         if (accountInfo.getAccountName() == null || "".equals(accountInfo.getAccountName())) {
             return false;
         }
@@ -292,6 +293,9 @@ public class ScenceServiceImpl implements ScenceService {
         }
         for(Player player:players){
             TSession session = accountSessionMap.get(player.getAccountId());
+            if(session==null){
+                return;
+            }
             SM_OnlinePlayerOperate sm = new SM_OnlinePlayerOperate();
             sm.setScenePositions(str.toString());
             session.sendPacket(sm);

@@ -1,4 +1,4 @@
-package com.game.base.executor.account.Impl;
+package com.game.base.executor;
 
 import com.game.base.executor.ICommand;
 
@@ -30,6 +30,7 @@ public abstract class AbstractCommand implements ICommand {
         }
         isCanceled = true;
     }
+
 
     @Override
     public void refreshState() {

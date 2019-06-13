@@ -49,7 +49,6 @@ public class AccountServiceImpl implements AccountService {
             logger.warn("数据库中没有["+accountId+"]的账号信息");
             return null;
         }
-        accountEnt.doDeserialize();
         if(logger.isDebugEnabled()){
             logger.debug(accountEnt.getAccountInfo().toString());
             logger.debug(accountEnt.toString());
@@ -83,16 +82,7 @@ public class AccountServiceImpl implements AccountService {
             logger.error("accountEnt为空，持久化失败");
             return ;
         }
-        accountEnt.doSerialize();
-        if(logger.isDebugEnabled()){
-            logger.debug(accountEnt.toString());
-            logger.debug(accountEnt.getAccountInfo().toString());
-        }
         hibernateDao.saveOrUpdate(AccountEnt.class,accountEnt);
-        AccountEnt accountEnt1 = getAccountEnt(accountEnt.getAccountId());
-        if(logger.isDebugEnabled()){
-            logger.debug(accountEnt1.toString());
-        }
     }
 
 

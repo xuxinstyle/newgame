@@ -1,6 +1,6 @@
 package com.game.base.executor.account;
 
-import com.game.base.executor.account.Impl.AbstractAccountCommond;
+import com.game.base.executor.account.Impl.AbstractAccountCommand;
 
 /**
  * @Author：xuxin
@@ -12,6 +12,10 @@ public interface AccountExecutorService {
      */
     void init();
 
-    public void submit(AbstractAccountCommond commond);
+    /**
+     * 将command抛到对应的线程中执行
+     * @param commond
+     */
+    public void submit(AbstractAccountCommand commond);
 
 }

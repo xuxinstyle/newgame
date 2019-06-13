@@ -4,7 +4,7 @@ package com.game.base.executor;
  * @Author：xuxin
  * @Date: 2019/6/11 17:16
  */
-public interface ICommand {
+public interface ICommand{
     /**
      * 获取commond的key
      * @return
@@ -13,7 +13,7 @@ public interface ICommand {
     /**
      * 获取名字
      */
-    /*String getJobName();*/
+    String getName();
     /**
      * 执行任务逻辑
      */

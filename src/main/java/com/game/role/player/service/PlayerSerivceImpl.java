@@ -2,7 +2,7 @@ package com.game.role.player.service;
 
 import com.db.HibernateDao;
 import com.game.SpringContext;
-import com.game.base.gameObject.constant.EntityType;
+import com.game.base.gameObject.constant.ObjectType;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.role.player.entity.PlayerEnt;
@@ -27,7 +27,6 @@ public class PlayerSerivceImpl implements PlayerService {
     private HibernateDao hibernateDao;
     @Override
     public void save(PlayerEnt playerEnt) {
-        playerEnt.doSerialize();
         hibernateDao.update(PlayerEnt.class, playerEnt);
     }
 
@@ -40,14 +39,13 @@ public class PlayerSerivceImpl implements PlayerService {
 
     @Override
     public void insert(PlayerEnt playerEnt) {
-        playerEnt.doSerialize();
         hibernateDao.save(PlayerEnt.class, playerEnt);
     }
 
     @Override
     public PlayerEnt createPlayer(String accountId, Job type) {
         PlayerEnt playerEnt = new PlayerEnt();
-        long playerId = SpringContext.getIdentifyService().getNextIdentify(EntityType.PLAYER);
+        long playerId = SpringContext.getIdentifyService().getNextIdentify(ObjectType.PLAYER);
         playerEnt.setPlayerId(playerId);
         playerEnt.setAccountId(accountId);
         Player player = Player.valueOf(playerId, accountId, type);

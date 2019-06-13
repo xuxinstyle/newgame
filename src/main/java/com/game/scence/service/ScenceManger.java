@@ -4,7 +4,7 @@ import com.game.SpringContext;
 import com.game.role.player.model.Player;
 import com.game.scence.constant.SceneType;
 import com.game.scence.model.ScenceInfo;
-import com.resource.StorageManager;
+import com.resource.core.StorageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

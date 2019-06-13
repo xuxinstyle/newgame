@@ -24,18 +24,27 @@ public class HibernateDao extends HibernateDaoSupport {
     }
 
     public <PK extends Serializable,T extends IEntity> T find(Class<T> clz, PK id){
-        return (T)getSession().get(clz, id);
+        T t = getSession().get(clz, id);
+        if(t==null){
+            return null;
+        }
+        t.unserialize();
+        return t;
     }
     public <PK extends Serializable,T extends IEntity> PK save(Class<T> clz, T entity){
+        entity.serialize();
         return (PK) getSession().save(entity);
     }
     public <PK extends Serializable,T extends IEntity> void remove(Class<T> clz, T entity){
         getSession().delete(entity);
     }
     public <PK extends Serializable,T extends IEntity> void update(Class<T> clz, T entity){
+
+        entity.serialize();
         getSession().update(entity);
     }
     public <PK extends Serializable,T extends IEntity> void saveOrUpdate(Class<T> clz, T entity){
+        entity.serialize();
         getSession().saveOrUpdate(entity);
     }
 }
