@@ -25,12 +25,20 @@ public class ScenceInfo {
         List<Player> player = SpringContext.getPlayerSerivce().getPlayer(accountId);
         if(player==null){
             logger.warn("账号[{}]没有创建角色",accountId);
-            return null;
+            scenceInfo.setPlayers(new ArrayList<>());
+            return scenceInfo;
         }
         scenceInfo.setPlayers(player);
         return scenceInfo;
     }
-
+    public boolean checkPlayer(Player player){
+        for(Player player1 :players){
+            if(player1.getObjectId()==player.getObjectId()){
+                return true;
+            }
+        }
+        return false;
+    }
     public int getMapId() {
         return mapId;
     }

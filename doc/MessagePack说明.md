@@ -10,7 +10,7 @@ MessagePack 是一种高效的二进制序列化格式。它允许您在 JSON �
 * msgpack.read(b)
 #### msg to Class
 * class t = MessagePack.unpack(MessagePack.pack(msg),clazz);
-
+messagepack.read();
 ### 发包
   * LengthFieldPrepender：前置长度域编码器——放在MsgpackEncoder编码器前面
  LengthFieldPrepender()会在编码之前将需要编码的包前加一个指定长度为的字段，该字段存放包的长度加上本身长度（一般为2）

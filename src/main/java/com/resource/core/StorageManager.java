@@ -6,6 +6,7 @@ import com.resource.StorageData;
 import com.resource.anno.Resource;
 import com.resource.other.ResourceDefinition;
 import com.resource.reader.ReadXlsx;
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -61,14 +62,39 @@ public class StorageManager implements BeanPostProcessor {
 
     }
 
+    public static Object getResource( Class<?> clz, Object key){
+        if(logger.isDebugEnabled()){
+            logger.debug(storageMap.get(MapResource.class).getData().getValues().toString());
+        }
+        Object object = storageMap.get(clz).getData().getValues().get(key);
+        if(object==null||!object.getClass().equals(clz)){
+            logger.error("获取资源对象失败！");
+            return null;
+        }
+        return object;
+    }
+    public static Collection<?> getResourceAll(Class<?> clz){
+        Collection<?> values = storageMap.get(clz).getData().getValues().values();
+        if(values==null||!values.getClass().equals(clz)){
+            logger.error("获取资源对象失败！");
+            return null;
+        }
+        return values;
+    }
 
     public Storage<?, ?> getStorage(Class clz){
         return storageMap.get(clz);
     }
     /** 根据主键和clz获取Resource对象*/
+
     public <T> T getResource(Object key, Class<T> clz){
         Storage<?, ?> storage = getStorage(clz);
-        return (T)storage.getData().getValues().get(key);
+        T t = (T) storage.getData().getValues().get(key);
+        if(t==null||!t.getClass().equals(clz)){
+            logger.error("获取资源对象失败！");
+            return null;
+        }
+        return t;
     }
     public static void putStorage(ResourceDefinition def, Map<Object,Object> map) {
         Class<?> clz = def.getClz();
@@ -113,18 +139,6 @@ public class StorageManager implements BeanPostProcessor {
 
     public static Map<Class<?>, Storage<?, ?>> getStorageMap() {
         return storageMap;
-    }
-
-    public static Object getResource( Class<?> clz, Object key){
-        if(logger.isDebugEnabled()){
-            logger.debug(storageMap.get(MapResource.class).getData().getValues().toString());
-        }
-        Object object = storageMap.get(clz).getData().getValues().get(key);
-        if(object==null||!object.getClass().equals(clz)){
-            logger.error("获取资源对象失败！");
-            return null;
-        }
-        return object;
     }
 
     public static void setStorageMap(Map<Class<?>, Storage<?, ?>> storageMap) {

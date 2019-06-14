@@ -89,10 +89,12 @@ public class LoginServiceImpl implements LoginService {
         }else {
             accountInfo.setLastLogoutMapType(accountInfo.getCurrentMapType());
             accountInfo.setLastLogoutTime(System.nanoTime());
-            SpringContext.getAccountService().save(accountEnt);
-            session.logout(accountId);
+
             SpringContext.getSessionManager().removeSession(accountId);
             SpringContext.getScenceSerivce().removeScenceAccountId(accountInfo.getCurrentMapType().getMapid(), accountId);
+            accountInfo.setCurrentMapType(null);
+            SpringContext.getAccountService().save(accountEnt);
+            session.logout(accountId);
 
         }
     }

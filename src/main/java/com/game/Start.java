@@ -35,10 +35,12 @@ public class Start {
         applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         logger.info("开始注册协议....");
         new RegistSerializerMessage().init();
-        logger.info("开始初始化通用线程池");
+        logger.info("开始初始化通用线程池...");
         SpringContext.getCommonExecutorService().init();
         logger.info("开始初始化账号线程池...");
         SpringContext.getAccountExecutorService().init();
+        logger.info("开始初始化场景线程池...");
+        SpringContext.getSceneExecutorService().init();
         applicationContext.start();
         logger.info("初始化完毕...");
         int port = SpringContext.getServerConfigValue().getPort();

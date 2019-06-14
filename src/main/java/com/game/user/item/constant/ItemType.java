@@ -10,10 +10,14 @@ public enum  ItemType {
 
     /** 装备*/
     EQUIPMENT(2),
-    /** 宝石*/
+    /** 可镶嵌到装备的宝石*/
     GEM(3),
     /** 经验*/
     EXP(4),
+    /** 强化石*/
+    FORTIFIEDSTONE(5),
+    /**升阶石*/
+    UPSTONE(6),
     ;
     /** 道具类型Id*/
     private int id;

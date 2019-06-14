@@ -4,11 +4,13 @@ import com.game.SpringContext;
 import com.game.role.player.model.Player;
 import com.game.scence.constant.SceneType;
 import com.game.scence.model.ScenceInfo;
+import com.game.scence.resource.MapResource;
 import com.resource.core.StorageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,27 +31,33 @@ public class ScenceManger {
     public Object getResource(String id, Class<?> clz){
         return StorageManager.getResource(clz, id);
     }
-
+    public Collection<?> getResourceAll(Class<?> clz){
+        return StorageManager.getResourceAll(clz);
+    }
     public ScenceInfo getScenceInfo(int mapId){
         ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);
         return scenceInfo;
     }
-
+    public void init(){
+        Collection<MapResource> resourceAll = (Collection<MapResource>) getResourceAll(MapResource.class);
+        for(MapResource resource:resourceAll){
+            int id = resource.getId();
+            scenceAccountIdMap.put(id,ScenceInfo.valueOf(id,null));
+        }
+    }
     /**
-     * 这里问问要加同步吗
+     * 存在并发问题
      * @param mapId
      * @param accountId
      */
     public void setScenceInfo(int mapId, String accountId){
-
-        if (scenceAccountIdMap.get(mapId) == null) {
-            ScenceInfo scenceInfo = ScenceInfo.valueOf(mapId,accountId);
-            scenceAccountIdMap.put(mapId, scenceInfo);
-        }else {
-            ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);
-            List<Player> player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-            scenceInfo.setPlayers(player);
+        if(scenceAccountIdMap.get(mapId)==null){
+            scenceAccountIdMap.put(mapId,ScenceInfo.valueOf(mapId,accountId));
+            return;
         }
+        ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);
+        List<Player> player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        scenceInfo.setPlayers(player);
 
     }
 

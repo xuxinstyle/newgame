@@ -4,6 +4,7 @@ import com.game.SpringContext;
 import com.game.role.constant.Job;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
+import com.game.scence.command.EnterMapCommand;
 import com.game.scence.constant.SceneType;
 import com.game.scence.model.ScenceInfo;
 import com.game.scence.packet.*;
@@ -57,7 +58,9 @@ public class ScenceServiceImpl implements ScenceService {
          * 如果有角色信息，则进入玩家上次在的地图
          */
         logger.info("玩家[{}]有角色信息！开始进图地图",accountId);
-        doEnterMap(session, accountId, mapId);
+        EnterMapCommand enterMapCommand = new EnterMapCommand(session,accountId,mapId);
+        SpringContext.getSceneExecutorService().submit(enterMapCommand);
+        //doEnterMap(session, accountId, mapId);
 
     }
 
@@ -137,8 +140,9 @@ public class ScenceServiceImpl implements ScenceService {
         if(currentMapType!=null){
             /** 1.清除上次地图中玩家存的缓存信息*/
             removeScenceAccountId(currentMapType.getMapid(), accountId);
+            showMap(currentMapType.getMapid());
         }
-        showMap(currentMapType.getMapid());
+
     }
 
     /**

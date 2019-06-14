@@ -14,7 +14,7 @@ public class Monster extends GameObject {
     private SceneType currentScene;
 
     @Override
-    public String gatName() {
+    public String getName() {
         return null;
     }
 }
