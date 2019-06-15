@@ -84,6 +84,7 @@ public class LoginServiceImpl implements LoginService {
             return;
         }
         AccountInfo accountInfo = accountEnt.getAccountInfo();
+        /** 没有进入过地图就退出*/
         if(accountInfo.getCurrentMapType()==null){
             accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
         }else {

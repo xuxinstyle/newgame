@@ -52,7 +52,6 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
             } else{
                 doHandle(session,opIndex,pack);
             }
-
         }else{
             MessageCommand messageCommond = new MessageCommand(session, opIndex, pack, session.getAccountId());
             SpringContext.getAccountExecutorService().submit(messageCommond);

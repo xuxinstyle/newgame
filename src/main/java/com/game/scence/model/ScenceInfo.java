@@ -13,24 +13,31 @@ import java.util.List;
  * @Date: 2019/6/3 11:43
  */
 public class ScenceInfo {
-    private static final Logger logger = LoggerFactory.getLogger(ScenceInfo.class);
+
     /** 地图id*/
     private int mapId;
     /** 角色*/
     private List<Player> players;
+    /**地图坐标信息信息*/
+    private int[][] mapContext;
 
-    public static ScenceInfo valueOf(int mapId, String accountId) {
+    public static ScenceInfo valueOf(int mapId, int[][] mapContext ) {
         ScenceInfo scenceInfo = new ScenceInfo();
         scenceInfo.setMapId(mapId);
-        List<Player> player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-        if(player==null){
-            logger.warn("账号[{}]没有创建角色",accountId);
-            scenceInfo.setPlayers(new ArrayList<>());
-            return scenceInfo;
-        }
-        scenceInfo.setPlayers(player);
+        List<Player> players = new ArrayList<>();
+        scenceInfo.players = players;
+
         return scenceInfo;
     }
+
+    public int[][] getMapContext() {
+        return mapContext;
+    }
+
+    public void setMapContext(int[][] mapContext) {
+        this.mapContext = mapContext;
+    }
+
     public boolean checkPlayer(Player player){
         for(Player player1 :players){
             if(player1.getObjectId()==player.getObjectId()){

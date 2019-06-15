@@ -208,9 +208,6 @@ public class ScenceServiceImpl implements ScenceService {
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         if (accountEnt == null) {
             logger.warn("没有 [" + accountId + "]的账号信息");
-            SM_ShowAccountInfo sm = new SM_ShowAccountInfo();
-            sm.setAccountId(null);
-            session.sendPacket(sm);
             return;
         }
         AccountInfo accountInfo = accountEnt.getAccountInfo();
@@ -236,7 +233,9 @@ public class ScenceServiceImpl implements ScenceService {
 
     @Override
     public void setScenceAccountId(int mapId, String accountId) {
-        scenceManger.setScenceInfo(mapId, accountId);
+
+        List<Player> players = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        scenceManger.setScenceInfo(mapId,players);
     }
 
     @Override
@@ -285,6 +284,7 @@ public class ScenceServiceImpl implements ScenceService {
     public void showMap(int mapId) {
         ScenceInfo scenceInfo = scenceManger.getScenceInfo(mapId);
         if(scenceInfo==null){
+            logger.error("没有地图{}的信息",mapId);
             return;
         }
         List<Player> players = scenceInfo.getPlayers();
@@ -308,8 +308,7 @@ public class ScenceServiceImpl implements ScenceService {
 
     }
 
-    private boolean checkMove(String accountId, int x, int y) {
-
+    private boolean checkMove(String accountId, int y, int x) {
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         SceneType currentMapType = accountInfo.getCurrentMapType();
@@ -325,21 +324,24 @@ public class ScenceServiceImpl implements ScenceService {
             return false;
         }
         for (int i = 0; i < mapX.length; i++) {
-            String[] mapY = mapX[0].split(" ");
+            String[] mapY = mapX[i].split(" ");
             if (y > mapY.length || y < 1) {
                 logger.warn("不能移动到x={},y={}", x, y);
                 return false;
             }
-            if (Integer.parseInt(mapY[y - 1]) == 1 && x == i) {
+            if (Integer.parseInt(mapY[y - 1]) == 1 && x-1 == i) {
                 logger.warn("不能移动到x={},y={}", x, y);
                 return false;
             }
-            if (Integer.parseInt(mapY[y - 1]) == 0 && x == i) {
+            if (Integer.parseInt(mapY[y - 1]) == 0 && x-1 == i) {
                 return true;
             }
         }
         return false;
     }
 
-
+    @Override
+    public void init() {
+        scenceManger.init();
+    }
 }

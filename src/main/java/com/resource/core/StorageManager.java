@@ -75,7 +75,7 @@ public class StorageManager implements BeanPostProcessor {
     }
     public static Collection<?> getResourceAll(Class<?> clz){
         Collection<?> values = storageMap.get(clz).getData().getValues().values();
-        if(values==null||!values.getClass().equals(clz)){
+        if(values==null){
             logger.error("获取资源对象失败！");
             return null;
         }

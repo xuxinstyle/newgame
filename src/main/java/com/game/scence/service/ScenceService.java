@@ -64,5 +64,6 @@ public interface ScenceService {
     MapResource getMapResource(int mapId);
 
     void showMap(int mapId);
+    void init();
 
 }

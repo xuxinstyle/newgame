@@ -38,26 +38,45 @@ public class ScenceManger {
         ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);
         return scenceInfo;
     }
+    /*uncheck*/
     public void init(){
         Collection<MapResource> resourceAll = (Collection<MapResource>) getResourceAll(MapResource.class);
         for(MapResource resource:resourceAll){
             int id = resource.getId();
-            scenceAccountIdMap.put(id,ScenceInfo.valueOf(id,null));
+            MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(id);
+            String context = mapResource.getContext();
+            String[] mapY = context.split(",");
+            if(mapY.length<0) {
+                logger.info("地图{}资源加载错误",resource);
+                return;
+            }
+            String[] mapX = mapY[0].split(" ");
+            int[][] mapcontext = new int[mapX.length][mapY.length];
+            for (int i = 0; i < mapY.length; i++) {
+                String[] mapj = mapY[i].split(" ");
+                for(int j = 0; j < mapj.length ;j++){
+                    mapcontext[i][j] = Integer.parseInt(mapj[j]);
+                }
+            }
+            for(int i=0;i<mapcontext.length;i++){
+
+                for(int j=0;j<mapcontext[0].length;j++){
+                    System.out.print(mapcontext[i][j]+" ");
+                }
+                System.out.println();
+            }
+            scenceAccountIdMap.put(id,ScenceInfo.valueOf(id,mapcontext));
         }
+
     }
     /**
      * 存在并发问题
      * @param mapId
-     * @param accountId
+     * @param List<Player>
      */
-    public void setScenceInfo(int mapId, String accountId){
-        if(scenceAccountIdMap.get(mapId)==null){
-            scenceAccountIdMap.put(mapId,ScenceInfo.valueOf(mapId,accountId));
-            return;
-        }
+    public void setScenceInfo(int mapId, List<Player> players){
         ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);
-        List<Player> player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-        scenceInfo.setPlayers(player);
+        scenceInfo.setPlayers(players);
 
     }
 

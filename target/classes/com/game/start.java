@@ -39,8 +39,9 @@ public class Start {
         SpringContext.getCommonExecutorService().init();
         logger.info("开始初始化账号线程池...");
         SpringContext.getAccountExecutorService().init();
-        logger.info("开始初始化场景线程池...");
-        SpringContext.getSceneExecutorService().init();
+        /*logger.info("开始初始化场景线程池...");
+        SpringContext.getSceneExecutorService().init();*/
+        SpringContext.getScenceSerivce().init();
         applicationContext.start();
         logger.info("初始化完毕...");
         int port = SpringContext.getServerConfigValue().getPort();
