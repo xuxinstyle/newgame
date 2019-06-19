@@ -137,7 +137,7 @@ public class ItemServiceImpl implements ItemService {
         ItemResource itemResource = SpringContext.getItemService().getItemResource(item.getItemModelId());
         if (itemResource.isAutoUse()) {
 
-            item.use(accountId);
+            item.use(accountId,num);
         }else {
             addItemToPackAndSave(accountId, item);
         }

@@ -74,5 +74,5 @@ public interface ScenceService {
     /**
      * 做玩家升级
      */
-    void doPlayerUpLevel(int mapId, Player player);
+    void doPlayerUpLevel( Player player);
 }

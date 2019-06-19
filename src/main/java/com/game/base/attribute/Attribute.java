@@ -25,15 +25,15 @@ public class Attribute {
         return attribute;
     }
     public void remove(Attribute attribute){
-        if(value-attribute.getValue()>=0) {
-            value -= attribute.getValue();
+        if(this.value-attribute.getValue()>=0) {
+            this.value -= attribute.getValue();
         }
     }
-    public void remove(long value){
-        value-=value;
+    public void reduce(long value){
+        this.value-=value;
     }
     public void addValue(long value){
-        value+=value;
+        this.value+=value;
     }
     public AttributeType getAttributeType() {
         return attributeType;

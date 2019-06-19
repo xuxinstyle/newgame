@@ -10,20 +10,20 @@ public enum SceneType {
     NoviceVillage(1,"新手村"),
     FIELD(2,"野外");
 
-    private int mapid;
+    private int mapId;
 
     private String mapName;
 
     public static SceneType valueOf(int mapid){
         for(SceneType type:SceneType.values()){
-            if(type.getMapid()==mapid){
+            if(type.getMapId()==mapid){
                 return type;
             }
         }
         return null;
     }
-    private SceneType(int mapid, String mapName){
-        this.mapid = mapid;
+    private SceneType(int mapId, String mapName){
+        this.mapId = mapId;
         this.mapName = mapName;
     }
 
@@ -31,8 +31,8 @@ public enum SceneType {
         return mapName;
     }
 
-    public int getMapid() {
-        return mapid;
+    public int getMapId() {
+        return mapId;
     }
 
 }

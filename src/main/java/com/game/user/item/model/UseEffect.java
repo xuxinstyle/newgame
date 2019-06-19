@@ -19,7 +19,7 @@ public abstract class UseEffect {
 
     /**
      * 使用
-     * @param player
+     * @param
      */
-    public abstract void use(String accountId);
+    public abstract void use(String accountId,int num);
 }

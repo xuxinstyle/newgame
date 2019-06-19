@@ -12,6 +12,7 @@ import com.game.scence.service.ScenceService;
 import com.game.register.service.RegisterService;
 import com.game.user.equip.service.EquipService;
 import com.game.user.item.service.ItemService;
+import com.schedule.core.QuartzService;
 import com.socket.core.session.SessionManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,12 @@ public class SpringContext implements ApplicationContextAware {
     private EquipService equipService;
     @Autowired
     private EvenManager evenManager;
+    @Autowired
+    private QuartzService quartzService;
+
+    public static QuartzService getQuartzService(){
+        return instance.quartzService;
+    }
 
     public static EvenManager getEvenManager(){
         return instance.evenManager;

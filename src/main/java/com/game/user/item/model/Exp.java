@@ -20,11 +20,10 @@ public class Exp extends AbstractItem{
     }
 
     @Override
-    public void use(String accountId) {
+    public void use(String accountId,int num) {
         ItemResource itemResource = SpringContext.getItemService().getItemResource(itemModelId);
         ExpUseEffect useEffect = (ExpUseEffect)itemResource.getUseEffect();
 
-        useEffect.setAddExp(this.num*useEffect.getAddExp());
-        useEffect.use(accountId);
+        useEffect.use(accountId,num);
     }
 }

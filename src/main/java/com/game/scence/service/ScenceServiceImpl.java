@@ -135,8 +135,8 @@ public class ScenceServiceImpl implements ScenceService {
         SceneType currentMapType = accountInfo.getCurrentMapType();
         if(currentMapType!=null){
             /** 1.清除上次地图中玩家存的缓存信息*/
-            removeScenceAccountId(currentMapType.getMapid(), accountId);
-            showMap(currentMapType.getMapid());
+            removeScenceAccountId(currentMapType.getMapId(), accountId);
+            showMap(currentMapType.getMapId());
         }
     }
 
@@ -262,7 +262,7 @@ public class ScenceServiceImpl implements ScenceService {
         Player player = playerEnt.getPlayer();
         player.setX(x);
         player.setY(y);
-        refreshScenceInfo(accountInfo.getCurrentMapType().getMapid(),player);
+        refreshScenceInfo(accountInfo.getCurrentMapType().getMapId(),player);
         SpringContext.getPlayerSerivce().save(playerEnt);
 
         SM_Move sm = new SM_Move();
@@ -273,7 +273,11 @@ public class ScenceServiceImpl implements ScenceService {
     }
 
     @Override
-    public void doPlayerUpLevel(int mapId, Player player) {
+    public void doPlayerUpLevel( Player player) {
+        String accountId = player.getAccountId();
+        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+        AccountInfo accountInfo = accountEnt.getAccountInfo();
+        int mapId = accountInfo.getCurrentMapType().getMapId();
         refreshScenceInfo(mapId, player);
     }
 

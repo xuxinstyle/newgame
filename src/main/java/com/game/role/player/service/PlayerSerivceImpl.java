@@ -6,20 +6,23 @@ import com.game.base.attribute.Attribute;
 import com.game.base.attribute.AttributeContainer;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.gameObject.constant.ObjectType;
+import com.game.role.player.packet.SM_ShowAttribute;
 import com.game.role.player.resource.PlayerLevelResource;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
-import com.game.role.constant.Job;
 import com.game.user.equip.entity.EquipmentEnt;
 import com.game.user.equip.model.EquipmentInfo;
 import com.resource.core.StorageManager;
+import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,8 +66,8 @@ public class PlayerSerivceImpl implements PlayerService {
         /** 生成玩家基础属性*/
         PlayerLevelResource resource = storageManager.getResource(player.getLevel(), PlayerLevelResource.class);
         AttributeContainer attributeContainer = AttributeContainer.valueOf();
-        Map<AttributeType, Attribute> baseAttributeMap = resource.getBaseAttributeMap();
-        attributeContainer.addAndCompute(baseAttributeMap);
+        List<Attribute> baseAttributeList = resource.getBaseAttributeList();
+        attributeContainer.addAndComputeMap(baseAttributeList);
         player.setAttributeContainer(attributeContainer);
         playerEnt.setPlayer(player);
         insert(playerEnt);
@@ -98,5 +101,38 @@ public class PlayerSerivceImpl implements PlayerService {
         return SpringContext.getPlayerSerivce().getPlayerEnt(playerId);
     }
 
+    @Override
+    public void showPlayerAttribute(TSession session, String accountId){
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
 
+        Map<AttributeType, Attribute> firstAttributeMap = attributeContainer.getFirstAttributeMap();
+        Map<AttributeType, Attribute> computeAttributeMap = attributeContainer.getComputeAttributeMap();
+        List<Attribute> firstList = new ArrayList<>(firstAttributeMap.values());
+        List<Attribute> secondList = new ArrayList<>(computeAttributeMap.values());
+        SM_ShowAttribute sm = new SM_ShowAttribute();
+        sm.setFirstAttribute(firstList);
+        sm.setSecondAttribute(secondList);
+        sm.setPlayerName(player.getPlayerName());
+        session.sendPacket(sm);
+    }
+
+    @Override
+    public void doPlayerUpLevel(Player player) {
+        String accountId = player.getAccountId();
+        PlayerEnt playerEnt = getPlayerEnt(accountId);
+        Player myPlayer = playerEnt.getPlayer();
+        PlayerLevelResource lastplayerLevelResource = getPlayerLevelResource(myPlayer.getLevel() - 1);
+        PlayerLevelResource playerLevelResource = getPlayerLevelResource(player.getLevel());
+        if(playerLevelResource==null){
+            return;
+        }
+        List<Attribute> baseAttributeList = lastplayerLevelResource.getBaseAttributeList();
+        myPlayer.getAttributeContainer().removeAndCompute(baseAttributeList);
+
+        List<Attribute> baseAttributeListEnd = playerLevelResource.getBaseAttributeList();
+        myPlayer.getAttributeContainer().addAndComputeMap(baseAttributeListEnd);
+        save(playerEnt);
+
+    }
 }

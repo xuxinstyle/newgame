@@ -7,6 +7,7 @@ import com.game.user.equip.constant.EquipType;
 import com.game.user.equip.resource.EquipResource;
 import com.game.user.item.resource.ItemResource;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,7 +18,7 @@ public class Equipment extends AbstractItem {
 
     private EquipType equipType;
     /** 属性加成*/
-    private Map<AttributeType, Attribute> attributeMap;
+    private List<Attribute> attributeList;
     private int quality;
     private int level;
 
@@ -29,7 +30,7 @@ public class Equipment extends AbstractItem {
         equipment.num = this.getNum();
         equipment.status = this.getStatus();
         equipment.deprecatedTime = this.getDeprecatedTime();
-        equipment.attributeMap = this.getAttributeMap();
+        equipment.attributeList = this.getAttributeList();
         equipment.equipType = this.getEquipType();
         equipment.level = this.level;
         equipment.itemType = this.itemType;
@@ -41,7 +42,7 @@ public class Equipment extends AbstractItem {
     public void init(ItemResource itemResource, Map<String, Object> params){
         super.init(itemResource,  params);
         EquipResource equipResource = SpringContext.getItemService().getEquipResource(itemModelId);
-        this.attributeMap = equipResource.getBaseAttributeMap();
+        this.attributeList = equipResource.getBaseAttributeList();
         this.equipType = EquipType.valueOf(equipResource.getEquipType());
         this.level = 1;
         this.quality = itemResource.getQuality();
@@ -54,12 +55,12 @@ public class Equipment extends AbstractItem {
         this.equipType = equipType;
     }
 
-    public Map<AttributeType, Attribute> getAttributeMap() {
-        return attributeMap;
+    public List<Attribute> getAttributeList() {
+        return attributeList;
     }
 
-    public void setAttributeMap(Map<AttributeType, Attribute> attributeMap) {
-        this.attributeMap = attributeMap;
+    public void setAttributeList(List<Attribute> attributeList) {
+        this.attributeList = attributeList;
     }
 
     public int getLevel() {

@@ -27,7 +27,7 @@ public class Medicine extends AbstractItem{
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(accountId);
         Player player = playerEnt.getPlayer();
         AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
-        /*Map<AttributeType, Attribute> attributeMap = attributeContainer.getAttributeMap();
+        /*Map<AttributeType, Attribute> attributeMap = attributeContainer.getAttributeList();
         ItemResource itemResource = SpringContext.getItemService().getItemResource(this.itemModelId);*/
 
     }

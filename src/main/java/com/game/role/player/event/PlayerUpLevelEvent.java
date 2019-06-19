@@ -8,27 +8,15 @@ import com.game.role.player.model.Player;
  * @Date: 2019/6/17 19:31
  */
 public class PlayerUpLevelEvent implements IEvent {
-    /**
-     * 地图
-     */
-    private int mapId;
+
     /**
      * 玩家
      */
     private Player player;
-    public static PlayerUpLevelEvent valueOf(int mapId, Player player){
+    public static PlayerUpLevelEvent valueOf(Player player){
         PlayerUpLevelEvent event = new PlayerUpLevelEvent();
-        event.setMapId(mapId);
         event.setPlayer(player);
         return event;
-    }
-
-    public int getMapId() {
-        return mapId;
-    }
-
-    public void setMapId(int mapId) {
-        this.mapId = mapId;
     }
 
     public Player getPlayer() {

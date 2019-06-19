@@ -58,15 +58,10 @@ public class ItemResource {
      * 配置表中一定要配置对应的符号，要么就
      */
     public void analyzeEffect(){
-        if(effect==null){
-            return;
-        }
+
         String[] split = effect.split(":");
-        if(split==null){
-            return;
-        }
         UseEffect useEffect = UseEffectType.valueOf(split[0]).create();
-        useEffect.init(split[1]);
+        useEffect.init(split[1]+split[2]);
         this.useEffect = useEffect;
     }
 

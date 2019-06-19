@@ -50,13 +50,6 @@ public class LoginServiceImpl implements LoginService {
         if(tSession!=null){
             SM_Logout sm = new SM_Logout();
             tSession.sendPacket(sm);
-            SM_Login sm_login = new  SM_Login();
-            sm_login.setAccountId(usernameDB);
-            sm_login.setStatus(-1);
-            session.sendPacket(sm_login);
-            return;
-            /** 当两个玩家同时登一个已经登录的号时，并同时进入while中，当已经登录的号被顶掉时
-             可能两个号同时出while就可能存在两个号都登录 也可能有一个不能出while就一直在while中循环知道对方退出登录*/
         }
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         accountInfo.setLastLoginTime(System.nanoTime());
@@ -65,7 +58,7 @@ public class LoginServiceImpl implements LoginService {
         if(accountInfo.getLastLogoutMapType()==null){
             accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
         }
-        sm.setLastScenceId(accountInfo.getLastLogoutMapType().getMapid());
+        sm.setLastScenceId(accountInfo.getLastLogoutMapType().getMapId());
         /** 将accountId放到session中,并将session放到缓存中管理*/
         SessionManager.addAccountSessionMap(usernameDB, session);
         SpringContext.getAccountService().save(accountEnt);
@@ -90,7 +83,7 @@ public class LoginServiceImpl implements LoginService {
             accountInfo.setLastLogoutMapType(accountInfo.getCurrentMapType());
             accountInfo.setLastLogoutTime(System.nanoTime());
             SpringContext.getSessionManager().removeSession(accountId);
-            SpringContext.getScenceSerivce().removeScenceAccountId(accountInfo.getCurrentMapType().getMapid(), accountId);
+            SpringContext.getScenceSerivce().removeScenceAccountId(accountInfo.getCurrentMapType().getMapId(), accountId);
             accountInfo.setCurrentMapType(null);
             SpringContext.getAccountService().save(accountEnt);
             session.logout(accountId);

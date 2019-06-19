@@ -7,15 +7,12 @@ import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.user.account.packet.SM_CreatePlayer;
 import com.game.role.player.entity.PlayerEnt;
-import com.game.role.constant.Job;
 import com.game.scence.constant.SceneType;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  *
@@ -76,7 +73,7 @@ public class AccountServiceImpl implements AccountService {
         /**
          * 请求进入场景地图
          */
-        SpringContext.getScenceSerivce().enterMap(session,accountId,SceneType.NoviceVillage.getMapid());
+        SpringContext.getScenceSerivce().enterMap(session,accountId,SceneType.NoviceVillage.getMapId());
     }
 
     @Override

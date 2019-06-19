@@ -96,7 +96,7 @@ public abstract class AbstractItem extends GameObject implements Comparable<Abst
 
     }
 
-    public void use(String accountId){
+    public void use(String accountId,int num){
 
     }
     public long createItemObjectId() {

@@ -2,7 +2,6 @@ package com.game.user.equip.resource;
 
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.constant.AttributeType;
-import com.game.user.condition.model.Condition;
 import com.game.user.condition.model.EquipCondition;
 import com.game.user.condition.model.StrenCondition;
 import com.game.user.condition.model.UpgradeCondition;
@@ -10,7 +9,9 @@ import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,7 +60,7 @@ public class EquipResource {
     @Analyze("analyzeBaseAttribute")
     private String baseAttribute;
 
-    private Map<AttributeType, Attribute> baseAttributeMap;
+    private List< Attribute> baseAttributeList;
     /**
      * 装备每次强化增加的属性
      */
@@ -94,14 +95,14 @@ public class EquipResource {
     }
 
     public void analyzeBaseAttribute() {
-        Map<AttributeType, Attribute> map = new HashMap<>();
+        List< Attribute> list = new ArrayList<>();
         String[] split = baseAttribute.split(";");
         for (String str : split) {
             String[] attr = str.split(",");
             Attribute attribute = Attribute.valueOf(AttributeType.valueOf(attr[0]), Long.parseLong(attr[1]));
-            map.put(attribute.getAttributeType(), attribute);
+            list.add(attribute);
         }
-        baseAttributeMap = map;
+        baseAttributeList = list;
     }
     public void analyzeUpAttribute(){
         Map<AttributeType, Attribute> map = new HashMap<>();
@@ -210,16 +211,13 @@ public class EquipResource {
     }
 
 
-
-
-    public Map<AttributeType, Attribute> getBaseAttributeMap() {
-        return baseAttributeMap;
+    public List<Attribute> getBaseAttributeList() {
+        return baseAttributeList;
     }
 
-    public void setBaseAttributeMap(Map<AttributeType, Attribute> baseAttributeMap) {
-        this.baseAttributeMap = baseAttributeMap;
+    public void setBaseAttributeList(List<Attribute> baseAttributeList) {
+        this.baseAttributeList = baseAttributeList;
     }
-
 
     public Map<AttributeType, Attribute> getUpAttributeMap() {
         return upAttributeMap;

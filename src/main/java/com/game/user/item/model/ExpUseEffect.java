@@ -28,7 +28,8 @@ public class ExpUseEffect extends UseEffect {
     }
 
     @Override
-    public void use(String accountId) {
+    public void use(String accountId,int num) {
+        TSession session = SessionManager.getSessionByAccount(accountId);
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(accountId);
         Player player = playerEnt.getPlayer();
         PlayerLevelResource playerLevelResource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel());
@@ -36,29 +37,32 @@ public class ExpUseEffect extends UseEffect {
             return;
         }
         long upLevelExp = playerLevelResource.getUpLevelExp();
-        player.setExp(player.getExp() + addExp);
+        player.setExp(player.getExp() + addExp*num);
         SpringContext.getPlayerSerivce().save(playerEnt);
         while (player.getExp() >= upLevelExp) {
+            playerLevelResource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel());
+            if (playerLevelResource == null) {
+                SM_PlayerUpLevel res = new SM_PlayerUpLevel();
+                res.setPlayerName(player.getPlayerName());
+                res.setLevel(player.getLevel() - 1);
+                res.setUpLevel(player.getLevel());
+                res.setStatus(2);
+                session.sendPacket(res);
+                return;
+            }
             player.setLevel(player.getLevel() + 1);
             player.setExp(player.getExp() - upLevelExp);
             SpringContext.getPlayerSerivce().save(playerEnt);
+            PlayerUpLevelEvent playerUpLevelEvent = PlayerUpLevelEvent.valueOf( player);
+            SpringContext.getEvenManager().syncSubmit(playerUpLevelEvent);
+            upLevelExp = playerLevelResource.getUpLevelExp();
 
-            TSession session = SessionManager.getSessionByAccount(accountId);
             SM_PlayerUpLevel sm = new SM_PlayerUpLevel();
             sm.setPlayerName(player.getPlayerName());
             sm.setLevel(player.getLevel() - 1);
             sm.setUpLevel(player.getLevel());
+            sm.setStatus(1);
             session.sendPacket(sm);
-            AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
-            AccountInfo accountInfo = accountEnt.getAccountInfo();
-            SceneType currentMapType = accountInfo.getCurrentMapType();
-            PlayerUpLevelEvent playerUpLevelEvent = PlayerUpLevelEvent.valueOf(currentMapType.getMapid(), player);
-            SpringContext.getEvenManager().syncSubmit(playerUpLevelEvent);
-            playerLevelResource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel());
-            if (playerLevelResource == null) {
-                return;
-            }
-            upLevelExp = playerLevelResource.getUpLevelExp();
         }
 
     }

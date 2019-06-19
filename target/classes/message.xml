@@ -50,4 +50,7 @@
     <catalog id="37" value="com.game.user.equip.packet.SM_ShowEquipInfo"/>
     <catalog id="38" value="com.game.user.equip.packet.bean.EquipmentVO"/>
 
+    <catalog id="39" value="com.game.role.player.packet.CM_ShowAttribute"/>
+    <catalog id="40" value="com.game.role.player.packet.SM_ShowAttribute"/>
+
 </protocols>

@@ -4,6 +4,7 @@ import com.game.role.player.entity.PlayerEnt;
 import com.game.role.constant.Job;
 import com.game.role.player.model.Player;
 import com.game.role.player.resource.PlayerLevelResource;
+import com.socket.core.session.TSession;
 
 import java.util.List;
 
@@ -29,6 +30,9 @@ public interface PlayerService {
     /**
      * 创建角色
      * @param accountId
+     * @param type
+     * @param nickName
+     * @return
      */
     PlayerEnt createPlayer(String accountId, int type, String nickName);
 
@@ -45,11 +49,26 @@ public interface PlayerService {
      * @return
      */
     PlayerLevelResource getPlayerLevelResource(Object id);
+
     /**
-     * 从数据库获取角色实体
+     *  从数据库获取角色实体
+     *
+     * @param accountId
+     * @return
      */
+
     PlayerEnt getPlayerEnt(String accountId);
 
+    /**
+     * 将玩家的属性信息返回给客户端
+     * @param session
+     * @param accountId
+     */
+    void showPlayerAttribute(TSession session, String accountId);
 
-
+    /**
+     * 做玩家升级后的操作
+     * @param player
+     */
+    void doPlayerUpLevel(Player player);
 }

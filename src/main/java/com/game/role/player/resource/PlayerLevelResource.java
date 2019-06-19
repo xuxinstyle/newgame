@@ -6,7 +6,9 @@ import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,28 +32,27 @@ public class PlayerLevelResource {
     private String baseAttribute;
 
     @Analyze("analyze")
-    private Map<AttributeType, Attribute> baseAttributeMap;
+    private List<Attribute> baseAttributeList;
 
     public void analyze(){
         String[] split = baseAttribute.split(";");
-        Map<AttributeType, Attribute> baseAttributeMap = new HashMap<>();
+        List<Attribute> baseAttributeList = new ArrayList<>();
         for(String str:split){
             String[] attr = str.split(",");
             AttributeType attributeType = AttributeType.valueOf(attr[0]);
-
             long value = Long.parseLong(attr[1]);
             Attribute attribute = Attribute.valueOf(attributeType, value);
-            baseAttributeMap.put(attributeType,attribute);
+            baseAttributeList.add(attribute);
         }
-        this.baseAttributeMap = baseAttributeMap;
+        this.baseAttributeList = baseAttributeList;
     }
 
-    public Map<AttributeType, Attribute> getBaseAttributeMap() {
-        return baseAttributeMap;
+    public List<Attribute> getBaseAttributeList() {
+        return baseAttributeList;
     }
 
-    public void setBaseAttributeMap(Map<AttributeType, Attribute> baseAttributeMap) {
-        this.baseAttributeMap = baseAttributeMap;
+    public void setBaseAttributeList(List<Attribute> baseAttributeList) {
+        this.baseAttributeList = baseAttributeList;
     }
 
     public long getUpLevelExp() {

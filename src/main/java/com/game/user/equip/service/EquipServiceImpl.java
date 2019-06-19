@@ -77,8 +77,6 @@ public class EquipServiceImpl implements EquipService {
         EquipmentEnt equipmentEnt = getEquipmentEnt(player.getObjectId());
         EquipmentInfo equipmentInfo = equipmentEnt.getEquipmentInfo();
         Equipment oldEquipment = equipmentInfo.unEquip(equipment.getEquipType());
-
-
         /**
          * 从背包扣除 将旧装备加到玩家背包中
          */
@@ -100,7 +98,7 @@ public class EquipServiceImpl implements EquipService {
          * 计算玩家属性
          */
         AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
-        attributeContainer.addAndCompute(equipment.getAttributeMap());
+        attributeContainer.addAndComputeMap(equipment.getAttributeList());
         /**
          * 保存 并响应客户端
          */
@@ -140,7 +138,7 @@ public class EquipServiceImpl implements EquipService {
     }
 
     @Override
-    public int unEquip(TSession session,String accountId, int position) {
+    public void unEquip(TSession session,String accountId, int position) {
         /**
          * 获取到装备栏的数据
          * 判断背包空间是否充足
@@ -155,7 +153,7 @@ public class EquipServiceImpl implements EquipService {
             SM_UnEquip sm = new SM_UnEquip();
             sm.setStatus(3);
             session.sendPacket(sm);
-            return 3;
+            return ;
         }
         ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
         ItemStorageInfo pack = itemStorageEnt.getPack();
@@ -163,7 +161,7 @@ public class EquipServiceImpl implements EquipService {
             SM_UnEquip sm = new SM_UnEquip();
             sm.setStatus(2);
             session.sendPacket(sm);
-            return 2;
+            return ;
         }
         /**
          * 卸下装备
@@ -177,9 +175,9 @@ public class EquipServiceImpl implements EquipService {
         /**
          * 计算玩家属性
          */
-        Map<AttributeType, Attribute> reduceAttributeMap = equipment.getAttributeMap();
+        List<Attribute> attributeList = equipment.getAttributeList();
         AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
-        attributeContainer.removeAndCompute(reduceAttributeMap);
+        attributeContainer.removeAndCompute(attributeList);
         SpringContext.getPlayerSerivce().save(playerEnt);
         /**
          * 保存玩家数据和装备栏数据和背包数据
@@ -187,7 +185,7 @@ public class EquipServiceImpl implements EquipService {
         SM_UnEquip sm = new SM_UnEquip();
         sm.setStatus(1);
         session.sendPacket(sm);
-        return 1;
+        return ;
     }
 
     @Override
@@ -222,8 +220,7 @@ public class EquipServiceImpl implements EquipService {
                 equipmentVO.setQuality(value.getQuality());
                 equipmentVO.setLevel(value.getLevel());
                 equipmentVO.setPosition(equipHole.getPosition());
-                Map<AttributeType, Attribute> attributeMap = value.getAttributeMap();
-                List<Attribute> attributeList = new ArrayList<>(attributeMap.values());
+                List<Attribute> attributeList = value.getAttributeList();
                 equipmentVO.setAttributeList(attributeList);
                 positionEquipment.put(key.getPosition(),equipmentVO);
             }

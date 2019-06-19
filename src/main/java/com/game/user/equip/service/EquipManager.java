@@ -25,9 +25,11 @@ public class EquipManager {
     public void save(EquipmentEnt equipmentEnt) {
         hibernateDao.saveOrUpdate(EquipmentEnt.class, equipmentEnt);
     }
+
     public void insert(EquipmentEnt equipmentEnt){
         hibernateDao.save(EquipmentEnt.class,equipmentEnt);
     }
+
     public EquipmentEnt getEquipmentEnt(long playerId){
         return hibernateDao.find(EquipmentEnt.class, playerId);
     }

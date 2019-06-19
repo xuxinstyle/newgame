@@ -18,7 +18,7 @@ public interface EquipService {
      * 卸下装备 1 卸装备成功
      */
 
-    int unEquip(TSession session, String accountId, int position);
+    void unEquip(TSession session, String accountId, int position);
     /**
      * 保存装备数据
      */

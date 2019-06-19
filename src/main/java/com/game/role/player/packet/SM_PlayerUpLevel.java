@@ -19,6 +19,11 @@ public class SM_PlayerUpLevel {
      */
     private String playerName;
 
+    /**
+     * 1 升级成功  2 达到等级上限
+     */
+    private int status;
+
     public String getPlayerName() {
         return playerName;
     }
@@ -41,5 +46,13 @@ public class SM_PlayerUpLevel {
 
     public void setUpLevel(int upLevel) {
         this.upLevel = upLevel;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

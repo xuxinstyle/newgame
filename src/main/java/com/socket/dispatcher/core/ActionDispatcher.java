@@ -4,6 +4,7 @@ import com.game.SpringContext;
 import com.game.base.executor.account.command.MessageCommand;
 import com.game.base.executor.common.CommonExecutor;
 import com.game.base.executor.common.command.LoginCommand;
+import com.game.connect.packet.CM_Connect;
 import com.game.login.packet.CM_Login;
 import com.game.register.packet.CM_Register;
 import com.socket.Utils.JsonUtils;
@@ -40,25 +41,24 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
         if(aClass==null){
             return;
         }
-        /** 心跳包*/
-        if(opIndex<0){
-            return;
-        }
         Object pack = JsonUtils.bytes2Object((byte[]) packet, aClass);
-        //Object pack = ProtoStuffUtil.deserializer((byte[]) packet, aClass);
-        if(session.getAccountId()==null){
-            if(packet instanceof CM_Login){ // pack instanceof CM_Register
-                LoginCommand command = LoginCommand.valueOf(session, opIndex, pack);
-                SpringContext.getCommonExecutorService().submit(command);
-            } else{
-                doHandle(session,opIndex,pack);
-            }
-
-        }else{
-            MessageCommand messageCommond = new MessageCommand(session, opIndex, pack, session.getAccountId());
+        if(pack instanceof CM_Login){
+            CM_Login cm = (CM_Login) pack;
+            MessageCommand messageCommond = new MessageCommand(session, opIndex, pack,cm.getUsername());
             SpringContext.getAccountExecutorService().submit(messageCommond);
-        }
 
+        } else if(pack instanceof CM_Register){
+            CM_Register cm = (CM_Register) pack;
+            MessageCommand messageCommond = new MessageCommand(session, opIndex, pack,cm.getUsername());
+            SpringContext.getAccountExecutorService().submit(messageCommond);
+        } else if(pack instanceof CM_Connect){
+            doHandle(session,opIndex,pack);
+        }else{
+            if(session.getAccountId()!=null){
+                MessageCommand messageCommond = new MessageCommand(session, opIndex, pack, session.getAccountId());
+                SpringContext.getAccountExecutorService().submit(messageCommond);
+            }
+        }
     }
 
     public static void doHandle(TSession session, int opIndex, Object packet) {

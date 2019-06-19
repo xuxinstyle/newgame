@@ -65,6 +65,6 @@ public class ScenceFacade {
     }
     @ReceiveAnn
     public void playerUpLevel(PlayerUpLevelEvent event){
-        SpringContext.getScenceSerivce().doPlayerUpLevel(event.getMapId(), event.getPlayer());
+        SpringContext.getScenceSerivce().doPlayerUpLevel(event.getPlayer());
     }
 }

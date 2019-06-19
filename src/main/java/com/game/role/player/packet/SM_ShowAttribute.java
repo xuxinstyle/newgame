@@ -20,6 +20,14 @@ public class SM_ShowAttribute {
      */
     private List<Attribute> secondAttribute;
 
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
     public List<Attribute> getFirstAttribute() {
         return firstAttribute;
     }
