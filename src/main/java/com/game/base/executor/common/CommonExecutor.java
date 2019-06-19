@@ -1,12 +1,9 @@
 package com.game.base.executor.common;
 
+import com.game.base.executor.NameThreadFactory;
 import com.game.base.executor.common.Impl.AbstractCommonDelayCommand;
 import com.game.base.executor.common.Impl.AbstractCommonRateCommand;
 import com.game.base.executor.common.Impl.AbstractCommonCommand;
-import com.socket.core.session.SessionManager;
-import com.socket.core.session.TSession;
-import com.socket.dispatcher.core.ActionDispatcher;
-import com.socket.dispatcher.executor.NameThreadFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;

@@ -2,6 +2,7 @@ package com.resource.reader;
 
 import com.resource.core.StorageManager;
 import com.resource.other.ResourceDefinition;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -37,7 +38,6 @@ public class ReadXlsx {
     private static final Logger logger = LoggerFactory.getLogger(ReadXlsx.class);
     private final static TypeDescriptor sourceType = TypeDescriptor.valueOf(String.class);
 
-    @Autowired
     private static ConversionService conversionService = new DefaultConversionService();
 
     public void readXlsx(ResourceDefinition def, Map<String, InputStream> caches) {
@@ -79,24 +79,28 @@ public class ReadXlsx {
                         //遍历列
                         Cell cell = row.getCell(cIndex);
                         if (cell != null) {
+                            cell.setCellType(HSSFCell.CELL_TYPE_STRING);
                             holderName.add(cell.toString());
                         }
                     }
                     List<FieldInfo> fieldList = new ArrayList<>();
                     for(int i = 0;i<holderName.size();i++) {
-                        Field declaredField = def.getClz().getDeclaredField(holderName.get(i));
-                        if(declaredField==null){
-                            if(logger.isDebugEnabled()){
-                                logger.debug("类{}中没有字段{}",def.getClz().getSimpleName(),holderName.get(i));
+                        try {
+                            Field declaredField = def.getClz().getDeclaredField(holderName.get(i));
+                            if(declaredField==null){
+                                if(logger.isDebugEnabled()){
+                                    logger.debug("类{}中没有字段{}",def.getClz().getSimpleName(),holderName.get(i));
+                                }
+                                continue;
                             }
+                            fieldList.add(new FieldInfo(i,declaredField));
+                        } catch (NoSuchFieldException e){
                             continue;
                         }
-                        fieldList.add(new FieldInfo(i,declaredField));
                     }
                     ReadHolder.getFieldInfoMap().put(def.getClz(), fieldList);
                 }
 
-                /**第一行是列名，所以不读*/
                 int firstRowIndex = sheet.getFirstRowNum() + 3;
                 int lastRowIndex = sheet.getLastRowNum();
                 Map<Object, Object> map = new HashMap<>();
@@ -112,18 +116,21 @@ public class ReadXlsx {
                             Cell cell = row.getCell(cIndex);
                             if (cell != null) {
                                 resourceData.add(cell.toString());
+                            }else {
+                                resourceData.add("");
                             }
                         }
+                        /** 这里的获取资源id，必须放在表的第一列才能算是id*/
                         Object index = getIndex(def.getClz(), resourceData);
-                        Object parse = parse(def.getClz(), resourceData);
-                        map.put(index, parse);
+                        Object object = parse(def.getClz(), resourceData);
+                        map.put(index, object);
 
                     }
                 }
                 StorageManager.putStorage(def, map);
             } else {
                 logger.error("找不到[{}]资源文件", location);
-                return;
+                return ;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,6 +155,18 @@ public class ReadXlsx {
                 }
             }
 
+            FieldInfo fieldInfo = fieldInfos.get(0);
+            TypeDescriptor typeDescriptor = new TypeDescriptor(fieldInfo.getField());
+            String resource =resourceData.get(fieldInfo.getIndex());
+            String concat = resource;
+            if(fieldInfo.getField().getType().equals(int.class)||fieldInfo.getField().getType().equals(Integer.class)){
+                concat = resource.replace(".0", "");
+            }
+            resource = concat;
+            Object value = conversionService.convert(resource, sourceType, typeDescriptor);
+            return value;
+
+
         } catch (Exception e) {
             logger.error("资源[{}]没有字段名为id的属性", clz.getSimpleName());
             e.printStackTrace();
@@ -158,22 +177,18 @@ public class ReadXlsx {
 
     private Object parse(Class<?> clz, List<String> resourceData) {
         try {
-            int length = clz.getDeclaredFields().length;
-            if (resourceData.size() != length) {
-                logger.error("静态资源表" + clz.getSimpleName() + "加载失败");
-                return null;
-            }
             Object instance = clz.newInstance();
             Map<Class<?>, List<FieldInfo>> fieldInfoMap = ReadHolder.getFieldInfoMap();
             List<FieldInfo> fieldInfos = fieldInfoMap.get(clz);
             for (FieldInfo fieldInfo : fieldInfos) {
+
                 if (!inject(instance, fieldInfo.getField(), resourceData.get(fieldInfo.getIndex()))) {
                     logger.error("注入静态资源[{}]的属性[{}]错误", clz.getSimpleName(), fieldInfo.getField().getName());
                 }
             }
             return instance;
         } catch (Exception e) {
-            logger.error("静态资源属性和List中的类型不匹配");
+            logger.error("解析静态资源{}错误",clz.getSimpleName());
             e.printStackTrace();
             return null;
         }
@@ -181,10 +196,13 @@ public class ReadXlsx {
     }
 
     private boolean inject(Object instance, Field field, String context) {
+        if(context==null||context.equals("null")||context.equals("")){
+            return true;
+        }
         try {
             TypeDescriptor typeDescriptor = new TypeDescriptor(field);
             String concat = context;
-            if(field.getType().equals(int.class)||field.getType().equals(Integer.class)){
+            if(field.getType().equals(int.class)||field.getType().equals(Integer.class)||field.getType().equals(long.class)||field.getType().equals(Long.class)){
                 concat = context.replace(".0", "");
             }
             context = concat;

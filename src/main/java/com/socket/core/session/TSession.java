@@ -1,5 +1,6 @@
 package com.socket.core.session;
 
+import com.socket.Utils.JsonUtils;
 import com.socket.Utils.ProtoStuffUtil;
 import com.socket.core.MyPack;
 import com.socket.dispatcher.action.IActionDispatcher;
@@ -17,8 +18,7 @@ import java.util.Map;
 public class TSession {
     private static final Logger logger = Logger.getLogger(TSession.class);
     // 里面放在线的玩家账号信息 <信息标识，玩家的accountId>
-    private static int index = 0;
-    private final int id = index++;
+
     private String accountId ;
     private final long createTime = System.currentTimeMillis();
     private final Channel channel;
@@ -59,7 +59,9 @@ public class TSession {
             }
             MyPack pack = new MyPack();
             pack.setpId(opIndex);
-            pack.setPacket(ProtoStuffUtil.serializer(res));
+            pack.setPacket(JsonUtils.object2Bytes(res));
+            //pack.setPacket(res);
+            // pack.setPacket(ProtoStuffUtil.serializer(res));
             channel.writeAndFlush(pack);
         }catch (Exception e){
             String msg = String.format("encode %s error.",res != null ? res.getClass().getSimpleName():"null");
@@ -79,10 +81,6 @@ public class TSession {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public int getMapId() {

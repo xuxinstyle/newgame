@@ -2,6 +2,8 @@ package com.game.user.account.entity;
 
 import com.db.AbstractEntity;
 import com.game.user.account.model.AccountInfo;
+import com.game.user.item.model.ItemStorageInfo;
+import com.socket.Utils.JsonUtils;
 import com.socket.Utils.ProtoStuffUtil;
 import org.hibernate.annotations.Table;
 
@@ -13,7 +15,7 @@ import java.util.Arrays;
  * @Date: 2019/4/28 21:04
  */
 @Entity(name = "account")
-/*@Table(appliesTo = "account", comment = "账号信息")*/
+@Table(appliesTo = "account", comment = "账号信息")
 public class AccountEnt extends AbstractEntity<String> {
     /**
      * 账号Id
@@ -29,7 +31,7 @@ public class AccountEnt extends AbstractEntity<String> {
 
     @Lob
     @Column(columnDefinition = "blob comment '账号基本数据'",nullable = false)
-    private byte[] accountData;
+    private volatile byte[] accountData;
 
     @Transient
     private AccountInfo accountInfo;
@@ -67,12 +69,14 @@ public class AccountEnt extends AbstractEntity<String> {
 
     @Override
     public void doSerialize() {
-        this.accountData = ProtoStuffUtil.serializer(accountInfo);
+        this.accountData =JsonUtils.object2Bytes(accountInfo);
+        //this.accountData = ProtoStuffUtil.serializer(accountInfo);
     }
 
     @Override
     public void doDeserialize() {
-        this.accountInfo = ProtoStuffUtil.deserializer(this.accountData, AccountInfo.class);
+        this.accountInfo = JsonUtils.bytes2Object(this.accountData, AccountInfo.class);
+        //this.accountInfo = ProtoStuffUtil.deserializer(this.accountData, AccountInfo.class);
     }
 
     @Override

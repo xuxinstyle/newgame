@@ -19,7 +19,7 @@ public class LoginFacade {
     @HandlerAnno
     public void login(TSession session, CM_Login req){
         try {
-            SpringContext.getLoginService().login(session, req.getAccountId(), req.getPassWord());
+            SpringContext.getLoginService().login(session, req.getUsername(), req.getPassward());
         }catch (Exception e){
             e.printStackTrace();
         }

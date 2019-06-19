@@ -1,6 +1,6 @@
 package com.game.base.gameObject.model;
 
-import com.game.base.attribute.CreatureAttributeContainer;
+import com.game.base.attribute.AttributeContainer;
 
 /**
  * @Author：xuxin
@@ -8,5 +8,14 @@ import com.game.base.attribute.CreatureAttributeContainer;
  */
 public abstract class Creature<T extends Creature> extends VisibleObject {
 
-    protected CreatureAttributeContainer<T> attributeContainer;
+    protected AttributeContainer<T> attributeContainer;
+
+    public AttributeContainer<T> getAttributeContainer() {
+        return attributeContainer;
+    }
+
+    public void setAttributeContainer(AttributeContainer<T> attributeContainer) {
+        this.attributeContainer = attributeContainer;
+    }
+
 }

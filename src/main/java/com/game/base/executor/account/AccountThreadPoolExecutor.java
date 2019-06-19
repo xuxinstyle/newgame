@@ -1,7 +1,7 @@
 package com.game.base.executor.account;
 
+import com.game.base.executor.NameThreadFactory;
 import com.game.base.executor.account.Impl.AbstractAccountCommand;
-import com.socket.dispatcher.executor.NameThreadFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;

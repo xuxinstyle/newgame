@@ -6,6 +6,7 @@ import com.game.base.executor.common.CommonExecutor;
 import com.game.base.executor.common.command.LoginCommand;
 import com.game.login.packet.CM_Login;
 import com.game.register.packet.CM_Register;
+import com.socket.Utils.JsonUtils;
 import com.socket.Utils.ProtoStuffUtil;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.action.ActionDispatcherAdapter;
@@ -43,10 +44,10 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
         if(opIndex<0){
             return;
         }
-        Object pack = ProtoStuffUtil.deserializer((byte[]) packet, aClass);
-
+        Object pack = JsonUtils.bytes2Object((byte[]) packet, aClass);
+        //Object pack = ProtoStuffUtil.deserializer((byte[]) packet, aClass);
         if(session.getAccountId()==null){
-            if(pack instanceof CM_Login){ // pack instanceof CM_Register
+            if(packet instanceof CM_Login){ // pack instanceof CM_Register
                 LoginCommand command = LoginCommand.valueOf(session, opIndex, pack);
                 SpringContext.getCommonExecutorService().submit(command);
             } else{

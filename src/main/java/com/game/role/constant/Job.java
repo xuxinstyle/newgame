@@ -7,7 +7,7 @@ package com.game.role.constant;
 public enum Job {
     WARRIOR(1,"战士"),
     MAGICIAN(2,"法师"),
-    TAOIST(3,"道士"),
+    TAOIST(3,"刺客"),
     ;
     private int jobType;
     private String jobName;

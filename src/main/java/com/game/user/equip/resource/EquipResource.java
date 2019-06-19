@@ -1,0 +1,229 @@
+package com.game.user.equip.resource;
+
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.constant.AttributeType;
+import com.game.user.condition.model.Condition;
+import com.game.user.condition.model.EquipCondition;
+import com.game.user.condition.model.StrenCondition;
+import com.game.user.condition.model.UpgradeCondition;
+import com.resource.anno.Analyze;
+import com.resource.anno.LoadResource;
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @Author：xuxin
+ * @Date: 2019/6/16 17:33
+ */
+@LoadResource
+@Component
+public class EquipResource {
+    /**
+     * 道具表id
+     */
+    private int itemId;
+    /**
+     * 装备名
+     */
+    private String equipName;
+    /**
+     * 装备类型
+     */
+    private String equipType;
+    /**
+     * 穿戴条件
+     */
+    @Analyze("analyzeEquipCondition")
+    private String equipConditions;
+
+    private EquipCondition equipCondition;
+    /**
+     * 强化条件
+     */
+    @Analyze("analyzeStreCondition")
+    private String streConditions;
+
+    private StrenCondition streCondition;
+    /**
+     * 升阶条件
+     */
+    @Analyze("analyzeUpgradeCondition")
+    private String upgradeConditions;
+
+    private UpgradeCondition upgradeCondition;
+    /**
+     * 装备基础属性
+     */
+    @Analyze("analyzeBaseAttribute")
+    private String baseAttribute;
+
+    private Map<AttributeType, Attribute> baseAttributeMap;
+    /**
+     * 装备每次强化增加的属性
+     */
+    @Analyze("analyzeUpAttribute")
+    private String upAttribute;
+
+    private Map<AttributeType, Attribute> upAttributeMap;
+
+    public void analyzeEquipCondition() {
+        String[] split = this.equipConditions.split("_");
+        EquipCondition condition = new EquipCondition();
+        condition.setCareer(Integer.parseInt(split[0]));
+        condition.setLevel(Integer.parseInt(split[1]));
+        this.equipCondition = condition;
+    }
+
+    public void analyzeStreCondition() {
+        String[] split = this.streConditions.split("_");
+        StrenCondition condition = new StrenCondition();
+        condition.setItemModelId(Integer.parseInt(split[0]));
+        condition.setNum(Integer.parseInt(split[1]));
+        this.streCondition = condition;
+    }
+
+    public void analyzeUpgradeCondition() {
+        String[] split = this.upgradeConditions.split("_");
+        UpgradeCondition condition = new UpgradeCondition();
+        condition.setItemModelId(Integer.parseInt(split[0]));
+        condition.setNum(Integer.parseInt(split[1]));
+        condition.setEquipLevel(Integer.parseInt(split[2]));
+        this.upgradeCondition = condition;
+    }
+
+    public void analyzeBaseAttribute() {
+        Map<AttributeType, Attribute> map = new HashMap<>();
+        String[] split = baseAttribute.split(";");
+        for (String str : split) {
+            String[] attr = str.split(",");
+            Attribute attribute = Attribute.valueOf(AttributeType.valueOf(attr[0]), Long.parseLong(attr[1]));
+            map.put(attribute.getAttributeType(), attribute);
+        }
+        baseAttributeMap = map;
+    }
+    public void analyzeUpAttribute(){
+        Map<AttributeType, Attribute> map = new HashMap<>();
+        String[] split = upAttribute.split(";");
+        for (String str : split) {
+            String[] attr = str.split(",");
+            Attribute attribute = Attribute.valueOf(AttributeType.valueOf(attr[0]), Long.parseLong(attr[1]));
+            map.put(attribute.getAttributeType(), attribute);
+        }
+        upAttributeMap = map;
+    }
+
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
+    }
+
+    public String getEquipName() {
+        return equipName;
+    }
+
+    public void setEquipName(String equipName) {
+        this.equipName = equipName;
+    }
+
+    public void setEquipType(String equipType) {
+        this.equipType = equipType;
+    }
+
+    public String getEquipConditions() {
+        return equipConditions;
+    }
+
+    public void setEquipConditions(String equipConditions) {
+        this.equipConditions = equipConditions;
+    }
+
+    public void setEquipCondition(EquipCondition equipCondition) {
+        this.equipCondition = equipCondition;
+    }
+
+    public String getStreConditions() {
+        return streConditions;
+    }
+
+    public void setStreConditions(String streConditions) {
+        this.streConditions = streConditions;
+    }
+
+    public StrenCondition getStreCondition() {
+        return streCondition;
+    }
+
+    public void setStreCondition(StrenCondition streCondition) {
+        this.streCondition = streCondition;
+    }
+
+    public String getUpgradeConditions() {
+        return upgradeConditions;
+    }
+
+    public void setUpgradeConditions(String upgradeConditions) {
+        this.upgradeConditions = upgradeConditions;
+    }
+
+    public UpgradeCondition getUpgradeCondition() {
+        return upgradeCondition;
+    }
+
+    public void setUpgradeCondition(UpgradeCondition upgradeCondition) {
+        this.upgradeCondition = upgradeCondition;
+    }
+
+    public String getBaseAttribute() {
+        return baseAttribute;
+    }
+
+    public void setBaseAttribute(String baseAttribute) {
+        this.baseAttribute = baseAttribute;
+    }
+
+    public String getUpAttribute() {
+        return upAttribute;
+    }
+
+    public void setUpAttribute(String upAttribute) {
+        this.upAttribute = upAttribute;
+    }
+
+    public void setUpAttributeMap(Map<AttributeType, Attribute> upAttributeMap) {
+        this.upAttributeMap = upAttributeMap;
+    }
+
+    public String getEquipType() {
+        return equipType;
+    }
+
+
+
+    public EquipCondition getEquipCondition() {
+        return equipCondition;
+    }
+
+
+
+
+    public Map<AttributeType, Attribute> getBaseAttributeMap() {
+        return baseAttributeMap;
+    }
+
+    public void setBaseAttributeMap(Map<AttributeType, Attribute> baseAttributeMap) {
+        this.baseAttributeMap = baseAttributeMap;
+    }
+
+
+    public Map<AttributeType, Attribute> getUpAttributeMap() {
+        return upAttributeMap;
+    }
+
+
+}

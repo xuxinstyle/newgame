@@ -1,5 +1,7 @@
 package com.game.scence.facade;
 
+import com.event.anno.ReceiveAnn;
+import com.game.role.player.event.PlayerUpLevelEvent;
 import com.game.scence.packet.*;
 import com.game.SpringContext;
 import com.socket.core.session.TSession;
@@ -46,7 +48,7 @@ public class ScenceFacade {
     @HandlerAnno
     public void move(TSession session, CM_Move cm){
         try{
-            SpringContext.getScenceSerivce().move(session, cm.getX(), cm.getY());
+            SpringContext.getScenceSerivce().move(session, cm.getX(), cm.getY(),cm.getMapId());
         }catch (Exception e){
             logger.error("请求移动失败",e.toString());
             e.printStackTrace();
@@ -60,5 +62,9 @@ public class ScenceFacade {
             logger.error("请求移动失败",e.toString());
             e.printStackTrace();
         }
+    }
+    @ReceiveAnn
+    public void playerUpLevel(PlayerUpLevelEvent event){
+        SpringContext.getScenceSerivce().doPlayerUpLevel(event.getMapId(), event.getPlayer());
     }
 }

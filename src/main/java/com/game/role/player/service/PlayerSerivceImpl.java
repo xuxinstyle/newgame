@@ -2,19 +2,25 @@ package com.game.role.player.service;
 
 import com.db.HibernateDao;
 import com.game.SpringContext;
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.AttributeContainer;
+import com.game.base.attribute.constant.AttributeType;
 import com.game.base.gameObject.constant.ObjectType;
+import com.game.role.player.resource.PlayerLevelResource;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.role.constant.Job;
+import com.game.user.equip.entity.EquipmentEnt;
+import com.game.user.equip.model.EquipmentInfo;
+import com.resource.core.StorageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @Author：xuxin
@@ -24,6 +30,8 @@ import java.util.List;
 public class PlayerSerivceImpl implements PlayerService {
     private static Logger logger = LoggerFactory.getLogger(PlayerSerivceImpl.class);
     @Autowired
+    private StorageManager storageManager;
+    @Autowired
     private HibernateDao hibernateDao;
     @Override
     public void save(PlayerEnt playerEnt) {
@@ -31,7 +39,7 @@ public class PlayerSerivceImpl implements PlayerService {
     }
 
     @Override
-    public PlayerEnt getPlayer(long playerId) {
+    public PlayerEnt getPlayerEnt(long playerId) {
         PlayerEnt playerEnt = hibernateDao.find(PlayerEnt.class, playerId);
         playerEnt.doDeserialize();
         return playerEnt;
@@ -43,49 +51,52 @@ public class PlayerSerivceImpl implements PlayerService {
     }
 
     @Override
-    public PlayerEnt createPlayer(String accountId, Job type) {
+    public PlayerEnt createPlayer(String accountId, int type, String nickName) {
+        /**
+         * 生成角色
+         */
         PlayerEnt playerEnt = new PlayerEnt();
         long playerId = SpringContext.getIdentifyService().getNextIdentify(ObjectType.PLAYER);
         playerEnt.setPlayerId(playerId);
         playerEnt.setAccountId(accountId);
-        Player player = Player.valueOf(playerId, accountId, type);
-        player.setPlayerName(player.getPlayerName()+getPlayerJobNum(accountId,type));
+        Player player = Player.valueOf(playerId, accountId, type,nickName);
+        /** 生成玩家基础属性*/
+        PlayerLevelResource resource = storageManager.getResource(player.getLevel(), PlayerLevelResource.class);
+        AttributeContainer attributeContainer = AttributeContainer.valueOf();
+        Map<AttributeType, Attribute> baseAttributeMap = resource.getBaseAttributeMap();
+        attributeContainer.addAndCompute(baseAttributeMap);
+        player.setAttributeContainer(attributeContainer);
         playerEnt.setPlayer(player);
         insert(playerEnt);
+        /**
+         * 生成装备栏
+         */
+        EquipmentEnt equipmentEnt = new EquipmentEnt();
+        equipmentEnt.setPlayerId(playerId);
+        equipmentEnt.setEquipmentInfo(EquipmentInfo.valueOf());
+        SpringContext.getEquipService().save(equipmentEnt);
+
         return playerEnt;
     }
-
-    private int getPlayerJobNum(String accountId, Job job){
-        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
-        List<Long> playerIds = accountEnt.getAccountInfo().getPlayerIds();
-        if(playerIds==null){
-            return 1;
-        }
-        int num = 1;
-        for (long playerId: playerIds){
-            PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayer(playerId);
-            Player player = playerEnt.getPlayer();
-            if(player.getCareer()==job.getJobType()){
-                num++;
-            }
-        }
-        return num;
+    @Override
+    public PlayerLevelResource getPlayerLevelResource(Object id){
+        return storageManager.getResource(id, PlayerLevelResource.class);
     }
     @Override
-    public List<Player> getPlayer(String accountId){
+    public Player getPlayer(String accountId){
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        List<Long> playerIds = accountInfo.getPlayerIds();
-        if(playerIds==null||playerIds.size()==0){
-            logger.warn("玩家{}没有角色信息",accountId);
-            return null;
-        }
-        List<Player> players = new ArrayList<>();
-        for(long playerId:playerIds){
-            PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayer(playerId);
-            Player player = playerEnt.getPlayer();
-            players.add(player);
-        }
-        return players;
+        long playerId = accountInfo.getPlayerId();
+        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(playerId);
+        return playerEnt.getPlayer();
     }
+
+    @Override
+    public PlayerEnt getPlayerEnt(String accountId) {
+        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+        long playerId = accountEnt.getAccountInfo().getPlayerId();
+        return SpringContext.getPlayerSerivce().getPlayerEnt(playerId);
+    }
+
+
 }

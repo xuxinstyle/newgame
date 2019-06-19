@@ -10,7 +10,7 @@ public class MyPack {
     private Integer pId;
     //自己的协议包
     private byte[] packet;
-
+    //private Object packet;
     public Integer getpId() {
         return pId;
     }
@@ -18,6 +18,7 @@ public class MyPack {
     public void setpId(Integer pId) {
         this.pId = pId;
     }
+
 
     public byte[] getPacket() {
         return packet;

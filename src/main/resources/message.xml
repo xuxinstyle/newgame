@@ -15,7 +15,7 @@
     <catalog id="8" value="com.game.user.account.packet.SM_EnterCreatePlayer"/>
     <catalog id="9" value="com.game.user.account.packet.SM_CreatePlayer"/>
 
-    
+
     <catalog id="12" value="com.game.login.packet.SM_Logout"/>
     <catalog id="13" value="com.game.login.packet.SM_LoginNoAcount"/>
 
@@ -32,5 +32,25 @@
 
     <catalog id="22" value="com.game.scence.packet.CM_OnlinePlayerOperate"/>
     <catalog id="23" value="com.game.scence.packet.SM_OnlinePlayerOperate"/>
+    <!-- 玩家背包相关-->
+    <catalog id="24" value="com.game.user.item.packet.SM_RemoveItemFormPack"/>
+    <catalog id="25" value="com.game.user.item.packet.CM_RemoveItemFormPack"/>
+    <catalog id="26" value="com.game.user.item.packet.SM_AwardToPack"/>
+    <catalog id="27" value="com.game.user.item.packet.CM_AwardToPack"/>
+    <catalog id="28" value="com.game.user.item.packet.CM_ShowPackItem"/>
+    <catalog id="29" value="com.game.user.item.packet.SM_ShowPackItem"/>
+    <catalog id="30" value="com.game.user.item.packet.bean.ItemVO"/>
+    <catalog id="31" value="com.game.role.player.packet.SM_PlayerUpLevel"/>
+    <!-- 装备相关-->
+    <catalog id="32" value="com.game.user.equip.packet.CM_Equip"/>
+    <catalog id="33" value="com.game.user.equip.packet.SM_Equip"/>
+    <catalog id="34" value="com.game.user.equip.packet.CM_UnEquip"/>
+    <catalog id="35" value="com.game.user.equip.packet.SM_UnEquip"/>
+    <catalog id="36" value="com.game.user.equip.packet.CM_ShowEquipInfo"/>
+    <catalog id="37" value="com.game.user.equip.packet.SM_ShowEquipInfo"/>
+    <catalog id="38" value="com.game.user.equip.packet.bean.EquipmentVO"/>
+
+    <catalog id="39" value="com.game.role.player.packet.CM_ShowAttribute"/>
+    <catalog id="40" value="com.game.role.player.packet.SM_ShowAttribute"/>
 
 </protocols>

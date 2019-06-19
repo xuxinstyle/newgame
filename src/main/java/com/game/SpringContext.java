@@ -1,5 +1,6 @@
 package com.game;
 
+import com.event.core.EvenManager;
 import com.game.base.executor.account.AccountExecutorService;
 import com.game.base.executor.common.CommonExecutorService;
 import com.game.user.account.service.AccountService;
@@ -9,6 +10,8 @@ import com.game.connect.service.ConnectService;
 import com.game.login.service.LoginService;
 import com.game.scence.service.ScenceService;
 import com.game.register.service.RegisterService;
+import com.game.user.equip.service.EquipService;
+import com.game.user.item.service.ItemService;
 import com.socket.core.session.SessionManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +60,29 @@ public class SpringContext implements ApplicationContextAware {
     private AccountExecutorService accountExecutorService;
     @Autowired
     private CommonExecutorService commonExecutorService;
+    @Autowired
+    private ItemService itemService;
+    @Autowired
+    private EquipService equipService;
+    @Autowired
+    private EvenManager evenManager;
+
+    public static EvenManager getEvenManager(){
+        return instance.evenManager;
+    }
+
+    public static EquipService getEquipService(){
+        return instance.equipService;
+    }
+
+    public static ItemService getItemService(){
+        return instance.itemService;
+    }
 
     public static CommonExecutorService getCommonExecutorService() {
         return instance.commonExecutorService;
     }
+
     public static AccountExecutorService getAccountExecutorService(){
         return instance.accountExecutorService;
     }

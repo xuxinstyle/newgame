@@ -1,6 +1,7 @@
 package com.game.scence.service;
 
 
+import com.game.role.player.model.Player;
 import com.game.scence.resource.MapResource;
 import com.socket.core.session.TSession;
 
@@ -59,10 +60,19 @@ public interface ScenceService {
      * @param x
      * @param y
      */
-    void move(TSession session, int x, int y);
+    void move(TSession session, int x, int y, int mapId);
 
     MapResource getMapResource(int mapId);
 
     void showMap(int mapId);
 
+    /**
+     * 服务器启动时初始化场景
+     */
+    void init();
+
+    /**
+     * 做玩家升级
+     */
+    void doPlayerUpLevel(int mapId, Player player);
 }

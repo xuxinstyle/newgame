@@ -3,7 +3,8 @@ package com.resource.core;
 import com.game.scence.resource.MapResource;
 import com.resource.Storage;
 import com.resource.StorageData;
-import com.resource.anno.Resource;
+import com.resource.anno.Analyze;
+import com.resource.anno.LoadResource;
 import com.resource.other.ResourceDefinition;
 import com.resource.reader.ReadXlsx;
 import org.slf4j.Logger;
@@ -16,6 +17,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,34 +44,76 @@ public class StorageManager implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        try {
+            Class<?> clz = bean.getClass();
+            if(clz.isAnnotationPresent(LoadResource.class)){
+                ResourceDefinition def = ResourceDefinition.valueOf(bean);
+                registResourceDefintion(def.getClz(), def);
+                registResourceCacah(def.getLocation());
+                ReadXlsx readXlsx = new ReadXlsx();
+                readXlsx.readXlsx(def,caches);
+                Collection<?> values = storageMap.get(clz).getData().getValues().values();
+                for(Object resource:values){
+                    Field[] declaredFields = clz.getDeclaredFields();
+                    for(Field field:declaredFields){
+                        if(field.isAnnotationPresent(Analyze.class)){
+                            Analyze analyze = field.getAnnotation(Analyze.class);
+                            Method method = clz.getMethod(analyze.value());
+                            method.invoke(resource);
+                        }
+                    }
+                }
 
-        Class<?> clz = bean.getClass();
-        if(clz.isAnnotationPresent(Resource.class)){
-            ResourceDefinition def = ResourceDefinition.valueOf(bean);
-            registResourceDefintion(def.getClz(), def);
-            registResourceCacah(def.getLocation());
-            ReadXlsx readXlsx = new ReadXlsx();
-            readXlsx.readXlsx(def,caches);
-        }
-        if(logger.isDebugEnabled()){
-            logger.debug(definitionMap.toString());
-            logger.debug(caches.toString());
+
+                if(logger.isDebugEnabled()){
+                    logger.debug(definitionMap.toString());
+                    logger.debug(caches.toString());
+                }
+            }
+
+
+            return bean;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return bean;
     }
 
-    private void addStorageMap() {
 
+    public Object getResource( Class<?> clz, Object key){
+        if(logger.isDebugEnabled()){
+            logger.debug(storageMap.get(MapResource.class).getData().getValues().toString());
+        }
+        Object object = storageMap.get(clz).getData().getValues().get(key);
+        if(object==null||!object.getClass().equals(clz)){
+            logger.error("获取资源对象失败！");
+            return null;
+        }
+        return object;
     }
-
+    public static Collection<?> getResourceAll(Class<?> clz){
+        Collection<?> values = storageMap.get(clz).getData().getValues().values();
+        if(values==null){
+            logger.error("获取资源对象失败！");
+            return null;
+        }
+        return values;
+    }
 
     public Storage<?, ?> getStorage(Class clz){
         return storageMap.get(clz);
     }
+
+
     /** 根据主键和clz获取Resource对象*/
     public <T> T getResource(Object key, Class<T> clz){
         Storage<?, ?> storage = getStorage(clz);
-        return (T)storage.getData().getValues().get(key);
+        T t = (T) storage.getData().getValues().get(key);
+        if(t==null||!t.getClass().equals(clz)){
+            logger.error("获取{}资源{}失败！",key,clz.getSimpleName());
+            return null;
+        }
+        return t;
     }
     public static void putStorage(ResourceDefinition def, Map<Object,Object> map) {
         Class<?> clz = def.getClz();
@@ -101,42 +146,6 @@ public class StorageManager implements BeanPostProcessor {
         if(!definitionMap.containsKey(clz)) {
             definitionMap.put(clz, def);
         }
-    }
-
-    public Map<Class<?>, ResourceDefinition> getDefinitionMap() {
-        return definitionMap;
-    }
-
-    public void setDefinitionMap(Map<Class<?>, ResourceDefinition> definitionMap) {
-        this.definitionMap = definitionMap;
-    }
-
-    public static Map<Class<?>, Storage<?, ?>> getStorageMap() {
-        return storageMap;
-    }
-
-    public static Object getResource( Class<?> clz, Object key){
-        if(logger.isDebugEnabled()){
-            logger.debug(storageMap.get(MapResource.class).getData().getValues().toString());
-        }
-        Object object = storageMap.get(clz).getData().getValues().get(key);
-        if(object==null||!object.getClass().equals(clz)){
-            logger.error("获取资源对象失败！");
-            return null;
-        }
-        return object;
-    }
-
-    public static void setStorageMap(Map<Class<?>, Storage<?, ?>> storageMap) {
-        StorageManager.storageMap = storageMap;
-    }
-
-    public static Map<String, InputStream> getCaches() {
-        return caches;
-    }
-
-    public static void setCaches(Map<String, InputStream> caches) {
-        StorageManager.caches = caches;
     }
 
     @Override

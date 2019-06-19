@@ -10,6 +10,10 @@ public class CM_Move {
      */
     private String accountId;
     /**
+     *地图id
+     */
+    private int mapId;
+    /**
      * x坐标
      */
     private int x;
@@ -17,6 +21,14 @@ public class CM_Move {
      * y坐标
      */
     private int y;
+
+    public int getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(int mapId) {
+        this.mapId = mapId;
+    }
 
     public String getAccountId() {
         return accountId;

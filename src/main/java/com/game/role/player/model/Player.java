@@ -1,6 +1,5 @@
 package com.game.role.player.model;
 
-import com.game.base.gameObject.GameObject;
 import com.game.base.gameObject.constant.ObjectType;
 import com.game.base.gameObject.model.Creature;
 import com.game.role.constant.Job;
@@ -20,7 +19,7 @@ public class Player extends Creature<Player> {
     /**
      *  玩家职业
      */
-    private int career;
+    private int playerJob;
     /**
      * 玩家等级
      */
@@ -37,22 +36,38 @@ public class Player extends Creature<Player> {
      * 角色当前位置y坐标
      */
     private int y;
+    /**
+     * 玩家当前等级拥有的经验
+     */
+    private long exp;
 
-    public static Player valueOf(long playerId, String accountId, Job type){
+    /**
+     *
+     * @param playerId
+     * @param accountId
+     * @param type
+     * @return
+     */
+    public static Player valueOf(long playerId, String accountId, int type, String nickName){
         Player player = new Player();
         player.setLevel(1);
-        player.setCareer(type.getJobType());
+        player.setPlayerJob(type);
         player.setObjectId(playerId);
         player.setAccountId(accountId);
-        player.setPlayerName(type.getJobName());
+        player.setPlayerName(nickName);
         player.setSurviveStatus(1);
-        int x = (int) (1 + Math.random() * (10));
-        int y = (int) (1 + Math.random() * (10));
-        player.setX(x);
-        player.setY(y);
+        player.setX(0);
+        player.setY(0);
         return player;
     }
 
+    public long getExp() {
+        return exp;
+    }
+
+    public void setExp(long exp) {
+        this.exp = exp;
+    }
 
     public int getX() {
         return x;
@@ -86,12 +101,12 @@ public class Player extends Creature<Player> {
         this.playerName = playerName;
     }
 
-    public int getCareer() {
-        return career;
+    public int getPlayerJob() {
+        return playerJob;
     }
 
-    public void setCareer(int career) {
-        this.career = career;
+    public void setPlayerJob(int playerJob) {
+        this.playerJob = playerJob;
     }
 
     public int getLevel() {
@@ -119,4 +134,6 @@ public class Player extends Creature<Player> {
     public String getName() {
         return playerName;
     }
+
+
 }

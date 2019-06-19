@@ -10,23 +10,28 @@ import org.msgpack.annotation.Message;
   */
 @Message
 public class CM_Login {
-    private String accountId;
+    /**
+     * 用户名
+     */
+    private String username;
+    /**
+     * 密码
+     */
+    private String passward;
 
-    private String passWord;
-
-    public String getAccountId() {
-        return accountId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getPassWord() {
-        return passWord;
+    public String getPassward() {
+        return passward;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassward(String passward) {
+        this.passward = passward;
     }
 }

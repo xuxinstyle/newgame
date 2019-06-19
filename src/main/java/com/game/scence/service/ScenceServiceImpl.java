@@ -11,7 +11,6 @@ import com.game.scence.resource.MapResource;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.user.account.packet.SM_EnterCreatePlayer;
-import com.resource.core.StorageManager;
 import com.socket.core.session.SessionManager;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
@@ -28,18 +27,19 @@ import java.util.Map;
  */
 @Component
 public class ScenceServiceImpl implements ScenceService {
+
     private static final Logger logger = LoggerFactory.getLogger(ScenceServiceImpl.class);
 
     @Autowired
-    private ScenceManger scenceManger;
+    private ScenceManger scenceMangaer;
     @Autowired
     private SessionManager sessionManager;
-    /**
-     * 创角
-     *
-     * @param session
-     * @param accountId
-     */
+
+    @Override
+    public void init() {
+        scenceMangaer.init();
+    }
+
     @Override
     public void enterMap(TSession session, String accountId, int mapId) {
         /**
@@ -64,13 +64,12 @@ public class ScenceServiceImpl implements ScenceService {
     private Player setPosition(String accountId, MapResource mapResource) {
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        List<Long> playerIds = accountInfo.getPlayerIds();
-        if (playerIds == null || playerIds.size() == 0) {
+        long playerId = accountInfo.getPlayerId();
+        if (playerId == 0L ) {
             logger.warn("玩家{}没有角色信息", accountId);
             return null;
         }
-        Long playerId = playerIds.get(0);
-        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayer(playerId);
+        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(playerId);
         Player player = playerEnt.getPlayer();
         if (player == null) {
             logger.warn("玩家{}没有角色信息", accountId);
@@ -84,7 +83,7 @@ public class ScenceServiceImpl implements ScenceService {
         return player;
     }
     public void refreshScenceInfo(int mapId, Player player){
-        scenceManger.refreshScenceInfo(mapId,player);
+        scenceMangaer.refreshScenceInfo(mapId,player);
     }
     /**
      * 进入地图
@@ -137,8 +136,8 @@ public class ScenceServiceImpl implements ScenceService {
         if(currentMapType!=null){
             /** 1.清除上次地图中玩家存的缓存信息*/
             removeScenceAccountId(currentMapType.getMapid(), accountId);
+            showMap(currentMapType.getMapid());
         }
-        showMap(currentMapType.getMapid());
     }
 
     /**
@@ -171,7 +170,7 @@ public class ScenceServiceImpl implements ScenceService {
      */
     @Override
     public void showAllAccountInfo(TSession session, int mapId) {
-        ScenceInfo scenceInfo = scenceManger.getScenceInfo(mapId);
+        ScenceInfo scenceInfo = scenceMangaer.getScenceInfo(mapId);
         SM_ShowAllAccountInfo sm = new SM_ShowAllAccountInfo();
         List<Player> player = scenceInfo.getPlayers();
         String context = parse(player);
@@ -191,7 +190,7 @@ public class ScenceServiceImpl implements ScenceService {
             context.append("账号id：[" + accountId + "] ");
             context.append("昵称：["+accountName+"] ");
             context.append("角色名：[" + player.getPlayerName()+"] " );
-            context.append("职业:["+Job.valueOf(player.getCareer()).getJobName()+"] ");
+            context.append("职业:["+Job.valueOf(player.getPlayerJob()).getJobName()+"] ");
             context.append("等级：["+player.getLevel()+"] ");
             context.append("位置：[" + player.getX() + "," + player.getY() + "] ");
             context.append("#");
@@ -211,17 +210,17 @@ public class ScenceServiceImpl implements ScenceService {
         }
         AccountInfo accountInfo = accountEnt.getAccountInfo();
 
-        List<Long> playerIds = accountInfo.getPlayerIds();
-        if (playerIds.size() < 1) {
+        long playerId = accountInfo.getPlayerId();
+        if (playerId == 0L) {
             logger.warn("玩家[" + accountId + "]没有创建角色");
             return;
         }
-        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayer(playerIds.get(0));
+        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(playerId);
         Player player = playerEnt.getPlayer();
         SM_ShowAccountInfo sm = new SM_ShowAccountInfo();
         sm.setAccountId(accountId);
         sm.setNickName(accountInfo.getAccountName());
-        sm.setCareer(Job.valueOf(player.getCareer()).getJobName());
+        sm.setCareer(Job.valueOf(player.getPlayerJob()).getJobName());
         sm.setLevel(player.getLevel());
         sm.setPlayerName(player.getPlayerName());
         sm.setX(player.getX());
@@ -232,18 +231,20 @@ public class ScenceServiceImpl implements ScenceService {
 
     @Override
     public void setScenceAccountId(int mapId, String accountId) {
-        scenceManger.setScenceInfo(mapId, accountId);
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        scenceMangaer.setScenceInfo(mapId,player);
     }
 
     @Override
     public void removeScenceAccountId(int mapId, String accountId) {
-        scenceManger.removeAccountId(mapId, accountId);
+        scenceMangaer.removeAccountId(mapId, accountId);
     }
 
     @Override
-    public void move(TSession session, int x, int y) {
+    public void move(TSession session, int x, int y, int mapId) {
         String accountId = session.getAccountId();
-        if (!checkMove(accountId, x, y)) {
+
+        if (!checkMove(mapId, x, y)) {
             logger.warn("不能移动到当前位置");
             SM_Move sm = new SM_Move();
             sm.setStatus(0);
@@ -255,10 +256,9 @@ public class ScenceServiceImpl implements ScenceService {
 
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        List<Long> playerIds = accountInfo.getPlayerIds();
+        long playerId = accountInfo.getPlayerId();
         // TODO:
-        Long playerId = playerIds.get(0);
-        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayer(playerId);
+        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(playerId);
         Player player = playerEnt.getPlayer();
         player.setX(x);
         player.setY(y);
@@ -273,13 +273,18 @@ public class ScenceServiceImpl implements ScenceService {
     }
 
     @Override
+    public void doPlayerUpLevel(int mapId, Player player) {
+        refreshScenceInfo(mapId, player);
+    }
+
+    @Override
     public MapResource getMapResource(int mapId) {
-        return (MapResource) StorageManager.getResource(MapResource.class, mapId);
+        return scenceMangaer.getResource( mapId,MapResource.class);
     }
 
     @Override
     public void showMap(int mapId) {
-        ScenceInfo scenceInfo = scenceManger.getScenceInfo(mapId);
+        ScenceInfo scenceInfo = scenceMangaer.getScenceInfo(mapId);
         if(scenceInfo==null){
             return;
         }
@@ -300,41 +305,18 @@ public class ScenceServiceImpl implements ScenceService {
             sm.setScenePositions(str.toString());
             session.sendPacket(sm);
         }
-
-
     }
 
-    private boolean checkMove(String accountId, int x, int y) {
-
-        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
-        AccountInfo accountInfo = accountEnt.getAccountInfo();
-        SceneType currentMapType = accountInfo.getCurrentMapType();
-        if (currentMapType == null) {
-            logger.warn("没有玩家当前地图的信息");
+    private boolean checkMove(int mapId, int x, int y) {
+        MapResource mapResource = getMapResource(mapId);
+        int[][] mapcontext = mapResource.getMapcontext();
+        if(y >= mapcontext.length||y<0||x>=mapcontext[0].length||x<0){
             return false;
         }
-
-        MapResource mapResource = getMapResource(currentMapType.getMapid());
-        String context = mapResource.getContext();
-        String[] mapX = context.split(",");
-        if (x > mapX.length || x < 1) {
+        if(mapcontext[y][x]==1){
             return false;
         }
-        for (int i = 0; i < mapX.length; i++) {
-            String[] mapY = mapX[0].split(" ");
-            if (y > mapY.length || y < 1) {
-                logger.warn("不能移动到x={},y={}", x, y);
-                return false;
-            }
-            if (Integer.parseInt(mapY[y - 1]) == 1 && x == i) {
-                logger.warn("不能移动到x={},y={}", x, y);
-                return false;
-            }
-            if (Integer.parseInt(mapY[y - 1]) == 0 && x == i) {
-                return true;
-            }
-        }
-        return false;
+        return true;
     }
 
 

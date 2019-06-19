@@ -2,9 +2,6 @@ package com.game.user.account.model;
 
 import com.game.scence.constant.SceneType;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 放账号的信息，如属性等
  * @Author：xuxin
@@ -41,7 +38,7 @@ public class AccountInfo {
     /**
      * 该账号下的PlayerId
      */
-    private List<Long> playerIds;
+    private long playerId;
 
     public static AccountInfo valueOf(String accountName){
         AccountInfo accountInfo = new AccountInfo();
@@ -51,7 +48,7 @@ public class AccountInfo {
         accountInfo.setCurrentMapType(SceneType.NoviceVillage);
         accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
         accountInfo.setLastLogoutTime(0L);
-        accountInfo.setPlayerIds(new ArrayList<>());
+        accountInfo.setPlayerId(0L);
         return accountInfo;
     }
 
@@ -103,12 +100,12 @@ public class AccountInfo {
         this.lastLogoutTime = lastLogoutTime;
     }
 
-    public List<Long> getPlayerIds() {
-        return playerIds;
+    public long getPlayerId() {
+        return playerId;
     }
 
-    public void setPlayerIds(List<Long> playerIds) {
-        this.playerIds = playerIds;
+    public void setPlayerId(long playerId) {
+        this.playerId = playerId;
     }
 
     @Override
@@ -120,7 +117,7 @@ public class AccountInfo {
                 ", lastLogoutTime=" + lastLogoutTime +
                 ", lastLogoutMapType=" + lastLogoutMapType +
                 ", currentMapType=" + currentMapType +
-                ", playerIds=" + playerIds +
+                ", playerId=" + playerId +
                 '}';
     }
 }

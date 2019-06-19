@@ -2,6 +2,8 @@ package com.game.role.player.entity;
 
 import com.db.AbstractEntity;
 import com.game.role.player.model.Player;
+import com.game.user.item.model.ItemStorageInfo;
+import com.socket.Utils.JsonUtils;
 import com.socket.Utils.ProtoStuffUtil;
 import org.hibernate.annotations.Table;
 
@@ -12,7 +14,7 @@ import javax.persistence.*;
  * @Date: 2019/4/28 18:13
  */
 @Entity(name="player")
-/*@Table(appliesTo = "player", comment = "角色信息")*/
+@Table(appliesTo = "player", comment = "角色信息")
 public class PlayerEnt extends AbstractEntity<Long> {
     @Id
     @Column(columnDefinition = "bigint default 10000 comment '角色id'", nullable = false)
@@ -29,12 +31,14 @@ public class PlayerEnt extends AbstractEntity<Long> {
 
     @Override
     public void doSerialize() {
-        this.playerData = ProtoStuffUtil.serializer(player);
+        this.playerData =JsonUtils.object2Bytes(player);
+        //this.playerData = ProtoStuffUtil.serializer(player);
     }
 
     @Override
     public void doDeserialize() {
-        this.player = ProtoStuffUtil.deserializer(playerData, Player.class);
+        this.player = JsonUtils.bytes2Object(this.playerData, Player.class);
+        //this.player = ProtoStuffUtil.deserializer(playerData, Player.class);
     }
 
     public long getPlayerId() {

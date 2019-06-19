@@ -61,10 +61,13 @@ public class AccountServiceImpl implements AccountService {
 
         AccountEnt accountEnt = getAccountEnt(accountId);
         AccountInfo accountInfo = AccountInfo.valueOf(nickName);
-        List<Long> playerIds = accountInfo.getPlayerIds();
-        PlayerEnt player = SpringContext.getPlayerSerivce().createPlayer(accountId, Job.valueOf(type));
-        playerIds.add(player.getPlayerId());
+
+        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().createPlayer(accountId, type,nickName);
+        long playerId = playerEnt.getPlayerId();
+        accountInfo.setPlayerId(playerId);
+        SpringContext.getItemService().createStorage(accountId);
         accountEnt.setAccountInfo(accountInfo);
+
         save(accountEnt);
         SM_CreatePlayer sm = new SM_CreatePlayer();
         sm.setAccountId(accountId);
