@@ -3,6 +3,9 @@ package com.game.user.item.command;
 import com.game.SpringContext;
 import com.game.base.executor.ICommand;
 import com.game.base.executor.common.Impl.AbstractCommonDelayCommand;
+import com.game.user.item.packet.SM_EffectEnd;
+import com.game.user.item.resource.ItemResource;
+import com.socket.core.session.TSession;
 
 /**
  * @Author：xuxin
@@ -37,5 +40,12 @@ public class MedicineDelayCommand extends AbstractCommonDelayCommand {
     public void active() {
         MedicineCommand command = new MedicineCommand(accountId,itemModelId);
         SpringContext.getAccountExecutorService().submit(command);
+
+        TSession tSession = SpringContext.getSessionManager().getAccountSessionMap().get(accountId);
+        ItemResource itemResource = SpringContext.getItemService().getItemResource(itemModelId);
+        String itemName = itemResource.getName();
+        SM_EffectEnd sm = new SM_EffectEnd();
+        sm.setItemName(itemName);
+        tSession.sendPacket(sm);
     }
 }

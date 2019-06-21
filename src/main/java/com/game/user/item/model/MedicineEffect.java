@@ -7,6 +7,8 @@ import com.game.base.attribute.constant.AttributeType;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.user.item.command.MedicineDelayCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date: 2019/6/17 14:19
  */
 public class MedicineEffect extends UseEffect {
-    /**
-     * 使用持续时间
-     */
-    private long useTime;
+    private static final Logger logger  = LoggerFactory.getLogger(MedicineEffect.class);
     /**
      * 增加的属性
      */
@@ -46,7 +45,7 @@ public class MedicineEffect extends UseEffect {
         /**
          * 这个地方配置表中配置的是
          */
-        useTime = Long.parseLong(split[1])*1000*60;
+        this.effectiveTime = Long.parseLong(split[1])*1000*60;
         Object itemModelId = param.get("itemModelId");
         this.itemModelId = (int)itemModelId;
     }
@@ -61,8 +60,11 @@ public class MedicineEffect extends UseEffect {
         AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
         attributeContainer.addAndComputeMap(addAttributeList);
         SpringContext.getPlayerSerivce().save(playerEnt);
-        MedicineDelayCommand command = new MedicineDelayCommand(useTime,acountId,itemModelId);
+        MedicineDelayCommand command = new MedicineDelayCommand(effectiveTime*num,acountId,itemModelId);
         SpringContext.getCommonExecutorService().submit(command);
+        if(logger.isDebugEnabled()){
+            logger.debug("玩家{}使用药品道具成功",acountId);
+        }
     }
 
     public List<Attribute> getAddAttributeList() {
@@ -73,13 +75,6 @@ public class MedicineEffect extends UseEffect {
         this.addAttributeList = addAttributeList;
     }
 
-    public long getUseTime() {
-        return useTime;
-    }
-
-    public void setUseTime(long useTime) {
-        this.useTime = useTime;
-    }
 
     public int getItemModelId() {
         return itemModelId;

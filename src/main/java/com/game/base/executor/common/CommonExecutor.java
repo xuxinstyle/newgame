@@ -43,14 +43,14 @@ public class CommonExecutor {
             if(!command.isCanceled()) {
                 command.active();
             }
-        },command.getDelay(),command.getPeriod(),TimeUnit.SECONDS);
+        },command.getDelay(),command.getPeriod(),TimeUnit.MILLISECONDS);
     }
     public void schedule(AbstractCommonDelayCommand command){
         pool.schedule(()->{
             if(!command.isCanceled()) {
                 command.active();
             }
-        },command.getDelay(),TimeUnit.SECONDS);
+        },command.getDelay(),TimeUnit.MILLISECONDS);
     }
 
     public void addTask(AbstractCommonCommand command){

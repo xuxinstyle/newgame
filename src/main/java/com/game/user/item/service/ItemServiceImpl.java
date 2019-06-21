@@ -8,9 +8,11 @@ import com.game.user.item.constant.ItemType;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
 import com.game.user.item.model.ItemStorageInfo;
+import com.game.user.item.model.UseEffect;
 import com.game.user.item.packet.SM_AwardToPack;
 import com.game.user.item.packet.SM_RemoveItemFormPack;
 import com.game.user.item.packet.SM_ShowPackItem;
+import com.game.user.item.packet.SM_UseItem;
 import com.game.user.item.packet.bean.ItemVO;
 import com.game.user.item.resource.ItemResource;
 import com.resource.core.StorageManager;
@@ -104,7 +106,7 @@ public class ItemServiceImpl implements ItemService {
     public void sort(String accountId) {
         ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
         sort(itemStorageEnt);
-        save(itemStorageEnt);
+
     }
 
     /**
@@ -116,6 +118,7 @@ public class ItemServiceImpl implements ItemService {
     public void sort(ItemStorageEnt itemStorageEnt) {
         ItemStorageInfo pack = itemStorageEnt.getPack();
         pack.sort();
+        save(itemStorageEnt);
     }
 
     @Override
@@ -209,6 +212,37 @@ public class ItemServiceImpl implements ItemService {
         sm.setSize(pack.getMaxSize());
         sm.setUseSize(pack.getUseSize());
         sm.setItemList(list);
+        session.sendPacket(sm);
+    }
+
+    @Override
+    public void useItem(TSession session, long itemObjectId,int num) {
+        String accountId = session.getAccountId();
+        ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
+        ItemStorageInfo pack = itemStorageEnt.getPack();
+        AbstractItem item = pack.getItem(itemObjectId);
+        if(item==null){
+            logger.warn("玩家背包没有道具[{}]",itemObjectId);
+            SM_UseItem sm = new SM_UseItem();
+            sm.setStatus(2);
+            session.sendPacket(sm);
+            return;
+        }
+        ItemResource resource = item.getResource();
+        UseEffect useEffect = resource.getUseEffect();
+        if(useEffect==null){
+            logger.warn("道具[{}]不能使用",itemObjectId);
+            SM_UseItem sm = new SM_UseItem();
+            sm.setStatus(3);
+            session.sendPacket(sm);
+            return;
+        }
+        useEffect.use(session.getAccountId(),num);
+        pack.removeByObject(itemObjectId,num);
+        save(itemStorageEnt);
+        SM_UseItem sm = new SM_UseItem();
+        sm.setEffectiveTime(num*useEffect.getEffectiveTime());
+        sm.setStatus(1);
         session.sendPacket(sm);
     }
 }

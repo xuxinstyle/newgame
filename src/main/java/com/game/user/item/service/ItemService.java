@@ -99,4 +99,11 @@ public interface ItemService {
      * @return
      */
     EquipResource getEquipResource(int itemModelId);
+
+    /**
+     * 使用道具
+     * @param session
+     * @param itemObjectId
+     */
+    void useItem(TSession session, long itemObjectId,int num);
 }

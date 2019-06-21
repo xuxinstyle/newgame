@@ -4,6 +4,7 @@ import com.game.SpringContext;
 import com.game.user.item.packet.CM_AwardToPack;
 import com.game.user.item.packet.CM_RemoveItemFormPack;
 import com.game.user.item.packet.CM_ShowPackItem;
+import com.game.user.item.packet.CM_UseItem;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;
@@ -42,6 +43,16 @@ public class ItemFacade {
         }catch (Exception e){
             e.printStackTrace();
             logger.error("查看玩家{}背包信息失败",cm.getAccountId());
+        }
+    }
+
+    @HandlerAnno
+    public void useItem(TSession session, CM_UseItem cm){
+        try{
+            SpringContext.getItemService().useItem(session, cm.getItemObjectId(),cm.getNum());
+        }catch (Exception e){
+            logger.error("玩家{}使用道具{}失败",session.getAccountId(),cm.getItemObjectId());
+            e.printStackTrace();
         }
     }
 }

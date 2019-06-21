@@ -12,6 +12,10 @@ import java.util.Map;
  */
 public abstract class UseEffect {
     /**
+     * 使用效果时长
+     */
+    protected long effectiveTime;
+    /**
      * 初始化
      * @param effect
      */
@@ -22,4 +26,12 @@ public abstract class UseEffect {
      * @param
      */
     public abstract void use(String accountId,int num);
+
+    public long getEffectiveTime() {
+        return effectiveTime;
+    }
+
+    public void setEffectiveTime(long effectiveTime) {
+        this.effectiveTime = effectiveTime;
+    }
 }
