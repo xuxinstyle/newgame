@@ -10,9 +10,7 @@ import com.resource.anno.LoadResource;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author：xuxin
@@ -33,6 +31,11 @@ public class EquipResource {
      * 装备类型
      */
     private String equipType;
+    /**
+     * 升级后对应的道具表id
+     */
+    private int upgradeId;
+
     /**
      * 穿戴条件
      */
@@ -67,13 +70,13 @@ public class EquipResource {
     @Analyze("analyzeUpAttribute")
     private String upAttribute;
 
-    private Map<AttributeType, Attribute> upAttributeMap;
+    private List<Attribute> upAttributeList;
 
     public void analyzeEquipCondition() {
         String[] split = this.equipConditions.split("_");
         EquipCondition condition = new EquipCondition();
         condition.setCareer(Integer.parseInt(split[0]));
-        condition.setLevel(Integer.parseInt(split[1]));
+        condition.setPlayerNeedLevel(Integer.parseInt(split[1]));
         this.equipCondition = condition;
     }
 
@@ -90,7 +93,7 @@ public class EquipResource {
         UpgradeCondition condition = new UpgradeCondition();
         condition.setItemModelId(Integer.parseInt(split[0]));
         condition.setNum(Integer.parseInt(split[1]));
-        condition.setEquipLevel(Integer.parseInt(split[2]));
+        condition.setEquipNeedLevel(Integer.parseInt(split[2]));
         this.upgradeCondition = condition;
     }
 
@@ -105,16 +108,23 @@ public class EquipResource {
         baseAttributeList = list;
     }
     public void analyzeUpAttribute(){
-        Map<AttributeType, Attribute> map = new HashMap<>();
+        List<Attribute> attributeList = new ArrayList<>();
         String[] split = upAttribute.split(";");
         for (String str : split) {
             String[] attr = str.split(",");
             Attribute attribute = Attribute.valueOf(AttributeType.valueOf(attr[0]), Long.parseLong(attr[1]));
-            map.put(attribute.getAttributeType(), attribute);
+            attributeList.add(attribute);
         }
-        upAttributeMap = map;
+        upAttributeList = attributeList;
     }
 
+    public int getUpgradeId() {
+        return upgradeId;
+    }
+
+    public void setUpgradeId(int upgradeId) {
+        this.upgradeId = upgradeId;
+    }
 
     public int getItemId() {
         return itemId;
@@ -196,15 +206,13 @@ public class EquipResource {
         this.upAttribute = upAttribute;
     }
 
-    public void setUpAttributeMap(Map<AttributeType, Attribute> upAttributeMap) {
-        this.upAttributeMap = upAttributeMap;
+    public void setUpAttributeList(List<Attribute> upAttributeList) {
+        this.upAttributeList = upAttributeList;
     }
 
     public String getEquipType() {
         return equipType;
     }
-
-
 
     public EquipCondition getEquipCondition() {
         return equipCondition;
@@ -219,8 +227,8 @@ public class EquipResource {
         this.baseAttributeList = baseAttributeList;
     }
 
-    public Map<AttributeType, Attribute> getUpAttributeMap() {
-        return upAttributeMap;
+    public List<Attribute> getUpAttributeList() {
+        return upAttributeList;
     }
 
 

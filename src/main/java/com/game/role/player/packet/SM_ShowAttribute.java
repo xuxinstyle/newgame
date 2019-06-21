@@ -14,11 +14,24 @@ public class SM_ShowAttribute {
     /**
      * 一级属性
      */
-    private List<Attribute> firstAttribute;
+    private List<Attribute> firstAttributeList;
     /**
      * 二级属性
      */
-    private List<Attribute> secondAttribute;
+    private List<Attribute> secondAttributeList;
+
+    /**
+     * 其他属性
+     */
+    private List<Attribute> otherAttributeList;
+
+    public List<Attribute> getOtherAttributeList() {
+        return otherAttributeList;
+    }
+
+    public void setOtherAttributeList(List<Attribute> otherAttributeList) {
+        this.otherAttributeList = otherAttributeList;
+    }
 
     public String getPlayerName() {
         return playerName;
@@ -28,19 +41,19 @@ public class SM_ShowAttribute {
         this.playerName = playerName;
     }
 
-    public List<Attribute> getFirstAttribute() {
-        return firstAttribute;
+    public List<Attribute> getFirstAttributeList() {
+        return firstAttributeList;
     }
 
-    public void setFirstAttribute(List<Attribute> firstAttribute) {
-        this.firstAttribute = firstAttribute;
+    public void setFirstAttributeList(List<Attribute> firstAttributeList) {
+        this.firstAttributeList = firstAttributeList;
     }
 
-    public List<Attribute> getSecondAttribute() {
-        return secondAttribute;
+    public List<Attribute> getSecondAttributeList() {
+        return secondAttributeList;
     }
 
-    public void setSecondAttribute(List<Attribute> secondAttribute) {
-        this.secondAttribute = secondAttribute;
+    public void setSecondAttributeList(List<Attribute> secondAttributeList) {
+        this.secondAttributeList = secondAttributeList;
     }
 }

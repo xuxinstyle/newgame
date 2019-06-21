@@ -53,4 +53,10 @@
     <catalog id="39" value="com.game.role.player.packet.CM_ShowAttribute"/>
     <catalog id="40" value="com.game.role.player.packet.SM_ShowAttribute"/>
 
+    <catalog id="41" value="com.game.user.strenequip.packet.CM_StrenEquip"/>
+    <catalog id="42" value="com.game.user.strenequip.packet.SM_StrenEquip"/>
+    <catalog id="43" value="com.game.user.equipupgrade.packet.CM_EquipUpgrade"/>
+    <catalog id="44" value="com.game.user.equipupgrade.packet.SM_EquipUpgrade"/>
+
+
 </protocols>

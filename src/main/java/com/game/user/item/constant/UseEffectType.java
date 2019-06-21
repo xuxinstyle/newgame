@@ -3,6 +3,7 @@ package com.game.user.item.constant;
 import com.game.user.item.model.*;
 
 /**
+ * 这里的名字要和道具类型中的名字相同
  * @Author：xuxin
  * @Date: 2019/6/17 14:28
  */

@@ -20,11 +20,11 @@ public class UpgradeCondition extends Condition{
     /**
      * 装备升阶所需要的等级
      */
-    private int equipLevel;
+    private int equipNeedLevel;
 
-
+    @Override
     public boolean checkCondition(String accountId,int equipLevel) {
-        if(equipLevel<this.equipLevel){
+        if(equipLevel<this.equipNeedLevel){
             return false;
         }
         ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
@@ -38,14 +38,11 @@ public class UpgradeCondition extends Condition{
                 continue;
             }
             haveNum += item.getNum();
-            if(haveNum<this.num){
-                continue;
+            if(haveNum>=this.num){
+                return true;
             }
         }
-        if(haveNum<this.num){
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public int getItemModelId() {
@@ -64,11 +61,11 @@ public class UpgradeCondition extends Condition{
         this.num = num;
     }
 
-    public int getEquipLevel() {
-        return equipLevel;
+    public int getEquipNeedLevel() {
+        return equipNeedLevel;
     }
 
-    public void setEquipLevel(int equipLevel) {
-        this.equipLevel = equipLevel;
+    public void setEquipNeedLevel(int equipNeedLevel) {
+        this.equipNeedLevel = equipNeedLevel;
     }
 }

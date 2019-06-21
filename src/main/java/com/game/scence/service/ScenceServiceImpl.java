@@ -56,7 +56,9 @@ public class ScenceServiceImpl implements ScenceService {
         /**
          * 如果有角色信息，则进入玩家上次在的地图
          */
-        logger.info("玩家[{}]有角色信息！开始进图地图",accountId);
+        if(logger.isDebugEnabled()) {
+            logger.debug("玩家[{}]有角色信息！开始进图地图", accountId);
+        }
         doEnterMap(session, accountId, mapId);
 
     }

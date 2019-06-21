@@ -30,7 +30,15 @@ import java.util.List;
 @Component
 public class ItemServiceImpl implements ItemService {
 
-    private static final Logger logger  = LoggerFactory.getLogger(ItemServiceImpl.class);
+    /**
+     * 背包最大格子数
+     */
+    public static final int MAX_PACK_SIZE = 150;
+    /**
+     * 背包初始已使用的格子数
+     */
+    public static final int INIT_PACK_USED_SIZE = 0;
+    private static final Logger logger = LoggerFactory.getLogger(ItemServiceImpl.class);
     @Autowired
     private ItemManager itemManager;
 
@@ -39,12 +47,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private HibernateDao hibernateDao;
+
     @Override
-    public AbstractItem createItem(int itemModelId,int num) {
+    public AbstractItem createItem(int itemModelId, int num) {
         ItemResource resource = getItemResource(itemModelId);
 
         AbstractItem item = ItemType.valueOf(resource.getItemType()).create();
-        item.init(resource,null);
+        item.init(resource);
         item.setNum(num);
         item.setObjectId(createObject(ObjectType.ITEM));
         return item;
@@ -54,14 +63,16 @@ public class ItemServiceImpl implements ItemService {
     public ItemResource getItemResource(int itemModelId) {
         return itemManager.getItemResource(itemModelId);
     }
+
     @Override
-    public EquipResource getEquipResource(int itemModelId){
+    public EquipResource getEquipResource(int itemModelId) {
         return itemManager.getEquipResource(itemModelId);
     }
 
-    public long createObject(ObjectType type){
+    public long createObject(ObjectType type) {
         return SpringContext.getIdentifyService().getNextIdentify(type);
     }
+
     @Override
     public void addItemToPackAndSave(String accountId, AbstractItem item) {
         ItemStorageEnt itemStorageEnt = getItemStorageEnt(accountId);
@@ -75,7 +86,7 @@ public class ItemServiceImpl implements ItemService {
     public void removeItemFromPack(String accountId, AbstractItem item) {
         ItemStorageEnt itemStorageEnt = getItemStorageEnt(accountId);
         ItemStorageInfo pack = itemStorageEnt.getPack();
-        pack.removeByObject(item.getObjectId(),item.getNum());
+        pack.removeByObject(item.getObjectId(), item.getNum());
         save(itemStorageEnt);
     }
 
@@ -98,6 +109,7 @@ public class ItemServiceImpl implements ItemService {
 
     /**
      * 这两个sort需要注意持久化的时间
+     *
      * @param itemStorageEnt
      */
     @Override
@@ -110,7 +122,7 @@ public class ItemServiceImpl implements ItemService {
     public void createStorage(String accountId) {
         ItemStorageEnt itemStorageEnt = new ItemStorageEnt();
         itemStorageEnt.setAccountId(accountId);
-        ItemStorageInfo itemStorageInfo = ItemStorageInfo.valueOf();
+        ItemStorageInfo itemStorageInfo = ItemStorageInfo.valueOf(MAX_PACK_SIZE, INIT_PACK_USED_SIZE);
         itemStorageEnt.setPack(itemStorageInfo);
         save(itemStorageEnt);
     }
@@ -119,7 +131,7 @@ public class ItemServiceImpl implements ItemService {
     public void AwardToPack(TSession session, String accountId, int itemModelId, int num) {
         ItemStorageEnt itemStorageEnt = getItemStorageEnt(accountId);
         ItemStorageInfo pack = itemStorageEnt.getPack();
-        if(!checkResource(itemModelId)){
+        if (!checkResource(itemModelId)) {
             SM_AwardToPack sm = new SM_AwardToPack();
             sm.setStatus(2);
             session.sendPacket(sm);
@@ -127,8 +139,8 @@ public class ItemServiceImpl implements ItemService {
         }
         AbstractItem item = createItem(itemModelId, num);
 
-        if(!pack.checkPackEnough(item)){
-            logger.warn("玩家{}背包空间不足发奖失败",accountId);
+        if (!pack.checkPackEnough(item)) {
+            logger.warn("玩家{}背包空间不足发奖失败", accountId);
             SM_AwardToPack sm = new SM_AwardToPack();
             sm.setStatus(3);
             session.sendPacket(sm);
@@ -137,8 +149,8 @@ public class ItemServiceImpl implements ItemService {
         ItemResource itemResource = SpringContext.getItemService().getItemResource(item.getItemModelId());
         if (itemResource.isAutoUse()) {
 
-            item.use(accountId,num);
-        }else {
+            item.use(accountId, num);
+        } else {
             addItemToPackAndSave(accountId, item);
         }
         SM_AwardToPack sm = new SM_AwardToPack();
@@ -148,7 +160,7 @@ public class ItemServiceImpl implements ItemService {
 
     private boolean checkResource(int itemModelId) {
         ItemResource itemResource = getItemResource(itemModelId);
-        if(itemResource==null){
+        if (itemResource == null) {
             return false;
         }
         return true;
@@ -158,11 +170,11 @@ public class ItemServiceImpl implements ItemService {
     public void removeItem(TSession session, String accountId, long object, int num) {
         ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
         ItemStorageInfo pack = itemStorageEnt.getPack();
-        if(!pack.removeByObject(object,num)){
+        if (!pack.removeByObject(object, num)) {
             SM_RemoveItemFormPack sm = new SM_RemoveItemFormPack();
             sm.setStatus(0);
             session.sendPacket(sm);
-            logger.error("玩家{}移除装备失败，背包中的道具{}数量不足{}",accountId, object, num);
+            logger.error("玩家{}移除装备失败，背包中的道具{}数量不足{}", accountId, object, num);
             return;
         }
         save(itemStorageEnt);
@@ -178,12 +190,12 @@ public class ItemServiceImpl implements ItemService {
         AbstractItem[] items = pack.getItems();
         List<ItemVO> list = new ArrayList<>();
 
-        for(int i = 0;i<items.length ;i++){
+        for (int i = 0; i < items.length; i++) {
             AbstractItem item = items[i];
-            if(item==null){
-                break;
+            if (item == null) {
+                continue;
 
-            }else {
+            } else {
                 ItemVO itemVO = new ItemVO();
                 itemVO.setObjectId(item.getObjectId());
                 itemVO.setItemModelId(item.getItemModelId());
@@ -194,7 +206,7 @@ public class ItemServiceImpl implements ItemService {
             }
         }
         SM_ShowPackItem sm = new SM_ShowPackItem();
-        sm.setSize(pack.getSize());
+        sm.setSize(pack.getMaxSize());
         sm.setUseSize(pack.getUseSize());
         sm.setItemList(list);
         session.sendPacket(sm);

@@ -108,31 +108,17 @@ public class PlayerSerivceImpl implements PlayerService {
 
         Map<AttributeType, Attribute> firstAttributeMap = attributeContainer.getFirstAttributeMap();
         Map<AttributeType, Attribute> computeAttributeMap = attributeContainer.getComputeAttributeMap();
+        Map<AttributeType, Attribute> penetationAttributeMap = attributeContainer.getPercentageAttributeMap();
         List<Attribute> firstList = new ArrayList<>(firstAttributeMap.values());
         List<Attribute> secondList = new ArrayList<>(computeAttributeMap.values());
+        List<Attribute> penetationList = new ArrayList<>(penetationAttributeMap.values());
         SM_ShowAttribute sm = new SM_ShowAttribute();
-        sm.setFirstAttribute(firstList);
-        sm.setSecondAttribute(secondList);
+        sm.setFirstAttributeList(firstList);
+        sm.setSecondAttributeList(secondList);
+        sm.setOtherAttributeList(penetationList);
         sm.setPlayerName(player.getPlayerName());
         session.sendPacket(sm);
     }
 
-    @Override
-    public void doPlayerUpLevel(Player player) {
-        String accountId = player.getAccountId();
-        PlayerEnt playerEnt = getPlayerEnt(accountId);
-        Player myPlayer = playerEnt.getPlayer();
-        PlayerLevelResource lastplayerLevelResource = getPlayerLevelResource(myPlayer.getLevel() - 1);
-        PlayerLevelResource playerLevelResource = getPlayerLevelResource(player.getLevel());
-        if(playerLevelResource==null){
-            return;
-        }
-        List<Attribute> baseAttributeList = lastplayerLevelResource.getBaseAttributeList();
-        myPlayer.getAttributeContainer().removeAndCompute(baseAttributeList);
 
-        List<Attribute> baseAttributeListEnd = playerLevelResource.getBaseAttributeList();
-        myPlayer.getAttributeContainer().addAndComputeMap(baseAttributeListEnd);
-        save(playerEnt);
-
-    }
 }

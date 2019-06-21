@@ -15,7 +15,7 @@ public abstract class UseEffect {
      * 初始化
      * @param effect
      */
-    public abstract void init(String effect);
+    public abstract void init(String effect,Map<String,Object> param);
 
     /**
      * 使用

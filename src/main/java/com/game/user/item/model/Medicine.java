@@ -16,19 +16,19 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date: 2019/6/17 9:51
  */
 public class Medicine extends AbstractItem{
-
+    /**
+     * 使用效果的持续时间
+     */
+    private long delay;
 
     /**
      * TODO:添加药品的使用效果的方法
      *
      */
     @Override
-    public void use(String accountId){
-        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(accountId);
-        Player player = playerEnt.getPlayer();
-        AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
-        /*Map<AttributeType, Attribute> attributeMap = attributeContainer.getAttributeList();
-        ItemResource itemResource = SpringContext.getItemService().getItemResource(this.itemModelId);*/
-
+    public void use(String accountId,int num){
+        ItemResource itemResource = SpringContext.getItemService().getItemResource(itemModelId);
+        UseEffect useEffect = itemResource.getUseEffect();
+        useEffect.use(accountId,num);
     }
 }

@@ -3,7 +3,6 @@ package com.game.user.equip.service;
 import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.AttributeContainer;
-import com.game.base.attribute.constant.AttributeType;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.user.account.entity.AccountEnt;
@@ -45,71 +44,95 @@ public class EquipServiceImpl implements EquipService {
     @Autowired
     private EquipManager equipManager;
 
+    /**
+     * 注意穿脱装备时需要加上装备的基础属性和强化属性
+     *
+     * @param session
+     * @param accountId
+     * @param equipObjectId
+     */
     @Override
-    public void equip(TSession session,String accountId, long equipObjectId) {
+    public void equip(TSession session, String accountId, long equipObjectId) {
         /**
          * 判断穿戴条件
          */
         ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
         ItemStorageInfo pack = itemStorageEnt.getPack();
         AbstractItem item = pack.getItem(equipObjectId);
-        if(item==null){
+        if (item == null) {
             SM_Equip sm = new SM_Equip();
             sm.setStatus(3);
             session.sendPacket(sm);
             return;
         }
-        if(!checkWear(item,accountId)){
+        if (!checkWear(item, accountId)) {
             SM_Equip sm = new SM_Equip();
             sm.setStatus(2);
             session.sendPacket(sm);
-            if(logger.isDebugEnabled()){
+            if (logger.isDebugEnabled()) {
                 logger.debug("玩家{}");
             }
             return;
         }
         /**
-         * 卸下原来的装备
+         * 卸下原来的装备 并计算卸下后的玩家属性
          */
-        Equipment equipment=(Equipment) item;
+        Equipment equipment = (Equipment) item;
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(accountId);
         Player player = playerEnt.getPlayer();
         EquipmentEnt equipmentEnt = getEquipmentEnt(player.getObjectId());
         EquipmentInfo equipmentInfo = equipmentEnt.getEquipmentInfo();
+
         Equipment oldEquipment = equipmentInfo.unEquip(equipment.getEquipType());
+
+        AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
         /**
-         * 从背包扣除 将旧装备加到玩家背包中
+         * 如果玩家身上有装备 先脱装备
+         * FIXME:计算玩家属性时注意加上装备的基础属性和强化属性
          */
-        pack.removeByObject(equipObjectId,1);
-        SpringContext.getItemService().save(itemStorageEnt);
-        if(oldEquipment!=null){
-            SpringContext.getItemService().addItemToPackAndSave(accountId,oldEquipment);
+        if (oldEquipment != null) {
+            List oldBaseAttributeList = new ArrayList<>(oldEquipment.getAttributeList());
+            List oldStrenAttributeList = new ArrayList<>(oldEquipment.getStrenAttributeMap().values());
+            attributeContainer.removeAndCompute(oldBaseAttributeList);
+            attributeContainer.removeAndCompute(oldStrenAttributeList);
+
+            SpringContext.getPlayerSerivce().save(playerEnt);
+            SpringContext.getEquipService().save(equipmentEnt);
+
         }
         /**
-         * 穿装备
+         * 从背包扣除新装备 将旧装备加到玩家背包中
+         */
+        pack.removeByObject(equipObjectId, 1);
+        SpringContext.getItemService().save(itemStorageEnt);
+        if (oldEquipment != null) {
+            SpringContext.getItemService().addItemToPackAndSave(accountId, oldEquipment);
+        }
+        /**
+         * 穿新装备
          */
         EquipResource equipResource = getEquipResource(item.getItemModelId());
-
-
-        equipmentInfo.wearEquipment(EquipType.valueOf(equipResource.getEquipType()),equipment);
+        equipmentInfo.wearEquipment(EquipType.valueOf(equipResource.getEquipType()), equipment);
         save(equipmentEnt);
 
         /**
-         * 计算玩家属性
+         * FIXME:计算玩家属性时注意加上装备的基础属性和强化属性
          */
-        AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
-        attributeContainer.addAndComputeMap(equipment.getAttributeList());
+        List<Attribute> newBaseAttributeList = equipment.getAttributeList();
+        List<Attribute> newStrenAttributeList = new ArrayList<>(equipment.getStrenAttributeMap().values());
+        attributeContainer.addAndComputeMap(newBaseAttributeList);
+        attributeContainer.addAndComputeMap(newStrenAttributeList);
         /**
          * 保存 并响应客户端
          */
         SpringContext.getPlayerSerivce().save(playerEnt);
-
         SM_Equip sm = new SM_Equip();
         sm.setStatus(1);
         session.sendPacket(sm);
     }
+
     @Override
-    public EquipResource getEquipResource(int itemModelId){
+    public EquipResource getEquipResource(int itemModelId) {
         return equipManager.getEquipResource(itemModelId);
     }
 
@@ -120,17 +143,18 @@ public class EquipServiceImpl implements EquipService {
 
 
     private boolean checkWear(AbstractItem item, String accountId) {
-        if(item.getItemType()!=ItemType.EQUIPMENT.getId()){
-            if(logger.isDebugEnabled()){
-                logger.debug("玩家{}穿的不是装备类型的道具{}",accountId, item.getItemType());
+        if (item.getItemType() != ItemType.EQUIPMENT.getId()) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("玩家{}穿的不是装备类型的道具{}", accountId, item.getItemType());
             }
             return false;
         }
         EquipResource equipResource = getEquipResource(item.getItemModelId());
         EquipCondition equipCondition = equipResource.getEquipCondition();
-        if(!equipCondition.checkCondition(accountId)){
-            if(logger.isDebugEnabled()){
-                logger.debug("玩家{}不符合穿戴条件",accountId);
+        Equipment equipment = (Equipment) item;
+        if (!equipCondition.checkCondition(accountId, equipment.getLevel())) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("玩家{}不符合穿戴条件", accountId);
             }
             return false;
         }
@@ -138,7 +162,7 @@ public class EquipServiceImpl implements EquipService {
     }
 
     @Override
-    public void unEquip(TSession session,String accountId, int position) {
+    public void unEquip(TSession session, String accountId, int position) {
         /**
          * 获取到装备栏的数据
          * 判断背包空间是否充足
@@ -149,19 +173,19 @@ public class EquipServiceImpl implements EquipService {
         EquipmentEnt equipmentEnt = getEquipmentEnt(player.getObjectId());
         EquipmentInfo equipmentInfo = equipmentEnt.getEquipmentInfo();
         Equipment equipment = equipmentInfo.getPositionEquip(EquipType.valueOf(position));
-        if(equipment==null){
+        if (equipment == null) {
             SM_UnEquip sm = new SM_UnEquip();
             sm.setStatus(3);
             session.sendPacket(sm);
-            return ;
+            return;
         }
         ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
         ItemStorageInfo pack = itemStorageEnt.getPack();
-        if(!pack.checkPackEnough(equipment)){
+        if (!pack.checkPackEnough(equipment)) {
             SM_UnEquip sm = new SM_UnEquip();
             sm.setStatus(2);
             session.sendPacket(sm);
-            return ;
+            return;
         }
         /**
          * 卸下装备
@@ -173,11 +197,14 @@ public class EquipServiceImpl implements EquipService {
 
         SpringContext.getItemService().addItemToPackAndSave(accountId, equipment);
         /**
-         * 计算玩家属性
+         * FIXME:计算玩家属性时注意加上装备的基础属性和强化属性
          */
-        List<Attribute> attributeList = equipment.getAttributeList();
+        List<Attribute> baseAttributeList = equipment.getAttributeList();
+        List<Attribute> strenAttributeList = new ArrayList<>(equipment.getStrenAttributeMap().values());
         AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
-        attributeContainer.removeAndCompute(attributeList);
+        attributeContainer.removeAndCompute(baseAttributeList);
+        attributeContainer.removeAndCompute(strenAttributeList);
+
         SpringContext.getPlayerSerivce().save(playerEnt);
         /**
          * 保存玩家数据和装备栏数据和背包数据
@@ -185,7 +212,7 @@ public class EquipServiceImpl implements EquipService {
         SM_UnEquip sm = new SM_UnEquip();
         sm.setStatus(1);
         session.sendPacket(sm);
-        return ;
+        return;
     }
 
     @Override
@@ -207,12 +234,12 @@ public class EquipServiceImpl implements EquipService {
         EquipmentInfo equipmentInfo = equipmentEnt.getEquipmentInfo();
         Map<EquipType, EquipHole> equipmentMap = equipmentInfo.getEquipmentMap();
         Map<Integer, EquipmentVO> positionEquipment = new HashMap<>();
-        for(Map.Entry<EquipType, EquipHole> entry:equipmentMap.entrySet()){
+        for (Map.Entry<EquipType, EquipHole> entry : equipmentMap.entrySet()) {
             EquipType key = entry.getKey();
             EquipHole equipHole = entry.getValue();
-            if(equipHole.getEquipment()==null){
+            if (equipHole.getEquipment() == null) {
                 positionEquipment.put(key.getPosition(), EquipmentVO.valueOf(key.getPosition()));
-            }else{
+            } else {
                 Equipment value = equipHole.getEquipment();
                 EquipmentVO equipmentVO = new EquipmentVO();
                 equipmentVO.setEquipName(value.getName());
@@ -220,9 +247,11 @@ public class EquipServiceImpl implements EquipService {
                 equipmentVO.setQuality(value.getQuality());
                 equipmentVO.setLevel(value.getLevel());
                 equipmentVO.setPosition(equipHole.getPosition());
+                List<Attribute> strenAttributes = new ArrayList<>(value.getStrenAttributeMap().values());
+                equipmentVO.setStrenAttributeList(strenAttributes);
                 List<Attribute> attributeList = value.getAttributeList();
                 equipmentVO.setAttributeList(attributeList);
-                positionEquipment.put(key.getPosition(),equipmentVO);
+                positionEquipment.put(key.getPosition(), equipmentVO);
             }
         }
         SM_ShowEquipInfo sm = new SM_ShowEquipInfo();

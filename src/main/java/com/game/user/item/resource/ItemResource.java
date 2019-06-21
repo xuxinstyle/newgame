@@ -8,6 +8,7 @@ import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -58,10 +59,17 @@ public class ItemResource {
      * 配置表中一定要配置对应的符号，要么就
      */
     public void analyzeEffect(){
-
-        String[] split = effect.split(":");
-        UseEffect useEffect = UseEffectType.valueOf(split[0]).create();
-        useEffect.init(split[1]+split[2]);
+        if(effect==null){
+            return;
+        }
+        UseEffectType useEffectType = UseEffectType.valueOf(itemType);
+        if(useEffectType==null){
+            return;
+        }
+        UseEffect useEffect = useEffectType.create();
+        Map<String ,Object> param = new HashMap<>();
+        param.put("itemModelId",id);
+        useEffect.init(effect,param);
         this.useEffect = useEffect;
     }
 

@@ -66,9 +66,5 @@ public interface PlayerService {
      */
     void showPlayerAttribute(TSession session, String accountId);
 
-    /**
-     * 做玩家升级后的操作
-     * @param player
-     */
-    void doPlayerUpLevel(Player player);
+
 }

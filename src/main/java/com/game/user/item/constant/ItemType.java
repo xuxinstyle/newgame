@@ -1,9 +1,6 @@
 package com.game.user.item.constant;
 
-import com.game.user.item.model.AbstractItem;
-import com.game.user.item.model.Equipment;
-import com.game.user.item.model.Exp;
-import com.game.user.item.model.Medicine;
+import com.game.user.item.model.*;
 
 /**
  * @Author：xuxin
@@ -16,9 +13,9 @@ public enum  ItemType {
     /** 经验*/
     EXP(4, Exp.class),
     /** 强化石*/
-    FORTIFIEDSTONE(5),
+    STRENSTONE(5,StrenStone.class),
     /**升阶石*/
-    UPSTONE(6),
+    UPSTONE(6,UpStone.class),
     /** 药品*/
     MEDICINE(7,Medicine.class),
 

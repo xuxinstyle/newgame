@@ -3,6 +3,7 @@ package com.game.user.condition.model;
 import com.game.SpringContext;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
+import com.game.user.item.model.ItemStorageInfo;
 
 /**
  * @Author：xuxin
@@ -19,9 +20,13 @@ public class StrenCondition extends Condition{
     private int num;
 
     @Override
-    public boolean checkCondition(String accountId) {
+    public boolean checkCondition(String accountId,int equipLevel) {
         ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
         AbstractItem[] items = itemStorageEnt.getPack().getItems();
+        /**
+         * 可使用数量
+         */
+        int useNum = 0;
         for(AbstractItem item:items){
             if(item==null){
                 continue;
@@ -29,11 +34,12 @@ public class StrenCondition extends Condition{
             if(item.getItemModelId()!=this.itemModelId){
                 continue;
             }
-            if(item.getNum()<this.num){
-                return false;
+            useNum += item.getNum();
+            if(useNum >= this.num){
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public int getItemModelId() {

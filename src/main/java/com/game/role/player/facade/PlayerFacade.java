@@ -27,8 +27,6 @@ public class PlayerFacade {
             e.printStackTrace();
         }
     }
-    @ReceiveAnn
-    public void doPlayerUpLevel(PlayerUpLevelEvent event){
 
-    }
+
 }

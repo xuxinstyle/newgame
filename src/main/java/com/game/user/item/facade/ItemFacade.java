@@ -36,7 +36,7 @@ public class ItemFacade {
         }
     }
     @HandlerAnno
-    public void removeItem(TSession session,CM_ShowPackItem cm){
+    public void showItem(TSession session,CM_ShowPackItem cm){
         try{
             SpringContext.getItemService().showItem(session,cm.getAccountId());
         }catch (Exception e){

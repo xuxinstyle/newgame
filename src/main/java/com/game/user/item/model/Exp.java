@@ -15,15 +15,14 @@ public class Exp extends AbstractItem{
 
     /** 根据itemResource表初始化*/
     @Override
-    public void init(ItemResource itemResource, Map<String, Object> params) {
-        super.init(itemResource, params);
+    public void init(ItemResource itemResource) {
+        super.init(itemResource);
     }
 
     @Override
     public void use(String accountId,int num) {
         ItemResource itemResource = SpringContext.getItemService().getItemResource(itemModelId);
         ExpUseEffect useEffect = (ExpUseEffect)itemResource.getUseEffect();
-
         useEffect.use(accountId,num);
     }
 }

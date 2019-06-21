@@ -1,6 +1,7 @@
 package com.game.user.item.model;
 
 import com.game.SpringContext;
+import com.game.base.attribute.Attribute;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.event.PlayerUpLevelEvent;
 import com.game.role.player.model.Player;
@@ -11,6 +12,9 @@ import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.socket.core.session.SessionManager;
 import com.socket.core.session.TSession;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author：xuxin
@@ -23,8 +27,9 @@ public class ExpUseEffect extends UseEffect {
     private long addExp;
 
     @Override
-    public void init(String effect) {
-        this.addExp = Long.parseLong(effect);
+    public void init(String effect,Map<String,Object> param) {
+        String replace = effect.replace(".0", "");
+        this.addExp = Long.parseLong(replace);
     }
 
     @Override
@@ -40,23 +45,33 @@ public class ExpUseEffect extends UseEffect {
         player.setExp(player.getExp() + addExp*num);
         SpringContext.getPlayerSerivce().save(playerEnt);
         while (player.getExp() >= upLevelExp) {
-            playerLevelResource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel());
+            playerLevelResource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel()+1);
             if (playerLevelResource == null) {
                 SM_PlayerUpLevel res = new SM_PlayerUpLevel();
                 res.setPlayerName(player.getPlayerName());
-                res.setLevel(player.getLevel() - 1);
-                res.setUpLevel(player.getLevel());
                 res.setStatus(2);
                 session.sendPacket(res);
                 return;
             }
             player.setLevel(player.getLevel() + 1);
             player.setExp(player.getExp() - upLevelExp);
+
+            PlayerLevelResource lastplayerLevelResource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel() - 1);
+
+            if(playerLevelResource==null){
+                return;
+            }
+            List<Attribute> baseAttributeList = lastplayerLevelResource.getBaseAttributeList();
+            player.getAttributeContainer().removeAndCompute(baseAttributeList);
+
+            List<Attribute> baseAttributeListEnd = playerLevelResource.getBaseAttributeList();
+            player.getAttributeContainer().addAndComputeMap(baseAttributeListEnd);
             SpringContext.getPlayerSerivce().save(playerEnt);
+
             PlayerUpLevelEvent playerUpLevelEvent = PlayerUpLevelEvent.valueOf( player);
             SpringContext.getEvenManager().syncSubmit(playerUpLevelEvent);
-            upLevelExp = playerLevelResource.getUpLevelExp();
 
+            upLevelExp = playerLevelResource.getUpLevelExp();
             SM_PlayerUpLevel sm = new SM_PlayerUpLevel();
             sm.setPlayerName(player.getPlayerName());
             sm.setLevel(player.getLevel() - 1);

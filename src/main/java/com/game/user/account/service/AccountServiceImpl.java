@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 public class AccountServiceImpl implements AccountService {
     @Autowired
     private HibernateDao hibernateDao;
+
     private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
 
 
@@ -41,14 +42,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountEnt getAccountEnt(String accountId) {
         AccountEnt accountEnt = hibernateDao.find(AccountEnt.class, accountId);
-
         if(accountEnt==null){
             logger.warn("数据库中没有["+accountId+"]的账号信息");
             return null;
-        }
-        if(logger.isDebugEnabled()){
-            logger.debug(accountEnt.getAccountInfo().toString());
-            logger.debug(accountEnt.toString());
         }
         return accountEnt;
     }

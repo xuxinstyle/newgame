@@ -15,13 +15,13 @@ public class EquipCondition extends Condition {
     /**
      * 等级
      */
-    private int level;
+    private int playerNeedLevel;
 
     @Override
-    public boolean checkCondition(String accountId) {
+    public boolean checkCondition(String accountId,int equipLevel) {
 
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-        if(player.getLevel()< this.level){
+        if(player.getLevel()< this.playerNeedLevel){
             return false;
         }
         if(player.getPlayerJob()!=this.career){
@@ -38,11 +38,11 @@ public class EquipCondition extends Condition {
         this.career = career;
     }
 
-    public int getLevel() {
-        return level;
+    public int getPlayerNeedLevel() {
+        return playerNeedLevel;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setPlayerNeedLevel(int playerNeedLevel) {
+        this.playerNeedLevel = playerNeedLevel;
     }
 }

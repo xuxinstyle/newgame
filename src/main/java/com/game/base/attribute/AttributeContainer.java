@@ -20,9 +20,13 @@ public class AttributeContainer<T extends Creature> {
     private static final Logger logger = LoggerFactory.getLogger(AttributeContainer.class);
 
     /**
-     * 一级属性和百分比属性
+     * 一级属性         （和百分比属性）
      */
     private Map<AttributeType, Attribute> firstAttributeMap = new HashMap<>();
+    /**
+     * 百分比属性  penetation
+     */
+    private Map<AttributeType, Attribute> percentageAttributeMap = new HashMap<>();
 
     /**
      * 二级属性
@@ -48,27 +52,31 @@ public class AttributeContainer<T extends Creature> {
     public static AttributeContainer valueOf() {
         AttributeContainer attributeContainer = new AttributeContainer();
         Map<AttributeType, Attribute> firstAttribute = new HashMap<>();
-        Map<AttributeType, Attribute> secondAttribute = new HashMap<>();
+        Map<AttributeType, Attribute> otherAttribute = new HashMap<>();
+        Map<AttributeType, Attribute> percentageAttribute = new HashMap<>();
         Map<AttributeType, Attribute> computeAttribute = new HashMap<>();
         Map<AttributeType, Attribute> allAttribute = new HashMap<>();
         for (AttributeType attributeType : AttributeType.values()) {
-            if (attributeType.getAttrType() == 1||attributeType.getAttrType() == 3) {
+            if (attributeType.getAttrType() == 1) {
                 firstAttribute.put(attributeType, Attribute.valueOf(attributeType, 0));
-            } else {
+            } else if(attributeType.getAttrType() == 2){
                 if (attributeType == AttributeType.ATTACK_SPEED) {
-                    secondAttribute.put(attributeType, Attribute.valueOf(attributeType, 1));
+                    percentageAttribute.put(attributeType, Attribute.valueOf(attributeType, 1));
                     computeAttribute.put(attributeType, Attribute.valueOf(attributeType, 1));
                     allAttribute.put(attributeType, Attribute.valueOf(attributeType, 1));
                 } else {
-                    secondAttribute.put(attributeType, Attribute.valueOf(attributeType, 0));
+                    percentageAttribute.put(attributeType, Attribute.valueOf(attributeType, 0));
                     computeAttribute.put(attributeType, Attribute.valueOf(attributeType, 0));
                     allAttribute.put(attributeType, Attribute.valueOf(attributeType, 0));
                 }
+            } else if(attributeType.getAttrType() == 3){
+                otherAttribute.put(attributeType, Attribute.valueOf(attributeType, 0));
             }
         }
 
         attributeContainer.setFirstAttributeMap(firstAttribute);
-        attributeContainer.setSecondAttributeMap(secondAttribute);
+        attributeContainer.setPercentageAttributeMap(otherAttribute);
+        attributeContainer.setSecondAttributeMap(percentageAttribute);
         attributeContainer.setComputeAttributeMap(computeAttribute);
         attributeContainer.setAddSecondAttributeMap(allAttribute);
         return attributeContainer;
@@ -95,11 +103,14 @@ public class AttributeContainer<T extends Creature> {
             /**
              * 一级属性
              */
-            changeAttribute(attribute);
-            /**
-             * 百分比属性
-             */
-            recompute(attribute.getAttributeType());
+            if(attribute.getAttributeType().getAttrType()==1) {
+                changeAttribute(attribute);
+            }else {
+                /**
+                 * 百分比属性
+                 */
+                recompute(attribute.getAttributeType());
+            }
         }
 
     }
@@ -110,15 +121,15 @@ public class AttributeContainer<T extends Creature> {
      * @param attribute
      */
     public void changeAttribute(Attribute attribute) {
-        if (attribute.getAttributeType().getAttrType() == 1) {
-            firstAttributeMap.get(attribute.getAttributeType()).addValue(attribute.getValue());
-            Map<AttributeType, Attribute> attributeMap = attribute.getAttributeType().computeChangeAttribute(attribute.getValue());
-            for (Attribute changeAttribute : attributeMap.values()) {
-                secondAttributeMap.get(changeAttribute.getAttributeType()).addValue(changeAttribute.getValue());
-                addSecondAttributeMap.get(changeAttribute.getAttributeType()).addValue(changeAttribute.getValue());
-                recompute(changeAttribute.getAttributeType());
-            }
+
+        firstAttributeMap.get(attribute.getAttributeType()).addValue(attribute.getValue());
+        Map<AttributeType, Attribute> attributeMap = attribute.getAttributeType().computeChangeAttribute(attribute.getValue());
+        for (Attribute changeAttribute : attributeMap.values()) {
+            secondAttributeMap.get(changeAttribute.getAttributeType()).addValue(changeAttribute.getValue());
+            addSecondAttributeMap.get(changeAttribute.getAttributeType()).addValue(changeAttribute.getValue());
+            recompute(changeAttribute.getAttributeType());
         }
+
     }
 
     /**
@@ -129,7 +140,7 @@ public class AttributeContainer<T extends Creature> {
     public void recompute(AttributeType attributeType) {
         if(attributeType.getAttrType()==3){
             Attribute attribute = addSecondAttributeMap.get(AttributeType.valueOf(attributeType.getRelateType()));
-            double endValue = attribute.getValue() * (1+firstAttributeMap.get(attributeType).getValue()/100.0);
+            double endValue = attribute.getValue() * (1+ percentageAttributeMap.get(attributeType).getValue()/100.0);
             computeAttributeMap.put(attribute.getAttributeType(),Attribute.valueOf(attribute.getAttributeType(),(long)endValue));
         }else if(attributeType.getAttrType()==2){
 
@@ -137,7 +148,7 @@ public class AttributeContainer<T extends Creature> {
             /**
              * 根据二级属性找到百分比属性
              */
-            Attribute percentageAttribute = firstAttributeMap.get(AttributeType.valueOf(attributeType.getRelateType()));
+            Attribute percentageAttribute = percentageAttributeMap.get(AttributeType.valueOf(attributeType.getRelateType()));
             double endValue = attribute.getValue() * (1+percentageAttribute.getValue()/100.0);
             computeAttributeMap.put(attribute.getAttributeType(),Attribute.valueOf(attribute.getAttributeType(),(long)endValue));
         }
@@ -168,11 +179,14 @@ public class AttributeContainer<T extends Creature> {
             /**
              * 一级属性
              */
-            changeReduceAttribute(attribute);
-            /**
-             * 百分比属性
-             */
-            recompute(attribute.getAttributeType());
+            if (attribute.getAttributeType().getAttrType() == 1) {
+                changeReduceAttribute(attribute);
+            }else {
+                /**
+                 * 百分比属性
+                 */
+                recompute(attribute.getAttributeType());
+            }
         }
     }
     /**
@@ -181,15 +195,15 @@ public class AttributeContainer<T extends Creature> {
      * @param attribute
      */
     public void changeReduceAttribute(Attribute attribute) {
-        if (attribute.getAttributeType().getAttrType() == 1) {
-            firstAttributeMap.get(attribute.getAttributeType()).reduce(attribute.getValue());
-            Map<AttributeType, Attribute> attributeMap = attribute.getAttributeType().computeChangeAttribute(attribute.getValue());
-            for (Attribute changeAttribute : attributeMap.values()) {
-                secondAttributeMap.get(changeAttribute.getAttributeType()).reduce(changeAttribute.getValue());
-                addSecondAttributeMap.get(changeAttribute.getAttributeType()).reduce(changeAttribute.getValue());
-                recompute(changeAttribute.getAttributeType());
-            }
+
+        firstAttributeMap.get(attribute.getAttributeType()).reduce(attribute.getValue());
+        Map<AttributeType, Attribute> attributeMap = attribute.getAttributeType().computeChangeAttribute(attribute.getValue());
+        for (Attribute changeAttribute : attributeMap.values()) {
+            secondAttributeMap.get(changeAttribute.getAttributeType()).reduce(changeAttribute.getValue());
+            addSecondAttributeMap.get(changeAttribute.getAttributeType()).reduce(changeAttribute.getValue());
+            recompute(changeAttribute.getAttributeType());
         }
+
     }
     /**
      * 移除玩家的属性，并计算二级属性
@@ -233,5 +247,13 @@ public class AttributeContainer<T extends Creature> {
 
     public void setComputeAttributeMap(Map<AttributeType, Attribute> computeAttributeMap) {
         this.computeAttributeMap = computeAttributeMap;
+    }
+
+    public Map<AttributeType, Attribute> getPercentageAttributeMap() {
+        return percentageAttributeMap;
+    }
+
+    public void setPercentageAttributeMap(Map<AttributeType, Attribute> percentageAttributeMap) {
+        this.percentageAttributeMap = percentageAttributeMap;
     }
 }

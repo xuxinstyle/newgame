@@ -27,18 +27,33 @@ public class EquipmentVO {
      */
     private int job;
     /**
-     * 使用等级
+     * 装备强化等级
      */
     private int level;
     /**
-     * 增加的属性
+     * 装备基础属性
      */
     private List<Attribute> attributeList;
+
+    /**
+     * 装备强化属性
+     */
+    private List<Attribute> strenAttributeList;
+
     public static EquipmentVO valueOf(int position){
         EquipmentVO equipmentVO = new EquipmentVO();
         equipmentVO.setPosition(position);
         return equipmentVO;
     }
+
+    public List<Attribute> getStrenAttributeList() {
+        return strenAttributeList;
+    }
+
+    public void setStrenAttributeList(List<Attribute> strenAttributeList) {
+        this.strenAttributeList = strenAttributeList;
+    }
+
     public String getEquipName() {
         return equipName;
     }
