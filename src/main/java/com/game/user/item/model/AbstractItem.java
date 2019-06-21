@@ -26,7 +26,7 @@ public abstract class AbstractItem extends GameObject implements Comparable<Abst
      */
     protected int num;
     /**
-     * 物品状态
+     * 物品状态 用于有过期时间的道具
      */
     protected int status;
     /**
@@ -35,7 +35,7 @@ public abstract class AbstractItem extends GameObject implements Comparable<Abst
     protected long deprecatedTime;
 
     /**
-     * 道具类型
+     * 道具类型  用于有过期时间的道具
      */
     protected int itemType;
 
@@ -52,18 +52,12 @@ public abstract class AbstractItem extends GameObject implements Comparable<Abst
         this.itemType = item.getItemType();
     }
 
-    public void addItem(AbstractItem item) {
-        this.itemModelId = item.getItemModelId();
-        this.num = item.getNum();
-        this.status = item.getStatus();
-        this.deprecatedTime = item.getDeprecatedTime();
-    }
 
-    public AbstractItem copy() {
-        // todo:----------------------------------
-        this.objectId = createItemObjectId();
-        return this;
-    }
+    /**
+     *
+     * @return
+     */
+    public abstract AbstractItem copy();
 
     public boolean reduceNum(int num) {
         if (this.num - num < 0) {
@@ -73,13 +67,6 @@ public abstract class AbstractItem extends GameObject implements Comparable<Abst
         return true;
     }
 
-    public boolean addNumAndCheck(int num) {
-        if (this.num + num > getOverLimit()) {
-            return false;
-        }
-        this.num += num;
-        return true;
-    }
 
     public ItemResource getResource() {
         return SpringContext.getItemService().getItemResource(itemModelId);

@@ -43,9 +43,7 @@ public class PlayerSerivceImpl implements PlayerService {
 
     @Override
     public PlayerEnt getPlayerEnt(long playerId) {
-        PlayerEnt playerEnt = hibernateDao.find(PlayerEnt.class, playerId);
-        playerEnt.doDeserialize();
-        return playerEnt;
+        return hibernateDao.find(PlayerEnt.class, playerId);
     }
 
     @Override
@@ -91,6 +89,9 @@ public class PlayerSerivceImpl implements PlayerService {
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         long playerId = accountInfo.getPlayerId();
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(playerId);
+        if(playerEnt==null){
+            return null;
+        }
         return playerEnt.getPlayer();
     }
 
@@ -117,6 +118,7 @@ public class PlayerSerivceImpl implements PlayerService {
         sm.setSecondAttributeList(secondList);
         sm.setOtherAttributeList(penetationList);
         sm.setPlayerName(player.getPlayerName());
+        sm.setPlayerLevel(player.getLevel());
         session.sendPacket(sm);
     }
 

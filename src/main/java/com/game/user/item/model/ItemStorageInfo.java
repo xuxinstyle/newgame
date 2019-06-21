@@ -40,112 +40,105 @@ public class ItemStorageInfo {
      * @param addItem
      */
     public boolean addItem(AbstractItem addItem) {
-
-        if (addItem.getOverLimit() <= 1) {
-            while (addItem.getNum() > 0) {
-                if (addItem.getNum() == 1) {
-                    addEmpty(addItem);
-                    break;
-                }
+        /**
+         * addItem.getNum()>addItem.getOverLimit()
+         * 如果数量大于最大堆叠
+         *          则1 找到相同道具且（能放道具进去） 放进去指定的数量 递归调用，直到找不到相同的道具
+         *
+         *          如果没有相同的道具
+         *                  找空位放 循环减最大限制放进去
+         *
+         * 如果数量小于最大堆叠，
+         *      找到下一个相同道具方进入 继续找，直到找不到相同的道具
+         *          找到空位了放进去
+         */
+        int position = findSameItem(addItem);
+        if(position!=-1){
+            int defNum = items[position].getOverLimit() - items[position].getNum();
+            if(addItem.getNum()<=defNum){
+                items[position].setNum(items[position].getNum()+addItem.getNum());
+            }else{
+                items[position].setNum(items[position].getOverLimit());
+                addItem.setNum(addItem.getNum()-defNum);
+                addItem(addItem);
+            }
+        }else{
+            int emptyPosition = findEmpty();
+            if(emptyPosition==-1){
+                return false;
+            }
+            if(addItem.getNum()<=addItem.getOverLimit()){
+                items[emptyPosition] = addItem;
+                useSize++;
+            }else{
                 AbstractItem copy = addItem.copy();
-                copy.setNum(1);
-                addItem.reduceNum(1);
-                addEmpty(copy);
-            }
-            return true;
-        }
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] == null) {
-                continue;
-            }
-            /**判断是否是同一类的道具*/
-            if (items[i].getItemModelId() == addItem.getItemModelId()) {
-                /** 判断加入的道具是否在加入后会增加使用的格子*/
-                if (!items[i].addNumAndCheck(addItem.getNum())) {
-                    /**TODO:这里需要加一个整理背包的操作*/
-                    if (useSize + 1 > maxSize) {
-                        return false;
-                    }
-                    int deff = items[i].getOverLimit() - items[i].getNum();
-                    items[i].setNum(items[i].getOverLimit());
-                    addItem.reduceNum(deff);
-                    // TODO:--------------------
-                    while (addItem.getNum() > addItem.getOverLimit()) {
-                        AbstractItem copy = addItem.copy();
-                        copy.setNum(copy.getOverLimit());
-                        addItem.reduceNum(addItem.getOverLimit());
-                        addEmpty(copy);
-                    }
-                    addEmpty(addItem);
-                    return true;
-                } else {
-                    return true;
-                }
+                copy.setNum(copy.getNum()-copy.getOverLimit());
+                addItem.setNum(addItem.getOverLimit());
+                items[emptyPosition] = addItem;
+                useSize++;
+                addItem(copy);
             }
         }
-        while (addItem.getNum() > addItem.getOverLimit()) {
-            AbstractItem copy = addItem.copy();
-            copy.setNum(copy.getOverLimit());
-            addItem.reduceNum(addItem.getOverLimit());
-            addEmpty(copy);
-        }
-        /**TODO:这里需要加整理背包操作*/
-        addEmpty(addItem);
         return true;
     }
 
-    public void addEmpty(AbstractItem item) {
+    private int findEmpty() {
         for (int i = 0; i < items.length; i++) {
-            if (items[i] == null || items[i].getNum() == 0) {
-                items[i] = item;
-                useSize++;
-                return;
+            if(items[i]==null) {
+                return i;
             }
         }
+        return -1;
     }
 
+    /**
+     * 找到背包中第一个可以堆叠防置的格子并返回位置参数
+     * @param addItem
+     * @return
+     */
+    private int findSameItem(AbstractItem addItem) {
+        for (int i = 0; i < items.length; i++) {
+            if(items[i]!=null) {
+                if (addItem.getItemModelId() == items[i].getItemModelId()&& items[i].getNum()<items[i].getOverLimit()){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 
     /**
-     * 判断玩家背包中加入这个道具是否会满
-     * 1.判断背包中是否有相同的道具可以合并
-     * 找出有几个可以合并的道具
-     * 可合并的话合并后是否会超过
+     * 找出所有可以放这个道具的最大数量
      *
      * @param addItem
      * @return
      */
     public boolean checkPackEnough(AbstractItem addItem) {
+        /**
+         * 找出所有可以放这个道具的最大数量
+         */
         ItemResource itemResource = SpringContext.getItemService().getItemResource(addItem.getItemModelId());
         if (itemResource.isAutoUse()) {
             return true;
         }
-        int num1 = addItem.getNum() / addItem.getOverLimit();
-        int num2 = addItem.getNum() % addItem.getOverLimit() == 0 ? 0 : 1;
-        if (num1 + num2 > maxSize - useSize) {
-            return false;
-        } else {
+        int allNum = 0;
+        for(int i = 0;i<items.length;i++){
+            if (items[i] == null) {
+                allNum += addItem.getOverLimit();
+                continue;
+            }
+            if(items[i].getItemModelId()==addItem.getItemModelId()){
+                allNum+=items[i].getOverLimit()-items[i].getNum();
+            }
+
+        }
+        if(allNum>=addItem.getNum()){
             return true;
+        }else {
+            return false;
         }
     }
 
-    /**
-     * p判断不需要将道具叠加到其他道具上的时候背包是否充足
-     */
-    private boolean diffCheckEnough(AbstractItem addItem, int currNum) {
-        int mod = currNum % addItem.getOverLimit();
-        int q = currNum / addItem.getOverLimit();
-        if (mod > 0) {
-            if (useSize + q + 1 > maxSize) {
-                return false;
-            }
-            return true;
-        } else {
-            if (useSize + q > maxSize) {
-                return false;
-            }
-            return true;
-        }
-    }
 
     /**
      * 根据道具的objectId移除
@@ -161,6 +154,9 @@ public class ItemStorageInfo {
          * 4.在不同的格子中就表示格子的不是同一个objectid 所以不需要同一种道具但是不同格子的情况
          */
         for (int i = 0; i < items.length; i++) {
+            if(items[i]==null){
+                continue;
+            }
             if (items[i].getObjectId() == objectId) {
                 if (items[i].getNum() < num) {
                     return false;
@@ -218,7 +214,7 @@ public class ItemStorageInfo {
     }
 
     /**
-     * 这里的整理，不会合并同类项
+     * FIXME:这里的整理，不会合并同类项
      * 只是将前面空的格子填满 等需要背包排序的时候再合并同类型，否则效率很低
      */
     public void sort() {

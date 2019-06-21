@@ -4,6 +4,7 @@ import com.db.HibernateDao;
 import com.game.SpringContext;
 import com.game.base.gameObject.constant.ObjectType;
 import com.game.user.equip.resource.EquipResource;
+import com.game.user.item.command.ItemDeprecatedDelayCommand;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author：xuxin
@@ -102,6 +104,10 @@ public class ItemServiceImpl implements ItemService {
         hibernateDao.saveOrUpdate(ItemStorageEnt.class, itemStorageEnt);
     }
 
+    /**
+     * TODO:这个方法暂时没有用到,等找到效率比较高的整理背包的算法再用
+     * @param accountId
+     */
     @Override
     public void sort(String accountId) {
         ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
@@ -237,12 +243,30 @@ public class ItemServiceImpl implements ItemService {
             session.sendPacket(sm);
             return;
         }
-        useEffect.use(session.getAccountId(),num);
+        /**
+         * fixme:这里看调用什么地方的use比较好?  这里调用item的use扩展性比较好，如果以后需要加其他可使用的道具，只要直接调用继续
+         */
+        item.use(accountId,num);
         pack.removeByObject(itemObjectId,num);
         save(itemStorageEnt);
         SM_UseItem sm = new SM_UseItem();
         sm.setEffectiveTime(num*useEffect.getEffectiveTime());
         sm.setStatus(1);
         session.sendPacket(sm);
+    }
+
+    @Override
+    public Map<Integer, ItemDeprecatedDelayCommand> getItemDeprecateDelayCommandMap(long playerId) {
+        return itemManager.getItemDeprecateDelayCommandMap(playerId);
+    }
+
+    @Override
+    public void putCommand(ItemDeprecatedDelayCommand command) {
+        itemManager.putCommand(command);
+    }
+
+    @Override
+    public void removeDelayCommand(long playerId, int itemModelId) {
+        itemManager.removeItemDelayCommand(playerId,itemModelId);
     }
 }

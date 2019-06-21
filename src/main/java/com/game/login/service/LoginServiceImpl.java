@@ -1,6 +1,7 @@
 package com.game.login.service;
 
 import com.game.SpringContext;
+import com.game.login.event.LoginEvent;
 import com.game.login.packet.SM_Logout;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
@@ -8,6 +9,7 @@ import com.game.login.packet.SM_Login;
 import com.game.login.packet.SM_LoginNoAcount;
 import com.game.scence.constant.SceneType;
 import com.game.util.MD5Util;
+import com.game.util.TimeUtil;
 import com.socket.core.session.SessionManager;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
@@ -52,7 +54,7 @@ public class LoginServiceImpl implements LoginService {
             tSession.sendPacket(sm);
         }
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        accountInfo.setLastLoginTime(System.nanoTime());
+        accountInfo.setLastLoginTime(TimeUtil.now());
         SM_Login sm = new SM_Login();
 
         if(accountInfo.getLastLogoutMapType()==null){
@@ -62,11 +64,13 @@ public class LoginServiceImpl implements LoginService {
         /** 将accountId放到session中,并将session放到缓存中管理*/
         SessionManager.addAccountSessionMap(usernameDB, session);
         SpringContext.getAccountService().save(accountEnt);
+        LoginEvent event = LoginEvent.valueOf(usernameDB);
+        SpringContext.getEvenManager().syncSubmit(event);
 
         sm.setStatus(1);
-        sm.setAccountId(accountEnt.getAccountId());
+        sm.setAccountId(usernameDB);
         session.sendPacket(sm);
-        logger.info(accountEnt.getAccountId() + "登录成功！");
+        logger.info(usernameDB + "登录成功！");
     }
 
     @Override
@@ -81,7 +85,7 @@ public class LoginServiceImpl implements LoginService {
             accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
         }else {
             accountInfo.setLastLogoutMapType(accountInfo.getCurrentMapType());
-            accountInfo.setLastLogoutTime(System.nanoTime());
+            accountInfo.setLastLogoutTime(TimeUtil.now());
             SpringContext.getSessionManager().removeSession(accountId);
             SpringContext.getScenceSerivce().removeScenceAccountId(accountInfo.getCurrentMapType().getMapId(), accountId);
             accountInfo.setCurrentMapType(null);

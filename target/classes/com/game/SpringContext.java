@@ -13,8 +13,8 @@ import com.game.register.service.RegisterService;
 import com.game.user.equip.service.EquipService;
 import com.game.user.equipupgrade.service.EquipUpgradeService;
 import com.game.user.item.service.ItemService;
+import com.game.user.itemeffect.service.ItemEffectService;
 import com.game.user.strenequip.service.StrenEquipService;
-import com.schedule.core.QuartzService;
 import com.socket.core.session.SessionManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,11 +70,15 @@ public class SpringContext implements ApplicationContextAware {
     @Autowired
     private EvenManager evenManager;
     @Autowired
-    private QuartzService quartzService;
-    @Autowired
     private StrenEquipService strenEquipService;
     @Autowired
     private EquipUpgradeService equipUpgradeService;
+    @Autowired
+    private ItemEffectService itemEffectService;
+
+    public static ItemEffectService getItemEffectService(){
+        return instance.itemEffectService;
+    }
 
     public static EquipUpgradeService getEquipUpgradeService(){
         return instance.equipUpgradeService;
@@ -83,9 +87,6 @@ public class SpringContext implements ApplicationContextAware {
         return instance.strenEquipService;
     }
 
-    public static QuartzService getQuartzService(){
-        return instance.quartzService;
-    }
 
     public static EvenManager getEvenManager(){
         return instance.evenManager;

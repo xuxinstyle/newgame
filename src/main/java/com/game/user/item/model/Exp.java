@@ -13,6 +13,18 @@ import java.util.Map;
 public class Exp extends AbstractItem{
 
 
+    @Override
+    public AbstractItem copy() {
+        Exp exp = new Exp();
+        exp.setObjectId(createItemObjectId());
+        exp.setNum(this.num);
+        exp.setDeprecatedTime(this.deprecatedTime);
+        exp.setItemModelId(this.itemModelId);
+        exp.setItemType(this.itemType);
+        exp.setStatus(this.status);
+        return exp;
+    }
+
     /** 根据itemResource表初始化*/
     @Override
     public void init(ItemResource itemResource) {

@@ -4,6 +4,8 @@ import com.game.SpringContext;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
 
+import java.util.Map;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/18 12:17
@@ -23,7 +25,8 @@ public class UpgradeCondition extends Condition{
     private int equipNeedLevel;
 
     @Override
-    public boolean checkCondition(String accountId,int equipLevel) {
+    public boolean checkCondition(String accountId,Map<String, Object> param) {
+        int equipLevel = (int)param.get("equipLevel");
         if(equipLevel<this.equipNeedLevel){
             return false;
         }

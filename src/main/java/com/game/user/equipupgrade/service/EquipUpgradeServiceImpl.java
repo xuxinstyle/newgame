@@ -15,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/20 14:50
@@ -47,7 +50,9 @@ public class EquipUpgradeServiceImpl implements EquipUpgradeService {
         Equipment equipment = (Equipment)item;
         EquipResource equipResource = SpringContext.getItemService().getEquipResource(equipment.getItemModelId());
         UpgradeCondition upgradeCondition = equipResource.getUpgradeCondition();
-        if(!upgradeCondition.checkCondition(accountId,equipment.getLevel())){
+        Map<String, Object> param = new HashMap<>();
+        param.put("equipLevel", equipment.getLevel());
+        if(!upgradeCondition.checkCondition(accountId,param)){
             SM_EquipUpgrade sm = new SM_EquipUpgrade();
             sm.setStatus(4);
             session.sendPacket(sm);

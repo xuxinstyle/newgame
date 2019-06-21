@@ -3,6 +3,8 @@ package com.game.user.condition.model;
 import com.game.SpringContext;
 import com.game.role.player.model.Player;
 
+import java.util.Map;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/18 12:16
@@ -18,7 +20,7 @@ public class EquipCondition extends Condition {
     private int playerNeedLevel;
 
     @Override
-    public boolean checkCondition(String accountId,int equipLevel) {
+    public boolean checkCondition(String accountId,Map<String, Object> param) {
 
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
         if(player.getLevel()< this.playerNeedLevel){

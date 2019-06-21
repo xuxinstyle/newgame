@@ -152,7 +152,9 @@ public class EquipServiceImpl implements EquipService {
         EquipResource equipResource = getEquipResource(item.getItemModelId());
         EquipCondition equipCondition = equipResource.getEquipCondition();
         Equipment equipment = (Equipment) item;
-        if (!equipCondition.checkCondition(accountId, equipment.getLevel())) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("equipLevel", equipment.getLevel());
+        if (!equipCondition.checkCondition(accountId, param)) {
             if (logger.isDebugEnabled()) {
                 logger.debug("玩家{}不符合穿戴条件", accountId);
             }

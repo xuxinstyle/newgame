@@ -30,14 +30,6 @@ public class CommonExecutor {
     }
     private static final ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
 
-    /*public void startScheduleClear(){
-        pool.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                SessionManager.clearSession();
-            }
-        }, 1,1,TimeUnit.MINUTES);
-    }*/
     public void schedule(AbstractCommonRateCommand command){
         pool.scheduleAtFixedRate(()->{
             if(!command.isCanceled()) {

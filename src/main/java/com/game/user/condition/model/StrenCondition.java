@@ -5,6 +5,8 @@ import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
 import com.game.user.item.model.ItemStorageInfo;
 
+import java.util.Map;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/18 12:16
@@ -20,7 +22,7 @@ public class StrenCondition extends Condition{
     private int num;
 
     @Override
-    public boolean checkCondition(String accountId,int equipLevel) {
+    public boolean checkCondition(String accountId,Map<String, Object> param) {
         ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
         AbstractItem[] items = itemStorageEnt.getPack().getItems();
         /**

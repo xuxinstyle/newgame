@@ -12,6 +12,9 @@ import com.game.user.strenequip.packet.SM_StrenEquip;
 import com.socket.core.session.TSession;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/20 9:08
@@ -46,7 +49,9 @@ public class StrenEquipServiceImpl implements StrenEquipService {
         int itemModelId = item.getItemModelId();
         EquipResource equipResource = SpringContext.getItemService().getEquipResource(itemModelId);
         StrenCondition streCondition = equipResource.getStreCondition();
-        if(!streCondition.checkCondition(accountId,equipment.getLevel())){
+        Map<String, Object> param = new HashMap<>();
+        param.put("equipLevel", equipment.getLevel());
+        if(!streCondition.checkCondition(accountId,param)){
             SM_StrenEquip sm = new SM_StrenEquip();
             sm.setStatus(3);
             session.sendPacket(sm);

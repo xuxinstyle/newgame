@@ -7,4 +7,15 @@ package com.game.user.item.model;
  */
 public class StrenStone extends AbstractItem{
 
+    @Override
+    public AbstractItem copy() {
+        StrenStone strenStone = new StrenStone();
+        strenStone.setObjectId(createItemObjectId());
+        strenStone.setNum(this.num);
+        strenStone.setDeprecatedTime(this.deprecatedTime);
+        strenStone.setItemModelId(this.itemModelId);
+        strenStone.setItemType(this.itemType);
+        strenStone.setStatus(this.status);
+        return strenStone;
+    }
 }

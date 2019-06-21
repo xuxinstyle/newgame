@@ -24,7 +24,7 @@ public class ItemStorageEnt extends AbstractEntity<String> {
 
 
     @Lob
-    @Column(columnDefinition = "blob comment '背包数据'", nullable = false)
+    @Column(columnDefinition = "MediumBlob comment '背包数据'", nullable = false)
     private volatile byte[] packData;
 
     @Transient

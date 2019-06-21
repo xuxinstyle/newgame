@@ -1,6 +1,7 @@
 package com.game.user.account.model;
 
 import com.game.scence.constant.SceneType;
+import com.game.util.TimeUtil;
 
 /**
  * 放账号的信息，如属性等
@@ -43,7 +44,7 @@ public class AccountInfo {
     public static AccountInfo valueOf(String accountName){
         AccountInfo accountInfo = new AccountInfo();
         accountInfo.setAccountName(accountName);
-        accountInfo.setCreateTime(System.nanoTime());
+        accountInfo.setCreateTime(TimeUtil.now());
         accountInfo.setLastLoginTime(0L);
         accountInfo.setCurrentMapType(SceneType.NoviceVillage);
         accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);

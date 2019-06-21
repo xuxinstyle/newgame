@@ -54,6 +54,10 @@ public class EvenManager {
         }
     }
 
+    /**
+     * 暂时只实现了同步，还没有实现异步
+     * @param event
+     */
     public void syncSubmit(IEvent event){
         doSubmitEvent(event);
     }
