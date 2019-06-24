@@ -1,7 +1,7 @@
 package com.game.scence.service;
 
 import com.game.SpringContext;
-import com.game.role.constant.Job;
+import com.game.role.player.constant.Job;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.scence.constant.SceneType;

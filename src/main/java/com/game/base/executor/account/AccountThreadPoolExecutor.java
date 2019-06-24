@@ -15,7 +15,15 @@ public class AccountThreadPoolExecutor{
 
     private static final int DEFAULT_INITIAL_THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors();
 
+    private static final int DEFAULT_SCHEDULE_INITIAL_THREAD_POOL_SIZE = DEFAULT_INITIAL_THREAD_POOL_SIZE/2;
+
+    private static final Integer poolSize = DEFAULT_SCHEDULE_INITIAL_THREAD_POOL_SIZE > 2 ? DEFAULT_SCHEDULE_INITIAL_THREAD_POOL_SIZE : 2;
+
     private static final ThreadPoolExecutor[] ACCOUNT_SERVICE = new ThreadPoolExecutor[DEFAULT_INITIAL_THREAD_POOL_SIZE];
+
+    private static NameThreadFactory scheduleNameThreadFactory = new NameThreadFactory("AccountScheduleExecutorThread");
+
+    private static final ScheduledExecutorService accountSchedulePool = Executors.newScheduledThreadPool(poolSize,scheduleNameThreadFactory);
 
     public void start(){
         NameThreadFactory nameThreadFactory = new NameThreadFactory("AccountExecutorThread");
@@ -28,8 +36,9 @@ public class AccountThreadPoolExecutor{
         }
     }
 
+
     public void addTask(AbstractAccountCommand accountCommond){
-        Object key = accountCommond.getKey();
+
         int modIndex = accountCommond.modIndex(DEFAULT_INITIAL_THREAD_POOL_SIZE);
         ACCOUNT_SERVICE[modIndex].submit(() -> {
            if(!accountCommond.isCanceled()){
@@ -37,4 +46,29 @@ public class AccountThreadPoolExecutor{
            }
         });
     }
+
+    /**
+     * 延时任务
+     * @param command
+     * @param delay
+     */
+    public final void schedule(AbstractAccountCommand command, long delay){
+        command.refreshState();
+        command.setFuture(accountSchedulePool.schedule(()->
+                addTask(command),delay,TimeUnit.MILLISECONDS
+        ));
+    }
+
+    /**
+     * 周期任务
+     * @param command
+     * @param delay
+     */
+    public final void schedule(AbstractAccountCommand command, long delay, long period){
+        command.refreshState();
+        command.setFuture(accountSchedulePool.scheduleAtFixedRate(()->
+                addTask(command),delay,period,TimeUnit.MILLISECONDS
+        ));
+    }
+
 }

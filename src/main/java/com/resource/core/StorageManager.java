@@ -80,17 +80,6 @@ public class StorageManager implements BeanPostProcessor {
     }
 
 
-    public Object getResource( Class<?> clz, Object key){
-        if(logger.isDebugEnabled()){
-            logger.debug(storageMap.get(MapResource.class).getData().getValues().toString());
-        }
-        Object object = storageMap.get(clz).getData().getValues().get(key);
-        if(object==null||!object.getClass().equals(clz)){
-            logger.error("获取资源对象失败！");
-            return null;
-        }
-        return object;
-    }
     public static Collection<?> getResourceAll(Class<?> clz){
         Collection<?> values = storageMap.get(clz).getData().getValues().values();
         if(values==null){

@@ -138,7 +138,7 @@ public abstract class AbstractItem extends GameObject implements Comparable<Abst
         return getResource().getName();
     }
 
-    public int getJob() {
+    public int getJobLimit() {
         return getResource().getJobLimit();
     }
 

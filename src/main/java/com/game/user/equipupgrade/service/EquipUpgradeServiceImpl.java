@@ -51,7 +51,7 @@ public class EquipUpgradeServiceImpl implements EquipUpgradeService {
         EquipResource equipResource = SpringContext.getItemService().getEquipResource(equipment.getItemModelId());
         UpgradeCondition upgradeCondition = equipResource.getUpgradeCondition();
         Map<String, Object> param = new HashMap<>();
-        param.put("equipLevel", equipment.getLevel());
+        param.put("equipLevel", equipment.getStrenNum());
         if(!upgradeCondition.checkCondition(accountId,param)){
             SM_EquipUpgrade sm = new SM_EquipUpgrade();
             sm.setStatus(4);

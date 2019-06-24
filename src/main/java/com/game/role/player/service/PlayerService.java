@@ -1,12 +1,9 @@
 package com.game.role.player.service;
 
 import com.game.role.player.entity.PlayerEnt;
-import com.game.role.constant.Job;
 import com.game.role.player.model.Player;
 import com.game.role.player.resource.PlayerLevelResource;
 import com.socket.core.session.TSession;
-
-import java.util.List;
 
 public interface PlayerService {
     /**

@@ -30,24 +30,22 @@ public class CommonExecutor {
     }
     private static final ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
 
-    public void schedule(AbstractCommonRateCommand command){
-        pool.scheduleAtFixedRate(()->{
-            if(!command.isCanceled()) {
-                command.active();
-            }
-        },command.getDelay(),command.getPeriod(),TimeUnit.MILLISECONDS);
+    public void schedule(AbstractCommonRateCommand command,long delay, long period){
+        command.refreshState();
+        pool.scheduleAtFixedRate(()->
+             addTask(command)
+         ,delay ,period ,TimeUnit.MILLISECONDS);
     }
     public void schedule(AbstractCommonDelayCommand command){
-        pool.schedule(()->{
-            if(!command.isCanceled()) {
-                command.active();
-            }
-        },command.getDelay(),TimeUnit.MILLISECONDS);
+        command.refreshState();
+        Object key = command.getKey();
+        pool.schedule(()->
+            addTask(command)
+        ,command.getDelay(),TimeUnit.MILLISECONDS);
     }
 
     public void addTask(AbstractCommonCommand command){
 
-        Object key = command.getKey();
         int modIndex = command.modIndex(DEFAULT_INITIAL_THREAD_POOL_SIZE);
         COMMON_SERVICE[modIndex].submit(() -> {
             if(!command.isCanceled()){

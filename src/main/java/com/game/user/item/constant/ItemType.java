@@ -9,15 +9,13 @@ import com.game.user.item.model.*;
 public enum  ItemType {
 
     /** 装备*/
-    EQUIPMENT(2,Equipment.class),
+    EQUIPMENT(1,Equipment.class),
     /** 经验*/
-    EXP(4, Exp.class),
-    /** 强化石*/
-    STRENSTONE(5,StrenStone.class),
-    /**升阶石*/
-    UPSTONE(6,UpStone.class),
+    EXP(2, Exp.class),
+    /** 可消耗的石头*/
+    CONSUME_STONE(3,Stone.class),
     /** 药品*/
-    MEDICINE(7,Medicine.class),
+    MEDICINE(4,Medicine.class),
 
     ;
     /** 道具类型Id*/

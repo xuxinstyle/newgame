@@ -153,7 +153,7 @@ public class EquipServiceImpl implements EquipService {
         EquipCondition equipCondition = equipResource.getEquipCondition();
         Equipment equipment = (Equipment) item;
         Map<String, Object> param = new HashMap<>();
-        param.put("equipLevel", equipment.getLevel());
+        param.put("equipLevel", equipment.getStrenNum());
         if (!equipCondition.checkCondition(accountId, param)) {
             if (logger.isDebugEnabled()) {
                 logger.debug("玩家{}不符合穿戴条件", accountId);
@@ -245,9 +245,9 @@ public class EquipServiceImpl implements EquipService {
                 Equipment value = equipHole.getEquipment();
                 EquipmentVO equipmentVO = new EquipmentVO();
                 equipmentVO.setEquipName(value.getName());
-                equipmentVO.setJob(value.getJob());
+                equipmentVO.setJob(value.getJobLimit());
                 equipmentVO.setQuality(value.getQuality());
-                equipmentVO.setLevel(value.getLevel());
+                equipmentVO.setLevel(value.getStrenNum());
                 equipmentVO.setPosition(equipHole.getPosition());
                 List<Attribute> strenAttributes = new ArrayList<>(value.getStrenAttributeMap().values());
                 equipmentVO.setStrenAttributeList(strenAttributes);

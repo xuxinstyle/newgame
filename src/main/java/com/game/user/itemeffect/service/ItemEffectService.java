@@ -1,6 +1,10 @@
 package com.game.user.itemeffect.service;
 
+import com.game.role.player.event.LogoutEvent;
+import com.game.user.itemeffect.command.ItemExpireDelayCommand;
 import com.game.user.itemeffect.entity.ItemEffectEnt;
+
+import java.util.Map;
 
 /**
  * @Author：xuxin
@@ -22,4 +26,34 @@ public interface ItemEffectService {
      * @param accountId
      */
     void doLoginAfter(String accountId);
+    /**
+     * 获取延迟道具command
+     * @param playerId
+     * @return
+     */
+    Map<Integer, ItemExpireDelayCommand> getItemExpireDelayCommandMap(long playerId);
+
+    /**
+     * 添加言辞道具command
+     */
+    void putCommand(ItemExpireDelayCommand command);
+
+    /**
+     * 移除延迟命令
+     * @param itemModelId
+     */
+    void removeDelayCommand(long playerId ,int itemModelId);
+
+    /**
+     * 做玩家登出后的操作
+     * @param event
+     */
+    void doLogoutAfter(LogoutEvent event);
+
+    /**
+     * 做药效过期处理
+     * @param playerId
+     * @param itemModelId
+     */
+    void doItemExpire(String accountId, int itemModelId);
 }

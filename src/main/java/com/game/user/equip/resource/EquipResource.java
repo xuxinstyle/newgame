@@ -35,6 +35,10 @@ public class EquipResource {
      * 升级后对应的道具表id
      */
     private int upgradeId;
+    /**
+     * 最大强化等级
+     */
+    private int maxLevel;
 
     /**
      * 穿戴条件
@@ -116,6 +120,14 @@ public class EquipResource {
             attributeList.add(attribute);
         }
         upAttributeList = attributeList;
+    }
+
+    public int getMaxLevel() {
+        return maxLevel;
+    }
+
+    public void setMaxLevel(int maxLevel) {
+        this.maxLevel = maxLevel;
     }
 
     public int getUpgradeId() {

@@ -17,5 +17,9 @@ public interface AccountExecutorService {
      * @param commond
      */
     public void submit(AbstractAccountCommand commond);
+    /**
+     * 延迟任务
+     */
+
 
 }

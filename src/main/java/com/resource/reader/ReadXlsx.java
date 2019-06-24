@@ -128,6 +128,8 @@ public class ReadXlsx {
                     }
                 }
                 StorageManager.putStorage(def, map);
+                inputStream.close();
+
             } else {
                 logger.error("找不到[{}]资源文件", location);
                 return ;

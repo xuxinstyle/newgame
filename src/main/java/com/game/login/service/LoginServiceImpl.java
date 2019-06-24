@@ -3,6 +3,7 @@ package com.game.login.service;
 import com.game.SpringContext;
 import com.game.login.event.LoginEvent;
 import com.game.login.packet.SM_Logout;
+import com.game.role.player.event.LogoutEvent;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.login.packet.SM_Login;
@@ -64,6 +65,9 @@ public class LoginServiceImpl implements LoginService {
         /** 将accountId放到session中,并将session放到缓存中管理*/
         SessionManager.addAccountSessionMap(usernameDB, session);
         SpringContext.getAccountService().save(accountEnt);
+        /**
+         * 抛出玩家登陆事件
+         */
         LoginEvent event = LoginEvent.valueOf(usernameDB);
         SpringContext.getEvenManager().syncSubmit(event);
 
@@ -80,6 +84,9 @@ public class LoginServiceImpl implements LoginService {
             logger.error("没有账号信息");
             return;
         }
+        /**
+         * 登出时处理场景相关信息
+         */
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         if(accountInfo.getCurrentMapType()==null){
             accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
@@ -92,5 +99,10 @@ public class LoginServiceImpl implements LoginService {
             SpringContext.getAccountService().save(accountEnt);
             session.logout(accountId);
         }
+        /**
+         * 登出时抛出登出事件
+         */
+        LogoutEvent event = LogoutEvent.valueOf(accountId);
+        SpringContext.getEvenManager().syncSubmit(event);
     }
 }

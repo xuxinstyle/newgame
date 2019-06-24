@@ -26,7 +26,6 @@ public class Start {
         applicationContext.start();
         logger.info("开始构建场景...");
         SpringContext.getScenceSerivce().init();
-        logger.info("开启定时器...");
         logger.info("初始化完毕...");
         int port = SpringContext.getServerConfigValue().getPort();
         Server.openBind(port);

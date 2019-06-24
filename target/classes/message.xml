@@ -62,4 +62,7 @@
     <catalog id="46" value="com.game.user.item.packet.SM_UseItem"/>
     <catalog id="47" value="com.game.user.item.packet.SM_EffectEnd"/>
 
+    <catalog id="48" value="com.game.user.item.packet.CM_ShowItemInfo"/>
+    <catalog id="49" value="com.game.user.item.packet.SM_ShowItemInfo"/>
+
 </protocols>

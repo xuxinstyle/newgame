@@ -1,4 +1,4 @@
-package com.game.role.constant;
+package com.game.role.player.constant;
 
 /**
  * @Author：xuxin

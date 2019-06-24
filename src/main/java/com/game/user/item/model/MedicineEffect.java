@@ -6,7 +6,7 @@ import com.game.base.attribute.AttributeContainer;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
-import com.game.user.item.command.ItemDeprecatedDelayCommand;
+import com.game.user.itemeffect.command.ItemExpireDelayCommand;
 import com.game.user.itemeffect.entity.ItemEffectEnt;
 import com.game.user.itemeffect.model.ItemEffectInfo;
 import com.game.user.itemeffect.model.ItemEffectdetaiInfo;
@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,29 +69,34 @@ public class MedicineEffect extends UseEffect {
         ItemEffectInfo itemEffectInfo = itemEffectEnt.getItemEffectInfo();
         Map<Integer, ItemEffectdetaiInfo> itemEffectdetaiInfoMap = itemEffectInfo.getItemEffectdetaiInfoMap();
         ItemEffectdetaiInfo itemEffectdetaiInfo = itemEffectdetaiInfoMap.get(itemModelId);
-        long now = TimeUtil.now();
+        /**
+         * 第一次使用
+         */
         if(itemEffectdetaiInfo==null||!itemEffectdetaiInfo.isEffective()||itemEffectdetaiInfo.getInvalidTime()<TimeUtil.now()){
             /**
              * 如果没有道具的使用信息则直接加入到数据库中，并做定时操作
              */
             itemEffectdetaiInfoMap.put(itemModelId,ItemEffectdetaiInfo.valueOf(itemModelId,true,
                     TimeUtil.now() +effectiveTime*num));
-            ItemDeprecatedDelayCommand command = new ItemDeprecatedDelayCommand(effectiveTime*num,acountId,itemModelId, player.getObjectId());
-            SpringContext.getCommonExecutorService().submit(command);
-            SpringContext.getItemService().putCommand(command);
+            ItemExpireDelayCommand command = new ItemExpireDelayCommand(effectiveTime*num,acountId,itemModelId, player.getObjectId());
+            SpringContext.getAccountExecutorService().submit(command);
+            SpringContext.getItemEffectService().putCommand(command);
             AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
             attributeContainer.addAndComputeMap(addAttributeList);
             SpringContext.getPlayerSerivce().save(playerEnt);
         }else{
             /**
-             * 如果有相关的信息，则将之前的command取消再并移除 重新抛一个command
+             * 如果有相关的信息更新过期时间，则将之前的command取消再并移除 重新抛一个command
              */
             itemEffectdetaiInfo.setInvalidTime(itemEffectdetaiInfo.getInvalidTime()+effectiveTime*num);
             long delay = itemEffectdetaiInfo.getInvalidTime() - TimeUtil.now();
-            ItemDeprecatedDelayCommand command = new ItemDeprecatedDelayCommand(delay,acountId,itemModelId, player.getObjectId());
-            SpringContext.getCommonExecutorService().submit(command);
-            SpringContext.getItemService().removeDelayCommand(player.getObjectId(),itemModelId);
-            SpringContext.getItemService().putCommand(command);
+            ItemExpireDelayCommand command = new ItemExpireDelayCommand(delay,acountId,itemModelId, player.getObjectId());
+            SpringContext.getAccountExecutorService().submit(command);
+            Map<Integer, ItemExpireDelayCommand> itemExpireDelayCommandMap = SpringContext.getItemEffectService().getItemExpireDelayCommandMap(player.getObjectId());
+            ItemExpireDelayCommand oldCommand = itemExpireDelayCommandMap.get(itemModelId);
+            oldCommand.cancel();
+            SpringContext.getItemEffectService().removeDelayCommand(player.getObjectId(),itemModelId);
+            SpringContext.getItemEffectService().putCommand(command);
         }
         SpringContext.getItemEffectService().save(itemEffectEnt);
         if(logger.isDebugEnabled()){

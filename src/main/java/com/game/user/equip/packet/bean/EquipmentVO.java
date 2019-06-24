@@ -1,7 +1,6 @@
 package com.game.user.equip.packet.bean;
 
 import com.game.base.attribute.Attribute;
-import com.game.role.constant.Job;
 
 import java.util.List;
 

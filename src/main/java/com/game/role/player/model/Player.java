@@ -2,7 +2,6 @@ package com.game.role.player.model;
 
 import com.game.base.gameObject.constant.ObjectType;
 import com.game.base.gameObject.model.Creature;
-import com.game.role.constant.Job;
 import org.springframework.stereotype.Component;
 
 @Component

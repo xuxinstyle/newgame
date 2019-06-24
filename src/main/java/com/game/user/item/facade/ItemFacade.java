@@ -1,10 +1,9 @@
 package com.game.user.item.facade;
 
+import com.event.anno.ReceiveAnn;
 import com.game.SpringContext;
-import com.game.user.item.packet.CM_AwardToPack;
-import com.game.user.item.packet.CM_RemoveItemFormPack;
-import com.game.user.item.packet.CM_ShowPackItem;
-import com.game.user.item.packet.CM_UseItem;
+import com.game.role.player.event.LogoutEvent;
+import com.game.user.item.packet.*;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;
@@ -55,4 +54,15 @@ public class ItemFacade {
             e.printStackTrace();
         }
     }
+    @HandlerAnno
+    public void showItemInfo(TSession session, CM_ShowItemInfo cm){
+        try{
+            SpringContext.getItemService().showItemInfo(session, cm.getItemObjectId());
+        }catch (Exception e){
+            logger.error("玩家{}查看道具{}信息失败",session.getAccountId(),cm.getItemObjectId());
+            e.printStackTrace();
+        }
+    }
+
+
 }

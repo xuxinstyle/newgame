@@ -1,13 +1,10 @@
 package com.game.user.item.service;
 
 import com.game.user.equip.resource.EquipResource;
-import com.game.user.item.command.ItemDeprecatedDelayCommand;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
 import com.game.user.item.resource.ItemResource;
 import com.socket.core.session.TSession;
-
-import java.util.Map;
 
 /**
  * @Author：xuxin
@@ -111,21 +108,9 @@ public interface ItemService {
     void useItem(TSession session, long itemObjectId,int num);
 
     /**
-     * 获取延迟道具command
-     * @param playerId
-     * @return
+     * 查看玩家背包中道具的详细信息
+     * @param session
+     * @param itemObjectId
      */
-    Map<Integer, ItemDeprecatedDelayCommand> getItemDeprecateDelayCommandMap(long playerId);
-
-    /**
-     * 添加言辞道具command
-     */
-    void putCommand(ItemDeprecatedDelayCommand command);
-
-    /**
-     * 移除延迟命令
-     * @param itemModelId
-     */
-    void removeDelayCommand(long playerId ,int itemModelId);
-
+    void showItemInfo(TSession session, long itemObjectId);
 }

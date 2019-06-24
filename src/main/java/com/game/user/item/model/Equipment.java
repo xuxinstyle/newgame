@@ -35,7 +35,7 @@ public class Equipment extends AbstractItem {
     /**
      * 强化等级
      */
-    private int level;
+    private int strenNum;
 
     @Override
     public Equipment copy() {
@@ -47,7 +47,7 @@ public class Equipment extends AbstractItem {
         equipment.deprecatedTime = this.getDeprecatedTime();
         equipment.attributeList = this.getAttributeList();
         equipment.equipType = this.getEquipType();
-        equipment.level = this.level;
+        equipment.strenNum = this.strenNum;
         equipment.itemType = this.itemType;
         equipment.quality = this.quality;
         equipment.strenAttributeMap = this.strenAttributeMap;
@@ -59,7 +59,7 @@ public class Equipment extends AbstractItem {
         super.init(itemResource);
         EquipResource equipResource = SpringContext.getItemService().getEquipResource(itemModelId);
         this.equipType = EquipType.valueOf(equipResource.getEquipType());
-        this.level = 0;
+        this.strenNum = 0;
         this.quality = itemResource.getQuality();
         this.attributeList = equipResource.getBaseAttributeList();
         this.strenAttributeMap = new HashMap<>();
@@ -70,14 +70,13 @@ public class Equipment extends AbstractItem {
      * @return
      */
     public boolean strenEquip() {
-        /**
-         * TODO:这里的最大装备等级可以配在道具表中，这里先写死，之后再改
-         */
-        if (level >= 9) {
+
+        EquipResource equipResource = SpringContext.getItemService().getEquipResource(itemModelId);
+        if (strenNum >= equipResource.getMaxLevel()) {
             return false;
         }
-        this.level++;
-        EquipResource equipResource = SpringContext.getItemService().getEquipResource(itemModelId);
+        this.strenNum++;
+
         List<Attribute> upAttributeList = equipResource.getUpAttributeList();
         for (Attribute attribute : upAttributeList) {
             if (this.strenAttributeMap.get(attribute.getAttributeType()) == null) {
@@ -85,8 +84,6 @@ public class Equipment extends AbstractItem {
             } else {
                 this.strenAttributeMap.get(attribute.getAttributeType()).addValue(attribute.getValue());
             }
-
-
         }
         return true;
     }
@@ -115,12 +112,12 @@ public class Equipment extends AbstractItem {
         this.attributeList = attributeList;
     }
 
-    public int getLevel() {
-        return level;
+    public int getStrenNum() {
+        return strenNum;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setStrenNum(int strenNum) {
+        this.strenNum = strenNum;
     }
 
     public int getQuality() {

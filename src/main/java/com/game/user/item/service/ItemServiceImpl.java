@@ -4,16 +4,13 @@ import com.db.HibernateDao;
 import com.game.SpringContext;
 import com.game.base.gameObject.constant.ObjectType;
 import com.game.user.equip.resource.EquipResource;
-import com.game.user.item.command.ItemDeprecatedDelayCommand;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
+import com.game.user.item.model.Equipment;
 import com.game.user.item.model.ItemStorageInfo;
 import com.game.user.item.model.UseEffect;
-import com.game.user.item.packet.SM_AwardToPack;
-import com.game.user.item.packet.SM_RemoveItemFormPack;
-import com.game.user.item.packet.SM_ShowPackItem;
-import com.game.user.item.packet.SM_UseItem;
+import com.game.user.item.packet.*;
 import com.game.user.item.packet.bean.ItemVO;
 import com.game.user.item.resource.ItemResource;
 import com.resource.core.StorageManager;
@@ -25,7 +22,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author：xuxin
@@ -35,7 +31,7 @@ import java.util.Map;
 public class ItemServiceImpl implements ItemService {
 
     /**
-     * 背包最大格子数
+     * 背包最大格子数 fixme:这里先写死，等后期加了通用配置表的时候再将这个加到通用配置表中
      */
     public static final int MAX_PACK_SIZE = 150;
     /**
@@ -51,6 +47,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private HibernateDao hibernateDao;
+
 
     @Override
     public AbstractItem createItem(int itemModelId, int num) {
@@ -256,17 +253,40 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Map<Integer, ItemDeprecatedDelayCommand> getItemDeprecateDelayCommandMap(long playerId) {
-        return itemManager.getItemDeprecateDelayCommandMap(playerId);
+    public void showItemInfo(TSession session, long itemObjectId) {
+        String accountId = session.getAccountId();
+        if(accountId==null){
+            return;
+        }
+        ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
+        ItemStorageInfo pack = itemStorageEnt.getPack();
+        AbstractItem item = pack.getItem(itemObjectId);
+        if(item==null){
+            SM_ShowItemInfo sm = new SM_ShowItemInfo();
+            sm.setStatus(2);
+            return;
+        }
+        ItemResource resource = item.getResource();
+
+        SM_ShowItemInfo sm = new SM_ShowItemInfo();
+        sm.setItemObjectId(itemObjectId);
+        sm.setItemName(resource.getName());
+        sm.setNum(item.getNum());
+        sm.setItemType(item.getItemType());
+        if(item.getItemType()!=ItemType.EQUIPMENT.getId()){
+            session.sendPacket(sm);
+            return;
+        }
+        Equipment equipment = (Equipment)item;
+        sm.setEquipQuality(equipment.getQuality());
+        sm.setEquipType(equipment.getEquipType().getPosition());
+        sm.setStrenNum(equipment.getStrenNum());
+        sm.setJobType(equipment.getJobLimit());
+        sm.setLimitLevel(resource.getUseLevel());
+        sm.setBaseAttributeList(equipment.getAttributeList());
+        sm.setStrenAttributeList(new ArrayList<>(equipment.getStrenAttributeMap().values()));
+        sm.setStatus(1);
+        session.sendPacket(sm);
     }
 
-    @Override
-    public void putCommand(ItemDeprecatedDelayCommand command) {
-        itemManager.putCommand(command);
-    }
-
-    @Override
-    public void removeDelayCommand(long playerId, int itemModelId) {
-        itemManager.removeItemDelayCommand(playerId,itemModelId);
-    }
 }

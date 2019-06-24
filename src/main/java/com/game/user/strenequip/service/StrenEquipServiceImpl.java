@@ -49,9 +49,9 @@ public class StrenEquipServiceImpl implements StrenEquipService {
         int itemModelId = item.getItemModelId();
         EquipResource equipResource = SpringContext.getItemService().getEquipResource(itemModelId);
         StrenCondition streCondition = equipResource.getStreCondition();
-        Map<String, Object> param = new HashMap<>();
-        param.put("equipLevel", equipment.getLevel());
-        if(!streCondition.checkCondition(accountId,param)){
+        /*Map<String, Object> param = new HashMap<>();
+        param.put("equipLevel", equipment.getStrenNum());*/
+        if(!streCondition.checkCondition(accountId,null)){
             SM_StrenEquip sm = new SM_StrenEquip();
             sm.setStatus(3);
             session.sendPacket(sm);
