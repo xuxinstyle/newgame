@@ -1,9 +1,9 @@
 package com.game.base.executor.common;
 
 import com.game.base.executor.NameThreadFactory;
-import com.game.base.executor.common.Impl.AbstractCommonDelayCommand;
-import com.game.base.executor.common.Impl.AbstractCommonRateCommand;
-import com.game.base.executor.common.Impl.AbstractCommonCommand;
+import com.game.base.executor.common.impl.AbstractCommonDelayCommand;
+import com.game.base.executor.common.impl.AbstractCommonRateCommand;
+import com.game.base.executor.common.impl.AbstractCommonCommand;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;
@@ -28,18 +28,18 @@ public class CommonExecutor {
             COMMON_SERVICE[i].prestartAllCoreThreads();
         }
     }
-    private static final ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService COMMON_POOL = Executors.newScheduledThreadPool(1);
 
     public void schedule(AbstractCommonRateCommand command,long delay, long period){
         command.refreshState();
-        pool.scheduleAtFixedRate(()->
+        COMMON_POOL.scheduleAtFixedRate(()->
              addTask(command)
          ,delay ,period ,TimeUnit.MILLISECONDS);
     }
     public void schedule(AbstractCommonDelayCommand command){
         command.refreshState();
         Object key = command.getKey();
-        pool.schedule(()->
+        COMMON_POOL.schedule(()->
             addTask(command)
         ,command.getDelay(),TimeUnit.MILLISECONDS);
     }

@@ -1,4 +1,4 @@
-package com.socket.Utils;
+package com.socket.utils;
 
 import com.socket.core.session.TSession;
 import io.netty.channel.Channel;

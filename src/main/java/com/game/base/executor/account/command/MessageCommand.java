@@ -1,6 +1,6 @@
 package com.game.base.executor.account.command;
 
-import com.game.base.executor.account.Impl.AbstractAccountCommand;
+import com.game.base.executor.account.impl.AbstractAccountCommand;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.core.ActionDispatcher;
 

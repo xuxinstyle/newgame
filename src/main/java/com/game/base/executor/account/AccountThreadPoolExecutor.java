@@ -1,7 +1,7 @@
 package com.game.base.executor.account;
 
 import com.game.base.executor.NameThreadFactory;
-import com.game.base.executor.account.Impl.AbstractAccountCommand;
+import com.game.base.executor.account.impl.AbstractAccountCommand;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;
@@ -17,13 +17,13 @@ public class AccountThreadPoolExecutor{
 
     private static final int DEFAULT_SCHEDULE_INITIAL_THREAD_POOL_SIZE = DEFAULT_INITIAL_THREAD_POOL_SIZE/2;
 
-    private static final Integer poolSize = DEFAULT_SCHEDULE_INITIAL_THREAD_POOL_SIZE > 2 ? DEFAULT_SCHEDULE_INITIAL_THREAD_POOL_SIZE : 2;
+    private static final Integer POOL_SIZE = DEFAULT_SCHEDULE_INITIAL_THREAD_POOL_SIZE > 2 ? DEFAULT_SCHEDULE_INITIAL_THREAD_POOL_SIZE : 2;
 
     private static final ThreadPoolExecutor[] ACCOUNT_SERVICE = new ThreadPoolExecutor[DEFAULT_INITIAL_THREAD_POOL_SIZE];
 
     private static NameThreadFactory scheduleNameThreadFactory = new NameThreadFactory("AccountScheduleExecutorThread");
 
-    private static final ScheduledExecutorService accountSchedulePool = Executors.newScheduledThreadPool(poolSize,scheduleNameThreadFactory);
+    private static final ScheduledExecutorService ACCOUNT_SCHEDULE_POOL = Executors.newScheduledThreadPool(POOL_SIZE,scheduleNameThreadFactory);
 
     public void start(){
         NameThreadFactory nameThreadFactory = new NameThreadFactory("AccountExecutorThread");
@@ -54,7 +54,7 @@ public class AccountThreadPoolExecutor{
      */
     public final void schedule(AbstractAccountCommand command, long delay){
         command.refreshState();
-        command.setFuture(accountSchedulePool.schedule(()->
+        command.setFuture(ACCOUNT_SCHEDULE_POOL.schedule(()->
                 addTask(command),delay,TimeUnit.MILLISECONDS
         ));
     }
@@ -66,7 +66,7 @@ public class AccountThreadPoolExecutor{
      */
     public final void schedule(AbstractAccountCommand command, long delay, long period){
         command.refreshState();
-        command.setFuture(accountSchedulePool.scheduleAtFixedRate(()->
+        command.setFuture(ACCOUNT_SCHEDULE_POOL.scheduleAtFixedRate(()->
                 addTask(command),delay,period,TimeUnit.MILLISECONDS
         ));
     }

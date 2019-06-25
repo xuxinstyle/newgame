@@ -1,7 +1,7 @@
 package com.game.base.attribute;
 
 import com.game.base.attribute.constant.AttributeType;
-import com.game.base.gameObject.model.Creature;
+import com.game.base.gameobject.model.Creature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +57,7 @@ public class AttributeContainer<T extends Creature> {
         Map<AttributeType, Attribute> computeAttribute = new HashMap<>();
         Map<AttributeType, Attribute> allAttribute = new HashMap<>();
         for (AttributeType attributeType : AttributeType.values()) {
-            if (attributeType.getAttrType() == 1) {
+            if (attributeType.getAttrType() == AttributeType.MAX_HP.getAttrType()) {
                 firstAttribute.put(attributeType, Attribute.valueOf(attributeType, 0));
             } else if(attributeType.getAttrType() == 2){
                 if (attributeType == AttributeType.ATTACK_SPEED) {
@@ -95,7 +95,7 @@ public class AttributeContainer<T extends Creature> {
      * @param attribute
      */
     public void putAndCompute(Attribute attribute) {
-        if (attribute.getAttributeType().getAttrType() == 2) {
+        if (attribute.getAttributeType().getAttrType() == AttributeType.MAX_HP.getAttrType()) {
             secondAttributeMap.get(attribute.getAttributeType()).addValue(attribute.getValue());
             addSecondAttributeMap.get(attribute.getAttributeType()).addValue(attribute.getValue());
             recompute(attribute.getAttributeType());
@@ -103,7 +103,7 @@ public class AttributeContainer<T extends Creature> {
             /**
              * 一级属性
              */
-            if(attribute.getAttributeType().getAttrType()==1) {
+            if(attribute.getAttributeType().getAttrType()==AttributeType.PHYSICAL.getAttrType()) {
                 changeAttribute(attribute);
             }else {
                 /**
@@ -138,11 +138,11 @@ public class AttributeContainer<T extends Creature> {
      *       传来的属性类型是百分比属性或二级属性
      */
     public void recompute(AttributeType attributeType) {
-        if(attributeType.getAttrType()==3){
+        if(attributeType.getAttrType()==AttributeType.ATTACK_SPEED_PERCENTAGE.getAttrType()){
             Attribute attribute = addSecondAttributeMap.get(AttributeType.valueOf(attributeType.getRelateType()));
             double endValue = attribute.getValue() * (1+ percentageAttributeMap.get(attributeType).getValue()/100.0);
             computeAttributeMap.put(attribute.getAttributeType(),Attribute.valueOf(attribute.getAttributeType(),(long)endValue));
-        }else if(attributeType.getAttrType()==2){
+        }else if(attributeType.getAttrType()==AttributeType.MAX_HP.getAttrType()){
 
             Attribute attribute = addSecondAttributeMap.get(attributeType);
             /**
@@ -171,7 +171,7 @@ public class AttributeContainer<T extends Creature> {
      * @param attribute
      */
     public void removeAndComputeAttribute(Attribute attribute) {
-        if (attribute.getAttributeType().getAttrType() == 2) {
+        if (attribute.getAttributeType().getAttrType() == AttributeType.MAX_HP.getAttrType()) {
             secondAttributeMap.get(attribute.getAttributeType()).reduce(attribute.getValue());
             addSecondAttributeMap.get(attribute.getAttributeType()).reduce(attribute.getValue());
             recompute(attribute.getAttributeType());

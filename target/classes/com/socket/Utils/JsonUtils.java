@@ -1,4 +1,4 @@
-package com.socket.Utils;
+package com.socket.utils;
 
 
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+
 /**
  * @Author：xuxin
  * @Date: 2019/4/29 14:43

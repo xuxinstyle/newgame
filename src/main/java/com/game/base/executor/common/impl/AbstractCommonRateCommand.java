@@ -1,4 +1,4 @@
-package com.game.base.executor.common.Impl;
+package com.game.base.executor.common.impl;
 
 /**
  * @Author：xuxin

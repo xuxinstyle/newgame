@@ -5,8 +5,17 @@ package com.game.role.player.constant;
  * @Date: 2019/6/3 15:07
  */
 public enum Job {
+    /**
+     * 战士
+     */
     WARRIOR(1,"战士"),
+    /**
+     * 法师
+     */
     MAGICIAN(2,"法师"),
+    /**
+     * 刺客
+     */
     TAOIST(3,"刺客"),
     ;
     private int jobType;

@@ -1,8 +1,6 @@
 package com.game.user.item.facade;
 
-import com.event.anno.ReceiveAnn;
 import com.game.SpringContext;
-import com.game.role.player.event.LogoutEvent;
 import com.game.user.item.packet.*;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
@@ -20,7 +18,7 @@ public class ItemFacade {
     @HandlerAnno
     public void addItemToPack(TSession session, CM_AwardToPack cm){
         try{
-            SpringContext.getItemService().AwardToPack(session, cm.getAccountId(),cm.getItemModelId(), cm.getNum());
+            SpringContext.getItemService().awardToPack(session, cm.getAccountId(),cm.getItemModelId(), cm.getNum());
         }catch (Exception e){
             e.printStackTrace();
             logger.error("玩家{}添加道具{}失败",cm.getAccountId(), cm.getItemModelId());

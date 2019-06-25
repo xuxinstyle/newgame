@@ -100,4 +100,17 @@ public class EquipmentVO {
     public void setQuality(int quality) {
         this.quality = quality;
     }
+
+    @Override
+    public String toString() {
+        return "EquipmentVO{" +
+                "equipName='" + equipName + '\'' +
+                ", quality=" + quality +
+                ", position=" + position +
+                ", job=" + job +
+                ", level=" + level +
+                ", attributeList=" + attributeList +
+                ", strenAttributeList=" + strenAttributeList +
+                '}';
+    }
 }

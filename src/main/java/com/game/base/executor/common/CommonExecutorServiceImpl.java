@@ -1,8 +1,8 @@
 package com.game.base.executor.common;
 
-import com.game.base.executor.common.Impl.AbstractCommonCommand;
-import com.game.base.executor.common.Impl.AbstractCommonDelayCommand;
-import com.game.base.executor.common.Impl.AbstractCommonRateCommand;
+import com.game.base.executor.common.impl.AbstractCommonCommand;
+import com.game.base.executor.common.impl.AbstractCommonDelayCommand;
+import com.game.base.executor.common.impl.AbstractCommonRateCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

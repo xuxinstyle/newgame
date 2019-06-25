@@ -1,20 +1,13 @@
 package com.socket.dispatcher.config;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
-import javax.annotation.PostConstruct;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,9 +17,9 @@ import java.util.Map;
 
 public class RegistSerializerMessage {
 
-    private static final String location = "src/main/resources/message.xml";
+    private static final String LOCATION = "src/main/resources/message.xml";
 
-    public static final Map<Integer, Class<?>> idClassMap = new HashMap<Integer, Class<?>>();
+    public static final Map<Integer, Class<?>> ID_CLASS_MAP = new HashMap<Integer, Class<?>>();
 
     /**
      * 注册协议
@@ -37,7 +30,7 @@ public class RegistSerializerMessage {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = factory.newDocumentBuilder();
-            Document parse = db.parse(location);
+            Document parse = db.parse(LOCATION);
             NodeList catalogs = parse.getElementsByTagName("catalog");
             for (int i = 0; i < catalogs.getLength(); i++) {
                 Node name = catalogs.item(i);
@@ -45,10 +38,10 @@ public class RegistSerializerMessage {
                 String svalue = name.getAttributes().getNamedItem("value").getNodeValue().toString();
                 int id = Integer.parseInt(sid);
                 Class<?> clz = Class.forName(svalue);
-                if(idClassMap.containsKey(id)){
+                if(ID_CLASS_MAP.containsKey(id)){
                     throw new IllegalArgumentException("协议id：["+id+"] 重复了！");
                 }
-                idClassMap.put(id, clz);
+                ID_CLASS_MAP.put(id, clz);
             }
         }  catch (Exception e) {
             e.printStackTrace();

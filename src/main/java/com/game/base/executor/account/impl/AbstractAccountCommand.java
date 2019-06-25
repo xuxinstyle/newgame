@@ -1,4 +1,4 @@
-package com.game.base.executor.account.Impl;
+package com.game.base.executor.account.impl;
 
 import com.game.base.executor.AbstractCommand;
 

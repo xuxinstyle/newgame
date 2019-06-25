@@ -1,4 +1,4 @@
-package com.game.base.gameObject.constant;
+package com.game.base.gameobject.constant;
 
 /**
  * 用来定义游戏世界中所有的对象类型

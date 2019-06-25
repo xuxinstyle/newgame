@@ -2,8 +2,7 @@ package com.game.user.item.entity;
 
 import com.db.AbstractEntity;
 import com.game.user.item.model.ItemStorageInfo;
-import com.socket.Utils.JsonUtils;
-import com.socket.Utils.ProtoStuffUtil;
+import com.socket.utils.JsonUtils;
 import org.hibernate.annotations.Table;
 
 import javax.persistence.*;

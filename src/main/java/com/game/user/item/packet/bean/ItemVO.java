@@ -51,6 +51,17 @@ public class ItemVO {
     }
 
     public void setItemModelId(int itemModelId) {
+
         this.itemModelId = itemModelId;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemVO{" +
+                "objectId=" + objectId +
+                ", itemModelId=" + itemModelId +
+                ", itemName='" + itemName + '\'' +
+                ", num=" + num +
+                '}';
     }
 }

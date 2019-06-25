@@ -1,16 +1,13 @@
 package com.game.user.item.resource;
 
-import com.game.base.attribute.Attribute;
-import com.game.base.attribute.constant.AttributeType;
 import com.game.user.item.constant.UseEffectType;
-import com.game.user.item.model.UseEffect;
+import com.game.user.item.model.AbstractUseEffect;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author：xuxin
@@ -52,7 +49,7 @@ public class ItemResource {
     @Analyze("analyzeEffect")
     private String effect;
 
-    private UseEffect useEffect;
+    private AbstractUseEffect useEffect;
     private boolean autoUse;
 
     /**
@@ -66,7 +63,7 @@ public class ItemResource {
         if(useEffectType==null){
             return;
         }
-        UseEffect useEffect = useEffectType.create();
+        AbstractUseEffect useEffect = useEffectType.create();
         Map<String ,Object> param = new HashMap<>();
         param.put("itemModelId",id);
         useEffect.init(effect,param);
@@ -81,11 +78,11 @@ public class ItemResource {
         this.autoUse = autoUse;
     }
 
-    public UseEffect getUseEffect() {
+    public AbstractUseEffect getUseEffect() {
         return useEffect;
     }
 
-    public void setUseEffect(UseEffect useEffect) {
+    public void setUseEffect(AbstractUseEffect useEffect) {
         this.useEffect = useEffect;
     }
 

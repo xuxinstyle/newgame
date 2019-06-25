@@ -1,4 +1,4 @@
-package com.game.base.gameObject.model;
+package com.game.base.gameobject.model;
 
 import com.game.base.attribute.AttributeContainer;
 

@@ -22,7 +22,7 @@ public class RegisterServiceImpl implements RegisterService {
         int serverId = SpringContext.getServerConfigValue().getServerId();
         String usernameDB = username+"_"+serverId;
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(usernameDB);
-        String passwardDB = MD5Util.inputPassToDbPass(passward, MD5Util.saltDB);
+        String passwardDB = MD5Util.inputPassToDbPass(passward, MD5Util.SALTDB);
         if(accountEnt==null){
             SpringContext.getAccountService().insert(usernameDB,passwardDB);
             SM_Register sm = new SM_Register();

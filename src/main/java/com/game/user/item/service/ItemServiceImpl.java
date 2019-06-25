@@ -2,14 +2,14 @@ package com.game.user.item.service;
 
 import com.db.HibernateDao;
 import com.game.SpringContext;
-import com.game.base.gameObject.constant.ObjectType;
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.user.equip.resource.EquipResource;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
 import com.game.user.item.model.Equipment;
 import com.game.user.item.model.ItemStorageInfo;
-import com.game.user.item.model.UseEffect;
+import com.game.user.item.model.AbstractUseEffect;
 import com.game.user.item.packet.*;
 import com.game.user.item.packet.bean.ItemVO;
 import com.game.user.item.resource.ItemResource;
@@ -134,7 +134,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void AwardToPack(TSession session, String accountId, int itemModelId, int num) {
+    public void awardToPack(TSession session, String accountId, int itemModelId, int num) {
         ItemStorageEnt itemStorageEnt = getItemStorageEnt(accountId);
         ItemStorageInfo pack = itemStorageEnt.getPack();
         if (!checkResource(itemModelId)) {
@@ -232,7 +232,7 @@ public class ItemServiceImpl implements ItemService {
             return;
         }
         ItemResource resource = item.getResource();
-        UseEffect useEffect = resource.getUseEffect();
+        AbstractUseEffect useEffect = resource.getUseEffect();
         if(useEffect==null){
             logger.warn("道具[{}]不能使用",itemObjectId);
             SM_UseItem sm = new SM_UseItem();

@@ -80,11 +80,11 @@ public interface ItemService {
     /**
      * 响应添加道具到背包的请求
      */
-    void AwardToPack(TSession session, String accountId, int itemModelId, int num);
+    void awardToPack(TSession session, String accountId, int itemModelId, int num);
     /**
      * 移除道具
      */
-    void removeItem(TSession session, String accountId, long Object, int num);
+    void removeItem(TSession session, String accountId, long object, int num);
 
     /**
      * 查看玩家的背包信息

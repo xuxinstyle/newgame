@@ -10,6 +10,8 @@ import com.socket.core.session.TSession;
 public interface AccountService {
     /**
      * 添加账号
+     * @param username
+     * @param passward
      */
     void insert(String username, String passward);
 
@@ -28,8 +30,10 @@ public interface AccountService {
      * @param account
      */
     void createFirstPlayer(TSession session, String nickName, int type, String accountId);
+
     /**
      * 保存修改
+     * @param accountEnt
      */
     void save(AccountEnt accountEnt);
 }

@@ -9,7 +9,7 @@ import java.util.Map;
  * @Author：xuxin
  * @Date: 2019/6/18 12:16
  */
-public class EquipCondition extends Condition {
+public class EquipCondition extends AbstractCondition {
     /**
      * 职业 如果为0则不限条件
      */

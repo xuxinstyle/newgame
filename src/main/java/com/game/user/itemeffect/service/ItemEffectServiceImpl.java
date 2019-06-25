@@ -86,7 +86,7 @@ public class ItemEffectServiceImpl implements ItemEffectService {
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(accountId);
         Player player = playerEnt.getPlayer();
         /**
-         * 移除map中的command 删除库中的信息
+         * 移除map中的command  并删除库中的信息
          */
         removeDelayCommand(player.getObjectId(),itemModelId);
 
@@ -132,12 +132,17 @@ public class ItemEffectServiceImpl implements ItemEffectService {
      */
     public void cancelCommand(long playerId){
         Map<Integer, ItemExpireDelayCommand> commandMap = itemEffectManager.getItemDeprecateDelayCommandMap(playerId);
+        if(commandMap==null){
+            return;
+        }
         for(ItemExpireDelayCommand command:commandMap.values()){
             /**
              * 这里传false，表示如果这个任务正在执行，则不会取消任务
              * true：表示如果这个任务正在执行，则这个任务将会取消
              */
-            //command.getFuture().cancel(false);
+            /**
+             * command.getFuture().cancel(false);
+             */
             command.cancel();
         }
     }

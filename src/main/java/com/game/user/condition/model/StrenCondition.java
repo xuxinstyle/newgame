@@ -3,7 +3,6 @@ package com.game.user.condition.model;
 import com.game.SpringContext;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
-import com.game.user.item.model.ItemStorageInfo;
 
 import java.util.Map;
 
@@ -11,7 +10,7 @@ import java.util.Map;
  * @Author：xuxin
  * @Date: 2019/6/18 12:16
  */
-public class StrenCondition extends Condition{
+public class StrenCondition extends AbstractCondition {
     /**
      * 消耗道具id
      */

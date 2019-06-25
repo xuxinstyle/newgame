@@ -1,8 +1,7 @@
-package com.game.base.gameObject.model;
+package com.game.base.gameobject.model;
 
-import com.game.base.gameObject.constant.ObjectType;
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.scence.constant.SceneType;
-import com.game.base.gameObject.GameObject;
 
 /**
  * @Author：xuxin

@@ -18,21 +18,21 @@ public class ItemEffectManager {
     @Autowired
     private HibernateDao hibernateDao;
     /**
-     * <角色id，<道具表id，道具延迟命令 >>
+     * <角色id，<道具表id，道具延迟命令 >>  在登出后取消已经抛出但是还没有过期的命令
      */
-    private Map<Long ,Map<Integer, ItemExpireDelayCommand>> playerItemDeprecateCommandMap = new HashMap<>();
+    private Map<Long ,Map<Integer, ItemExpireDelayCommand>> playerItemExpireCommandMap = new HashMap<>();
 
     public Map<Integer, ItemExpireDelayCommand> getItemDeprecateDelayCommandMap(long playerId){
-        return playerItemDeprecateCommandMap.get(playerId);
+        return playerItemExpireCommandMap.get(playerId);
     }
 
 
     public void putCommand(ItemExpireDelayCommand command){
-        Map<Integer, ItemExpireDelayCommand> delayCommandMap = playerItemDeprecateCommandMap.get(command.getPlayerId());
+        Map<Integer, ItemExpireDelayCommand> delayCommandMap = playerItemExpireCommandMap.get(command.getPlayerId());
         if(delayCommandMap==null){
             delayCommandMap = new HashMap<>();
             delayCommandMap.put(command.getItemModelId(),command);
-            playerItemDeprecateCommandMap.put(command.getPlayerId(),delayCommandMap);
+            playerItemExpireCommandMap.put(command.getPlayerId(),delayCommandMap);
             return;
         }
         delayCommandMap.put(command.getItemModelId(),command);
@@ -40,7 +40,7 @@ public class ItemEffectManager {
     }
 
     public void removeDelayCommand(long playerId){
-        playerItemDeprecateCommandMap.remove(playerId);
+        playerItemExpireCommandMap.remove(playerId);
 
     }
 

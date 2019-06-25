@@ -30,7 +30,7 @@ public class LoginServiceImpl implements LoginService {
     public void login(TSession session, String username, String passward) throws InterruptedException {
 
         int serverId = SpringContext.getServerConfigValue().getServerId();
-        String passwardDB = MD5Util.inputPassToDbPass(passward, MD5Util.saltDB);
+        String passwardDB = MD5Util.inputPassToDbPass(passward, MD5Util.SALTDB);
 
         String usernameDB = username+"_"+serverId;
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(usernameDB);

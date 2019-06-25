@@ -9,15 +9,15 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class MD5Util {
 
-    public static final String saltDB ="3a4c5v";
-    private static final String salt = "1a2b3c4d";
+    public static final String SALTDB ="3a4c5v";
+    private static final String SALT = "1a2b3c4d";
 
     public static String md5(String src) {
         return DigestUtils.md5Hex(src);
     }
     //这个是在网络中传输的，哪怕被截获到了。反向获取的话还是找不到真正的密码的
     public static String inputPassToFormPass(String inputPass) { //拼个串在做md5.当然这个拼接自定义的。
-        String str = "" + salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
+        String str = "" + SALT.charAt(0) + SALT.charAt(2) + inputPass + SALT.charAt(5) + SALT.charAt(4);
         return md5(str);
     }
 

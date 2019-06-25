@@ -5,7 +5,7 @@ import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.AttributeContainer;
 import com.game.base.attribute.constant.AttributeType;
-import com.game.base.gameObject.constant.ObjectType;
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.player.packet.SM_ShowAttribute;
 import com.game.role.player.resource.PlayerLevelResource;
 import com.game.user.account.entity.AccountEnt;

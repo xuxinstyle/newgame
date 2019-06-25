@@ -95,7 +95,7 @@ public class ScenceServiceImpl implements ScenceService {
      */
     @Override
     public void doEnterMap(TSession session, String accountId, int mapId) {
-        leaveMap(accountId, mapId);
+        leaveMap(accountId);
         /** 在新的场景中添加玩家账号信息.*/
         setScenceAccountId(mapId, accountId);
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
@@ -129,9 +129,9 @@ public class ScenceServiceImpl implements ScenceService {
      * 做进入地图前需要做的事，即离开地图需要做的事,清除之前的场景中的信息
      *
      * @param
-     * @param mapId
+     * @param
      */
-    private void leaveMap(String accountId, int mapId) {
+    private void leaveMap(String accountId) {
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         SceneType currentMapType = accountInfo.getCurrentMapType();

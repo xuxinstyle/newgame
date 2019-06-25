@@ -1,15 +1,13 @@
 package com.game.connect.packet;
 
 import org.msgpack.annotation.Message;
-//服务端的向客户端返回连接消息
-@Message
-public class SM_Connect {
-    private static final int pid = 2;
-    private String hello;
+/**
+ * 服务端的向客户端返回连接消息
+ */
 
-    public int getPid() {
-        return pid;
-    }
+public class SM_Connect {
+
+    private String hello;
 
     public String getHello() {
         return hello;

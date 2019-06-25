@@ -11,14 +11,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ConversionServiceFactoryBean;
 
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.support.DefaultConversionService;
-import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -36,7 +33,7 @@ import java.util.Map;
 @Component
 public class ReadXlsx {
     private static final Logger logger = LoggerFactory.getLogger(ReadXlsx.class);
-    private final static TypeDescriptor sourceType = TypeDescriptor.valueOf(String.class);
+    private final static TypeDescriptor SOURCE_TYPE = TypeDescriptor.valueOf(String.class);
 
     private static ConversionService conversionService = new DefaultConversionService();
 
@@ -152,7 +149,7 @@ public class ReadXlsx {
                         concat = resource.replace(".0", "");
                     }
                     resource = concat;
-                    Object value = conversionService.convert(resource, sourceType, typeDescriptor);
+                    Object value = conversionService.convert(resource, SOURCE_TYPE, typeDescriptor);
                     return value;
                 }
             }
@@ -165,7 +162,7 @@ public class ReadXlsx {
                 concat = resource.replace(".0", "");
             }
             resource = concat;
-            Object value = conversionService.convert(resource, sourceType, typeDescriptor);
+            Object value = conversionService.convert(resource, SOURCE_TYPE, typeDescriptor);
             return value;
 
 
@@ -198,7 +195,7 @@ public class ReadXlsx {
     }
 
     private boolean inject(Object instance, Field field, String context) {
-        if(context==null||context.equals("null")||context.equals("")){
+        if(context==null||"null".equals(context)||"".equals(context)){
             return true;
         }
         try {
@@ -208,7 +205,7 @@ public class ReadXlsx {
                 concat = context.replace(".0", "");
             }
             context = concat;
-            Object value = conversionService.convert(context, sourceType, typeDescriptor);
+            Object value = conversionService.convert(context, SOURCE_TYPE, typeDescriptor);
             field.set(instance, value);
             return true;
         } catch (ConverterNotFoundException e) {

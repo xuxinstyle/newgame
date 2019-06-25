@@ -22,7 +22,7 @@ import java.util.Map;
  * @Author：xuxin
  * @Date: 2019/6/17 14:19
  */
-public class MedicineEffect extends UseEffect {
+public class MedicineEffect extends AbstractUseEffect {
     private static final Logger logger  = LoggerFactory.getLogger(MedicineEffect.class);
     /**
      * 增加的属性
@@ -37,7 +37,7 @@ public class MedicineEffect extends UseEffect {
     public void init(String effect, Map<String , Object> param){
         String[] split = effect.split(":");
         for(String str:split[0].split(";")){
-            if(str==null||str.equals("")){
+            if(str==null||"".equals(str)){
                 continue;
             }
             String[] attr = str.split(",");

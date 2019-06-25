@@ -10,7 +10,7 @@ import java.util.Map;
  * @Author：xuxin
  * @Date: 2019/6/17 12:30
  */
-public abstract class UseEffect {
+public abstract class AbstractUseEffect {
     /**
      * 使用效果时长
      */

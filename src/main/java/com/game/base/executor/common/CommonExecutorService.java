@@ -1,6 +1,6 @@
 package com.game.base.executor.common;
 
-import com.game.base.executor.common.Impl.AbstractCommonCommand;
+import com.game.base.executor.common.impl.AbstractCommonCommand;
 
 /**
  * @Author：xuxin

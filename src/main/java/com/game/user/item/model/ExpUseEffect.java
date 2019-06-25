@@ -7,9 +7,6 @@ import com.game.role.player.event.PlayerUpLevelEvent;
 import com.game.role.player.model.Player;
 import com.game.role.player.packet.SM_PlayerUpLevel;
 import com.game.role.player.resource.PlayerLevelResource;
-import com.game.scence.constant.SceneType;
-import com.game.user.account.entity.AccountEnt;
-import com.game.user.account.model.AccountInfo;
 import com.socket.core.session.SessionManager;
 import com.socket.core.session.TSession;
 
@@ -20,7 +17,7 @@ import java.util.Map;
  * @Author：xuxin
  * @Date: 2019/6/17 14:19
  */
-public class ExpUseEffect extends UseEffect {
+public class ExpUseEffect extends AbstractUseEffect {
     /**
      * 增加的经验
      */

@@ -16,15 +16,15 @@ public class AttributeVO {
     /**
      * 最大血量
      */
-    private long max_hp;
+    private long maxHp;
     /**
      * 最大蓝量
      */
-    private long max_mp;
+    private long maxMp;
     /**
      * 攻速
      */
-    private long attack_speed;
+    private long attackSpeed;
     /**
      * 力量
      */
@@ -58,28 +58,28 @@ public class AttributeVO {
         this.defense = defense;
     }
 
-    public long getMax_hp() {
-        return max_hp;
+    public long getMaxHp() {
+        return maxHp;
     }
 
-    public void setMax_hp(long max_hp) {
-        this.max_hp = max_hp;
+    public void setMaxHp(long maxHp) {
+        this.maxHp = maxHp;
     }
 
-    public long getMax_mp() {
-        return max_mp;
+    public long getMaxMp() {
+        return maxMp;
     }
 
-    public void setMax_mp(long max_mp) {
-        this.max_mp = max_mp;
+    public void setMaxMp(long maxMp) {
+        this.maxMp = maxMp;
     }
 
-    public long getAttack_speed() {
-        return attack_speed;
+    public long getAttackSpeed() {
+        return attackSpeed;
     }
 
-    public void setAttack_speed(long attack_speed) {
-        this.attack_speed = attack_speed;
+    public void setAttackSpeed(long attackSpeed) {
+        this.attackSpeed = attackSpeed;
     }
 
     public long getPower() {
@@ -112,5 +112,20 @@ public class AttributeVO {
 
     public void setAgile(long agile) {
         this.agile = agile;
+    }
+
+    @Override
+    public String toString() {
+        return "AttributeVO{" +
+                "attack=" + attack +
+                ", defense=" + defense +
+                ", maxHp=" + maxHp +
+                ", maxMp=" + maxMp +
+                ", attackSpeed=" + attackSpeed +
+                ", power=" + power +
+                ", intelltgence=" + intelltgence +
+                ", physical=" + physical +
+                ", agile=" + agile +
+                '}';
     }
 }

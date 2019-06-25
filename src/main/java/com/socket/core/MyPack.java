@@ -3,14 +3,17 @@ package com.socket.core;
 import org.msgpack.annotation.Message;
 
 import java.util.Arrays;
-
+/**
+ * @Author：xuxin
+ * @Date: 2019/6/17 12:30
+ */
 @Message
 public class MyPack {
     //协议Id
     private Integer pId;
     //自己的协议包
     private byte[] packet;
-    //private Object packet;
+
     public Integer getpId() {
         return pId;
     }

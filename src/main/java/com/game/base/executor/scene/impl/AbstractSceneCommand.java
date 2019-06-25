@@ -1,4 +1,4 @@
-package com.game.base.executor.scene.Impl;
+package com.game.base.executor.scene.impl;
 
 import com.game.base.executor.AbstractCommand;
 

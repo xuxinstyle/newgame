@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 public interface IEntity<PK extends Serializable & Comparable<PK>> {
     PK getId();
+
     void serialize();
 
     void unserialize();

@@ -2,7 +2,7 @@ package com.game.base.core.service;
 
 import com.db.HibernateDao;
 import com.game.base.core.entity.IdentifyEnt;
-import com.game.base.gameObject.constant.ObjectType;
+import com.game.base.gameobject.constant.ObjectType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

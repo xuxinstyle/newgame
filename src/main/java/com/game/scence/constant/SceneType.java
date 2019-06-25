@@ -7,7 +7,13 @@ package com.game.scence.constant;
 
 //TODO:加练功房和副本
 public enum SceneType {
+    /**
+     * 新手村
+     */
     NoviceVillage(1,"新手村"),
+    /**
+     * 野外
+     */
     FIELD(2,"野外");
 
     private int mapId;

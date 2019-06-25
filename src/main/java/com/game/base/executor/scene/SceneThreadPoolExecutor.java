@@ -1,12 +1,10 @@
 package com.game.base.executor.scene;
 
 import com.game.base.executor.NameThreadFactory;
-import com.game.base.executor.scene.Impl.AbstractSceneCommand;
+import com.game.base.executor.scene.impl.AbstractSceneCommand;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @Author：xuxin
@@ -17,7 +15,16 @@ public class SceneThreadPoolExecutor {
 
     private static final int DEFAULT_INITIAL_THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors();
 
+    private static final int DEFAULT_SCHEDULE_INITIAL_THREAD_POOL_SIZE = DEFAULT_INITIAL_THREAD_POOL_SIZE/2;
+
+    private static final Integer POOL_SIZE = DEFAULT_SCHEDULE_INITIAL_THREAD_POOL_SIZE > 2 ? DEFAULT_SCHEDULE_INITIAL_THREAD_POOL_SIZE : 2;
+
     private static final ThreadPoolExecutor[] SCENE_SERVICE = new ThreadPoolExecutor[DEFAULT_INITIAL_THREAD_POOL_SIZE];
+
+    private static NameThreadFactory scheduleNameThreadFactory = new NameThreadFactory("SceneScheduleExecutorThread");
+
+    private static final ScheduledExecutorService SCENE_SCHEDULE_POOL = Executors.newScheduledThreadPool(POOL_SIZE,scheduleNameThreadFactory);
+
 
     public void start(){
         NameThreadFactory nameThreadFactory = new NameThreadFactory("SceneExecutorThread");
@@ -38,5 +45,16 @@ public class SceneThreadPoolExecutor {
                accountCommond.active();
            }
         });
+    }
+
+    public void schedule(AbstractSceneCommand command, long delay){
+        command.refreshState();
+        SCENE_SCHEDULE_POOL.schedule(()->addTask(command),delay,TimeUnit.MILLISECONDS);
+    }
+
+    public void schedule(AbstractSceneCommand command, long delay, long period){
+        command.refreshState();
+        SCENE_SCHEDULE_POOL.scheduleAtFixedRate(()->addTask(command),
+                delay, period,TimeUnit.MILLISECONDS);
     }
 }

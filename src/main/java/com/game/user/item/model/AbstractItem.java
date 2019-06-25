@@ -1,11 +1,10 @@
 package com.game.user.item.model;
 
 import com.game.SpringContext;
-import com.game.base.gameObject.GameObject;
-import com.game.base.gameObject.constant.ObjectType;
+import com.game.base.gameobject.GameObject;
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.resource.ItemResource;
-import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 /**
@@ -54,7 +53,7 @@ public abstract class AbstractItem extends GameObject implements Comparable<Abst
 
 
     /**
-     *
+     *复制道具
      * @return
      */
     public abstract AbstractItem copy();

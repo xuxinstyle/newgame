@@ -1,6 +1,8 @@
 package com.game.base.executor.scene;
 
-import com.game.base.executor.scene.Impl.AbstractSceneCommand;
+import com.game.base.executor.scene.impl.AbstractSceneCommand;
+import com.game.base.executor.scene.impl.AbstractSceneDelayCommand;
+import com.game.base.executor.scene.impl.AbstractSceneRateCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,7 @@ public class SceneExecutorServiceImpl implements SceneExecutorService {
 
     @Autowired
     public SceneThreadPoolExecutor sceneThreadPoolExecutor;
+
     @Override
     public void init() {
         sceneThreadPoolExecutor.start();
@@ -20,6 +23,14 @@ public class SceneExecutorServiceImpl implements SceneExecutorService {
 
     @Override
     public void submit(AbstractSceneCommand commond) {
-        sceneThreadPoolExecutor.addTask(commond);
+        if(commond instanceof AbstractSceneDelayCommand){
+            AbstractSceneDelayCommand sceneDelayCommand = (AbstractSceneDelayCommand) commond;
+            sceneThreadPoolExecutor.schedule(sceneDelayCommand,sceneDelayCommand.getDelay());
+        }else if(commond instanceof AbstractSceneRateCommand){
+            AbstractSceneRateCommand sceneRateCommand = (AbstractSceneRateCommand) commond;
+            sceneThreadPoolExecutor.schedule(sceneRateCommand,sceneRateCommand.getDelay(), sceneRateCommand.getPeriod());
+        }else {
+            sceneThreadPoolExecutor.addTask(commond);
+        }
     }
 }

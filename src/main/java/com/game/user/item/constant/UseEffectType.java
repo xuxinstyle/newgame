@@ -18,12 +18,12 @@ public enum UseEffectType {
     EXP(1, ExpUseEffect.class),
     ;
     private int id;
-    private Class<? extends UseEffect> useClazz;
-    UseEffectType(int id, Class<? extends UseEffect> useClazz){
+    private Class<? extends AbstractUseEffect> useClazz;
+    UseEffectType(int id, Class<? extends AbstractUseEffect> useClazz){
         this.id = id;
         this.useClazz = useClazz;
     }
-    public UseEffect create(){
+    public AbstractUseEffect create(){
         try{
             return useClazz.newInstance();
         }catch (Exception e){

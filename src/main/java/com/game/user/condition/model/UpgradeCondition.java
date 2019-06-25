@@ -10,7 +10,7 @@ import java.util.Map;
  * @Author：xuxin
  * @Date: 2019/6/18 12:17
  */
-public class UpgradeCondition extends Condition{
+public class UpgradeCondition extends AbstractCondition {
     /**
      * 消耗道具id
      */

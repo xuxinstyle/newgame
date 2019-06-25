@@ -22,9 +22,6 @@ public class ItemStorageInfo {
      */
     private AbstractItem[] items;
 
-    /**
-     * TODO:这里先写死背包的格子数  本来应该写在配置表中的，等以后增加了公共配置表 再换上
-     */
     public static ItemStorageInfo valueOf(int maxSize, int initUsedSize) {
         ItemStorageInfo itemStorageInfo = new ItemStorageInfo();
         itemStorageInfo.setMaxSize(maxSize);

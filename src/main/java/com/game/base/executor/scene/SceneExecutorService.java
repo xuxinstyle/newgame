@@ -1,6 +1,6 @@
 package com.game.base.executor.scene;
 
-import com.game.base.executor.scene.Impl.AbstractSceneCommand;
+import com.game.base.executor.scene.impl.AbstractSceneCommand;
 
 /**
  * @Author：xuxin

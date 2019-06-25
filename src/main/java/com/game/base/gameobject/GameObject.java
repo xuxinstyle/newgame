@@ -1,4 +1,4 @@
-package com.game.base.gameObject;
+package com.game.base.gameobject;
 
 /**
  * 整个游戏中的唯一id

@@ -1,6 +1,6 @@
 package com.game.base.executor.account;
 
-import com.game.base.executor.account.Impl.AbstractAccountCommand;
+import com.game.base.executor.account.impl.AbstractAccountCommand;
 
 /**
  * @Author：xuxin

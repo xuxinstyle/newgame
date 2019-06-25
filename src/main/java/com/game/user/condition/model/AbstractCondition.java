@@ -13,7 +13,7 @@ import java.util.Map;
  * @Date: 2019/6/16 17:57
  *
  */
-public abstract class Condition {
+public abstract class AbstractCondition {
 
 
     public boolean checkCondition(String accountId, Map<String, Object> param){

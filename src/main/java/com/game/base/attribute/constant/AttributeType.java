@@ -156,6 +156,7 @@ public enum AttributeType {
      * 关联的属性
      */
     private int relateType;
+
     public static AttributeType valueOf(int id){
         for(AttributeType attributeType:AttributeType.values()){
             if(attributeType.getId()==id){

@@ -1,7 +1,6 @@
 package com.socket.core.session;
 
-import com.socket.Utils.JsonUtils;
-import com.socket.Utils.ProtoStuffUtil;
+import com.socket.utils.JsonUtils;
 import com.socket.core.MyPack;
 import com.socket.dispatcher.action.IActionDispatcher;
 import com.socket.dispatcher.config.RegistSerializerMessage;
@@ -46,21 +45,25 @@ public class TSession {
     }
     public void sendPacket(Object res) {
         try{
+            if(res==null){
+                MyPack pack = new MyPack();
+                channel.writeAndFlush(pack);
+                return;
+            }
             int opIndex = 0;
-            for (Map.Entry<Integer, Class<?>> entry :RegistSerializerMessage.idClassMap.entrySet()) {
+            for (Map.Entry<Integer, Class<?>> entry :RegistSerializerMessage.ID_CLASS_MAP.entrySet()) {
                 if(entry.getValue().equals(res.getClass())){
                     opIndex = entry.getKey();
                     break;
                 }
             }
-            if(opIndex == 0){
+            /*if(opIndex == 0){
                 logger.error("发送协议错误，没有对应的协议id");
                 return;
-            }
+            }*/
             MyPack pack = new MyPack();
             pack.setpId(opIndex);
             pack.setPacket(JsonUtils.object2Bytes(res));
-            //pack.setPacket(res);
             // pack.setPacket(ProtoStuffUtil.serializer(res));
             channel.writeAndFlush(pack);
         }catch (Exception e){

@@ -2,7 +2,7 @@ package com.game.user.itemeffect.entity;
 
 import com.db.AbstractEntity;
 import com.game.user.itemeffect.model.ItemEffectInfo;
-import com.socket.Utils.JsonUtils;
+import com.socket.utils.JsonUtils;
 import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
@@ -27,6 +27,7 @@ public class ItemEffectEnt extends AbstractEntity<Long> {
 
     @Transient
     private ItemEffectInfo itemEffectInfo;
+
     public static ItemEffectEnt valueOf(long playerId){
         ItemEffectEnt itemEffectEnt = new ItemEffectEnt();
         itemEffectEnt.setPlayerId(playerId);

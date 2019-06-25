@@ -17,8 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-public class EchoServerHandler extends ChannelInboundHandlerAdapter {
+/**
+ * @Author：xuxin
+ * @Date: 2019/6/17 12:30
+ */
+public class ServerHandler extends ChannelInboundHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(ChannelInboundHandlerAdapter.class);
 
     private ActionDispatcher actionDispatcher = new ActionDispatcher();
@@ -31,13 +34,13 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        TSession session = SessionUtil.getChannelSession(ctx.channel());
         MyPack pack = (MyPack) msg;
         if(pack==null||pack.getpId()==null||pack.getPacket()==null){
-            logger.error("传来的空包...");
+            session.sendPacket(null);
             return;
         }
-        //logger.info("线程："+Thread.currentThread().getName());
-        TSession session = SessionUtil.getChannelSession(ctx.channel());
+
         if(session==null){
             return;
         }
@@ -57,7 +60,8 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         logger.info("客户端关闭:" + ctx.channel().remoteAddress());
         /**当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
-        //cause.printStackTrace();
+        cause.printStackTrace();
+
         ctx.channel().close();
 
 

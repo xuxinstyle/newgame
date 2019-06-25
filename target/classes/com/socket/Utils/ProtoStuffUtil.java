@@ -1,4 +1,4 @@
-package com.socket.Utils;
+package com.socket.utils;
 
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtobufIOUtil;
