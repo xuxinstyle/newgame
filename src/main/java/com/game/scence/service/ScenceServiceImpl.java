@@ -7,6 +7,7 @@ import com.game.role.player.model.Player;
 import com.game.scence.constant.SceneType;
 import com.game.scence.model.ScenceInfo;
 import com.game.scence.packet.*;
+import com.game.scence.packet.bean.PlayerVO;
 import com.game.scence.resource.MapResource;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -100,17 +102,11 @@ public class ScenceServiceImpl implements ScenceService {
         setScenceAccountId(mapId, accountId);
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        if (logger.isDebugEnabled()) {
-            logger.debug("进入地图：" + accountEnt.toString(), accountInfo);
-        }
         accountInfo.setCurrentMapType(SceneType.valueOf(mapId));
         MapResource mapResource = getMapResource(mapId);
         if (mapResource == null) {
             logger.warn("{}资源加载错误", MapResource.class);
             return;
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug(mapResource.toString());
         }
         Player player = setPosition(accountId, mapResource);
         SpringContext.getAccountService().save(accountEnt);
@@ -154,10 +150,8 @@ public class ScenceServiceImpl implements ScenceService {
          * 如玩家没有昵称，则说明没有创角色信息
          */
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        if(logger.isDebugEnabled()) {
-            logger.debug(accountInfo.toString());
-        }
         if (accountInfo.getAccountName() == null || "".equals(accountInfo.getAccountName())) {
+            logger.info("玩家{}没有角色信息",accountId);
             return false;
         }
         return true;
@@ -174,12 +168,23 @@ public class ScenceServiceImpl implements ScenceService {
     public void showAllAccountInfo(TSession session, int mapId) {
         ScenceInfo scenceInfo = scenceMangaer.getScenceInfo(mapId);
         SM_ShowAllAccountInfo sm = new SM_ShowAllAccountInfo();
-        List<Player> player = scenceInfo.getPlayers();
-        String context = parse(player);
-        sm.setContext(context);
-        if (logger.isDebugEnabled()) {
-            logger.debug(context);
+
+        List<Player> playerList = scenceInfo.getPlayers();
+        List<PlayerVO> playerVOList = new ArrayList<>();
+        for(Player player:playerList){
+            AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(player.getAccountId());
+            AccountInfo accountInfo = accountEnt.getAccountInfo();
+            PlayerVO playerVO = new PlayerVO();
+            playerVO.setAccountId(player.getAccountId());
+            playerVO.setJobType(player.getPlayerJob());
+            playerVO.setLevel(player.getLevel());
+            playerVO.setNickName(accountInfo.getAccountName());
+            playerVO.setPlayerName(player.getPlayerName());
+            playerVO.setX(player.getX());
+            playerVO.setY(player.getY());
+            playerVOList.add(playerVO);
         }
+        sm.setPlayerVOList(playerVOList);
         session.sendPacket(sm);
     }
 

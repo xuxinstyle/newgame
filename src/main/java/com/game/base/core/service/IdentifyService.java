@@ -35,16 +35,10 @@ public class IdentifyService {
             identifyEnt= new IdentifyEnt();
             identifyEnt.setTypeId(type.getTypeId());
             identifyEnt.setNow(index.incrementAndGet());
-            if(logger.isDebugEnabled()){
-                logger.debug("identify为null时objectId："+identifyEnt.getNow());
-            }
             hibernateDao.saveOrUpdate(IdentifyEnt.class, identifyEnt);
             return identifyEnt.getNow();
         }
         long l = new AtomicLong(identifyEnt.getNow()).incrementAndGet();
-        if(logger.isDebugEnabled()){
-            logger.debug("identify不为null时objectId："+l);
-        }
         identifyEnt.setNow(l);
         hibernateDao.update(IdentifyEnt.class, identifyEnt);
         return l;

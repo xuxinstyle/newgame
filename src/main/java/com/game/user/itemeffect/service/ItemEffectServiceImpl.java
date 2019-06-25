@@ -64,6 +64,12 @@ public class ItemEffectServiceImpl implements ItemEffectService {
     public void doLogoutAfter(LogoutEvent event) {
         Player player = SpringContext.getPlayerSerivce().getPlayer(event.getAccountId());
         /**
+         * 玩家没创角时
+         */
+        if(player==null){
+            return;
+        }
+        /**
          * 取消命令
          */
         cancelCommand(player.getObjectId());

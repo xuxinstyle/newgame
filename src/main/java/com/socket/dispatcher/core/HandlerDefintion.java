@@ -58,10 +58,6 @@ public class HandlerDefintion implements IHandlerInvoke {
 
     @Override
     public Object invoke(TSession session, int opIndex, Object packet) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("session:" + session + " opIndex:" + opIndex + " packet:" + packet);
-            logger.debug("method:" + method + " bean:" + bean);
-        }
         ReflectionUtils.makeAccessible(method);
         Object result = null;
         switch (indextype) {

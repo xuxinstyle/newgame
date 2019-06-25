@@ -1,7 +1,7 @@
 package com.game.user.equip.service;
 
 import com.game.user.equip.entity.EquipmentEnt;
-import com.game.user.equip.event.EquipEvent;
+
 import com.game.user.equip.resource.EquipResource;
 import com.socket.core.session.TSession;
 

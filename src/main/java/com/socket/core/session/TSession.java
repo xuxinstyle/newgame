@@ -57,14 +57,9 @@ public class TSession {
                     break;
                 }
             }
-            /*if(opIndex == 0){
-                logger.error("发送协议错误，没有对应的协议id");
-                return;
-            }*/
             MyPack pack = new MyPack();
             pack.setpId(opIndex);
             pack.setPacket(JsonUtils.object2Bytes(res));
-            // pack.setPacket(ProtoStuffUtil.serializer(res));
             channel.writeAndFlush(pack);
         }catch (Exception e){
             String msg = String.format("encode %s error.",res != null ? res.getClass().getSimpleName():"null");

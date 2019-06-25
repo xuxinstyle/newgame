@@ -1,5 +1,8 @@
 package com.game.scence.packet;
 
+import com.game.scence.packet.bean.PlayerVO;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -7,16 +10,14 @@ import java.util.Map;
  * @Date: 2019/6/6 10:02
  */
 public class SM_ShowAllAccountInfo {
-    /**
-     * <账号Id，昵称>
-     */
-    private String context;
 
-    public String getContext() {
-        return context;
+    private List<PlayerVO> playerVOList;
+
+    public List<PlayerVO> getPlayerVOList() {
+        return playerVOList;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    public void setPlayerVOList(List<PlayerVO> playerVOList) {
+        this.playerVOList = playerVOList;
     }
 }

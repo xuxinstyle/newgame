@@ -109,7 +109,7 @@ public class PlayerSerivceImpl implements PlayerService {
 
         Map<AttributeType, Attribute> firstAttributeMap = attributeContainer.getFirstAttributeMap();
         Map<AttributeType, Attribute> computeAttributeMap = attributeContainer.getComputeAttributeMap();
-        Map<AttributeType, Attribute> penetationAttributeMap = attributeContainer.getPercentageAttributeMap();
+        Map<AttributeType, Attribute> penetationAttributeMap = attributeContainer.getOtherAttributeMap();
         List<Attribute> firstList = new ArrayList<>(firstAttributeMap.values());
         List<Attribute> secondList = new ArrayList<>(computeAttributeMap.values());
         List<Attribute> penetationList = new ArrayList<>(penetationAttributeMap.values());

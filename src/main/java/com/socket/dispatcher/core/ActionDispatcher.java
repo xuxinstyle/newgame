@@ -31,7 +31,12 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
 
     private static Map<Class<?>, IHandlerInvoke> handlerMap = new HashMap<>();
 
-
+    /**
+     * 协议和线程池分发
+     * @param session
+     * @param opIndex
+     * @param packet
+     */
     @Override
     public void handle(TSession session, int opIndex, Object packet) {
         Class<?> aClass = RegistSerializerMessage.ID_CLASS_MAP.get(opIndex);
@@ -58,16 +63,14 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
         }
     }
 
+    /**
+     * 协议分发
+     * @param session
+     * @param opIndex
+     * @param packet
+     */
     public static void doHandle(TSession session, int opIndex, Object packet) {
-
-        if(logger.isDebugEnabled()){
-            logger.debug("到达dohandle:pack="+packet.getClass());
-        }
-
         IHandlerInvoke defintion = handlerMap.get(packet.getClass());
-        if(logger.isDebugEnabled()){
-            logger.debug("defintion="+defintion+" packet class:"+packet.getClass());
-        }
         if(defintion == null){
             throw  new NullPointerException("no any handlerDefintion found for packet :"
             + packet.getClass().getSimpleName());

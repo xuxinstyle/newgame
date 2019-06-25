@@ -12,7 +12,7 @@ import javax.persistence.*;
  * @Date: 2019/6/16 18:30
  */
 @Entity(name = "equipment")
-@Table(appliesTo = "equipment", comment = "装备信息")
+@Table(appliesTo = "equipment", comment = "装备栏信息")
 public class EquipmentEnt extends AbstractEntity<Long> {
     /**
      * 角色唯一id
@@ -22,7 +22,7 @@ public class EquipmentEnt extends AbstractEntity<Long> {
     private long playerId;
 
     @Lob
-    @Column(columnDefinition = "blob comment '装备数据'")
+    @Column(columnDefinition = "blob comment '装备栏数据'")
     private byte[] equipmentData;
 
     @Transient

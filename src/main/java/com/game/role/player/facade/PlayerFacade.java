@@ -4,7 +4,6 @@ import com.event.anno.ReceiveAnn;
 import com.game.SpringContext;
 import com.game.role.player.event.PlayerUpLevelEvent;
 import com.game.role.player.packet.CM_ShowAttribute;
-import com.game.user.equip.event.EquipEvent;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;

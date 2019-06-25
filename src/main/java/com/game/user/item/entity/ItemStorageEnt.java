@@ -31,15 +31,12 @@ public class ItemStorageEnt extends AbstractEntity<String> {
 
     @Override
     public void doSerialize() {
-       /* String s = JsonUtils.toJSONString(pack);*/
-        /*this.packData = ProtoStuffUtil.serializer(pack);*/
         this.packData =JsonUtils.object2Bytes(pack);
     }
 
     @Override
     public void doDeserialize() {
         this.pack = JsonUtils.bytes2Object(this.packData, ItemStorageInfo.class);
-        //this.pack  = ProtoStuffUtil.deserializer(this.packData, ItemStorageInfo.class);
     }
 
     @Override
