@@ -5,6 +5,7 @@ import com.game.role.player.constant.Job;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.scence.constant.SceneType;
+import com.game.scence.packet.bean.PlayerPositionVO;
 import com.game.scence.model.ScenceInfo;
 import com.game.scence.packet.*;
 import com.game.scence.packet.bean.PlayerVO;
@@ -169,7 +170,7 @@ public class ScenceServiceImpl implements ScenceService {
         ScenceInfo scenceInfo = scenceMangaer.getScenceInfo(mapId);
         SM_ShowAllAccountInfo sm = new SM_ShowAllAccountInfo();
 
-        List<Player> playerList = scenceInfo.getPlayers();
+        List<Player> playerList = scenceInfo.getPlayerList();
         List<PlayerVO> playerVOList = new ArrayList<>();
         for(Player player:playerList){
             AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(player.getAccountId());
@@ -187,24 +188,6 @@ public class ScenceServiceImpl implements ScenceService {
         sm.setPlayerVOList(playerVOList);
         session.sendPacket(sm);
     }
-
-    private String parse(List<Player> players) {
-        StringBuffer context = new StringBuffer("");
-        for (Player player : players) {
-            String accountId = player.getAccountId();
-            AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
-            String accountName = accountEnt.getAccountInfo().getAccountName();
-            context.append("账号id：[" + accountId + "] ");
-            context.append("昵称：["+accountName+"] ");
-            context.append("角色名：[" + player.getPlayerName()+"] " );
-            context.append("职业:["+Job.valueOf(player.getPlayerJob()).getJobName()+"] ");
-            context.append("等级：["+player.getLevel()+"] ");
-            context.append("位置：[" + player.getX() + "," + player.getY() + "] ");
-            context.append("#");
-        }
-        return context.toString();
-    }
-
     @Override
     public void showAccountInfo(TSession session, String accountId, int mapId) {
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
@@ -299,13 +282,16 @@ public class ScenceServiceImpl implements ScenceService {
         if(scenceInfo==null){
             return;
         }
-        List<Player> players = scenceInfo.getPlayers();
+        List<Player> players = scenceInfo.getPlayerList();
 
         Map<String, TSession> accountSessionMap = sessionManager.getAccountSessionMap();
-        /** 拼接位置字符串*/
-        StringBuffer str = new StringBuffer();
+
+        /**
+         * 玩家的位置信息
+          */
+        List<PlayerPositionVO> playerPositionVOList = new ArrayList<>();
         for(Player player:players){
-            str.append(player.getX()+","+player.getY()+":");
+            playerPositionVOList.add(PlayerPositionVO.valueOf(player.getX(),player.getY()));
         }
         for(Player player:players){
             TSession session = accountSessionMap.get(player.getAccountId());
@@ -313,7 +299,7 @@ public class ScenceServiceImpl implements ScenceService {
                 return;
             }
             SM_OnlinePlayerOperate sm = new SM_OnlinePlayerOperate();
-            sm.setScenePositions(str.toString());
+            sm.setPlayerPositionVOList(playerPositionVOList);
             session.sendPacket(sm);
         }
     }

@@ -1,10 +1,7 @@
 package com.game.scence.model;
 
-import com.game.SpringContext;
 import com.game.role.player.model.Player;
 import com.game.scence.resource.MapResource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +13,14 @@ import java.util.List;
 public class ScenceInfo {
     private int mapId;
     /** 角色*/
-    private List<Player> players;
+    private List<Player> playerList;
     /**地图坐标信息信息*/
     private MapResource mapResource;
 
     public static ScenceInfo valueOf(int mapId, MapResource mapResource) {
         ScenceInfo scenceInfo = new ScenceInfo();
-        List<Player> players = new ArrayList<>();
-        scenceInfo.players = players;
+        List<Player> playerList = new ArrayList<>();
+        scenceInfo.playerList = playerList;
         scenceInfo.setMapId(mapId);
         scenceInfo.setMapResource(mapResource);
         return scenceInfo;
@@ -45,28 +42,28 @@ public class ScenceInfo {
         this.mapResource = mapResource;
     }
 
-    public List<Player> getPlayers() {
-        return players;
+    public List<Player> getPlayerList() {
+        return playerList;
     }
 
-    public void setPlayers(Player player) {
-        this.players.add(player);
+    public void setPlayerList(Player player) {
+        this.playerList.add(player);
     }
     public void remove(Player rplayer){
-        for (int i = 0;i<players.size();i++){
-            if(players.get(i).getObjectId()==rplayer.getObjectId()){
-                players.remove(i);
+        for (int i = 0; i< playerList.size(); i++){
+            if(playerList.get(i).getObjectId()==rplayer.getObjectId()){
+                playerList.remove(i);
             }
         }
 
     }
 
     public void refresh(Player player) {
-        for (int i = 0;i<players.size();i++){
-            if(players.get(i).getObjectId()==player.getObjectId()){
-                players.get(i).setX(player.getX());
-                players.get(i).setY(player.getY());
-                players.get(i).setLevel(player.getLevel());
+        for (int i = 0; i< playerList.size(); i++){
+            if(playerList.get(i).getObjectId()==player.getObjectId()){
+                playerList.get(i).setX(player.getX());
+                playerList.get(i).setY(player.getY());
+                playerList.get(i).setLevel(player.getLevel());
             }
         }
     }

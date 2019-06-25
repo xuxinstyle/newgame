@@ -55,7 +55,7 @@ public class ScenceManger {
      */
     public void setScenceInfo(int mapId, Player player){
         ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);
-        scenceInfo.setPlayers(player);
+        scenceInfo.setPlayerList(player);
 
     }
 
