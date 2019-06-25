@@ -61,12 +61,7 @@ public class PlayerSerivceImpl implements PlayerService {
         playerEnt.setPlayerId(playerId);
         playerEnt.setAccountId(accountId);
         Player player = Player.valueOf(playerId, accountId, type,nickName);
-        /** 生成玩家基础属性*/
-        PlayerLevelResource resource = storageManager.getResource(player.getLevel(), PlayerLevelResource.class);
-        AttributeContainer attributeContainer = AttributeContainer.valueOf();
-        List<Attribute> baseAttributeList = resource.getBaseAttributeList();
-        attributeContainer.addAndComputeMap(baseAttributeList);
-        player.setAttributeContainer(attributeContainer);
+
         playerEnt.setPlayer(player);
         insert(playerEnt);
         /**

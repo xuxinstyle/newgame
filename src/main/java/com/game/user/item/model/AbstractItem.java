@@ -12,9 +12,6 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
  * @Date: 2019/6/12 16:59
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-/*@JsonSubTypes({@JsonSubTypes.Type(value = Equipment.class),
-        @JsonSubTypes.Type(value = Exp.class),
-        @JsonSubTypes.Type(value = Medicine.class)})*/
 public abstract class AbstractItem extends GameObject implements Comparable<AbstractItem> {
     /**
      * 配置表中的唯一Id

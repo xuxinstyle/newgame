@@ -38,17 +38,17 @@ public class ItemStorageInfo {
      */
     public boolean addItem(AbstractItem addItem) {
         /**
-         * addItem.getNum()>addItem.getOverLimit()
-         * 如果数量大于最大堆叠
-         *          则1 找到相同道具且（能放道具进去） 放进去指定的数量 递归调用，直到找不到相同的道具
-         *
-         *          如果没有相同的道具
-         *                  找空位放 循环减最大限制放进去
-         *
-         * 如果数量小于最大堆叠，
-         *      找到下一个相同道具方进入 继续找，直到找不到相同的道具
-         *          找到空位了放进去
+         *  先找是否有相同的道具类型
+         *  1.1 找到相同的道具类型了
+         *      判断是否放得下
+         *          1.1.1 放得下就放下
+         *          1.1.2 放不下先填满当前的位置再继续找相同的道具类型回到 1
+         *  1.2 找不到相同类型的道具
+         *      找空位置
+         *          1.2.1 可以放完道具直接放，
+         *          1.2.2 不可以就回到继续回到 1
          */
+
         int position = findSameItem(addItem);
         if(position!=-1){
             int defNum = items[position].getOverLimit() - items[position].getNum();

@@ -1,8 +1,16 @@
 package com.game.role.player.model;
 
+import com.game.SpringContext;
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.AttributeContainer;
+import com.game.base.attribute.AttributeIdEnum;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.base.gameobject.model.Creature;
+import com.game.role.attribute.model.PlayerAttributeContainer;
+import com.game.role.player.resource.PlayerLevelResource;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class Player extends Creature<Player> {
@@ -55,8 +63,12 @@ public class Player extends Creature<Player> {
         player.setAccountId(accountId);
         player.setPlayerName(nickName);
         player.setSurviveStatus(1);
-        player.setX(0);
-        player.setY(0);
+        // TODO: BUFF容器
+        player.setAttributeContainer(new PlayerAttributeContainer(player));
+        /** 生成玩家基础属性*/
+        PlayerLevelResource resource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel());
+        List<Attribute> baseAttributeList = resource.getBaseAttributeList();
+        player.getAttributeContainer().putAttributes(AttributeIdEnum.LEVEL,baseAttributeList);
         return player;
     }
 

@@ -18,33 +18,124 @@ public enum AttributeType {
     /**
      * 物理攻击
      */
-    PHYSICAL_ATTACK(1,"物理攻击",2,19),
+    PHYSICAL_ATTACK(1,"物理攻击",2,19){
+        @Override
+        public AttributeType[] getEffectAttributes() {
+            return new AttributeType[]{POWER,PHYSICAL_ATTACK_PERCENTAGE};
+        }
+
+        @Override
+        public AttributeType[] getFirstAttributes() {
+            return new AttributeType[]{POWER};
+        }
+
+        @Override
+        public AttributeType[] getRecomputerAttribute() {
+            return new AttributeType[]{PHYSICAL_ATTACK_PERCENTAGE};
+        }
+    },
     /**
      * 法术攻击  实际伤害=A/(1+B/100)  A是攻击力或法强伤害 B是护甲 或魔抗
      */
-    MAGIC_ATTACK(2,"法术攻击",2,20),
+    MAGIC_ATTACK(2,"法术攻击",2,20){
+        @Override
+        public AttributeType[] getEffectAttributes() {
+            return new AttributeType[]{INTELLIGENCE,MAGIC_ATTACK_PERCENTAGE};
+        }
+
+        @Override
+        public AttributeType[] getFirstAttributes() {
+            return new AttributeType[]{INTELLIGENCE};
+        }
+        @Override
+        public AttributeType[] getRecomputerAttribute() {
+            return new AttributeType[]{MAGIC_ATTACK_PERCENTAGE};
+        }
+    },
 
     /**
      * 物理防御    y*1/x x为防御属性值 y为对手的攻击力或者本应该照成的血量减少值
      *   减伤百分比＝x/(x＋602)  x为防御值
      */
-    PHYSICAL_DEFENSE(3,"物理防御",2,17),
+    PHYSICAL_DEFENSE(3,"物理防御",2,17){
+        @Override
+        public AttributeType[] getEffectAttributes() {
+            return new AttributeType[]{PHYSICAL,PHYSICAL_DEFENSE_PERCENTAGE};
+        }
+
+        @Override
+        public AttributeType[] getFirstAttributes() {
+            return new AttributeType[]{PHYSICAL};
+        }
+        @Override
+        public AttributeType[] getRecomputerAttribute() {
+            return new AttributeType[]{PHYSICAL_DEFENSE_PERCENTAGE};
+        }
+    },
     /**
      * 法术防御
      */
-    MAGIC_DEFENSE(4,"法术防御",2,18),
+    MAGIC_DEFENSE(4,"法术防御",2,18){
+        @Override
+        public AttributeType[] getEffectAttributes() {
+            return new AttributeType[]{MAGIC_DEFENSE_PERCENTAGE};
+        }
+
+    },
     /**
      * 最大血量
      */
-    MAX_HP(5,"最大血量",2,15),
+    MAX_HP(5,"最大血量",2,15){
+        @Override
+        public AttributeType[] getEffectAttributes() {
+            return new AttributeType[]{POWER,PHYSICAL,MAX_HP_PERCENTAGE};
+        }
+
+        @Override
+        public AttributeType[] getFirstAttributes() {
+            return new AttributeType[]{POWER, PHYSICAL};
+        }
+        @Override
+        public AttributeType[] getRecomputerAttribute() {
+            return new AttributeType[]{MAX_HP_PERCENTAGE};
+        }
+    },
     /**
      * 最大蓝量
      */
-    MAX_MP(6,"最大蓝量",2,16),
+    MAX_MP(6,"最大蓝量",2,16){
+        @Override
+        public AttributeType[] getEffectAttributes() {
+            return new AttributeType[]{INTELLIGENCE,AGILE,MAX_MP_PERCENTAGE};
+        }
+
+        @Override
+        public AttributeType[] getFirstAttributes() {
+            return new AttributeType[]{INTELLIGENCE,AGILE};
+        }
+        @Override
+        public AttributeType[] getRecomputerAttribute() {
+            return new AttributeType[]{MAX_MP_PERCENTAGE};
+        }
+    },
     /**
      * 攻速  最大2.5次每秒。  初始攻速 1 次每秒   200+x/200 其中x为配置表中的数值
      */
-    ATTACK_SPEED(7,"攻速",2,21),
+    ATTACK_SPEED(7,"攻速",2,21){
+        @Override
+        public AttributeType[] getEffectAttributes() {
+            return new AttributeType[]{AGILE,ATTACK_SPEED_PERCENTAGE};
+        }
+
+        @Override
+        public AttributeType[] getFirstAttributes() {
+            return new AttributeType[]{AGILE};
+        }
+        @Override
+        public AttributeType[] getRecomputerAttribute() {
+            return new AttributeType[]{ATTACK_SPEED_PERCENTAGE};
+        }
+    },
     /**
      * 吸血比例   对方减少的血量*  吸血比例 = 回血量
      */
@@ -166,10 +257,35 @@ public enum AttributeType {
         return null;
     }
 
+    /**
+     * 用于获取影响对应二级属性的其他属性集合
+     * @return
+     */
+    public AttributeType[] getEffectAttributes(){
+        return null;
+    }
+
+    /**
+     * 获取影响二级属性的一级属性
+     * @return
+     */
+    public AttributeType[] getFirstAttributes(){
+        return null;
+    }
+    public AttributeType[] getRecomputerAttribute(){
+        return null;
+    }
+    /**
+     * TODO:找累加计算的属性集合
+     */
+
+    /**
+     * @param value
+     * @return
+     */
     public Map<AttributeType, Attribute> computeChangeAttribute(long value){
-        Map<AttributeType, Attribute> attributeMap = new ConcurrentHashMap<>();
-        attributeMap.put(this,Attribute.valueOf(this,value));
-        return attributeMap;
+
+        return null;
     }
 
     AttributeType(int id, String attrName, int attrType){

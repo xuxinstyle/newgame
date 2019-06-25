@@ -1,13 +1,16 @@
 package com.game.base.attribute;
 
 import com.game.base.attribute.constant.AttributeType;
+import com.game.base.attribute.util.AttributeUtil;
 import com.game.base.gameobject.model.Creature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.Transient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * FIXME:注意每次计算属性后都要保存
@@ -15,10 +18,110 @@ import java.util.Map;
  * @Author：xuxin
  * @Date: 2019/6/12 17:19
  */
-public class AttributeContainer<T extends Creature> {
+public abstract class AttributeContainer<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(AttributeContainer.class);
+    /**
+     * 属性容器的拥有者
+     */
+    @Transient
+    protected T owner;
 
+    public AttributeContainer(){
+
+    }
+    public AttributeContainer(T owner){
+        this.owner = owner;
+    }
+    /**
+     * 当前属性计算了二级属性的属性集合
+     */
+    protected Map<AttributeType, Attribute> finalAttributes = new ConcurrentHashMap<>();
+    /**
+     * 模块属性
+     */
+    @Transient
+    protected Map<AttributeId, AttributeSet> modelAttributeSet = new HashMap<>();
+    /**
+     * 用于累加计算个模块的属性结果的变量
+     */
+    @Transient
+    protected Map<AttributeType, Attribute> accumulateAttributes = new HashMap<>();
+
+    /**
+     * 设置该模块属性但不重新计算
+     * @param id
+     * @param attrs
+     */
+    public void putAttributes(AttributeId id, List<Attribute> attrs){
+        if(attrs == null){
+            logger.error("设置属性不能为空！{}",id);
+            return;
+        }else{
+            putAttributes0(id,attrs,null);
+        }
+    }
+    /**
+     * 设置该模块的属性 并且重新计算
+     * @param id
+     * @param attrs
+     * @param needSync
+     */
+    public void putAndRecomputeAttributes(AttributeId id, List<Attribute> attrs,boolean needSync){
+        if(attrs == null){
+            logger.error("设置属性不能为空！"+id);
+            return;
+        }else if(modelAttributeSet.containsKey(id)||attrs.size()>0){
+            AttributeUpdateRecords records = new AttributeUpdateRecords(id);
+            putAttributes0(id,attrs,records);
+            recompute(records,needSync);
+        }
+
+    }
+    protected abstract void recompute(AttributeUpdateRecords records, boolean needSync);
+    /**
+     * 把传进来的属性放进模块modelAttributeSet中,并设置改变的属性类型，并清除以前该模块的属性
+     * @param id
+     * @param attrs
+     * @param records
+     */
+    public void putAttributes0(AttributeId id, List<Attribute> attrs,AttributeUpdateRecords records) {
+        if(records!=null){
+            AttributeSet oldAttrs = modelAttributeSet.get(id);
+            records.addAttrs(attrs);
+            if(oldAttrs != null){
+                records.addAttrs(oldAttrs.getAttributeMap().values());
+                records.setRemovedAttribute(oldAttrs.getAttributeMap().values());
+            }
+        }
+        if(attrs.size() == 0){
+            modelAttributeSet.remove(id);
+        }else{
+            accumulateAttributeModelAttribute(id,attrs);
+        }
+    }
+
+    /**
+     * 将属性放到对应的属性模块中
+     * @param id
+     * @param attrs
+     */
+    private void accumulateAttributeModelAttribute(AttributeId id, List<Attribute> attrs) {
+        AttributeSet attributeSet = modelAttributeSet.get(id);
+        if(attributeSet == null){
+            attributeSet = new AttributeSet();
+            modelAttributeSet.put(id,attributeSet);
+        }
+        //将原来的属性清空覆盖掉
+        attributeSet.getAttributeMap().clear();
+        if(attrs !=null){
+            AttributeUtil.accumulateToMap(attrs, attributeSet.getAttributeMap());
+        }
+    }
+
+
+
+    /**        -------------------------------Deprecated----------------------------------                 */
     /**
      * 一级属性         （和百分比属性）
      */
@@ -44,12 +147,9 @@ public class AttributeContainer<T extends Creature> {
      * @param attribute
      */
     private Map<AttributeType, Attribute> computeAttributeMap = new HashMap<>();
+    /**        -------------------------------Deprecated----------------------------------                 */
 
-    public AttributeContainer() {
-
-    }
-
-    public static AttributeContainer valueOf() {
+    /*public static AttributeContainer valueOf() {
         AttributeContainer attributeContainer = new AttributeContainer();
         Map<AttributeType, Attribute> firstAttribute = new HashMap<>();
         Map<AttributeType, Attribute> otherAttribute = new HashMap<>();
@@ -80,7 +180,7 @@ public class AttributeContainer<T extends Creature> {
         attributeContainer.setComputeAttributeMap(computeAttribute);
         attributeContainer.setAddSecondAttributeMap(addSecondAttribute);
         return attributeContainer;
-    }
+    }*/
 
     /**
      * 1.将新加的属性加到对应的map中
