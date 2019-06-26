@@ -11,7 +11,7 @@ import java.util.Set;
  * @Author：xuxin
  * @Date: 2019/6/25 17:13
  */
-public class AttributeUpdateRecords {
+public class AttributeUpdate {
     /**
      * 改变的模块
      */
@@ -20,12 +20,9 @@ public class AttributeUpdateRecords {
      * 本次改变设计的属性类型
      */
     private final Set<AttributeType> types = new HashSet<>();
-    /**
-     * 本次改变被移除的属性
-     */
-    private Collection<Attribute> removedAttribute = null;
 
-    public AttributeUpdateRecords(AttributeId changeId){
+
+    public AttributeUpdate(AttributeId changeId){
         this.changeId = changeId;
     }
 
@@ -50,19 +47,8 @@ public class AttributeUpdateRecords {
         }
     }
 
-    public AttributeId getChangeId() {
-        return changeId;
-    }
-
     public Set<AttributeType> getTypes() {
         return types;
     }
 
-    public Collection<Attribute> getRemovedAttribute() {
-        return removedAttribute;
-    }
-
-    public void setRemovedAttribute(Collection<Attribute> removedAttribute) {
-        this.removedAttribute = removedAttribute;
-    }
 }

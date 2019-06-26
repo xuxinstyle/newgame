@@ -83,7 +83,7 @@ public class MedicineEffect extends AbstractUseEffect {
             SpringContext.getAccountExecutorService().submit(command);
             SpringContext.getItemEffectService().putCommand(command);
             AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
-            attributeContainer.putAndRecomputeAttributes(MedicineAttributeId.getMedicineAttributeId(itemModelId),addAttributeList,true);
+            attributeContainer.putAndCcomputeAttributes(MedicineAttributeId.getMedicineAttributeId(itemModelId),addAttributeList,true);
             SpringContext.getPlayerSerivce().save(playerEnt);
         }else{
             /**

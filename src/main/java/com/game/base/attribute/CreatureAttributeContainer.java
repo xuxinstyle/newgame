@@ -2,8 +2,6 @@ package com.game.base.attribute;
 
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.util.AttributeUtil;
-import com.game.base.gameobject.model.Creature;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +15,7 @@ public class CreatureAttributeContainer extends AttributeContainer {
 
 
     @Override
-    protected void recompute(AttributeUpdateRecords records, boolean needSync) {
+    protected void recompute(AttributeUpdate records, boolean needSync) {
         compute(moduleAttributeSet,finalAttributes, records);
     }
 
@@ -28,7 +26,7 @@ public class CreatureAttributeContainer extends AttributeContainer {
      * @param records
      */
     protected void compute(Map<String,AttributeSet> modelAttributeSet, Map<AttributeType,Attribute> finalAttributes,
-                         AttributeUpdateRecords records) {
+                         AttributeUpdate records) {
         /**
          * 清空 accumulateAttributes
          */

@@ -2,11 +2,9 @@ package com.game.base.attribute;
 
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.util.AttributeUtil;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.Transient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,31 +61,30 @@ public abstract class AttributeContainer {
      * @param attrs
      * @param needSync
      */
-    public void putAndRecomputeAttributes(AttributeId id, List<Attribute> attrs,boolean needSync){
+    public void putAndCcomputeAttributes(AttributeId id, List<Attribute> attrs, boolean needSync){
         if(attrs == null){
             logger.error("设置属性不能为空！"+id);
             return;
         }else if(moduleAttributeSet.containsKey(id.toString())||attrs.size()>0){
-            AttributeUpdateRecords records = new AttributeUpdateRecords(id);
+            AttributeUpdate records = new AttributeUpdate(id);
             putAttributes0(id,attrs,records);
             recompute(records,needSync);
         }
 
     }
-    protected abstract void recompute(AttributeUpdateRecords records, boolean needSync);
+    protected abstract void recompute(AttributeUpdate records, boolean needSync);
     /**
      * 把传进来的属性放进模块modelAttributeSet中,并设置改变的属性类型，并清除以前该模块的属性
      * @param id
      * @param attrs
      * @param records
      */
-    public void putAttributes0(AttributeId id, List<Attribute> attrs,AttributeUpdateRecords records) {
+    public void putAttributes0(AttributeId id, List<Attribute> attrs,AttributeUpdate records) {
         if(records!=null){
             AttributeSet oldAttrs = moduleAttributeSet.get(id.toString());
             records.addAttrs(attrs);
             if(oldAttrs != null){
                 records.addAttrs(oldAttrs.getAttributeMap().values());
-                records.setRemovedAttribute(oldAttrs.getAttributeMap().values());
             }
         }
         if(attrs.size() == 0){
@@ -123,10 +120,9 @@ public abstract class AttributeContainer {
     public void removeAndRecompteAttribtues(AttributeId id, boolean needSync){
         AttributeSet oldAttrs = moduleAttributeSet.get(id.toString());
         if(removeAttributes(id)){
-            AttributeUpdateRecords records = new AttributeUpdateRecords(id);
+            AttributeUpdate records = new AttributeUpdate(id);
             if(oldAttrs!=null){
                 records.addAttrs(oldAttrs.getAttributeMap().values());
-                records.setRemovedAttribute(oldAttrs.getAttributeMap().values());
             }
             recompute(records,needSync);
         }
@@ -140,23 +136,4 @@ public abstract class AttributeContainer {
         return finalAttributes;
     }
 
-    public void setFinalAttributes(Map<AttributeType, Attribute> finalAttributes) {
-        this.finalAttributes = finalAttributes;
-    }
-
-    public Map<String, AttributeSet> getModuleAttributeSet() {
-        return moduleAttributeSet;
-    }
-
-    public void setModuleAttributeSet(Map<String, AttributeSet> moduleAttributeSet) {
-        this.moduleAttributeSet = moduleAttributeSet;
-    }
-
-    public Map<AttributeType, Attribute> getAccumulateAttributes() {
-        return accumulateAttributes;
-    }
-
-    public void setAccumulateAttributes(Map<AttributeType, Attribute> accumulateAttributes) {
-        this.accumulateAttributes = accumulateAttributes;
-    }
 }

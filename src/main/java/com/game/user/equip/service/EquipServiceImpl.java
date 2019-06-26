@@ -114,7 +114,7 @@ public class EquipServiceImpl implements EquipService {
         List<Attribute> newAttributeList = equipment.getAttributeList();
         newAttributeList.addAll(equipment.getStrenAttributeMap().values());
 
-        attributeContainer.putAndRecomputeAttributes(attributeId,newAttributeList,true);
+        attributeContainer.putAndCcomputeAttributes(attributeId,newAttributeList,true);
         /**
          * 保存 并响应客户端
          */

@@ -2,10 +2,8 @@ package com.game.role.attribute.model;
 
 import com.game.base.attribute.*;
 import com.game.base.attribute.constant.AttributeType;
-import com.game.role.player.model.Player;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author：xuxin
@@ -18,7 +16,7 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer  {
     }
 
     @Override
-    protected void recompute(AttributeUpdateRecords records, boolean needSync) {
+    protected void recompute(AttributeUpdate records, boolean needSync) {
         /**
          * 计算新的属性
          */

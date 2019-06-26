@@ -16,15 +16,7 @@ public enum AttributeIdEnum implements AttributeId {
             return "LEVEL";
         }
     },
-    /**
-     * 装备属性
-     */
-    EQUIP{
-        @Override
-        public String getName() {
-            return "EQUIP";
-        }
-    }
+
     ;
 
     @Override

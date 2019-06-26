@@ -5,30 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93cc0952-b069-437a-9235-91722d943ce6" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/EquipAttributeId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/MedicineAttributeId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/constant/AttributeKind.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/item/constant/MedicineType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeId.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeIdEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeIdEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeUpdateRecords.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeUpdateRecords.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeUpdateRecords.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeUpdate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/CreatureAttributeContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/CreatureAttributeContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/constant/AttributeType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/constant/AttributeType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/util/AttributeUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/util/AttributeUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/util/ComputerUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/util/ComputerUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/gameobject/model/Creature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/gameobject/model/Creature.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/EquipAttributeId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/attribute/EquipAttributeId.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/attribute/model/PlayerAttributeContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/attribute/model/PlayerAttributeContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/player/facade/PlayerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/player/facade/PlayerFacade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/player/service/PlayerSerivceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/player/service/PlayerSerivceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceManger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceManger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/user/equip/service/EquipServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/user/equip/service/EquipServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/user/item/model/ExpUseEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/user/item/model/ExpUseEffect.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/user/item/model/MedicineEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/user/item/model/MedicineEffect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/user/itemeffect/service/ItemEffectServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/user/itemeffect/service/ItemEffectServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/resource/EquipResource.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/resource/EquipResource.xlsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -48,11 +37,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AttributeContainer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AttributeContainer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeContainer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1462">
-              <caret line="88" column="70" lean-forward="true" selection-start-line="88" selection-start-column="70" selection-end-line="88" selection-end-column="70" />
+            <state relative-caret-position="325">
+              <caret line="70" column="17" selection-start-line="70" selection-start-column="17" selection-end-line="70" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4148#4149#0" expanded="true" />
@@ -62,24 +51,85 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java">
+      <file leaf-file-name="Attribute.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/Attribute.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="150" column="23" selection-start-line="150" selection-start-column="23" selection-end-line="150" selection-end-column="23" />
+            <state relative-caret-position="131">
+              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
               <folding>
-                <element signature="e#3359#3360#0" expanded="true" />
-                <element signature="e#3406#3407#0" expanded="true" />
+                <element signature="e#857#858#0" expanded="true" />
+                <element signature="e#893#894#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AttributeUpdateRecords.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeUpdateRecords.java">
+      <file leaf-file-name="AttributeIdEnum.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeIdEnum.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="64" column="24" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="24" />
+            <state relative-caret-position="209">
+              <caret line="16" column="9" lean-forward="true" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
+              <folding>
+                <element signature="e#563#564#0" expanded="true" />
+                <element signature="e#595#596#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AttributeType.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/constant/AttributeType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="224" column="28" selection-start-line="224" selection-start-column="4" selection-end-line="224" selection-end-column="28" />
+              <folding>
+                <element signature="e#8176#8177#0" expanded="true" />
+                <element signature="e#8203#8204#0" expanded="true" />
+                <element signature="e#8250#8251#0" expanded="true" />
+                <element signature="e#8282#8283#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AttributeKind.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/constant/AttributeKind.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="219">
+              <caret line="14" column="24" lean-forward="true" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AttributeId.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeId.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="13" column="16" lean-forward="true" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayerAttributeContainer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/attribute/model/PlayerAttributeContainer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="326">
+              <caret line="22" column="12" lean-forward="true" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AttributeUpdate.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeUpdate.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1313#1314#0" expanded="true" />
@@ -89,20 +139,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EquipServiceImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/equip/service/EquipServiceImpl.java">
+      <file leaf-file-name="ComputerUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/util/ComputerUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="116" selection-start-line="116" selection-end-line="116" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerAttributeContainer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/attribute/model/PlayerAttributeContainer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="20" column="80" lean-forward="true" selection-start-line="20" selection-start-column="80" selection-end-line="20" selection-end-column="80" />
+            <state relative-caret-position="190">
+              <caret line="22" column="35" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -113,47 +154,11 @@
       <file leaf-file-name="CreatureAttributeContainer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/CreatureAttributeContainer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="19" column="45" lean-forward="true" selection-start-line="19" selection-start-column="45" selection-end-line="19" selection-end-column="45" />
+            <state relative-caret-position="57">
+              <caret line="27" column="19" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MedicineEffect.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/item/model/MedicineEffect.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="98">
-              <caret line="96" column="23" lean-forward="true" selection-start-line="96" selection-start-column="23" selection-end-line="96" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ItemExpireDelayCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/itemeffect/command/ItemExpireDelayCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="32" column="51" selection-start-line="32" selection-start-column="51" selection-end-line="32" selection-end-column="51" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ItemEffectServiceImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/itemeffect/service/ItemEffectServiceImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="126" column="33" lean-forward="true" selection-start-line="126" selection-start-column="33" selection-end-line="126" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HibernateDao.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/db/HibernateDao.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="35" selection-start-line="35" selection-end-line="35" />
             </state>
           </provider>
         </entry>
@@ -204,7 +209,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/game/base/facade/HeartFacade.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/socket/core/MsgpackEncoder.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/socket/core/MsgpackDecoder.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/socket/core/ServerHandler.java" />
@@ -228,7 +232,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/game/scence/packet/bean/PlayerPositionVO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/scence/model/ScenceInfo.java" />
         <option value="$PROJECT_DIR$/doc/开发计划.md" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeSet.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/user/item/model/AbstractItem.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/user/item/model/ItemStorageInfo.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/util/ComputerUtil.java" />
@@ -242,19 +245,21 @@
         <option value="$PROJECT_DIR$/src/main/java/com/game/base/gameobject/model/Creature.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/scence/service/ScenceManger.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeId.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/EquipAttributeId.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/MedicineAttributeId.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeIdEnum.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/Server.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/role/player/service/PlayerSerivceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/user/equip/service/EquipServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/role/player/facade/PlayerFacade.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/util/AttributeUtil.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeContainer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/CreatureAttributeContainer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/role/attribute/model/PlayerAttributeContainer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeUpdateRecords.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeUpdate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeContainer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeIdEnum.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeSet.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/EquipAttributeId.java" />
       </list>
     </option>
   </component>
@@ -275,7 +280,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="208" />
+    <option name="x" value="-208" />
+    <option name="y" value="21" />
     <option name="width" value="1038" />
     <option name="height" value="733" />
   </component>
@@ -337,6 +343,51 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="attribute" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="attribute" type="462c0819:PsiDirectoryNode" />
+              <item name="constant" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="attribute" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
@@ -598,12 +649,12 @@
       <workItem from="1561337627751" duration="41692000" />
       <workItem from="1561426303733" duration="7001000" />
       <workItem from="1561434172879" duration="29013000" />
-      <workItem from="1561513862078" duration="23917000" />
+      <workItem from="1561513862078" duration="26357000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="500987000" />
+    <option name="totallyTimeSpent" value="503427000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -615,7 +666,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="208" y="0" width="1038" height="733" extended-state="0" />
+    <frame x="-208" y="21" width="1038" height="733" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
@@ -625,12 +676,12 @@
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.14723927" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.14723927" />
       <window_info anchor="right" id="Database" order="7" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.24934153" />
       <window_info id="UI Designer" order="4" />
-      <window_info anchor="bottom" x="375" y="81" width="568" height="553" id="Debug" order="5" sideWeight="0.52879584" visible="true" weight="0.14666666" />
+      <window_info anchor="bottom" x="375" y="81" width="568" height="553" id="Debug" order="5" sideWeight="0.52879584" visible="true" weight="0.13833334" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3296501" />
       <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.43717277" weight="0.2565284" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
@@ -640,7 +691,7 @@
       <window_info anchor="bottom" id="Run" order="2" weight="0.4362519" />
       <window_info anchor="bottom" id="Spring" order="12" weight="0.32872504" />
       <window_info anchor="bottom" id="Terminal" order="13" weight="0.32718894" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29856852" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19529653" />
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
@@ -851,7 +902,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java</url>
-          <line>71</line>
+          <line>70</line>
           <properties />
           <option name="timeStamp" value="482" />
         </line-breakpoint>
@@ -899,7 +950,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java</url>
-          <line>151</line>
+          <line>150</line>
           <properties />
           <option name="timeStamp" value="492" />
         </line-breakpoint>
@@ -911,7 +962,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeContainer.java</url>
-          <line>70</line>
+          <line>68</line>
           <properties />
           <option name="timeStamp" value="495" />
         </line-breakpoint>
@@ -923,25 +974,25 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeContainer.java</url>
-          <line>84</line>
+          <line>82</line>
           <properties />
           <option name="timeStamp" value="497" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/CreatureAttributeContainer.java</url>
-          <line>53</line>
+          <line>51</line>
           <properties />
           <option name="timeStamp" value="499" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/CreatureAttributeContainer.java</url>
-          <line>40</line>
+          <line>38</line>
           <properties />
           <option name="timeStamp" value="501" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/CreatureAttributeContainer.java</url>
-          <line>65</line>
+          <line>63</line>
           <properties />
           <option name="timeStamp" value="502" />
         </line-breakpoint>
@@ -1002,27 +1053,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/Attribute.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding>
-            <element signature="e#857#858#0" expanded="true" />
-            <element signature="e#893#894#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/util/ComputerUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/item/constant/ItemType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -1048,21 +1078,6 @@
             <element signature="e#398#399#0" expanded="true" />
             <element signature="e#449#450#0" expanded="true" />
             <element signature="e#495#496#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/constant/AttributeKind.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="18" column="23" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
-          <folding>
-            <element signature="e#310#311#0" expanded="true" />
-            <element signature="e#342#343#0" expanded="true" />
-            <element signature="e#370#371#0" expanded="true" />
-            <element signature="e#397#398#0" expanded="true" />
-            <element signature="e#434#435#0" expanded="true" />
-            <element signature="e#466#467#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1109,19 +1124,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/constant/AttributeType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3230">
-          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
-          <folding>
-            <element signature="e#8176#8177#0" expanded="true" />
-            <element signature="e#8203#8204#0" expanded="true" />
-            <element signature="e#8250#8251#0" expanded="true" />
-            <element signature="e#8282#8283#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/item/model/AbstractItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -1145,49 +1147,6 @@
           <caret line="13" selection-start-line="13" selection-end-line="13" />
           <folding>
             <element signature="e#247#248#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeId.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="11" column="49" selection-start-line="11" selection-start-column="49" selection-end-line="11" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/EquipAttributeId.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="50" column="25" selection-start-line="50" selection-start-column="25" selection-end-line="50" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1319#1320#0" expanded="true" />
-            <element signature="e#1358#1359#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeIdEnum.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="36" column="25" selection-start-line="36" selection-start-column="25" selection-end-line="36" selection-end-column="25" />
-          <folding>
-            <element signature="e#563#564#0" expanded="true" />
-            <element signature="e#605#606#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/MedicineAttributeId.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="37" column="18" selection-start-line="37" selection-start-column="18" selection-end-line="37" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1257,19 +1216,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="157">
           <caret line="31" column="21" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="42" selection-start-line="42" selection-end-line="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#691#692#0" expanded="true" />
-            <element signature="e#725#726#0" expanded="true" />
-            <element signature="e#920#921#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1357,7 +1303,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/item/model/MedicineEffect.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="98">
-          <caret line="96" column="23" lean-forward="true" selection-start-line="96" selection-start-column="23" selection-end-line="96" selection-end-column="23" />
+          <caret line="96" column="23" selection-start-line="96" selection-start-column="23" selection-end-line="96" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -1371,14 +1317,14 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/itemeffect/service/ItemEffectServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
-          <caret line="126" column="33" lean-forward="true" selection-start-line="126" selection-start-column="33" selection-end-line="126" selection-end-column="33" />
+          <caret line="126" column="33" selection-start-line="126" selection-start-column="33" selection-end-line="126" selection-end-column="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
-          <caret line="150" column="23" selection-start-line="150" selection-start-column="23" selection-end-line="150" selection-end-column="23" />
+          <caret line="149" column="23" selection-start-line="149" selection-start-column="23" selection-end-line="149" selection-end-column="23" />
           <folding>
             <element signature="e#3359#3360#0" expanded="true" />
             <element signature="e#3406#3407#0" expanded="true" />
@@ -1386,30 +1332,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/attribute/model/PlayerAttributeContainer.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeSet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="20" column="80" lean-forward="true" selection-start-line="20" selection-start-column="80" selection-end-line="20" selection-end-column="80" />
+        <state relative-caret-position="266">
+          <caret line="25" column="24" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#885#886#0" expanded="true" />
+            <element signature="e#920#921#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/EquipAttributeId.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="16" column="47" lean-forward="true" selection-start-line="16" selection-start-column="47" selection-end-line="16" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1319#1320#0" expanded="true" />
+            <element signature="e#1351#1352#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/MedicineAttributeId.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/CreatureAttributeContainer.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeUpdate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="19" column="45" lean-forward="true" selection-start-line="19" selection-start-column="45" selection-end-line="19" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeUpdateRecords.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="64" column="24" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="24" />
+        <state relative-caret-position="323">
+          <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1313#1314#0" expanded="true" />
@@ -1418,14 +1378,96 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeIdEnum.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="16" column="9" lean-forward="true" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
+          <folding>
+            <element signature="e#563#564#0" expanded="true" />
+            <element signature="e#595#596#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeId.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" column="16" lean-forward="true" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/Attribute.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding>
+            <element signature="e#857#858#0" expanded="true" />
+            <element signature="e#893#894#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/util/ComputerUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="22" column="35" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/AttributeContainer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1462">
-          <caret line="88" column="70" lean-forward="true" selection-start-line="88" selection-start-column="70" selection-end-line="88" selection-end-column="70" />
+        <state relative-caret-position="325">
+          <caret line="70" column="17" selection-start-line="70" selection-start-column="17" selection-end-line="70" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4148#4149#0" expanded="true" />
             <element signature="e#4205#4206#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/attribute/model/PlayerAttributeContainer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="22" column="12" lean-forward="true" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/CreatureAttributeContainer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="27" column="19" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/constant/AttributeKind.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="14" column="24" lean-forward="true" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/attribute/constant/AttributeType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="224" column="28" selection-start-line="224" selection-start-column="4" selection-end-line="224" selection-end-column="28" />
+          <folding>
+            <element signature="e#8176#8177#0" expanded="true" />
+            <element signature="e#8203#8204#0" expanded="true" />
+            <element signature="e#8250#8251#0" expanded="true" />
+            <element signature="e#8282#8283#0" expanded="true" />
           </folding>
         </state>
       </provider>
