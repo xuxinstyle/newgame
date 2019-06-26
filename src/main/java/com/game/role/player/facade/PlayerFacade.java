@@ -2,6 +2,7 @@ package com.game.role.player.facade;
 
 import com.event.anno.ReceiveAnn;
 import com.game.SpringContext;
+import com.game.login.event.LoginEvent;
 import com.game.role.player.event.PlayerUpLevelEvent;
 import com.game.role.player.packet.CM_ShowAttribute;
 import com.socket.core.session.TSession;
@@ -26,6 +27,7 @@ public class PlayerFacade {
             e.printStackTrace();
         }
     }
+
 
 
 }

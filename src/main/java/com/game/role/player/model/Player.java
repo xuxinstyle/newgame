@@ -4,6 +4,7 @@ import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.AttributeContainer;
 import com.game.base.attribute.AttributeIdEnum;
+import com.game.base.attribute.CreatureAttributeContainer;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.base.gameobject.model.Creature;
 import com.game.role.attribute.model.PlayerAttributeContainer;
@@ -64,11 +65,11 @@ public class Player extends Creature<Player> {
         player.setPlayerName(nickName);
         player.setSurviveStatus(1);
         // TODO: BUFF容器
-        player.setAttributeContainer(new PlayerAttributeContainer(player));
+        player.setAttributeContainer(new PlayerAttributeContainer());
         /** 生成玩家基础属性*/
         PlayerLevelResource resource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel());
         List<Attribute> baseAttributeList = resource.getBaseAttributeList();
-        player.getAttributeContainer().putAttributes(AttributeIdEnum.LEVEL,baseAttributeList);
+        player.getAttributeContainer().putAndRecomputeAttributes(AttributeIdEnum.LEVEL,baseAttributeList,true);
         return player;
     }
 
@@ -146,5 +147,13 @@ public class Player extends Creature<Player> {
         return playerName;
     }
 
+    @Override
+    public CreatureAttributeContainer getAttributeContainer() {
+        return  attributeContainer;
+    }
 
+    @Override
+    public void setAttributeContainer(CreatureAttributeContainer attributeContainer) {
+        this.attributeContainer = (PlayerAttributeContainer)attributeContainer;
+    }
 }

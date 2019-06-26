@@ -4,6 +4,7 @@ import com.db.HibernateDao;
 import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.AttributeContainer;
+import com.game.base.attribute.constant.AttributeKind;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.player.packet.SM_ShowAttribute;
@@ -100,18 +101,25 @@ public class PlayerSerivceImpl implements PlayerService {
     @Override
     public void showPlayerAttribute(TSession session, String accountId){
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-        AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
+        AttributeContainer attributeContainer = player.getAttributeContainer();
 
-        Map<AttributeType, Attribute> firstAttributeMap = attributeContainer.getFirstAttributeMap();
-        Map<AttributeType, Attribute> computeAttributeMap = attributeContainer.getComputeAttributeMap();
-        Map<AttributeType, Attribute> penetationAttributeMap = attributeContainer.getOtherAttributeMap();
-        List<Attribute> firstList = new ArrayList<>(firstAttributeMap.values());
-        List<Attribute> secondList = new ArrayList<>(computeAttributeMap.values());
-        List<Attribute> penetationList = new ArrayList<>(penetationAttributeMap.values());
+        Map<AttributeType, Attribute> finalAttributes = attributeContainer.getFinalAttributes();
+        List<Attribute> firstList = new ArrayList<>();
+        List<Attribute> secondList = new ArrayList<>();
+        List<Attribute> otherList = new ArrayList<>();
+        for(Attribute attribute:finalAttributes.values()){
+            if(attribute.getAttributeType().getKind()==AttributeKind.FIRST_ATTRIBUTE){
+                firstList.add(attribute);
+            }else if(attribute.getAttributeType().getKind()==AttributeKind.SECOND_ATTRIBUTE){
+               secondList.add(attribute);
+            }else {
+                otherList.add(attribute);
+            }
+        }
         SM_ShowAttribute sm = new SM_ShowAttribute();
         sm.setFirstAttributeList(firstList);
         sm.setSecondAttributeList(secondList);
-        sm.setOtherAttributeList(penetationList);
+        sm.setOtherAttributeList(otherList);
         sm.setPlayerName(player.getPlayerName());
         sm.setPlayerLevel(player.getLevel());
         session.sendPacket(sm);

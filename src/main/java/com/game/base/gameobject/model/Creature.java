@@ -1,6 +1,7 @@
 package com.game.base.gameobject.model;
 
 import com.game.base.attribute.AttributeContainer;
+import com.game.base.attribute.CreatureAttributeContainer;
 
 /**
  * @Author：xuxin
@@ -10,7 +11,7 @@ public abstract class Creature<T extends Creature> extends VisibleObject {
     /**
      * 属性容器
      */
-    protected AttributeContainer<T> attributeContainer;
+    protected CreatureAttributeContainer<T> attributeContainer;
 
     /**
      * TODO:buff容器
@@ -18,11 +19,11 @@ public abstract class Creature<T extends Creature> extends VisibleObject {
 
 
 
-    public AttributeContainer<T> getAttributeContainer() {
+    public CreatureAttributeContainer<T> getAttributeContainer() {
         return attributeContainer;
     }
 
-    public void setAttributeContainer(AttributeContainer<T> attributeContainer) {
+    public void setAttributeContainer(CreatureAttributeContainer<T> attributeContainer) {
         this.attributeContainer = attributeContainer;
     }
 

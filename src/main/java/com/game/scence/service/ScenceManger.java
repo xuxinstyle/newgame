@@ -51,7 +51,7 @@ public class ScenceManger {
     /**
      * 存在并发问题
      * @param mapId
-     * @param players
+     * @param
      */
     public void setScenceInfo(int mapId, Player player){
         ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);

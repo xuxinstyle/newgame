@@ -3,6 +3,7 @@ package com.game.user.itemeffect.service;
 import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.AttributeContainer;
+import com.game.base.attribute.MedicineAttributeId;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.event.LogoutEvent;
 import com.game.role.player.model.Player;
@@ -105,12 +106,10 @@ public class ItemEffectServiceImpl implements ItemEffectService {
         /**
          * 达到失效时间，还原玩家属性
          */
-        ItemResource itemResource = SpringContext.getItemService().getItemResource(itemModelId);
-        MedicineEffect useEffect = (MedicineEffect)itemResource.getUseEffect();
-        List<Attribute> addAttributeList = useEffect.getAddAttributeList();
+
 
         AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
-        attributeContainer.removeAndCompute(addAttributeList);
+        attributeContainer.removeAndRecompteAttribtues(MedicineAttributeId.getMedicineAttributeId(itemModelId),true);
         SpringContext.getPlayerSerivce().save(playerEnt);
 
         /**
@@ -122,6 +121,7 @@ public class ItemEffectServiceImpl implements ItemEffectService {
          * 通知客户端
          */
         TSession tSession = SpringContext.getSessionManager().getAccountSessionMap().get(accountId);
+        ItemResource itemResource = SpringContext.getItemService().getItemResource(itemModelId);
         String itemName = itemResource.getName();
         SM_EffectEnd sm = new SM_EffectEnd();
         sm.setItemName(itemName);

@@ -3,6 +3,7 @@ package com.game.user.item.model;
 import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.AttributeContainer;
+import com.game.base.attribute.MedicineAttributeId;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
@@ -82,7 +83,7 @@ public class MedicineEffect extends AbstractUseEffect {
             SpringContext.getAccountExecutorService().submit(command);
             SpringContext.getItemEffectService().putCommand(command);
             AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
-            attributeContainer.addAndComputeMap(addAttributeList);
+            attributeContainer.putAndRecomputeAttributes(MedicineAttributeId.getMedicineAttributeId(itemModelId),addAttributeList,true);
             SpringContext.getPlayerSerivce().save(playerEnt);
         }else{
             /**

@@ -4,6 +4,7 @@ import com.game.base.attribute.constant.AttributeType;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -18,14 +19,16 @@ public class AttributeUpdateRecords {
     /**
      * 本次改变设计的属性类型
      */
-    private final Set<Attribute> types = new HashSet<>();
+    private final Set<AttributeType> types = new HashSet<>();
     /**
      * 本次改变被移除的属性
      */
     private Collection<Attribute> removedAttribute = null;
+
     public AttributeUpdateRecords(AttributeId changeId){
         this.changeId = changeId;
     }
+
     public void addAttrs(Collection<Attribute> attrs){
         if(!attrs.isEmpty()){
             for(Attribute attribute : attrs){
@@ -38,6 +41,7 @@ public class AttributeUpdateRecords {
         if(type == null){
             return ;
         }
+        types.add(type);
         AttributeType[] effectAttributes = type.getEffectAttributes();
         if(effectAttributes!=null){
             for (AttributeType t : effectAttributes){
@@ -50,7 +54,7 @@ public class AttributeUpdateRecords {
         return changeId;
     }
 
-    public Set<Attribute> getTypes() {
+    public Set<AttributeType> getTypes() {
         return types;
     }
 

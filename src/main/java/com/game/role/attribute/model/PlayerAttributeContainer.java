@@ -11,26 +11,18 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Author：xuxin
  * @Date: 2019/6/25 16:29
  */
-public class PlayerAttributeContainer extends CreatureAttributeContainer<Player> {
-    /**
-     * 用于收集分类的属性，并在计算完成后，用于保存计算前属性
-     */
-    private Map<AttributeType, Attribute> originalAllModelAttributes = new ConcurrentHashMap<>();
 
-    public PlayerAttributeContainer(Player owner){
-        super(owner);
+public class PlayerAttributeContainer extends CreatureAttributeContainer  {
+    public PlayerAttributeContainer(){
+
     }
 
     @Override
     protected void recompute(AttributeUpdateRecords records, boolean needSync) {
         /**
-         * 保留原来的属性
-         */
-        cloneAttributeMap(finalAttributes, originalAllModelAttributes);
-        /**
          * 计算新的属性
          */
-        compute(modelAttributeSet,finalAttributes,records);
+        compute(moduleAttributeSet,finalAttributes,records);
     }
 
 

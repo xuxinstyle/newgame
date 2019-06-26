@@ -58,12 +58,12 @@ public class AttributeUtil {
      * @param result
      * @param excludeId
      */
-    public static void accumulateToMapWithExclude(Map<AttributeId, AttributeSet> target,
+    public static void accumulateToMapWithExclude(Map<String, AttributeSet> target,
                                               Map<AttributeType, Attribute> result, List<AttributeId> excludeId) {
         /**
          * 把所有同类型的属性加起来
          */
-        for(Map.Entry<AttributeId, AttributeSet> entry:target.entrySet()){
+        for(Map.Entry<String, AttributeSet> entry:target.entrySet()){
             if(excludeId!=null && excludeId.contains(entry.getKey())){
                 continue;
             }
