@@ -3,11 +3,13 @@ package com.socket.core;
 import com.socket.core.session.SessionUtil;
 import com.socket.core.session.TSession;
 import com.socket.utils.JsonUtils;
+import com.socket.utils.ProtoStuffUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import org.msgpack.MessagePack;
 import org.msgpack.type.Value;
+import sun.security.krb5.internal.PAData;
 
 import java.util.List;
 /**
@@ -32,10 +34,8 @@ public class MsgpackDecoder extends MessageToMessageDecoder<ByteBuf> {
         int length = byteBuf.readableBytes();
         byte[] array = new byte[length];
         byteBuf.getBytes(byteBuf.readerIndex(), array, 0, length);
-        MyPack myPack = JsonUtils.bytes2Object(array, MyPack.class);
-        /*MessagePack messagePack = new MessagePack();
-        MyPack myPack = messagePack.read(array, MyPack.class);*/
-
+        MyPack myPack = ProtoStuffUtil.deserializer(array, MyPack.class);
         list.add(myPack);
+
     }
 }

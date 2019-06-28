@@ -1,8 +1,8 @@
 package com.game.user.item.model;
 
 import com.game.SpringContext;
-import com.game.base.attribute.Attribute;
-import com.game.base.attribute.constant.AttributeType;
+import com.game.common.attribute.Attribute;
+import com.game.common.attribute.constant.AttributeType;
 import com.game.user.equip.constant.EquipType;
 import com.game.user.equip.resource.EquipResource;
 import com.game.user.item.resource.ItemResource;

@@ -7,7 +7,6 @@ import org.msgpack.annotation.Message;
  * @Date: 2019/5/29 18:36
  * @id 6
  */
-
 public class SM_Register {
     /**
      * true 注册成功，false 注册失败

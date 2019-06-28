@@ -2,8 +2,7 @@ package com.socket.core.session;
 
 import com.socket.utils.JsonUtils;
 import com.socket.core.MyPack;
-import com.socket.dispatcher.action.IActionDispatcher;
-import com.socket.dispatcher.config.RegistSerializerMessage;
+import com.socket.dispatcher.core.RegistSerializerMessage;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 
@@ -16,8 +15,6 @@ import java.util.Map;
  */
 public class TSession {
     private static final Logger logger = Logger.getLogger(TSession.class);
-    // 里面放在线的玩家账号信息 <信息标识，玩家的accountId>
-
     private String accountId ;
     private final long createTime = System.currentTimeMillis();
     private final Channel channel;
@@ -25,21 +22,15 @@ public class TSession {
     private String inetIp;
     private final String port;
     private int mapId;
-    private final IActionDispatcher actionDispatcher;
-    public TSession (Channel channel){
-        this(channel, null);
-    }
-    //FIXME:项目中有一个IParse参数，次数没了解其用处，暂时不加
-    public TSession(Channel channel, IActionDispatcher actionDispatcher){
+    public TSession(Channel channel){
         this.channel = channel;
-        this.actionDispatcher = actionDispatcher;
         if(channel != null){
             this.ip = channel.remoteAddress().toString();
         }else{
             this.ip = "127.0.0.1:8888";
         }
         String[] adds = ip.split(":");
-        this.inetIp = adds[0].substring(1);//FIXME:这里不太理解为什么
+        this.inetIp = adds[0].substring(1);
         this.port = adds[1];
 
     }

@@ -1,13 +1,14 @@
 package com.game.role.player.model;
 
 import com.game.SpringContext;
-import com.game.base.attribute.Attribute;
-import com.game.base.attribute.AttributeIdEnum;
-import com.game.base.attribute.CreatureAttributeContainer;
-import com.game.base.gameobject.constant.ObjectType;
-import com.game.base.gameobject.model.Creature;
-import com.game.role.attribute.model.PlayerAttributeContainer;
+import com.game.common.attribute.Attribute;
+import com.game.common.attribute.AttributeIdEnum;
+import com.game.common.attribute.CreatureAttributeContainer;
+import com.game.common.gameobject.constant.ObjectType;
+import com.game.common.gameobject.model.Creature;
 import com.game.role.player.resource.PlayerLevelResource;
+import com.game.scence.constant.SceneType;
+import com.game.scence.model.PlayerPosition;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -38,15 +39,19 @@ public class Player extends Creature<Player> {
     /**
      * 角色当前位置x坐标
      */
-    private int x;
-    /**
-     * 角色当前位置y坐标
-     */
-    private int y;
+    private PlayerPosition position;
     /**
      * 玩家当前等级拥有的经验
      */
     private long exp;
+    /**
+     * 上次登出时所在场景地图 默认新手村
+     */
+    private int lastLogoutMapId;
+    /**
+     * 玩家当前所在的地图
+     */
+    private int currMapId;
 
     /**
      *
@@ -63,13 +68,31 @@ public class Player extends Creature<Player> {
         player.setAccountId(accountId);
         player.setPlayerName(nickName);
         player.setSurviveStatus(1);
+        player.setCurrentMapType(SceneType.NoviceVillage.getMapId());
+        player.setLastLogoutMapType(SceneType.NoviceVillage.getMapId());
         // TODO: BUFF容器
         player.setAttributeContainer(new PlayerAttributeContainer());
         /** 生成玩家基础属性*/
         PlayerLevelResource resource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel());
         List<Attribute> baseAttributeList = resource.getBaseAttributeList();
-        player.getAttributeContainer().putAndCcomputeAttributes(AttributeIdEnum.LEVEL,baseAttributeList,true);
+        player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.LEVEL,baseAttributeList,true);
         return player;
+    }
+
+    public int getLastLogoutMapType() {
+        return lastLogoutMapId;
+    }
+
+    public void setLastLogoutMapType(int lastLogoutMapId) {
+        this.lastLogoutMapId = lastLogoutMapId;
+    }
+
+    public int getCurrentMapType() {
+        return currMapId;
+    }
+
+    public void setCurrentMapType(int mapId) {
+        this.currMapId = mapId;
     }
 
     public long getExp() {
@@ -78,22 +101,6 @@ public class Player extends Creature<Player> {
 
     public void setExp(long exp) {
         this.exp = exp;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public String getAccountId() {
@@ -154,5 +161,29 @@ public class Player extends Creature<Player> {
     @Override
     public void setAttributeContainer(CreatureAttributeContainer attributeContainer) {
         this.attributeContainer = (PlayerAttributeContainer)attributeContainer;
+    }
+
+    public PlayerPosition getPosition() {
+        return position;
+    }
+
+    public void setPosition(PlayerPosition position) {
+        this.position = position;
+    }
+
+    public int getLastLogoutMapId() {
+        return lastLogoutMapId;
+    }
+
+    public void setLastLogoutMapId(int lastLogoutMapId) {
+        this.lastLogoutMapId = lastLogoutMapId;
+    }
+
+    public int getCurrMapId() {
+        return currMapId;
+    }
+
+    public void setCurrMapId(int currMapId) {
+        this.currMapId = currMapId;
     }
 }

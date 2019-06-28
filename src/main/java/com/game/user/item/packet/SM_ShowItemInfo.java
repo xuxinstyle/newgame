@@ -1,6 +1,6 @@
 package com.game.user.item.packet;
 
-import com.game.base.attribute.Attribute;
+import com.game.common.attribute.Attribute;
 
 import java.util.List;
 

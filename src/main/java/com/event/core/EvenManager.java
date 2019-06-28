@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @Author：xuxin
@@ -21,7 +23,10 @@ public class EvenManager {
     private static Map<Class<? extends IEvent> ,List<ReceiverDefintion>> receiverDefintionMap = new HashMap<>();
 
     private static final Logger logger  = LoggerFactory.getLogger(EvenManager.class);
-
+    private ExecutorService[]  executors;
+    public void init(){
+        
+    }
     public void registerReceiver(Object bean){
         Class<?> clz = bean.getClass();
         Method[] methods = clz.getDeclaredMethods();

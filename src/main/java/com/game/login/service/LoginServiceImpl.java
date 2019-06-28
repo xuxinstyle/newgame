@@ -4,6 +4,7 @@ import com.game.SpringContext;
 import com.game.login.event.LoginEvent;
 import com.game.login.packet.SM_Logout;
 import com.game.role.player.event.LogoutEvent;
+import com.game.role.player.model.Player;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.login.packet.SM_Login;
@@ -16,6 +17,8 @@ import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 /**
  * @Author：xuxin
@@ -49,19 +52,24 @@ public class LoginServiceImpl implements LoginService {
         /** 踢对方下线*/
 
         /** 本项目设计时考虑多线程所以在分发时将登录操作单独放在一个线程中执行 有可能一个号刚登录进来还没已经清理了上个登录的登录信息， 后面又来一个登录的 发现没有登录信息，所以直接就进入到游戏中*/
-        TSession tSession = SessionManager.getSessionByAccount(usernameDB);
+        TSession tSession = SpringContext.getSessionService().getSession(usernameDB);
         if(tSession!=null){
             SM_Logout sm = new SM_Logout();
             tSession.sendPacket(sm);
+            SM_Login res = new SM_Login();
+            res.setStatus(-1);
+            session.sendPacket(res);
+            return;
         }
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         accountInfo.setLastLoginTime(TimeUtil.now());
+        Player player = SpringContext.getPlayerSerivce().getPlayer(usernameDB);
         SM_Login sm = new SM_Login();
-
-        if(accountInfo.getLastLogoutMapType()==null){
-            accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
+        if(player==null){
+            sm.setLastScenceId(SceneType.NoviceVillage.getMapId());
+        }else{
+            sm.setLastScenceId(player.getLastLogoutMapType());
         }
-        sm.setLastScenceId(accountInfo.getLastLogoutMapType().getMapId());
         /** 将accountId放到session中,并将session放到缓存中管理*/
         SessionManager.addAccountSessionMap(usernameDB, session);
         SpringContext.getAccountService().save(accountEnt);
@@ -70,7 +78,8 @@ public class LoginServiceImpl implements LoginService {
          */
         LoginEvent event = LoginEvent.valueOf(usernameDB);
         SpringContext.getEvenManager().syncSubmit(event);
-
+        Set<String> onlineAccounts = SpringContext.getSessionManager().getOnlineAccounts();
+        onlineAccounts.add(usernameDB);
         sm.setStatus(1);
         sm.setAccountId(usernameDB);
         session.sendPacket(sm);
@@ -80,25 +89,27 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public void logout(TSession session, String accountId) {
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
-        if(accountEnt==null){
-            logger.error("没有账号信息");
-            return;
-        }
         /**
          * 登出时处理场景相关信息
          */
         AccountInfo accountInfo = accountEnt.getAccountInfo();
-        if(accountInfo.getCurrentMapType()==null){
-            accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        if(player==null){
+            return;
+        }
+        if(player.getCurrentMapType()==0){
+            player.setLastLogoutMapType(SceneType.NoviceVillage.getMapId());
         }else {
-            accountInfo.setLastLogoutMapType(accountInfo.getCurrentMapType());
+            player.setLastLogoutMapType(player.getCurrentMapType());
             accountInfo.setLastLogoutTime(TimeUtil.now());
             SpringContext.getSessionManager().removeSession(accountId);
-            SpringContext.getScenceSerivce().removeScenceAccountId(accountInfo.getCurrentMapType().getMapId(), accountId);
-            accountInfo.setCurrentMapType(null);
+            SpringContext.getScenceSerivce().removeScenceAccountId(player.getCurrentMapType(), accountId);
+            player.setCurrentMapType(0);
             SpringContext.getAccountService().save(accountEnt);
             session.logout(accountId);
         }
+        Set<String> onlineAccounts = SpringContext.getSessionManager().getOnlineAccounts();
+        onlineAccounts.remove(accountId);
         /**
          * 登出时抛出登出事件
          */

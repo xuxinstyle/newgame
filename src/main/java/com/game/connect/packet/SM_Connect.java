@@ -6,14 +6,4 @@ import org.msgpack.annotation.Message;
  */
 
 public class SM_Connect {
-
-    private String hello;
-
-    public String getHello() {
-        return hello;
-    }
-
-    public void setHello(String hello) {
-        this.hello = hello;
-    }
 }

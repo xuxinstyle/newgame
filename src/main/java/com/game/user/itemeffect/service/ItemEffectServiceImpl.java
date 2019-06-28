@@ -1,13 +1,11 @@
 package com.game.user.itemeffect.service;
 
 import com.game.SpringContext;
-import com.game.base.attribute.Attribute;
-import com.game.base.attribute.AttributeContainer;
-import com.game.base.attribute.MedicineAttributeId;
+import com.game.common.attribute.AbstractAttributeContainer;
+import com.game.common.attribute.MedicineAttributeId;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.event.LogoutEvent;
 import com.game.role.player.model.Player;
-import com.game.user.item.model.MedicineEffect;
 import com.game.user.item.packet.SM_EffectEnd;
 import com.game.user.item.resource.ItemResource;
 import com.game.user.itemeffect.command.ItemExpireDelayCommand;
@@ -19,7 +17,6 @@ import com.socket.core.session.TSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -108,8 +105,8 @@ public class ItemEffectServiceImpl implements ItemEffectService {
          */
 
 
-        AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
-        attributeContainer.removeAndRecompteAttribtues(MedicineAttributeId.getMedicineAttributeId(itemModelId),true);
+        AbstractAttributeContainer attributeContainer = player.getAttributeContainer();
+        attributeContainer.removeAndCompteAttribtues(MedicineAttributeId.getMedicineAttributeId(itemModelId));
         SpringContext.getPlayerSerivce().save(playerEnt);
 
         /**
@@ -145,9 +142,6 @@ public class ItemEffectServiceImpl implements ItemEffectService {
             /**
              * 这里传false，表示如果这个任务正在执行，则不会取消任务
              * true：表示如果这个任务正在执行，则这个任务将会取消
-             */
-            /**
-             * command.getFuture().cancel(false);
              */
             command.cancel();
         }

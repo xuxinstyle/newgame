@@ -13,7 +13,7 @@
 
 #### 系统架构
 * 网络通信 netty（已完成）
-* 协议包 messagePack（已完成）
+* 协议包 Json序列化（已完成）
 * 持久化 mybatis+mysql（待实现缓存）
 * 日志 slf4j（已完成，需要完善）
 * 容器管理 Spring（已完成，需要完善）

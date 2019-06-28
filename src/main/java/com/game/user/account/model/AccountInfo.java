@@ -28,14 +28,7 @@ public class AccountInfo {
      */
     private long lastLogoutTime;
 
-    /**
-     * 上次登出时所在场景地图 默认新手村
-     */
-    private SceneType lastLogoutMapType;
-    /**
-     * 玩家当前所在的地图
-     */
-    private SceneType currentMapType;
+
     /**
      * 该账号下的PlayerId
      */
@@ -46,27 +39,10 @@ public class AccountInfo {
         accountInfo.setAccountName(accountName);
         accountInfo.setCreateTime(TimeUtil.now());
         accountInfo.setLastLoginTime(0L);
-        accountInfo.setCurrentMapType(SceneType.NoviceVillage);
-        accountInfo.setLastLogoutMapType(SceneType.NoviceVillage);
+
         accountInfo.setLastLogoutTime(0L);
         accountInfo.setPlayerId(0L);
         return accountInfo;
-    }
-
-    public SceneType getCurrentMapType() {
-        return currentMapType;
-    }
-
-    public void setCurrentMapType(SceneType currentMapType) {
-        this.currentMapType = currentMapType;
-    }
-
-    public SceneType getLastLogoutMapType() {
-        return lastLogoutMapType;
-    }
-
-    public void setLastLogoutMapType(SceneType lastLogoutMapType) {
-        this.lastLogoutMapType = lastLogoutMapType;
     }
 
     public String getAccountName() {
@@ -116,8 +92,6 @@ public class AccountInfo {
                 ", createTime=" + createTime +
                 ", lastLoginTime=" + lastLoginTime +
                 ", lastLogoutTime=" + lastLogoutTime +
-                ", lastLogoutMapType=" + lastLogoutMapType +
-                ", currentMapType=" + currentMapType +
                 ", playerId=" + playerId +
                 '}';
     }

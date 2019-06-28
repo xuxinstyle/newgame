@@ -1,7 +1,9 @@
 package com.resource.reader;
 
+import com.resource.core.FieldManager;
 import com.resource.core.StorageManager;
-import com.resource.other.ResourceDefinition;
+import com.resource.model.FieldInfo;
+import com.resource.model.ResourceDefinition;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -95,7 +97,7 @@ public class ReadXlsx {
                             continue;
                         }
                     }
-                    ReadHolder.getFieldInfoMap().put(def.getClz(), fieldList);
+                    FieldManager.getFieldInfoMap().put(def.getClz(), fieldList);
                 }
 
                 int firstRowIndex = sheet.getFirstRowNum() + 3;
@@ -139,7 +141,7 @@ public class ReadXlsx {
     private Object getIndex(Class<?> clz, List<String> resourceData) {
         try {
 
-            List<FieldInfo> fieldInfos = ReadHolder.getFieldInfoMap().get(clz);
+            List<FieldInfo> fieldInfos = FieldManager.getFieldInfoMap().get(clz);
             for(FieldInfo fieldInfo:fieldInfos){
                 if("id".equals(fieldInfo.getField().getName())){
                     TypeDescriptor typeDescriptor = new TypeDescriptor(fieldInfo.getField());
@@ -177,7 +179,7 @@ public class ReadXlsx {
     private Object parse(Class<?> clz, List<String> resourceData) {
         try {
             Object instance = clz.newInstance();
-            Map<Class<?>, List<FieldInfo>> fieldInfoMap = ReadHolder.getFieldInfoMap();
+            Map<Class<?>, List<FieldInfo>> fieldInfoMap = FieldManager.getFieldInfoMap();
             List<FieldInfo> fieldInfos = fieldInfoMap.get(clz);
             for (FieldInfo fieldInfo : fieldInfos) {
 

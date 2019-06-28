@@ -1,9 +1,9 @@
 package com.game.user.equip.service;
 
 import com.game.SpringContext;
-import com.game.base.attribute.Attribute;
-import com.game.base.attribute.AttributeContainer;
-import com.game.base.attribute.EquipAttributeId;
+import com.game.common.attribute.Attribute;
+import com.game.common.attribute.AbstractAttributeContainer;
+import com.game.common.attribute.EquipAttributeId;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.user.account.entity.AccountEnt;
@@ -86,7 +86,7 @@ public class EquipServiceImpl implements EquipService {
 
         Equipment oldEquipment = equipmentInfo.unEquip(equipment.getEquipType());
 
-        AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
+        AbstractAttributeContainer attributeContainer = player.getAttributeContainer();
         EquipAttributeId attributeId = EquipAttributeId.getAttributeId(equipment.getEquipType().getPosition());
         /**
          * 如果玩家身上有装备 先脱装备
@@ -114,7 +114,7 @@ public class EquipServiceImpl implements EquipService {
         List<Attribute> newAttributeList = equipment.getAttributeList();
         newAttributeList.addAll(equipment.getStrenAttributeMap().values());
 
-        attributeContainer.putAndCcomputeAttributes(attributeId,newAttributeList,true);
+        attributeContainer.putAndComputeAttributes(attributeId,newAttributeList,true);
         /**
          * 保存 并响应客户端
          */
@@ -195,8 +195,8 @@ public class EquipServiceImpl implements EquipService {
          * FIXME:计算玩家属性时注意加上装备的基础属性和强化属性
          */
         EquipAttributeId attributeId = EquipAttributeId.getAttributeId(equipment.getEquipType().getPosition());
-        AttributeContainer<Player> attributeContainer = player.getAttributeContainer();
-        attributeContainer.removeAndRecompteAttribtues(attributeId,true);
+        AbstractAttributeContainer attributeContainer = player.getAttributeContainer();
+        attributeContainer.removeAndCompteAttribtues(attributeId);
 
 
         SpringContext.getPlayerSerivce().save(playerEnt);

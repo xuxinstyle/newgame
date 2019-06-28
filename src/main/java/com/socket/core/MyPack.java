@@ -7,21 +7,20 @@ import java.util.Arrays;
  * @Author：xuxin
  * @Date: 2019/6/17 12:30
  */
-@Message
 public class MyPack {
     //协议Id
-    private Integer pId;
+    private int pId;
+
     //自己的协议包
     private byte[] packet;
 
-    public Integer getpId() {
+    public int getpId() {
         return pId;
     }
 
-    public void setpId(Integer pId) {
+    public void setpId(int pId) {
         this.pId = pId;
     }
-
 
     public byte[] getPacket() {
         return packet;

@@ -1,7 +1,7 @@
 package com.game.user.itemeffect.command;
 
 import com.game.SpringContext;
-import com.game.base.executor.account.impl.AbstractAccountDelayCommand;
+import com.game.common.executor.account.impl.AbstractAccountDelayCommand;
 
 /**
  * @Author：xuxin

@@ -1,9 +1,5 @@
 package com.game.user.item.model;
 
-import com.game.base.attribute.Attribute;
-import com.game.base.attribute.constant.AttributeType;
-import com.game.role.player.model.Player;
-
 import java.util.Map;
 
 /**

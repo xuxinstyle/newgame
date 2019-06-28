@@ -1,8 +1,8 @@
 package com.game.user.item.model;
 
 import com.game.SpringContext;
-import com.game.base.gameobject.GameObject;
-import com.game.base.gameobject.constant.ObjectType;
+import com.game.common.gameobject.GameObject;
+import com.game.common.gameobject.constant.ObjectType;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.resource.ItemResource;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
@@ -11,7 +11,7 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
  * @Author：xuxin
  * @Date: 2019/6/12 16:59
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public abstract class AbstractItem extends GameObject implements Comparable<AbstractItem> {
     /**
      * 配置表中的唯一Id

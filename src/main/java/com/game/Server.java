@@ -61,7 +61,7 @@ public class Server {
                             ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                             ch.pipeline().addLast("MessagePack Decoder", new MsgpackDecoder());
                             ch.pipeline().addLast(new ServerHandler());
-                            /*ch.pipeline().addLast(new IMIdleStateHandler());*/
+                            ch.pipeline().addLast(new IMIdleStateHandler());
 
 
                         }

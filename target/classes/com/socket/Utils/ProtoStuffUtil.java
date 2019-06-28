@@ -5,10 +5,7 @@ import io.protostuff.ProtobufIOUtil;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
-/**
- * @Author：xuxin
- * @Date: 2019/4/29 14:43
- */
+
 public class ProtoStuffUtil {
     public ProtoStuffUtil() {
     }
@@ -24,7 +21,6 @@ public class ProtoStuffUtil {
         try {
             obj = clazz.newInstance();
             Schema schema = RuntimeSchema.getSchema(obj.getClass());
-
             ProtostuffIOUtil.mergeFrom(bytes, obj, schema);
         } catch (InstantiationException e) {
             e.printStackTrace();

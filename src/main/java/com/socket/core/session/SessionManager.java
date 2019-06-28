@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @Author：xuxin
@@ -17,7 +19,12 @@ public class SessionManager {
     /** <玩家账号Id, Session> */
     private static Map<String, TSession> accountSessionMap = new ConcurrentHashMap<>();
 
-    public static TSession getSessionByAccount(String accountId) {
+    /**
+     * 所以在线的玩家账号id
+     */
+    private Set<String> onlineAccounts = new CopyOnWriteArraySet();
+
+    public TSession getSessionByAccount(String accountId) {
         if (logger.isDebugEnabled()) {
             logger.debug("");
         }
@@ -46,6 +53,15 @@ public class SessionManager {
         return accountSessionMap;
     }
 
+    public static void setAccountSessionMap(Map<String, TSession> accountSessionMap) {
+        SessionManager.accountSessionMap = accountSessionMap;
+    }
 
+    public Set<String> getOnlineAccounts() {
+        return onlineAccounts;
+    }
 
+    public void setOnlineAccounts(Set<String> onlineAccounts) {
+        this.onlineAccounts = onlineAccounts;
+    }
 }

@@ -1,5 +1,7 @@
 package com.game.scence.packet.bean;
 
+import com.game.scence.model.PlayerPosition;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/25 14:05
@@ -26,10 +28,17 @@ public class PlayerVO {
      */
     private int level;
     /**
-     * x
+     * 玩家位置
      */
-    private int x;
-    private int y;
+    private PlayerPosition position;
+
+    public PlayerPosition getPosition() {
+        return position;
+    }
+
+    public void setPosition(PlayerPosition position) {
+        this.position = position;
+    }
 
     public String getAccountId() {
         return accountId;
@@ -71,19 +80,4 @@ public class PlayerVO {
         this.level = level;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
 }

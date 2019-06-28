@@ -1,10 +1,12 @@
 package com.game;
 
 import com.event.core.EvenManager;
-import com.game.base.executor.account.AccountExecutorService;
-import com.game.base.executor.common.CommonExecutorService;
+import com.game.identify.service.SessionService;
+import com.game.common.executor.account.AccountExecutorService;
+import com.game.common.executor.common.CommonExecutorService;
+import com.game.common.executor.scene.SceneExecutorService;
 import com.game.user.account.service.AccountService;
-import com.game.base.core.service.IdentifyService;
+import com.game.identify.service.IdentifyService;
 import com.game.role.player.service.PlayerService;
 import com.game.connect.service.ConnectService;
 import com.game.login.service.LoginService;
@@ -75,6 +77,17 @@ public class SpringContext implements ApplicationContextAware {
     private EquipUpgradeService equipUpgradeService;
     @Autowired
     private ItemEffectService itemEffectService;
+    @Autowired
+    private SessionService sessionService;
+    @Autowired
+    private SceneExecutorService sceneExecutorService;
+
+    public static SceneExecutorService getSceneExecutorService(){
+        return instance.sceneExecutorService;
+    }
+    public static SessionService getSessionService(){
+        return instance.sessionService;
+    }
 
     public static ItemEffectService getItemEffectService(){
         return instance.itemEffectService;

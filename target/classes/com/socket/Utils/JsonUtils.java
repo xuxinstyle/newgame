@@ -18,44 +18,6 @@ import java.text.SimpleDateFormat;
  */
 
 public class JsonUtils {
-    /*private static ObjectMapper mapper;
-    static Logger  logger = LoggerFactory.getLogger(JsonUtils.class);*/
-
-    /*static {
-        mapper = new ObjectMapper();
-        // 转换为格式化的json
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-        // 如果json中有新增的字段并且是实体类类中不存在的，不报错
-//        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-    }*/
-
-    /**
-     * 对象转二进制
-     * */
-    /*public static byte[] object2Bytes(Object object) {
-        try {
-            return mapper.writeValueAsBytes(object);
-        } catch (JsonProcessingException e) {
-            logger.error("对象转二进制:JsonProcessingException",e);
-        }
-        return null;
-    }
-
-    *//**
-     * 二进制转对象
-     * *//*
-    public static<T> T bytes2Object(byte[] bytes,Class<T> clz) {
-        try {
-            return mapper.readValue(bytes,clz);
-        } catch (IOException e) {
-            logger.error("二进制转对象:JsonProcessingException",e);
-        }
-        return null;
-    }
-*/
-
-
 
     private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
     private static ObjectMapper mapper = new ObjectMapper();

@@ -2,7 +2,7 @@ package com.game.user.item.service;
 
 import com.db.HibernateDao;
 import com.game.SpringContext;
-import com.game.base.gameobject.constant.ObjectType;
+import com.game.common.gameobject.constant.ObjectType;
 import com.game.user.equip.resource.EquipResource;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.entity.ItemStorageEnt;

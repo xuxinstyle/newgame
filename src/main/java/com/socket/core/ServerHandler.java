@@ -36,8 +36,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         TSession session = SessionUtil.getChannelSession(ctx.channel());
         MyPack pack = (MyPack) msg;
-        if(pack==null||pack.getpId()==null||pack.getPacket()==null){
-            session.sendPacket(null);
+        if(pack==null||pack.getpId()==0||pack.getPacket()==null){
+            session.sendPacket(msg);
             return;
         }
 
@@ -50,7 +50,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        if(!SessionUtil.createChannelSession(ctx.channel(), actionDispatcher)){
+        if(!SessionUtil.createChannelSession(ctx.channel())){
             ctx.channel().close();
             return;
         }
@@ -61,10 +61,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         logger.info("客户端关闭:" + ctx.channel().remoteAddress());
         /**当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
         cause.printStackTrace();
-
         ctx.channel().close();
-
-
     }
 
     @Override

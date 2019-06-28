@@ -30,13 +30,11 @@ public class PlayerEnt extends AbstractEntity<Long> {
     @Override
     public void doSerialize() {
         this.playerData =JsonUtils.object2Bytes(player);
-        //this.playerData = ProtoStuffUtil.serializer(player);
     }
 
     @Override
     public void doDeserialize() {
         this.player = JsonUtils.bytes2Object(this.playerData, Player.class);
-        //this.player = ProtoStuffUtil.deserializer(playerData, Player.class);
     }
 
     public long getPlayerId() {

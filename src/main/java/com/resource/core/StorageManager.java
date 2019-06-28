@@ -1,11 +1,10 @@
 package com.resource.core;
 
-import com.game.scence.resource.MapResource;
 import com.resource.Storage;
 import com.resource.StorageData;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
-import com.resource.other.ResourceDefinition;
+import com.resource.model.ResourceDefinition;
 import com.resource.reader.ReadXlsx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,8 +69,6 @@ public class StorageManager implements BeanPostProcessor {
                     logger.debug(caches.toString());
                 }
             }
-
-
             return bean;
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,7 +96,7 @@ public class StorageManager implements BeanPostProcessor {
         Storage<?, ?> storage = getStorage(clz);
         T t = (T) storage.getData().getValues().get(key);
         if(t==null||!t.getClass().equals(clz)){
-            logger.error("获取{}资源{}失败！",key,clz.getSimpleName());
+            logger.warn("获取{}资源{}失败！",key,clz.getSimpleName());
             return null;
         }
         return t;
@@ -107,9 +104,6 @@ public class StorageManager implements BeanPostProcessor {
     public static void putStorage(ResourceDefinition def, Map<Object,Object> map) {
         Class<?> clz = def.getClz();
         /** <主键， Object>*/
-
-        /** TODO: 将来这里要修改成加了id注解的字段*/
-
         StorageData<Object,Object> data = new StorageData<>();
         data.setValues(map);
         Storage<Object,Object> storage = new Storage<>();

@@ -1,5 +1,7 @@
 package com.game.scence.packet;
 
+import com.game.scence.model.PlayerPosition;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/6 16:54
@@ -14,13 +16,9 @@ public class CM_Move {
      */
     private int mapId;
     /**
-     * x坐标
+     * 目标位置
      */
-    private int x;
-    /**
-     * y坐标
-     */
-    private int y;
+    private PlayerPosition targetPos;
 
     public int getMapId() {
         return mapId;
@@ -38,19 +36,11 @@ public class CM_Move {
         this.accountId = accountId;
     }
 
-    public int getX() {
-        return x;
+    public PlayerPosition getTargetPos() {
+        return targetPos;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public void setTargetPos(PlayerPosition targetPos) {
+        this.targetPos = targetPos;
     }
 }

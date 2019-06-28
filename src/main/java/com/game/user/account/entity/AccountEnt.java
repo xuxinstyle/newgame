@@ -68,13 +68,11 @@ public class AccountEnt extends AbstractEntity<String> {
     @Override
     public void doSerialize() {
         this.accountData =JsonUtils.object2Bytes(accountInfo);
-        //this.accountData = ProtoStuffUtil.serializer(accountInfo);
     }
 
     @Override
     public void doDeserialize() {
         this.accountInfo = JsonUtils.bytes2Object(this.accountData, AccountInfo.class);
-        //this.accountInfo = ProtoStuffUtil.deserializer(this.accountData, AccountInfo.class);
     }
 
     @Override

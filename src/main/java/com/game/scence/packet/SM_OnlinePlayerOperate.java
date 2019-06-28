@@ -1,6 +1,6 @@
 package com.game.scence.packet;
 
-import com.game.scence.packet.bean.PlayerPositionVO;
+import com.game.scence.model.PlayerPosition;
 
 import java.util.List;
 
@@ -11,13 +11,13 @@ import java.util.List;
 public class SM_OnlinePlayerOperate {
     /**所以玩家的位置信息1,2:1,2*/
 
-    private List<PlayerPositionVO> playerPositionVOList;
+    private List<PlayerPosition> playerPositionList;
 
-    public List<PlayerPositionVO> getPlayerPositionVOList() {
-        return playerPositionVOList;
+    public List<PlayerPosition> getPlayerPositionList() {
+        return playerPositionList;
     }
 
-    public void setPlayerPositionVOList(List<PlayerPositionVO> playerPositionVOList) {
-        this.playerPositionVOList = playerPositionVOList;
+    public void setPlayerPositionList(List<PlayerPosition> playerPositionList) {
+        this.playerPositionList = playerPositionList;
     }
 }

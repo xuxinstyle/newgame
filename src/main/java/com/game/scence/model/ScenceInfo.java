@@ -17,11 +17,11 @@ public class ScenceInfo {
     /**地图坐标信息信息*/
     private MapResource mapResource;
 
-    public static ScenceInfo valueOf(int mapId, MapResource mapResource) {
+    public static ScenceInfo valueOf(MapResource mapResource) {
         ScenceInfo scenceInfo = new ScenceInfo();
         List<Player> playerList = new ArrayList<>();
         scenceInfo.playerList = playerList;
-        scenceInfo.setMapId(mapId);
+        scenceInfo.setMapId(mapResource.getId());
         scenceInfo.setMapResource(mapResource);
         return scenceInfo;
     }
@@ -61,9 +61,7 @@ public class ScenceInfo {
     public void refresh(Player player) {
         for (int i = 0; i< playerList.size(); i++){
             if(playerList.get(i).getObjectId()==player.getObjectId()){
-                playerList.get(i).setX(player.getX());
-                playerList.get(i).setY(player.getY());
-                playerList.get(i).setLevel(player.getLevel());
+                playerList.set(i,player);
             }
         }
     }

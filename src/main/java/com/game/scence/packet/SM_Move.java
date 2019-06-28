@@ -1,5 +1,7 @@
 package com.game.scence.packet;
 
+import com.game.scence.model.PlayerPosition;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/6 16:55
@@ -10,9 +12,7 @@ public class SM_Move {
      */
     private int status;
 
-    private int x;
-
-    private int y;
+    private PlayerPosition position;
 
     public int getStatus() {
         return status;
@@ -22,19 +22,11 @@ public class SM_Move {
         this.status = status;
     }
 
-    public int getX() {
-        return x;
+    public PlayerPosition getPosition() {
+        return position;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public void setPosition(PlayerPosition position) {
+        this.position = position;
     }
 }

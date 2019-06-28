@@ -1,6 +1,6 @@
 package com.game;
 
-import com.socket.dispatcher.config.RegistSerializerMessage;
+import com.socket.dispatcher.core.RegistSerializerMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -23,6 +23,8 @@ public class Start {
         SpringContext.getCommonExecutorService().init();
         logger.info("开始初始化账号线程池...");
         SpringContext.getAccountExecutorService().init();
+        logger.info("开始初始化场景线程池...");
+        SpringContext.getSceneExecutorService().init();
         applicationContext.start();
         logger.info("开始构建场景...");
         SpringContext.getScenceSerivce().init();

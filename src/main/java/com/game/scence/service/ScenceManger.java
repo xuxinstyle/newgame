@@ -30,12 +30,26 @@ public class ScenceManger {
      */
     private static Map<Integer, ScenceInfo> scenceAccountIdMap = new ConcurrentHashMap<>(SceneType.values().length);
 
+    /**
+     * 获取某张表的某个id字段对应的资源
+     * @param id
+     * @param clz
+     * @param <T>
+     * @return
+     */
     public <T> T getResource(Object id, Class<T> clz){
         return storageManager.getResource(id,clz);
     }
+
+    /**
+     * 获取该表的所有资源
+     * @param clz
+     * @return
+     */
     public Collection<?> getResourceAll(Class<?> clz){
         return StorageManager.getResourceAll(clz);
     }
+
     public ScenceInfo getScenceInfo(int mapId){
         ScenceInfo scenceInfo = scenceAccountIdMap.get(mapId);
         return scenceInfo;
@@ -44,7 +58,7 @@ public class ScenceManger {
     public void init(){
         Collection<MapResource> resourceAll = (Collection<MapResource>) getResourceAll(MapResource.class);
         for(MapResource resource:resourceAll){
-            scenceAccountIdMap.put(resource.getId(),ScenceInfo.valueOf(resource.getId(),resource));
+            scenceAccountIdMap.put(resource.getId(),ScenceInfo.valueOf(resource));
         }
 
     }

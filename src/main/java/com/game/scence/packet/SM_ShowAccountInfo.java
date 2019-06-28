@@ -1,5 +1,7 @@
 package com.game.scence.packet;
 
+import com.game.scence.model.PlayerPosition;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/6 10:11
@@ -32,23 +34,14 @@ public class SM_ShowAccountInfo {
      * 位置
      *
      */
-    private int x;
-    private int y;
+    private PlayerPosition position;
 
-    public int getX() {
-        return x;
+    public PlayerPosition getPosition() {
+        return position;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public void setPosition(PlayerPosition position) {
+        this.position = position;
     }
 
     public String getPlayerName() {

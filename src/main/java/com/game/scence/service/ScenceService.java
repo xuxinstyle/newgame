@@ -2,6 +2,8 @@ package com.game.scence.service;
 
 
 import com.game.role.player.model.Player;
+import com.game.scence.event.PlayerMoveEvent;
+import com.game.scence.model.PlayerPosition;
 import com.game.scence.resource.MapResource;
 import com.socket.core.session.TSession;
 
@@ -22,7 +24,7 @@ public interface ScenceService {
      * @param session
      * @param mapId
      */
-    void doEnterMap(TSession session,String accountId, int mapId);
+    void doEnterMap(String accountId, int mapId);
 
     /**
      * 移除场景中的账号信息
@@ -50,9 +52,9 @@ public interface ScenceService {
     /**
      * 将玩家信息放到场景中
      * @param mapId
-     * @param accountId
+     * @param player
      */
-    void setScenceAccountId(int mapId, String accountId);
+    void setScencePlayer(int mapId, Player player);
 
     /**
      * 处理移动请求
@@ -60,7 +62,15 @@ public interface ScenceService {
      * @param x
      * @param y
      */
-    void move(TSession session, int x, int y, int mapId);
+    void move(String accountId, PlayerPosition targetPos, int mapId);
+
+    /**
+     * 实际做移动的地方
+     * @param accountId
+     * @param targetPos
+     * @param mapId
+     */
+    void doMove(String accountId, PlayerPosition targetPos, int mapId);
 
     MapResource getMapResource(int mapId);
 
@@ -75,4 +85,10 @@ public interface ScenceService {
      * 做玩家升级
      */
     void doPlayerUpLevel( Player player);
+
+    /**
+     * 玩家移动后更新玩家位置
+     * @param event
+     */
+    void doPlayerMoveAfter(PlayerMoveEvent event);
 }
