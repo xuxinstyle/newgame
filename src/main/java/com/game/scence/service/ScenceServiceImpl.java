@@ -226,14 +226,12 @@ public class ScenceServiceImpl implements ScenceService {
             if(logger.isDebugEnabled()){
                 logger.debug("不能移动到当前位置");
             }
-
             SM_Move sm = new SM_Move();
             sm.setStatus(0);
             sm.setPosition(targetPos);
             SendPacketUtil.send(accountId, sm);
             return;
         }
-
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         long playerId = accountInfo.getPlayerId();

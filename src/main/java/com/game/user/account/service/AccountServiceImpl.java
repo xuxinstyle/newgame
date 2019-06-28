@@ -29,12 +29,11 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public void insert(String username, String passward) {
+    public void realRegister(String username, String passward) {
         AccountEnt accountEnt = new AccountEnt();
         accountEnt.setAccountId(username);
         accountEnt.setPassward(passward);
         accountEnt.setAccountInfo(AccountInfo.valueOf(null));
-        accountEnt.doSerialize();
         hibernateDao.save(AccountEnt.class, accountEnt);
     }
 
@@ -53,8 +52,8 @@ public class AccountServiceImpl implements AccountService {
     public void createFirstPlayer(TSession session, String nickName, int type, String accountId) {
 
         AccountEnt accountEnt = getAccountEnt(accountId);
-        AccountInfo accountInfo = AccountInfo.valueOf(nickName);
-
+        AccountInfo accountInfo = accountEnt.getAccountInfo();
+        accountInfo.setAccountName(nickName);
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().createPlayer(accountId, type,nickName);
         long playerId = playerEnt.getPlayerId();
         accountInfo.setPlayerId(playerId);

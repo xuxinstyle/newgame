@@ -47,7 +47,7 @@ public class ScenceManger {
      * @return
      */
     public Collection<?> getResourceAll(Class<?> clz){
-        return StorageManager.getResourceAll(clz);
+        return storageManager.getResourceAll(clz);
     }
 
     public ScenceInfo getScenceInfo(int mapId){

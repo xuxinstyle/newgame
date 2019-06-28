@@ -18,7 +18,7 @@ public class ItemStorageInfo {
     private int useSize;
 
     /**
-     * 背包中的所有道具,由于序列化的问题不使用List
+     * 查看背包中的道具时，背包道具有前后顺序 所以使用数组便于排序
      */
     private AbstractItem[] items;
 
@@ -36,7 +36,7 @@ public class ItemStorageInfo {
      *
      * @param addItem
      */
-    public boolean addItem(AbstractItem addItem) {
+    public void addItem(AbstractItem addItem) {
         /**
          *  先找是否有相同的道具类型
          *  1.1 找到相同的道具类型了
@@ -49,7 +49,7 @@ public class ItemStorageInfo {
          *          1.2.2 不可以就回到继续回到 1
          */
 
-        int position = findSameItem(addItem);
+        int position = findSameAndOverItem(addItem,0);
         if(position!=-1){
             int defNum = items[position].getOverLimit() - items[position].getNum();
             if(addItem.getNum()<=defNum){
@@ -60,9 +60,9 @@ public class ItemStorageInfo {
                 addItem(addItem);
             }
         }else{
-            int emptyPosition = findEmpty();
+            int emptyPosition = findEmpty(0);
             if(emptyPosition==-1){
-                return false;
+                return ;
             }
             if(addItem.getNum()<=addItem.getOverLimit()){
                 items[emptyPosition] = addItem;
@@ -76,11 +76,122 @@ public class ItemStorageInfo {
                 addItem(copy);
             }
         }
-        return true;
+        return ;
+    }
+    public void addItemQuick(AbstractItem addItem) {
+        /**
+         *  道具是否可堆叠？
+         *  1.不可堆叠
+         *      判断道具数量
+         *      1.1 道具数量等于1
+         *          找空位置方下
+         *      1.2 道具数量大于1 复制道具找空位置 从当前的标识位开始查找一个个放入格子或者回到1
+         *
+         *  2.可堆叠
+         *      判断道具数量
+         *      2.1 数量小于堆叠数
+         *          找同类型道具
+         *          2.1.1 无同类型道具
+         *              找空位置方下
+         *          2.1.2 有同类型道具
+         *              判断道具数量是否大于剩余堆叠数
+         *              2.2.2.1 小于
+         *              直接方下
+         *              2.2.2.2 大于
+         *              .减去剩余堆叠数，继续回到2.1
+         *       2.2 数量大于堆叠数
+         *          找同类型道具
+         *          2.2.1无同类型道具
+         *              循环找空位置方下，直到放完
+         *          2.2.2 有同类型道具
+         *              判断道具数量是否大于剩余堆叠数
+         *              2.2.2.1 小于（不可能）
+         *              2.2.2.2 大于
+         *                  减去剩余堆叠数回到2
+         *
+         */
+        if(addItem.getNum()<=0){
+            return ;
+        }
+        if(addItem.getOverLimit()<=1){
+            addNotStack(addItem,0);
+            return ;
+        }
+        addStack(addItem,0);
     }
 
-    private int findEmpty() {
-        for (int i = 0; i < items.length; i++) {
+    /**
+     *  2.可堆叠
+     *          找同类型道具
+     *          2.1.1 无同类型道具
+     *              找空位置方下直到放完
+     *          2.1.2 有同类型道具
+     *              判断道具数量是否大于剩余堆叠数
+     *              2.2.2.1 小于
+     *              直接方下
+     *              2.2.2.2 大于
+     *              .减去剩余堆叠数，继续回到2.1
+     * @param addItem
+     * @param index
+     */
+    private void addStack(AbstractItem addItem, int index) {
+        index = findSameAndOverItem(addItem, index);
+        if(index==-1){
+            int empty = findEmpty(0);
+            if(addItem.getNum()<addItem.getOverLimit()){
+                items[empty] = addItem;
+                useSize++;
+                return;
+            }
+            AbstractItem copy = addItem.copy();
+            addItem.setNum(addItem.getOverLimit());
+            items[empty] = addItem;
+            useSize++;
+            copy.setNum(copy.getNum()-copy.getOverLimit());
+            addStack(copy,index);
+        }else{
+            int overNum = items[index].getOverLimit() - items[index].getNum();
+            if(addItem.getNum()<=overNum){
+                items[index].setNum(items[index].getOverLimit());
+                return;
+            }
+            items[index].setNum(items[index].getOverLimit());
+            addItem.setNum(addItem.getNum()-overNum);
+            addStack(addItem,index);
+        }
+    }
+
+    /**
+     *  1.不可堆叠
+     *      判断道具数量
+     *      1.1 道具数量等于1
+     *          找空位置方下
+     *      1.2 道具数量大于1 复制道具找空位置 从当前的标识位开始查找一个个放入格子或者回到1
+     * @param addItem
+     * @return
+     */
+    private void addNotStack(AbstractItem addItem,int empty) {
+        if(addItem.getNum()<=1){
+            empty = findEmpty(empty);
+            items[empty] = addItem;
+            useSize++;
+            return ;
+        }
+        AbstractItem copyItem = addItem.copy();
+        addItem.setNum(1);
+        empty = findEmpty(empty);
+        items[empty] = addItem;
+        useSize++;
+        copyItem.setNum(copyItem.getNum()-1);
+        addNotStack(copyItem,empty);
+    }
+
+
+    private int findEmpty(int index) {
+        if(index<0||index>=items.length){
+            return -1;
+        }
+        for (int i = index; i < items.length; i++) {
             if(items[i]==null) {
                 return i;
             }
@@ -93,8 +204,11 @@ public class ItemStorageInfo {
      * @param addItem
      * @return
      */
-    private int findSameItem(AbstractItem addItem) {
-        for (int i = 0; i < items.length; i++) {
+    private int findSameAndOverItem(AbstractItem addItem, int index) {
+        if(index<0||index>=items.length){
+            return -1;
+        }
+        for (int i = index; i < items.length; i++) {
             if(items[i]!=null) {
                 if (addItem.getItemModelId() == items[i].getItemModelId()&& items[i].getNum()<items[i].getOverLimit()){
                     return i;
@@ -138,12 +252,12 @@ public class ItemStorageInfo {
 
 
     /**
-     * 根据道具的objectId移除
+     * 根据道具的objectId移除 指定数量的道具
      *
      * @param objectId
      * @param num
      */
-    public boolean removeByObject(long objectId, int num) {
+    public boolean removeByObjectId(long objectId, int num) {
         /**
          * 1.可能数量不够
          * 2.可能数量够 但是不在同一个格子中
@@ -170,28 +284,23 @@ public class ItemStorageInfo {
         return false;
     }
 
-    /**
-     * 根据背包中格子对应的位置移除
-     *
-     * @param gridId
-     * @param num
-     */
-    public boolean removeByGridId(int gridId, int num) {
-        if (items[gridId] == null) {
-            return false;
-        }
-        if (items[gridId].getNum() < num) {
-            return false;
-        }
-        if (items[gridId].getNum() == num) {
-            items[gridId] = null;
-            useSize--;
-            return false;
-        }
-        items[gridId].reduceNum(num);
-        return true;
-    }
 
+    /**
+     * 移除指定道具
+     * @param itemObjectId
+     */
+    public boolean removeByObjectId(long itemObjectId){
+        for(int i=0;i<items.length;i++){
+            if(items[i]==null){
+                continue;
+            }
+            if(items[i].getObjectId()==itemObjectId){
+                items[i] = null;
+                return true;
+            }
+        }
+        return false;
+    }
     public void removeItem(int itemModelId, int num) {
         int sum = num;
         for (int i = 0; i < maxSize; i++) {

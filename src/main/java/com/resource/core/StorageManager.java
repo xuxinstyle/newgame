@@ -5,10 +5,11 @@ import com.resource.StorageData;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
 import com.resource.model.ResourceDefinition;
-import com.resource.reader.ReadXlsx;
+import com.resource.reader.XlsxRead;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 public class StorageManager implements BeanPostProcessor {
+
     private static final Logger logger = LoggerFactory.getLogger(StorageManager.class);
     /**
      * 静态类容器
@@ -35,11 +38,22 @@ public class StorageManager implements BeanPostProcessor {
     /**
      * 静态资源存储容器
      */
-    private static Map<Class<?>, Storage<?,?>> storageMap = new ConcurrentHashMap<>();
+    private Map<Class<?>, Storage<?,?>> storageMap = new ConcurrentHashMap<>();
     /**
      * csv读取的缓存流容器
      */
-    private static Map<String, InputStream> caches = new ConcurrentHashMap<>();
+    private Map<String, InputStream> caches = new ConcurrentHashMap<>();
+
+    @Autowired
+    private XlsxRead xlsxRead;
+
+    public void init(){
+        for(Class<?> clz:definitionMap.keySet()) {
+            ResourceDefinition def = definitionMap.get(clz);
+            xlsxRead.readXlsx(def, caches);
+        }
+    }
+
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -49,35 +63,17 @@ public class StorageManager implements BeanPostProcessor {
                 ResourceDefinition def = ResourceDefinition.valueOf(bean);
                 registResourceDefintion(def.getClz(), def);
                 registResourceCacah(def.getLocation());
-                ReadXlsx readXlsx = new ReadXlsx();
-                readXlsx.readXlsx(def,caches);
-                Collection<?> values = storageMap.get(clz).getData().getValues().values();
-                for(Object resource:values){
-                    Field[] declaredFields = clz.getDeclaredFields();
-                    for(Field field:declaredFields){
-                        if(field.isAnnotationPresent(Analyze.class)){
-                            Analyze analyze = field.getAnnotation(Analyze.class);
-                            Method method = clz.getMethod(analyze.value());
-                            method.invoke(resource);
-                        }
-                    }
-                }
-
-
-                if(logger.isDebugEnabled()){
-                    logger.debug(definitionMap.toString());
-                    logger.debug(caches.toString());
-                }
             }
             return bean;
         } catch (Exception e) {
+            logger.error("注册资源[{}]失败",bean.getClass().getSimpleName());
             e.printStackTrace();
         }
         return bean;
     }
 
 
-    public static Collection<?> getResourceAll(Class<?> clz){
+    public Collection<?> getResourceAll(Class<?> clz){
         Collection<?> values = storageMap.get(clz).getData().getValues().values();
         if(values==null){
             logger.error("获取资源对象失败！");
@@ -101,19 +97,27 @@ public class StorageManager implements BeanPostProcessor {
         }
         return t;
     }
-    public static void putStorage(ResourceDefinition def, Map<Object,Object> map) {
+
+    /**
+     * 将资源放进资源容器中
+     * @param def
+     * @param resourceMap
+     */
+    public void putStorage(ResourceDefinition def, Map<Object,Object> resourceMap) {
         Class<?> clz = def.getClz();
         /** <主键， Object>*/
         StorageData<Object,Object> data = new StorageData<>();
-        data.setValues(map);
+        data.setValues(resourceMap);
         Storage<Object,Object> storage = new Storage<>();
         storage.setData(data);
 
         storageMap.put(def.getClz(), storage);
     }
 
-
-
+    /**
+     * 获取到文件流并放入Cacah中
+     * @param loaction
+     */
     private void registResourceCacah(String loaction) {
         try {
             File file = new File(loaction);

@@ -54,14 +54,14 @@ public class Server {
                              * LengthFieldBasedFrameDecoder：长度域解码器——放在MsgpackDecoder解码器前面
                              * 关于 长度域编解码器处理半包消息，本文不做详细讲解，会有专门篇章进行说明
                              */
-
+                            ch.pipeline().addLast(new IMIdleStateHandler());
                             ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
                             ch.pipeline().addLast("MessagePack encoder", new MsgpackEncoder());
                             /** maxFrameLength：单个包最大的长度  lengthFieldOffset：表示数据长度字段开始的偏移量  lengthFieldLength：数据长度字段的所占的字节数*/
                             ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                             ch.pipeline().addLast("MessagePack Decoder", new MsgpackDecoder());
                             ch.pipeline().addLast(new ServerHandler());
-                            ch.pipeline().addLast(new IMIdleStateHandler());
+
 
 
                         }

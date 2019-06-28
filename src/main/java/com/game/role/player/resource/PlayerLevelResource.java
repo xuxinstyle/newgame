@@ -1,7 +1,7 @@
 package com.game.role.player.resource;
 
-import com.game.common.attribute.Attribute;
-import com.game.common.attribute.constant.AttributeType;
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.constant.AttributeType;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
 import org.springframework.stereotype.Component;

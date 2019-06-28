@@ -1,12 +1,14 @@
 package com.game;
 
 import com.event.core.EvenManager;
-import com.game.identify.service.SessionService;
-import com.game.common.executor.account.AccountExecutorService;
-import com.game.common.executor.common.CommonExecutorService;
-import com.game.common.executor.scene.SceneExecutorService;
+import com.game.base.identify.service.SessionService;
+import com.game.base.executor.account.AccountExecutorService;
+import com.game.base.executor.common.CommonExecutorService;
+import com.game.base.executor.scene.SceneExecutorService;
+import com.game.gm.service.GmService;
+import com.game.gm.service.GmServiceImpl;
 import com.game.user.account.service.AccountService;
-import com.game.identify.service.IdentifyService;
+import com.game.base.identify.service.IdentifyService;
 import com.game.role.player.service.PlayerService;
 import com.game.connect.service.ConnectService;
 import com.game.login.service.LoginService;
@@ -16,7 +18,8 @@ import com.game.user.equip.service.EquipService;
 import com.game.user.equipupgrade.service.EquipUpgradeService;
 import com.game.user.item.service.ItemService;
 import com.game.user.itemeffect.service.ItemEffectService;
-import com.game.user.strenequip.service.StrenEquipService;
+import com.game.user.equipstren.service.EquipStrenService;
+import com.resource.core.StorageManager;
 import com.socket.core.session.SessionManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +75,7 @@ public class SpringContext implements ApplicationContextAware {
     @Autowired
     private EvenManager evenManager;
     @Autowired
-    private StrenEquipService strenEquipService;
+    private EquipStrenService equipStrenService;
     @Autowired
     private EquipUpgradeService equipUpgradeService;
     @Autowired
@@ -81,10 +84,23 @@ public class SpringContext implements ApplicationContextAware {
     private SessionService sessionService;
     @Autowired
     private SceneExecutorService sceneExecutorService;
+    @Autowired
+    private StorageManager storageManager;
+    @Autowired
+    private GmService gmService;
+
+    public static GmService getGmService(){
+        return instance.gmService;
+    }
+
+    public static StorageManager getStorageManager(){
+        return instance.storageManager;
+    }
 
     public static SceneExecutorService getSceneExecutorService(){
         return instance.sceneExecutorService;
     }
+
     public static SessionService getSessionService(){
         return instance.sessionService;
     }
@@ -96,10 +112,10 @@ public class SpringContext implements ApplicationContextAware {
     public static EquipUpgradeService getEquipUpgradeService(){
         return instance.equipUpgradeService;
     }
-    public static StrenEquipService getStrenEquipService(){
-        return instance.strenEquipService;
-    }
 
+    public static EquipStrenService getStrenEquipService(){
+        return instance.equipStrenService;
+    }
 
     public static EvenManager getEvenManager(){
         return instance.evenManager;

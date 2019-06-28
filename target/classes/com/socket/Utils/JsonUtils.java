@@ -5,6 +5,9 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.type.ArrayType;
+import org.codehaus.jackson.map.type.TypeFactory;
+import org.codehaus.jackson.type.JavaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +24,7 @@ public class JsonUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
     private static ObjectMapper mapper = new ObjectMapper();
+    private static TypeFactory typeFactory = TypeFactory.defaultInstance();
 
     static {
         mapper.configure(org.codehaus.jackson.map.SerializationConfig.Feature.WRITE_NULL_MAP_VALUES, false);
@@ -60,5 +64,23 @@ public class JsonUtils {
         }
         return null;
     }
+    public static <T> T string2Object(String context, Class<T> clz){
+        JavaType javaType = typeFactory.constructType(clz);
+        try{
+            return (T) mapper.readValue(context,javaType);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 
+    }
+    public static <T> T[] string2Array(String context, Class<T> clz){
+        ArrayType type = ArrayType.construct(typeFactory.constructType(clz));
+        try{
+            return (T[]) mapper.readValue(context,type);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

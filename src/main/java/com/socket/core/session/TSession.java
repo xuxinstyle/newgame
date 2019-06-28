@@ -16,7 +16,6 @@ import java.util.Map;
 public class TSession {
     private static final Logger logger = Logger.getLogger(TSession.class);
     private String accountId ;
-    private final long createTime = System.currentTimeMillis();
     private final Channel channel;
     private final String ip;
     private String inetIp;
@@ -78,5 +77,25 @@ public class TSession {
 
     public void setMapId(int mapId) {
         this.mapId = mapId;
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public String getInetIp() {
+        return inetIp;
+    }
+
+    public void setInetIp(String inetIp) {
+        this.inetIp = inetIp;
+    }
+
+    public String getPort() {
+        return port;
     }
 }

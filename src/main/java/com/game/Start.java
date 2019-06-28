@@ -17,6 +17,7 @@ public class Start {
     public static void main(String[] args) {
         logger.info("开始初始化applicationContext...");
         applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        applicationContext.start();
         logger.info("开始注册协议....");
         new RegistSerializerMessage().init();
         logger.info("开始初始化通用线程池");
@@ -25,7 +26,8 @@ public class Start {
         SpringContext.getAccountExecutorService().init();
         logger.info("开始初始化场景线程池...");
         SpringContext.getSceneExecutorService().init();
-        applicationContext.start();
+        logger.info("开始加载静态资源...");
+        SpringContext.getStorageManager().init();
         logger.info("开始构建场景...");
         SpringContext.getScenceSerivce().init();
         logger.info("初始化完毕...");

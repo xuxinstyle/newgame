@@ -1,7 +1,7 @@
 package com.socket.dispatcher.core;
 
 import com.game.SpringContext;
-import com.game.common.executor.account.command.MessageCommand;
+import com.game.base.executor.account.command.MessageCommand;
 import com.game.connect.packet.CM_Connect;
 import com.game.login.packet.CM_Login;
 import com.game.register.packet.CM_Register;

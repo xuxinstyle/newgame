@@ -1,10 +1,10 @@
 package com.game.user.item.model;
 
 import com.game.SpringContext;
-import com.game.common.attribute.Attribute;
-import com.game.common.attribute.AbstractAttributeContainer;
-import com.game.common.attribute.MedicineAttributeId;
-import com.game.common.attribute.constant.AttributeType;
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.AbstractAttributeContainer;
+import com.game.base.attribute.MedicineAttributeId;
+import com.game.base.attribute.constant.AttributeType;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.user.itemeffect.command.ItemExpireDelayCommand;
@@ -83,7 +83,7 @@ public class MedicineEffect extends AbstractUseEffect {
             SpringContext.getAccountExecutorService().submit(command);
             SpringContext.getItemEffectService().putCommand(command);
             AbstractAttributeContainer attributeContainer = player.getAttributeContainer();
-            attributeContainer.putAndComputeAttributes(MedicineAttributeId.getMedicineAttributeId(itemModelId),addAttributeList,true);
+            attributeContainer.putAndComputeAttributes(MedicineAttributeId.getMedicineAttributeId(itemModelId),addAttributeList);
             SpringContext.getPlayerSerivce().save(playerEnt);
         }else{
             /**

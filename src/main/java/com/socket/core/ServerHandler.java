@@ -36,7 +36,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         TSession session = SessionUtil.getChannelSession(ctx.channel());
         MyPack pack = (MyPack) msg;
-        if(pack==null||pack.getpId()==0||pack.getPacket()==null){
+        if(pack.getpId()==-1){
             session.sendPacket(msg);
             return;
         }

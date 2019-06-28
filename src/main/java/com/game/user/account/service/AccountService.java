@@ -13,7 +13,7 @@ public interface AccountService {
      * @param username
      * @param passward
      */
-    void insert(String username, String passward);
+    void realRegister(String username, String passward);
 
 
     /**

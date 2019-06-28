@@ -1,11 +1,11 @@
 package com.game.role.player.model;
 
 import com.game.SpringContext;
-import com.game.common.attribute.Attribute;
-import com.game.common.attribute.AttributeIdEnum;
-import com.game.common.attribute.CreatureAttributeContainer;
-import com.game.common.gameobject.constant.ObjectType;
-import com.game.common.gameobject.model.Creature;
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.AttributeIdEnum;
+import com.game.base.attribute.CreatureAttributeContainer;
+import com.game.base.gameobject.constant.ObjectType;
+import com.game.base.gameobject.model.Creature;
 import com.game.role.player.resource.PlayerLevelResource;
 import com.game.scence.constant.SceneType;
 import com.game.scence.model.PlayerPosition;
@@ -75,7 +75,7 @@ public class Player extends Creature<Player> {
         /** 生成玩家基础属性*/
         PlayerLevelResource resource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel());
         List<Attribute> baseAttributeList = resource.getBaseAttributeList();
-        player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.LEVEL,baseAttributeList,true);
+        player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.LEVEL,baseAttributeList);
         return player;
     }
 

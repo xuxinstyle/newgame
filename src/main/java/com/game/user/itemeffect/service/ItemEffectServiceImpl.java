@@ -1,8 +1,8 @@
 package com.game.user.itemeffect.service;
 
 import com.game.SpringContext;
-import com.game.common.attribute.AbstractAttributeContainer;
-import com.game.common.attribute.MedicineAttributeId;
+import com.game.base.attribute.AbstractAttributeContainer;
+import com.game.base.attribute.MedicineAttributeId;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.event.LogoutEvent;
 import com.game.role.player.model.Player;
@@ -139,10 +139,7 @@ public class ItemEffectServiceImpl implements ItemEffectService {
             return;
         }
         for(ItemExpireDelayCommand command:commandMap.values()){
-            /**
-             * 这里传false，表示如果这个任务正在执行，则不会取消任务
-             * true：表示如果这个任务正在执行，则这个任务将会取消
-             */
+
             command.cancel();
         }
     }

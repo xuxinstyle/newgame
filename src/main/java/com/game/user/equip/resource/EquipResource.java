@@ -1,7 +1,7 @@
 package com.game.user.equip.resource;
 
-import com.game.common.attribute.Attribute;
-import com.game.common.attribute.constant.AttributeType;
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.constant.AttributeType;
 import com.game.user.condition.model.EquipCondition;
 import com.game.user.condition.model.StrenCondition;
 import com.game.user.condition.model.UpgradeCondition;

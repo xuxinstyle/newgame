@@ -2,11 +2,11 @@ package com.game.role.player.service;
 
 import com.db.HibernateDao;
 import com.game.SpringContext;
-import com.game.common.attribute.Attribute;
-import com.game.common.attribute.AbstractAttributeContainer;
-import com.game.common.attribute.constant.AttributeKind;
-import com.game.common.attribute.constant.AttributeType;
-import com.game.common.gameobject.constant.ObjectType;
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.AbstractAttributeContainer;
+import com.game.base.attribute.constant.AttributeKind;
+import com.game.base.attribute.constant.AttributeType;
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.player.packet.SM_ShowAttribute;
 import com.game.role.player.resource.PlayerLevelResource;
 import com.game.user.account.entity.AccountEnt;

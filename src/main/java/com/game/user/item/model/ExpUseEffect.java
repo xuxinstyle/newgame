@@ -1,8 +1,8 @@
 package com.game.user.item.model;
 
 import com.game.SpringContext;
-import com.game.common.attribute.Attribute;
-import com.game.common.attribute.AttributeIdEnum;
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.AttributeIdEnum;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.event.PlayerUpLevelEvent;
 import com.game.role.player.model.Player;
@@ -57,7 +57,7 @@ public class ExpUseEffect extends AbstractUseEffect {
                 return;
             }
             List<Attribute> baseAttributeListEnd = playerLevelResource.getBaseAttributeList();
-            player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.LEVEL,baseAttributeListEnd,true);
+            player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.LEVEL,baseAttributeListEnd);
             SpringContext.getPlayerSerivce().save(playerEnt);
 
             PlayerUpLevelEvent playerUpLevelEvent = PlayerUpLevelEvent.valueOf( player);

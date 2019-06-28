@@ -1,7 +1,7 @@
 package com.game.role.player.model;
 
-import com.game.common.attribute.*;
-import com.game.common.attribute.constant.AttributeType;
+import com.game.base.attribute.*;
+import com.game.base.attribute.constant.AttributeType;
 
 import java.util.Map;
 
@@ -16,11 +16,11 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer  {
     }
 
     @Override
-    protected void recompute(AttributeUpdateSet records) {
+    protected void recompute(AttributeUpdateSet updateSet) {
         /**
          * 计算新的属性
          */
-        compute(modelAttributes,finalAttributes,records);
+        compute(modelAttributes,finalAttributes, updateSet);
     }
 
 

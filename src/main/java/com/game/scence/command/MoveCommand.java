@@ -1,7 +1,7 @@
 package com.game.scence.command;
 
 import com.game.SpringContext;
-import com.game.common.executor.scene.impl.AbstractSceneCommand;
+import com.game.base.executor.scene.impl.AbstractSceneCommand;
 import com.game.role.player.model.Player;
 import com.game.scence.model.PlayerPosition;
 

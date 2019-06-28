@@ -27,12 +27,14 @@ public class AccountInfo {
      * 上次登出时间
      */
     private long lastLogoutTime;
-
-
     /**
      * 该账号下的PlayerId
      */
     private long playerId;
+    /**
+     * 是否是gm玩家
+     */
+    private boolean isGm;
 
     public static AccountInfo valueOf(String accountName){
         AccountInfo accountInfo = new AccountInfo();
@@ -43,6 +45,14 @@ public class AccountInfo {
         accountInfo.setLastLogoutTime(0L);
         accountInfo.setPlayerId(0L);
         return accountInfo;
+    }
+
+    public boolean isGm() {
+        return isGm;
+    }
+
+    public void setGm(boolean gm) {
+        isGm = gm;
     }
 
     public String getAccountName() {
@@ -93,6 +103,7 @@ public class AccountInfo {
                 ", lastLoginTime=" + lastLoginTime +
                 ", lastLogoutTime=" + lastLogoutTime +
                 ", playerId=" + playerId +
+                ", isGm=" + isGm +
                 '}';
     }
 }

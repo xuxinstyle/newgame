@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <protocols>
 
-
+    <catalog id="-1" value="com.socket.heartbeat.HeartBeatPack"/>
     <catalog id="1" value="com.game.login.packet.CM_Login"/>
     <catalog id="2" value="com.game.connect.packet.CM_Connect"/>
     <catalog id="3" value="com.game.login.packet.SM_Login"/>
@@ -52,8 +52,8 @@
     <catalog id="39" value="com.game.role.player.packet.CM_ShowAttribute"/>
     <catalog id="40" value="com.game.role.player.packet.SM_ShowAttribute"/>
 
-    <catalog id="41" value="com.game.user.strenequip.packet.CM_StrenEquip"/>
-    <catalog id="42" value="com.game.user.strenequip.packet.SM_StrenEquip"/>
+    <catalog id="41" value="com.game.user.equipstren.packet.CM_StrenEquip"/>
+    <catalog id="42" value="com.game.user.equipstren.packet.SM_StrenEquip"/>
     <catalog id="43" value="com.game.user.equipupgrade.packet.CM_EquipUpgrade"/>
     <catalog id="44" value="com.game.user.equipupgrade.packet.SM_EquipUpgrade"/>
 
@@ -63,5 +63,8 @@
 
     <catalog id="48" value="com.game.user.item.packet.CM_ShowItemInfo"/>
     <catalog id="49" value="com.game.user.item.packet.SM_ShowItemInfo"/>
+
+    <catalog id="50" value="com.game.gm.packet.CM_GMCommond"/>
+    <catalog id="51" value="com.game.gm.packet.SM_GMCommond"/>
 
 </protocols>

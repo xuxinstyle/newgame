@@ -1,6 +1,6 @@
 package com.game.role.player.packet;
 
-import com.game.common.attribute.Attribute;
+import com.game.base.attribute.Attribute;
 
 import java.util.List;
 

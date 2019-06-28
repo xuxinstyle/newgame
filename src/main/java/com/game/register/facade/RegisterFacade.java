@@ -18,7 +18,7 @@ public class RegisterFacade {
     @HandlerAnno
     public void register(TSession session, CM_Register req){
         try {
-            SpringContext.getRegisterService().doRegister(req.getUsername(), req.getPassward(), session);
+            SpringContext.getRegisterService().doRegister(session,req.getUsername(), req.getPassward());
         }catch (Exception e){
             logger.error("["+req.getUsername()+"]注册失败");
             e.printStackTrace();

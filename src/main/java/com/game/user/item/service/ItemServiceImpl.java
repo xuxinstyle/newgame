@@ -2,7 +2,7 @@ package com.game.user.item.service;
 
 import com.db.HibernateDao;
 import com.game.SpringContext;
-import com.game.common.gameobject.constant.ObjectType;
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.user.equip.resource.EquipResource;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.entity.ItemStorageEnt;
@@ -74,6 +74,11 @@ public class ItemServiceImpl implements ItemService {
         return SpringContext.getIdentifyService().getNextIdentify(type);
     }
 
+    /**
+     * FIXME:添加道具 调用该方法前要判断背包是否充足
+     * @param accountId
+     * @param item
+     */
     @Override
     public void addItemToPackAndSave(String accountId, AbstractItem item) {
         ItemStorageEnt itemStorageEnt = getItemStorageEnt(accountId);
@@ -83,13 +88,6 @@ public class ItemServiceImpl implements ItemService {
 
     }
 
-    @Override
-    public void removeItemFromPack(String accountId, AbstractItem item) {
-        ItemStorageEnt itemStorageEnt = getItemStorageEnt(accountId);
-        ItemStorageInfo pack = itemStorageEnt.getPack();
-        pack.removeByObject(item.getObjectId(), item.getNum());
-        save(itemStorageEnt);
-    }
 
     @Override
     public ItemStorageEnt getItemStorageEnt(String accountId) {
@@ -113,7 +111,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     /**
-     * 这两个sort需要注意持久化的时间
+     * TODO: 这里还没用 等加gm命令 这两个sort需要注意持久化的时间
      *
      * @param itemStorageEnt
      */
@@ -154,7 +152,6 @@ public class ItemServiceImpl implements ItemService {
         }
         ItemResource itemResource = SpringContext.getItemService().getItemResource(item.getItemModelId());
         if (itemResource.isAutoUse()) {
-
             item.use(accountId, num);
         } else {
             addItemToPackAndSave(accountId, item);
@@ -173,14 +170,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void removeItem(TSession session, String accountId, long object, int num) {
+    public void removeItem(TSession session, String accountId, long objectId, int num) {
         ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
         ItemStorageInfo pack = itemStorageEnt.getPack();
-        if (!pack.removeByObject(object, num)) {
+        if (!pack.removeByObjectId(objectId, num)) {
             SM_RemoveItemFormPack sm = new SM_RemoveItemFormPack();
             sm.setStatus(0);
             session.sendPacket(sm);
-            logger.error("玩家{}移除装备失败，背包中的道具{}数量不足{}", accountId, object, num);
+            logger.error("玩家{}移除装备失败，背包中的道具{}数量不足{}", accountId, objectId, num);
             return;
         }
         save(itemStorageEnt);
@@ -244,7 +241,7 @@ public class ItemServiceImpl implements ItemService {
          * fixme:这里看调用什么地方的use比较好?  这里调用item的use扩展性比较好，如果以后需要加其他可使用的道具，只要直接调用继续
          */
         item.use(accountId,num);
-        pack.removeByObject(itemObjectId,num);
+        pack.removeByObjectId(itemObjectId,num);
         save(itemStorageEnt);
         SM_UseItem sm = new SM_UseItem();
         sm.setEffectiveTime(num*useEffect.getEffectiveTime());

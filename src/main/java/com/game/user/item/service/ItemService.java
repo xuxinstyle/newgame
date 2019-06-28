@@ -33,13 +33,6 @@ public interface ItemService {
      */
     void addItemToPackAndSave(String accountId, AbstractItem item);
 
-    /**
-     * 移除玩家背包中指定的道具
-     *
-     * @param accountId
-     * @param item
-     */
-    void removeItemFromPack(String accountId, AbstractItem item);
 
     /**
      * 从数据库中查询玩家背包数据

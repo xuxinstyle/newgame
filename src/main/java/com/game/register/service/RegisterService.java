@@ -12,6 +12,6 @@ public interface RegisterService {
      * @param username
      * @param passward
      */
-    void doRegister(String username, String passward, TSession session);
+    void doRegister(TSession session, String username, String passward);
 
 }

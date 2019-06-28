@@ -1,9 +1,9 @@
 package com.game.user.equip.service;
 
 import com.game.SpringContext;
-import com.game.common.attribute.Attribute;
-import com.game.common.attribute.AbstractAttributeContainer;
-import com.game.common.attribute.EquipAttributeId;
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.AbstractAttributeContainer;
+import com.game.base.attribute.EquipAttributeId;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.user.account.entity.AccountEnt;
@@ -96,7 +96,7 @@ public class EquipServiceImpl implements EquipService {
         /**
          * 从背包扣除新装备 将旧装备加到玩家背包中
          */
-        pack.removeByObject(equipObjectId, 1);
+        pack.removeByObjectId(equipObjectId);
         SpringContext.getItemService().save(itemStorageEnt);
         if (oldEquipment != null) {
             SpringContext.getItemService().addItemToPackAndSave(accountId, oldEquipment);
@@ -114,7 +114,7 @@ public class EquipServiceImpl implements EquipService {
         List<Attribute> newAttributeList = equipment.getAttributeList();
         newAttributeList.addAll(equipment.getStrenAttributeMap().values());
 
-        attributeContainer.putAndComputeAttributes(attributeId,newAttributeList,true);
+        attributeContainer.putAndComputeAttributes(attributeId,newAttributeList);
         /**
          * 保存 并响应客户端
          */
@@ -144,10 +144,7 @@ public class EquipServiceImpl implements EquipService {
         }
         EquipResource equipResource = getEquipResource(item.getItemModelId());
         EquipCondition equipCondition = equipResource.getEquipCondition();
-        Equipment equipment = (Equipment) item;
-        Map<String, Object> param = new HashMap<>();
-        param.put("equipLevel", equipment.getStrenNum());
-        if (!equipCondition.checkCondition(accountId, param)) {
+        if (!equipCondition.checkCondition(accountId, null)) {
             if (logger.isDebugEnabled()) {
                 logger.debug("玩家{}不符合穿戴条件", accountId);
             }
