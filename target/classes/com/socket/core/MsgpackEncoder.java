@@ -1,11 +1,9 @@
 package com.socket.core;
 
-import com.socket.utils.JsonUtils;
 import com.socket.utils.ProtoStuffUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-import org.msgpack.MessagePack;
 
 /**
  * MessagePack 编码器 —— 继承 Netty 的 MessageToByteEncoder，比重写方法

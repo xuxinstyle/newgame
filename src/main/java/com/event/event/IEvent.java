@@ -5,4 +5,5 @@ package com.event.event;
  * @Date: 2019/6/17 16:51
  */
 public interface IEvent {
+    long getId();
 }

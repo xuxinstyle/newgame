@@ -51,4 +51,7 @@ public class AttributeUpdateSet {
         return types;
     }
 
+    public AttributeId getChangeId() {
+        return changeId;
+    }
 }

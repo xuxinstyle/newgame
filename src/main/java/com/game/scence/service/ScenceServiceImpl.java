@@ -83,7 +83,9 @@ public class ScenceServiceImpl implements ScenceService {
     public void doEnterMap(String accountId, int targetMapId) {
         leaveMap(accountId);
         MapResource mapResource = getMapResource(targetMapId);
-
+        if(mapResource==null){
+            return;
+        }
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         long playerId = accountInfo.getPlayerId();
@@ -92,7 +94,8 @@ public class ScenceServiceImpl implements ScenceService {
         Player player = playerEnt.getPlayer();
 
         /** 初始化位置*/
-        player.setPosition(PlayerPosition.valueOf(mapResource.getInitX(),mapResource.getInitY()));
+        PlayerPosition playerPosition = PlayerPosition.valueOf(mapResource.getInitX(), mapResource.getInitY());
+        player.setPosition(playerPosition);
         refreshScenceInfo(mapResource.getId(),player);
         player.setCurrentMapType(targetMapId);
         SpringContext.getPlayerSerivce().save(playerEnt);

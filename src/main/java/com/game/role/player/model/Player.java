@@ -4,6 +4,7 @@ import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.AttributeIdEnum;
 import com.game.base.attribute.CreatureAttributeContainer;
+import com.game.base.attribute.ImmutableAttribute;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.base.gameobject.model.Creature;
 import com.game.role.player.resource.PlayerLevelResource;
@@ -160,7 +161,7 @@ public class Player extends Creature<Player> {
 
     @Override
     public void setAttributeContainer(CreatureAttributeContainer attributeContainer) {
-        this.attributeContainer = (PlayerAttributeContainer)attributeContainer;
+        this.attributeContainer = attributeContainer;
     }
 
     public PlayerPosition getPosition() {

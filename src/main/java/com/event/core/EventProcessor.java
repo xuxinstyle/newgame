@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
  * @Date: 2019/6/17 16:59
  */
 @Component
-public class ReceiverProcessor implements BeanPostProcessor, ApplicationContextAware {
+public class EventProcessor implements BeanPostProcessor, ApplicationContextAware {
     private ApplicationContext applicationContext;
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         EvenManager evenManager = applicationContext.getBean(EvenManager.class);
-        evenManager.registerReceiver(bean);
+        evenManager.registerEvent(bean);
         return bean;
     }
 

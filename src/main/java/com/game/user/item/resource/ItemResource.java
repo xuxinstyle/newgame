@@ -14,7 +14,6 @@ import java.util.Map;
  * @Date: 2019/6/12 18:13
  */
 @LoadResource
-@Component
 public class ItemResource {
     /**道具唯一标识id*/
     private int id;
@@ -60,9 +59,7 @@ public class ItemResource {
             return;
         }
         UseEffectType useEffectType = UseEffectType.valueOf(itemType);
-        if(useEffectType==null){
-            return;
-        }
+
         AbstractUseEffect useEffect = useEffectType.create();
         Map<String ,Object> param = new HashMap<>();
         param.put("itemModelId",id);

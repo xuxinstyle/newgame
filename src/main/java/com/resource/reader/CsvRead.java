@@ -1,5 +1,6 @@
 package com.resource.reader;
 
+import com.csvreader.CsvReader;
 import com.resource.anno.Analyze;
 import com.resource.core.FieldManager;
 import com.resource.core.StorageManager;
@@ -25,6 +26,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,8 +37,10 @@ import java.util.Map;
  * @Date: 2019/6/9 23:00
  */
 @Component
-public class XlsxRead {
-    private static final Logger logger = LoggerFactory.getLogger(XlsxRead.class);
+public class CsvRead {
+    private static final Logger logger = LoggerFactory.getLogger(CsvRead.class);
+
+    private static final Charset DEFAULT_CHARSET = Charset.forName("GB2312");
 
     private final static TypeDescriptor SOURCE_TYPE = TypeDescriptor.valueOf(String.class);
     @Autowired
@@ -48,76 +52,44 @@ public class XlsxRead {
         try {
             String location = def.getLocation();
             InputStream inputStream = caches.get(location);
-            File excel = new File(location);
-            /** 判断文件是否存在*/
-            if (excel.isFile() && excel.exists()) {
-                String[] split = excel.getName().split("\\.");
-                /** .
-                 * 是特殊字符，需要转义！！！！！
-                 */
-                Workbook wb;
-                /**
-                 * 根据文件后缀（xls/xlsx）进行判断
-                 */
-                if ("xls".equals(split[1])) {
-                    /** 文件流对象*/
-                    wb = new HSSFWorkbook(inputStream);
-                } else if ("xlsx".equals(split[1])) {
-                    wb = new XSSFWorkbook(inputStream);
-                } else {
-                    logger.error("文件类型错误!");
-                    return;
+            CsvReader csvReader = new CsvReader(inputStream, ',', DEFAULT_CHARSET);
+            csvReader.readRecord();
+            // 读表头
+            csvReader.readHeaders();
+            // 获取表头
+            String[] headers = csvReader.getHeaders();
+            List<FieldInfo> fieldList = new ArrayList<>();
+            for(int i = 0;i<headers.length;i++) {
+                try {
+                    Field field = def.getClz().getDeclaredField(headers[i]);
+                    fieldList.add(new FieldInfo(i,field));
+                } catch (NoSuchFieldException e){
+                    continue;
                 }
-
-                /**开始解析*/
-                Sheet sheet = wb.getSheetAt(0);
-                /* 读取表头*/
-                int firstIndex = sheet.getFirstRowNum() + 1;
-                readHead(def, sheet, firstIndex);
-                /**
-                 * 读取表资源
-                 */
-                int firstRowIndex = sheet.getFirstRowNum() + 3;
-                int lastRowIndex = sheet.getLastRowNum();
-                Map<Object, Object> resourceMap = readResource(def, sheet, firstRowIndex, lastRowIndex);
-                storageManager.putStorage(def, resourceMap);
-                inputStream.close();
-            } else {
-                logger.error("找不到[{}]资源文件", location);
-                return;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Map<Object, Object> readResource(ResourceDefinition def, Sheet sheet, int firstRowIndex, int lastRowIndex) {
-        Map<Object, Object> map = new HashMap<>();
-        for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {
-            /** 遍历行*/
-            Row row = sheet.getRow(rIndex);
-            if (row != null) {
-                int firstCellIndex = row.getFirstCellNum();
-                int lastCellIndex = row.getLastCellNum();
+            csvReader.readRecord();
+            FieldManager.getFieldInfoMap().put(def.getClz(), fieldList);
+            Map<Object, Object> dataMap = new HashMap<>();
+            while (csvReader.readRecord()) {
                 List<String> resourceData = new ArrayList<>();
-                for (int cIndex = firstCellIndex; cIndex < lastCellIndex; cIndex++) {
-                    //遍历列
-                    Cell cell = row.getCell(cIndex);
-                    if (cell != null) {
-                        resourceData.add(cell.toString());
-                    } else {
-                        resourceData.add("");
-                    }
+                for (int cIndex = 0; cIndex < headers.length; cIndex++) {
+                    resourceData.add(csvReader.get(cIndex));
                 }
                 /** 这里的获取资源id，必须放在表的第一列才能算是id*/
                 Object index = getIndex(def.getClz(), resourceData);
                 Object object = parse(def.getClz(), resourceData);
                 doAnalyze(def.getClz(), object);
-                map.put(index, object);
+                dataMap.put(index, object);
             }
+            storageManager.putStorage(def, dataMap);
+            inputStream.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return map;
     }
+
+
     private void doAnalyze(Class<?> clz, Object resource) {
         Field[] declaredFields = clz.getDeclaredFields();
         for (Field field : declaredFields) {
@@ -138,34 +110,6 @@ public class XlsxRead {
                     e.printStackTrace();
                 }
             }
-        }
-    }
-    private void readHead(ResourceDefinition def, Sheet sheet, int firstIndex) {
-        /** 遍历行*/
-        Row row = sheet.getRow(firstIndex);
-        if (row != null) {
-            int firstCellIndex = row.getFirstCellNum();
-            int lastCellIndex = row.getLastCellNum();
-            List<String> holderName = new ArrayList<>();
-            for (int cIndex = firstCellIndex; cIndex < lastCellIndex; cIndex++) {
-                //遍历列
-                Cell cell = row.getCell(cIndex);
-                if (cell != null) {
-                    cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-                    holderName.add(cell.toString());
-                }
-            }
-            List<FieldInfo> fieldList = new ArrayList<>();
-            for (int i = 0; i < holderName.size(); i++) {
-                try {
-                    Field declaredField = def.getClz().getDeclaredField(holderName.get(i));
-                    fieldList.add(new FieldInfo(i, declaredField));
-                } catch (NoSuchFieldException e) {
-                    logger.error("没有字段:[{}]",holderName.get(i));
-                    continue;
-                }
-            }
-            FieldManager.getFieldInfoMap().put(def.getClz(), fieldList);
         }
     }
 
@@ -191,11 +135,11 @@ public class XlsxRead {
             FieldInfo fieldInfo = fieldInfos.get(0);
             TypeDescriptor typeDescriptor = new TypeDescriptor(fieldInfo.getField());
             String resource = resourceData.get(fieldInfo.getIndex());
-            String concat = resource;
+            /*String concat = resource;
             if (fieldInfo.getField().getType().equals(int.class) || fieldInfo.getField().getType().equals(Integer.class)) {
                 concat = resource.replace(".0", "");
             }
-            resource = concat;
+            resource = concat;*/
             Object value = conversionService.convert(resource, SOURCE_TYPE, typeDescriptor);
             return value;
 

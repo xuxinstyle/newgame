@@ -138,7 +138,7 @@ public class ItemStorageInfo {
         index = findSameAndOverItem(addItem, index);
         if(index==-1){
             int empty = findEmpty(0);
-            if(addItem.getNum()<addItem.getOverLimit()){
+            if(addItem.getNum()<=addItem.getOverLimit()){
                 items[empty] = addItem;
                 useSize++;
                 return;
@@ -152,7 +152,7 @@ public class ItemStorageInfo {
         }else{
             int overNum = items[index].getOverLimit() - items[index].getNum();
             if(addItem.getNum()<=overNum){
-                items[index].setNum(items[index].getOverLimit());
+                items[index].setNum(items[index].getNum()+addItem.getNum());
                 return;
             }
             items[index].setNum(items[index].getOverLimit());

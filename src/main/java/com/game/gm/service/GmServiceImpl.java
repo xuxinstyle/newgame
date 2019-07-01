@@ -50,12 +50,6 @@ public class GmServiceImpl implements GmService {
     private void realDoGmCommand(TSession session, String command) {
         try {
             String[] split = command.split(" ");
-            if(split==null){
-                SM_GMCommond sm = new SM_GMCommond();
-                sm.setStatus(2);
-                session.sendPacket(sm);
-                return;
-            }
             Method method = commandMethods.get(split[0]);
 
             Class<?>[] parameterTypes = method.getParameterTypes();
@@ -69,7 +63,7 @@ public class GmServiceImpl implements GmService {
             sm.setStatus(1);
             session.sendPacket(sm);
         } catch (Exception e) {
-            logger.warn("GM命令[{}]执行错误",command);
+            logger.warn("GM命令[{}]执行错误",command,e);
             SM_GMCommond sm = new SM_GMCommond();
             sm.setStatus(2);
             session.sendPacket(sm);

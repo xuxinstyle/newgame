@@ -2,7 +2,7 @@ package com.game.user.account.entity;
 
 import com.db.AbstractEntity;
 import com.game.user.account.model.AccountInfo;
-import com.socket.utils.JsonUtils;
+import com.game.util.JsonUtils;
 import org.hibernate.annotations.Table;
 
 import javax.persistence.*;

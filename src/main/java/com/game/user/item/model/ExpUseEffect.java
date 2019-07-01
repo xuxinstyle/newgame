@@ -53,9 +53,6 @@ public class ExpUseEffect extends AbstractUseEffect {
             player.setLevel(player.getLevel() + 1);
             player.setExp(player.getExp() - upLevelExp);
 
-            if(playerLevelResource==null){
-                return;
-            }
             List<Attribute> baseAttributeListEnd = playerLevelResource.getBaseAttributeList();
             player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.LEVEL,baseAttributeListEnd);
             SpringContext.getPlayerSerivce().save(playerEnt);

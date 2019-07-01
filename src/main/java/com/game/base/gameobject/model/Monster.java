@@ -27,4 +27,5 @@ public class Monster extends Creature<Monster> {
     public ObjectType getObjectType() {
         return ObjectType.MONSTER;
     }
+
 }

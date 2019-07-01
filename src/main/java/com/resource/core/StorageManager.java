@@ -5,6 +5,7 @@ import com.resource.StorageData;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
 import com.resource.model.ResourceDefinition;
+import com.resource.reader.CsvRead;
 import com.resource.reader.XlsxRead;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,12 +46,12 @@ public class StorageManager implements BeanPostProcessor {
     private Map<String, InputStream> caches = new ConcurrentHashMap<>();
 
     @Autowired
-    private XlsxRead xlsxRead;
+    private CsvRead csvRead;
 
     public void init(){
         for(Class<?> clz:definitionMap.keySet()) {
             ResourceDefinition def = definitionMap.get(clz);
-            xlsxRead.readXlsx(def, caches);
+            csvRead.readXlsx(def, caches);
         }
     }
 
@@ -111,7 +112,7 @@ public class StorageManager implements BeanPostProcessor {
         Storage<Object,Object> storage = new Storage<>();
         storage.setData(data);
 
-        storageMap.put(def.getClz(), storage);
+        storageMap.put(clz, storage);
     }
 
     /**
@@ -125,8 +126,7 @@ public class StorageManager implements BeanPostProcessor {
             inputStream = new FileInputStream(file);
             caches.put(loaction,inputStream);
         }catch (IOException e){
-            logger.error("注册资源缓存失败");
-            e.printStackTrace();
+            logger.error("注册资源[{}]缓存失败",loaction,e);
         }
     }
     private void registResourceDefintion(Class<?> clz, ResourceDefinition def) {

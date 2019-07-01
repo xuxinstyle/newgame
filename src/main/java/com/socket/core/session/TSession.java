@@ -1,6 +1,6 @@
 package com.socket.core.session;
 
-import com.socket.utils.JsonUtils;
+import com.game.util.JsonUtils;
 import com.socket.core.MyPack;
 import com.socket.dispatcher.core.RegistSerializerMessage;
 import io.netty.channel.Channel;
@@ -41,7 +41,7 @@ public class TSession {
                 return;
             }
             int opIndex = 0;
-            for (Map.Entry<Integer, Class<?>> entry :RegistSerializerMessage.ID_CLASS_MAP.entrySet()) {
+            for (Map.Entry<Integer, Class<?>> entry :RegistSerializerMessage.idClassMap.entrySet()) {
                 if(entry.getValue().equals(res.getClass())){
                     opIndex = entry.getKey();
                     break;

@@ -1,6 +1,7 @@
 package com.game.user.item.packet;
 
 import com.game.base.attribute.Attribute;
+import com.game.base.attribute.ImmutableAttribute;
 
 import java.util.List;
 
@@ -48,11 +49,11 @@ public class SM_ShowItemInfo {
     /**
      * 基础属性
      */
-    private List<Attribute> baseAttributeList;
+    private List<ImmutableAttribute> baseAttributeList;
     /**
      * 强化属性
      */
-    private List<Attribute> strenAttributeList;
+    private List<ImmutableAttribute> strenAttributeList;
     /**
      * 装备限制职业
      */
@@ -126,19 +127,19 @@ public class SM_ShowItemInfo {
         this.strenNum = strenNum;
     }
 
-    public List<Attribute> getBaseAttributeList() {
+    public List<ImmutableAttribute> getBaseAttributeList() {
         return baseAttributeList;
     }
 
-    public void setBaseAttributeList(List<Attribute> baseAttributeList) {
+    public void setBaseAttributeList(List<ImmutableAttribute> baseAttributeList) {
         this.baseAttributeList = baseAttributeList;
     }
 
-    public List<Attribute> getStrenAttributeList() {
+    public List<ImmutableAttribute> getStrenAttributeList() {
         return strenAttributeList;
     }
 
-    public void setStrenAttributeList(List<Attribute> strenAttributeList) {
+    public void setStrenAttributeList(List<ImmutableAttribute> strenAttributeList) {
         this.strenAttributeList = strenAttributeList;
     }
 

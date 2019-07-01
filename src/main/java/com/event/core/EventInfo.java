@@ -9,12 +9,12 @@ import java.lang.reflect.Method;
  * @Author：xuxin
  * @Date: 2019/6/17 16:49
  */
-public class ReceiverDefintion {
+public class EventInfo {
     private final Object bean;
     private final Method method;
     private final Class<? extends IEvent> clz;
 
-    public ReceiverDefintion(Object bean, Method method, Class<? extends IEvent> clz){
+    public EventInfo(Object bean, Method method, Class<? extends IEvent> clz){
         this.bean = bean;
         this.method = method;
         this.clz = clz;

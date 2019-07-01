@@ -42,7 +42,7 @@ public class SpringContext implements ApplicationContextAware {
     public static SpringContext instance;
 
     @PostConstruct
-    private final void init(){
+    private void init(){
         instance = this;
     }
     @Autowired

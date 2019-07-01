@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
  * @Author：xuxin
  * @Date: 2019/6/4 20:47
  */
-@Component
 @LoadResource
 public class MapResource {
     /** 这里的属性必须为public的权限*/
@@ -21,10 +20,10 @@ public class MapResource {
     /** 地图实际形状*/
     public String context;
 
-    @Analyze("analyze")
+    @Analyze("analyzeMap")
     private int[][] mapcontext;
 
-    public void analyze(){
+    public void analyzeMap(){
         String[] mapY = this.context.split(",");
         if(mapY.length<=0) {
             return ;
@@ -41,7 +40,7 @@ public class MapResource {
     }
 
     public int[][] getMapcontext() {
-        return mapcontext;
+        return this.mapcontext;
     }
 
     public void setMapcontext(int[][] mapcontext) {

@@ -41,4 +41,9 @@ public class EquipEvent implements IEvent {
     public void setPlayerId(long playerId) {
         this.playerId = playerId;
     }
+
+    @Override
+    public long getId() {
+        return playerId%2;
+    }
 }

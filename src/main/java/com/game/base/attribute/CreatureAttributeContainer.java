@@ -25,8 +25,8 @@ public class CreatureAttributeContainer<T> extends AbstractAttributeContainer {
      * @param finalAttributes
      * @param records
      */
-    protected void compute(Map<String,AttributeSet> modelAttributeSet, Map<AttributeType,Attribute> finalAttributes,
-                         AttributeUpdateSet records) {
+    protected void compute(Map<String,ModelAttribute> modelAttributeSet, Map<AttributeType,Attribute> finalAttributes,
+                           AttributeUpdateSet records) {
         /**
          * 清空 accumulateAttributes
          */

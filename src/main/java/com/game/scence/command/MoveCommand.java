@@ -37,4 +37,28 @@ public class MoveCommand extends AbstractSceneCommand {
     public void active() {
         SpringContext.getScenceSerivce().doMove(player.getAccountId(),targetPosition,getMapId());
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public PlayerPosition getCurrPosition() {
+        return currPosition;
+    }
+
+    public void setCurrPosition(PlayerPosition currPosition) {
+        this.currPosition = currPosition;
+    }
+
+    public PlayerPosition getTargetPosition() {
+        return targetPosition;
+    }
+
+    public void setTargetPosition(PlayerPosition targetPosition) {
+        this.targetPosition = targetPosition;
+    }
 }

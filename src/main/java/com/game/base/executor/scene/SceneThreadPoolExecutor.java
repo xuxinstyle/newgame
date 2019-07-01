@@ -42,7 +42,6 @@ public class SceneThreadPoolExecutor {
     }
 
     public void addTask(AbstractSceneCommand accountCommond){
-        Object key = accountCommond.getKey();
         int modIndex = accountCommond.modIndex(DEFAULT_INITIAL_THREAD_POOL_SIZE);
         SCENE_SERVICE[modIndex].submit(() -> {
            if(!accountCommond.isCanceled()){
@@ -53,12 +52,13 @@ public class SceneThreadPoolExecutor {
 
     public void schedule(AbstractSceneCommand command, long delay){
         command.refreshState();
-        SCENE_SCHEDULE_POOL.schedule(()->addTask(command),delay,TimeUnit.MILLISECONDS);
+        command.setFuture(SCENE_SCHEDULE_POOL.schedule(()->
+                addTask(command),delay,TimeUnit.MILLISECONDS));
     }
 
     public void schedule(AbstractSceneCommand command, long delay, long period){
         command.refreshState();
-        SCENE_SCHEDULE_POOL.scheduleAtFixedRate(()->addTask(command),
-                delay, period,TimeUnit.MILLISECONDS);
+        command.setFuture(SCENE_SCHEDULE_POOL.scheduleAtFixedRate(()->
+                        addTask(command), delay, period,TimeUnit.MILLISECONDS));
     }
 }

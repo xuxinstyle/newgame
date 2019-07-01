@@ -2,7 +2,7 @@ package com.game.role.player.entity;
 
 import com.db.AbstractEntity;
 import com.game.role.player.model.Player;
-import com.socket.utils.JsonUtils;
+import com.game.util.JsonUtils;
 import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
@@ -54,6 +54,7 @@ public class PlayerEnt extends AbstractEntity<Long> {
     }
 
     public Player getPlayer() {
+
         return player;
     }
 
@@ -70,7 +71,4 @@ public class PlayerEnt extends AbstractEntity<Long> {
         return playerData;
     }
 
-    public void setPlayerData(byte[] playerData) {
-        this.playerData = playerData;
-    }
 }

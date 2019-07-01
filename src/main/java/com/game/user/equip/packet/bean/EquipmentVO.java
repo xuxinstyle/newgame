@@ -1,6 +1,7 @@
 package com.game.user.equip.packet.bean;
 
 import com.game.base.attribute.Attribute;
+import com.game.base.attribute.ImmutableAttribute;
 
 import java.util.List;
 
@@ -32,12 +33,12 @@ public class EquipmentVO {
     /**
      * 装备基础属性
      */
-    private List<Attribute> attributeList;
+    private List<ImmutableAttribute> attributeList;
 
     /**
      * 装备强化属性
      */
-    private List<Attribute> strenAttributeList;
+    private List<ImmutableAttribute> strenAttributeList;
 
     public static EquipmentVO valueOf(int position){
         EquipmentVO equipmentVO = new EquipmentVO();
@@ -45,13 +46,7 @@ public class EquipmentVO {
         return equipmentVO;
     }
 
-    public List<Attribute> getStrenAttributeList() {
-        return strenAttributeList;
-    }
 
-    public void setStrenAttributeList(List<Attribute> strenAttributeList) {
-        this.strenAttributeList = strenAttributeList;
-    }
 
     public String getEquipName() {
         return equipName;
@@ -85,12 +80,20 @@ public class EquipmentVO {
         this.level = level;
     }
 
-    public List<Attribute> getAttributeList() {
+    public List<ImmutableAttribute> getAttributeList() {
         return attributeList;
     }
 
-    public void setAttributeList(List<Attribute> attributeList) {
+    public void setAttributeList(List<ImmutableAttribute> attributeList) {
         this.attributeList = attributeList;
+    }
+
+    public List<ImmutableAttribute> getStrenAttributeList() {
+        return strenAttributeList;
+    }
+
+    public void setStrenAttributeList(List<ImmutableAttribute> strenAttributeList) {
+        this.strenAttributeList = strenAttributeList;
     }
 
     public int getQuality() {

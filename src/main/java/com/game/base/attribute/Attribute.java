@@ -11,11 +11,11 @@ public class Attribute {
     /**
      * 属性类型
      */
-    private AttributeType attributeType;
+    protected AttributeType attributeType;
     /**
      * 属性值
      */
-    private long value;
+    protected long value;
 
 
     public static Attribute valueOf(AttributeType type , long value){
@@ -24,17 +24,7 @@ public class Attribute {
         attribute.setValue(value);
         return attribute;
     }
-    public void remove(Attribute attribute){
-        if(this.value-attribute.getValue()>=0) {
-            this.value -= attribute.getValue();
-        }
-    }
-    public void reduce(long value){
-        this.value-=value;
-    }
-    public void addValue(long value){
-        this.value+=value;
-    }
+
     public AttributeType getAttributeType() {
         return attributeType;
     }

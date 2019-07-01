@@ -83,7 +83,10 @@ public class ItemServiceImpl implements ItemService {
     public void addItemToPackAndSave(String accountId, AbstractItem item) {
         ItemStorageEnt itemStorageEnt = getItemStorageEnt(accountId);
         ItemStorageInfo pack = itemStorageEnt.getPack();
-        pack.addItem(item);
+        /**
+         * FIXME:换一个方法试一下
+         */
+        pack.addItemQuick(item);
         save(itemStorageEnt);
 
     }

@@ -48,4 +48,9 @@ public class PlayerEnterMapEvent implements IEvent {
     public void setTargeetMapId(int targeetMapId) {
         this.targeetMapId = targeetMapId;
     }
+
+    @Override
+    public long getId() {
+        return player.getObjectId()%2;
+    }
 }

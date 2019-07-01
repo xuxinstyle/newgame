@@ -1,4 +1,4 @@
-package com.socket.utils;
+package com.game.util;
 
 
 import org.codehaus.jackson.map.DeserializationConfig;

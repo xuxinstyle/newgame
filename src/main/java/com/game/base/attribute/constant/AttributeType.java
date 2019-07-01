@@ -329,23 +329,16 @@ public enum AttributeType {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     public String getAttrName() {
         return attrName;
     }
 
-    public void setAttrName(String attrName) {
-        this.attrName = attrName;
-    }
 
     public AttributeKind getKind() {
         return kind;
     }
 
-    public void setKind(AttributeKind kind) {
-        this.kind = kind;
-    }
+
 }

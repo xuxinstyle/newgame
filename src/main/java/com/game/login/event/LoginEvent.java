@@ -25,4 +25,9 @@ public class LoginEvent implements IEvent {
     public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
+
+    @Override
+    public long getId() {
+        return 0;
+    }
 }

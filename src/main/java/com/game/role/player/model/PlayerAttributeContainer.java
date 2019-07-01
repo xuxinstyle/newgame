@@ -25,22 +25,5 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer  {
 
 
 
-    /**
-     * 强克隆map
-     * @param cloneTarget
-     * @param result
-     */
-    private void cloneAttributeMap(Map<AttributeType, Attribute> cloneTarget, Map<AttributeType, Attribute> result) {
-        for(Attribute attribute:result.values()){
-            attribute.setValue(0);
-        }
-        for (Attribute attr:cloneTarget.values()){
-            Attribute attribute = result.get(attr.getAttributeType());
-            if(attribute != null){
-                attribute.setValue(attr.getValue());
-            }else{
-                result.put(attr.getAttributeType(), Attribute.valueOf(attr.getAttributeType(), attr.getValue()));
-            }
-        }
-    }
+
 }

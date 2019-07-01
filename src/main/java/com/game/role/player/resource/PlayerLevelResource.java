@@ -1,6 +1,7 @@
 package com.game.role.player.resource;
 
 import com.game.base.attribute.Attribute;
+import com.game.base.attribute.ImmutableAttribute;
 import com.game.base.attribute.constant.AttributeType;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
@@ -14,7 +15,6 @@ import java.util.List;
  * @Date: 2019/6/13 15:32
  */
 @LoadResource
-@Component
 public class PlayerLevelResource {
     /**
      * 等级
@@ -29,10 +29,10 @@ public class PlayerLevelResource {
      */
     private String baseAttribute;
 
-    @Analyze("analyze")
+    @Analyze("analyzeAttribute")
     private List<Attribute> baseAttributeList;
 
-    public void analyze(){
+    public void analyzeAttribute(){
         String[] split = baseAttribute.split(";");
         List<Attribute> baseAttributeList = new ArrayList<>();
         for(String str:split){
@@ -49,32 +49,16 @@ public class PlayerLevelResource {
         return baseAttributeList;
     }
 
-    public void setBaseAttributeList(List<Attribute> baseAttributeList) {
-        this.baseAttributeList = baseAttributeList;
-    }
-
     public long getUpLevelExp() {
         return upLevelExp;
-    }
-
-    public void setUpLevelExp(long upLevelExp) {
-        this.upLevelExp = upLevelExp;
     }
 
     public int getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-
     public String getBaseAttribute() {
         return baseAttribute;
     }
 
-    public void setBaseAttribute(String baseAttribute) {
-        this.baseAttribute = baseAttribute;
-    }
 }

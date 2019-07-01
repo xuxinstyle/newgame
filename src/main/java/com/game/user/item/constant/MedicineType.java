@@ -14,16 +14,14 @@ public enum  MedicineType {
      */
     MP_MEDICINE(13),
     ;
+    private int itemModelId;
+
     MedicineType(int itemModelId){
         this.itemModelId = itemModelId;
     }
-    private int itemModelId;
 
     public int getItemModelId() {
         return itemModelId;
     }
 
-    public void setItemModelId(int itemModelId) {
-        this.itemModelId = itemModelId;
-    }
 }

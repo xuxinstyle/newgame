@@ -5,7 +5,7 @@ import com.game.base.executor.account.command.MessageCommand;
 import com.game.connect.packet.CM_Connect;
 import com.game.login.packet.CM_Login;
 import com.game.register.packet.CM_Register;
-import com.socket.utils.JsonUtils;
+import com.game.util.JsonUtils;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 
@@ -36,7 +36,7 @@ public class ActionDispatcher implements BeanPostProcessor {
      * @param packet
      */
     public void handle(TSession session, int opIndex, Object packet) {
-        Class<?> aClass = RegistSerializerMessage.ID_CLASS_MAP.get(opIndex);
+        Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
         if(aClass==null){
             return;
         }

@@ -27,7 +27,5 @@ public enum AttributeKind {
         return kind;
     }
 
-    public void setKind(int kind) {
-        this.kind = kind;
-    }
+
 }

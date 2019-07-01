@@ -140,6 +140,7 @@ public class ItemEffectServiceImpl implements ItemEffectService {
         }
         for(ItemExpireDelayCommand command:commandMap.values()){
 
+            command.getFuture().cancel(false);
             command.cancel();
         }
     }

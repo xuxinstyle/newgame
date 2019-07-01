@@ -48,12 +48,12 @@ public class CommonExecutor {
              addTask(command)
          ,delay ,period ,TimeUnit.MILLISECONDS);
     }
+
     public void schedule(AbstractCommonDelayCommand command){
         command.refreshState();
-        Object key = command.getKey();
-        COMMON_SCHEDULE_POOL.schedule(()->
+        command.setFuture(COMMON_SCHEDULE_POOL.schedule(()->
             addTask(command)
-        ,command.getDelay(),TimeUnit.MILLISECONDS);
+        ,command.getDelay(),TimeUnit.MILLISECONDS));
     }
 
     public void addTask(AbstractCommonCommand command){

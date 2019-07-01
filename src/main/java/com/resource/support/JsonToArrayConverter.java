@@ -1,6 +1,6 @@
 package com.resource.support;
 
-import com.socket.utils.JsonUtils;
+import com.game.util.JsonUtils;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 

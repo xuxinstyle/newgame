@@ -61,4 +61,9 @@ public class PlayerMoveEvent implements IEvent {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+    @Override
+    public long getId() {
+        return player.getObjectId()%2;
+    }
 }

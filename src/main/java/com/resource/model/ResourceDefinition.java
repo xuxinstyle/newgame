@@ -22,7 +22,7 @@ public class ResourceDefinition {
 
     public ResourceDefinition(Class<?> clz) {
         this.clz = clz;
-        location = FILE_PATH + clz.getSimpleName()+".xlsx";
+        location = FILE_PATH + clz.getSimpleName()+".csv";
     }
 
     public Class<?> getClz() {

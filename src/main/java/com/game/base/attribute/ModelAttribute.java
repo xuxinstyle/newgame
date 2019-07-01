@@ -9,7 +9,7 @@ import java.util.Map;
  * @Author：xuxin
  * @Date: 2019/6/25 15:31
  */
-public class AttributeSet {
+public class ModelAttribute {
 
     /**
      * 模块属性

@@ -1,6 +1,6 @@
 package com.game.scence.facade;
 
-import com.event.anno.ReceiveAnn;
+import com.event.anno.EventAnn;
 import com.game.role.player.event.PlayerUpLevelEvent;
 import com.game.scence.event.PlayerMoveEvent;
 import com.game.scence.packet.*;
@@ -64,11 +64,11 @@ public class ScenceFacade {
             e.printStackTrace();
         }
     }
-    @ReceiveAnn
+    @EventAnn
     public void playerUpLevel(PlayerUpLevelEvent event){
         SpringContext.getScenceSerivce().doPlayerUpLevel(event.getPlayer());
     }
-    @ReceiveAnn
+    @EventAnn
     public void doPlayerMoveAfter(PlayerMoveEvent event){
         SpringContext.getScenceSerivce().doPlayerMoveAfter(event);
     }

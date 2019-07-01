@@ -16,7 +16,6 @@ public enum AttributeIdEnum implements AttributeId {
     },
 
     ;
-
     @Override
     public String getName() {
         return null;

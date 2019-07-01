@@ -1,6 +1,7 @@
 package com.game.user.equip.resource;
 
 import com.game.base.attribute.Attribute;
+import com.game.base.attribute.ImmutableAttribute;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.user.condition.model.EquipCondition;
 import com.game.user.condition.model.StrenCondition;
@@ -17,7 +18,6 @@ import java.util.List;
  * @Date: 2019/6/16 17:33
  */
 @LoadResource
-@Component
 public class EquipResource {
     /**
      * 道具表id
@@ -67,14 +67,14 @@ public class EquipResource {
     @Analyze("analyzeBaseAttribute")
     private String baseAttribute;
 
-    private List< Attribute> baseAttributeList;
+    private List<ImmutableAttribute> baseAttributeList;
     /**
      * 装备每次强化增加的属性
      */
     @Analyze("analyzeUpAttribute")
     private String upAttribute;
 
-    private List<Attribute> upAttributeList;
+    private List<ImmutableAttribute> upAttributeList;
 
     public void analyzeEquipCondition() {
         String[] split = this.equipConditions.split("_");
@@ -102,22 +102,24 @@ public class EquipResource {
     }
 
     public void analyzeBaseAttribute() {
-        List< Attribute> list = new ArrayList<>();
+        List<ImmutableAttribute> list = new ArrayList<>();
         String[] split = baseAttribute.split(";");
         for (String str : split) {
             String[] attr = str.split(",");
             Attribute attribute = Attribute.valueOf(AttributeType.valueOf(attr[0]), Long.parseLong(attr[1]));
-            list.add(attribute);
+            ImmutableAttribute wrapperAttribute = ImmutableAttribute.wrapper(attribute);
+            list.add(wrapperAttribute);
         }
         baseAttributeList = list;
     }
     public void analyzeUpAttribute(){
-        List<Attribute> attributeList = new ArrayList<>();
+        List<ImmutableAttribute> attributeList = new ArrayList<>();
         String[] split = upAttribute.split(";");
         for (String str : split) {
             String[] attr = str.split(",");
             Attribute attribute = Attribute.valueOf(AttributeType.valueOf(attr[0]), Long.parseLong(attr[1]));
-            attributeList.add(attribute);
+            ImmutableAttribute wrapper = ImmutableAttribute.wrapper(attribute);
+            attributeList.add(wrapper);
         }
         upAttributeList = attributeList;
     }
@@ -126,100 +128,32 @@ public class EquipResource {
         return maxLevel;
     }
 
-    public void setMaxLevel(int maxLevel) {
-        this.maxLevel = maxLevel;
-    }
-
     public int getUpgradeId() {
         return upgradeId;
-    }
-
-    public void setUpgradeId(int upgradeId) {
-        this.upgradeId = upgradeId;
     }
 
     public int getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
-
     public String getEquipName() {
         return equipName;
-    }
-
-    public void setEquipName(String equipName) {
-        this.equipName = equipName;
-    }
-
-    public void setEquipType(String equipType) {
-        this.equipType = equipType;
-    }
-
-    public String getEquipConditions() {
-        return equipConditions;
-    }
-
-    public void setEquipConditions(String equipConditions) {
-        this.equipConditions = equipConditions;
-    }
-
-    public void setEquipCondition(EquipCondition equipCondition) {
-        this.equipCondition = equipCondition;
-    }
-
-    public String getStreConditions() {
-        return streConditions;
-    }
-
-    public void setStreConditions(String streConditions) {
-        this.streConditions = streConditions;
     }
 
     public StrenCondition getStreCondition() {
         return streCondition;
     }
 
-    public void setStreCondition(StrenCondition streCondition) {
-        this.streCondition = streCondition;
-    }
-
     public String getUpgradeConditions() {
         return upgradeConditions;
-    }
-
-    public void setUpgradeConditions(String upgradeConditions) {
-        this.upgradeConditions = upgradeConditions;
     }
 
     public UpgradeCondition getUpgradeCondition() {
         return upgradeCondition;
     }
 
-    public void setUpgradeCondition(UpgradeCondition upgradeCondition) {
-        this.upgradeCondition = upgradeCondition;
-    }
-
-    public String getBaseAttribute() {
-        return baseAttribute;
-    }
-
-    public void setBaseAttribute(String baseAttribute) {
-        this.baseAttribute = baseAttribute;
-    }
-
     public String getUpAttribute() {
         return upAttribute;
-    }
-
-    public void setUpAttribute(String upAttribute) {
-        this.upAttribute = upAttribute;
-    }
-
-    public void setUpAttributeList(List<Attribute> upAttributeList) {
-        this.upAttributeList = upAttributeList;
     }
 
     public String getEquipType() {
@@ -230,18 +164,12 @@ public class EquipResource {
         return equipCondition;
     }
 
-
-    public List<Attribute> getBaseAttributeList() {
+    public List<ImmutableAttribute> getBaseAttributeList() {
         return baseAttributeList;
     }
 
-    public void setBaseAttributeList(List<Attribute> baseAttributeList) {
-        this.baseAttributeList = baseAttributeList;
-    }
-
-    public List<Attribute> getUpAttributeList() {
+    public List<ImmutableAttribute> getUpAttributeList() {
         return upAttributeList;
     }
-
 
 }

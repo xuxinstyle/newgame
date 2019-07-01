@@ -2,7 +2,7 @@ package com.game.base.attribute.util;
 
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.AttributeId;
-import com.game.base.attribute.AttributeSet;
+import com.game.base.attribute.ModelAttribute;
 import com.game.base.attribute.constant.AttributeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,18 +58,37 @@ public class AttributeMapUtil {
      * @param result
      * @param excludeId
      */
-    public static void collectAttribute(Map<String, AttributeSet> target,
+    public static void collectAttribute(Map<String, ModelAttribute> target,
                                         Map<AttributeType, Attribute> result, List<AttributeId> excludeId) {
         /**
          * 把所有同类型的属性加起来
          */
-        for(Map.Entry<String, AttributeSet> entry:target.entrySet()){
+        for(Map.Entry<String, ModelAttribute> entry:target.entrySet()){
             if(excludeId!=null && excludeId.contains(entry.getKey())){
                 continue;
             }
-            AttributeSet attributeSet = entry.getValue();
-            if(attributeSet!=null) {
-                AttributeMapUtil.accumulateToMap(attributeSet.getAttributeMap(), result);
+            ModelAttribute modelAttribute = entry.getValue();
+            if(modelAttribute !=null) {
+                AttributeMapUtil.accumulateToMap(modelAttribute.getAttributeMap(), result);
+            }
+        }
+    }
+
+    /**
+     * 强克隆map
+     * @param cloneTarget
+     * @param result
+     */
+    private void cloneAttributeMap(Map<AttributeType, Attribute> cloneTarget, Map<AttributeType, Attribute> result) {
+        for(Attribute attribute:result.values()){
+            attribute.setValue(0);
+        }
+        for (Attribute attr:cloneTarget.values()){
+            Attribute attribute = result.get(attr.getAttributeType());
+            if(attribute != null){
+                attribute.setValue(attr.getValue());
+            }else{
+                result.put(attr.getAttributeType(), Attribute.valueOf(attr.getAttributeType(), attr.getValue()));
             }
         }
     }
