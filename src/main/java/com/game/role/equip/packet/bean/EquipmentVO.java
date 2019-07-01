@@ -1,7 +1,6 @@
 package com.game.role.equip.packet.bean;
 
 import com.game.base.attribute.Attribute;
-import com.game.base.attribute.ImmutableAttribute;
 
 import java.util.List;
 
@@ -33,12 +32,12 @@ public class EquipmentVO {
     /**
      * 装备基础属性
      */
-    private List<ImmutableAttribute> attributeList;
+    private List<Attribute> baseAttributeList;
 
     /**
      * 装备强化属性
      */
-    private List<ImmutableAttribute> strenAttributeList;
+    private List<Attribute> strenAttributeList;
 
     public static EquipmentVO valueOf(int position){
         EquipmentVO equipmentVO = new EquipmentVO();
@@ -80,19 +79,19 @@ public class EquipmentVO {
         this.level = level;
     }
 
-    public List<ImmutableAttribute> getAttributeList() {
-        return attributeList;
+    public List<Attribute> getBaseAttributeList() {
+        return baseAttributeList;
     }
 
-    public void setAttributeList(List<ImmutableAttribute> attributeList) {
-        this.attributeList = attributeList;
+    public void setBaseAttributeList(List<Attribute> baseAttributeList) {
+        this.baseAttributeList = baseAttributeList;
     }
 
-    public List<ImmutableAttribute> getStrenAttributeList() {
+    public List<Attribute> getStrenAttributeList() {
         return strenAttributeList;
     }
 
-    public void setStrenAttributeList(List<ImmutableAttribute> strenAttributeList) {
+    public void setStrenAttributeList(List<Attribute> strenAttributeList) {
         this.strenAttributeList = strenAttributeList;
     }
 
@@ -112,7 +111,7 @@ public class EquipmentVO {
                 ", position=" + position +
                 ", job=" + job +
                 ", level=" + level +
-                ", attributeList=" + attributeList +
+                ", baseAttributeList=" + baseAttributeList +
                 ", strenAttributeList=" + strenAttributeList +
                 '}';
     }

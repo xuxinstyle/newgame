@@ -20,18 +20,22 @@ import java.util.concurrent.Executors;
  */
 @Component
 public class EvenManager {
+
     private static Map<Class<? extends IEvent> ,List<EventInfo>> receiverEventMap = new HashMap<>();
 
     private static final Logger logger  = LoggerFactory.getLogger(EvenManager.class);
+
     private ExecutorService[]  executors;
+
     private static final int EXCUOTRS_SIZE = 2;
+
     public void init(){
         executors = new ExecutorService[EXCUOTRS_SIZE];
         for (int i = 0;i<EXCUOTRS_SIZE;i++){
             executors[i] = Executors.newSingleThreadExecutor();
         }
-
     }
+    
     public void registerEvent(Object bean){
         Class<?> clz = bean.getClass();
         Method[] methods = clz.getDeclaredMethods();
@@ -82,5 +86,11 @@ public class EvenManager {
                 defintion.invoke(event);
             }
         }
+    }
+
+    public void asyncSubmit(IEvent event){
+        executors[Math.abs((int)(event.getId()%EXCUOTRS_SIZE))].submit(()->{
+            doSubmitEvent(event);
+        });
     }
 }

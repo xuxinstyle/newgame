@@ -14,11 +14,12 @@ import com.game.connect.service.ConnectService;
 import com.game.login.service.LoginService;
 import com.game.scence.service.ScenceService;
 import com.game.register.service.RegisterService;
-import com.game.user.equip.service.EquipService;
-import com.game.user.equipupgrade.service.EquipUpgradeService;
+import com.game.role.equip.service.EquipService;
+import com.game.role.equipupgrade.service.EquipUpgradeService;
 import com.game.user.item.service.ItemService;
 import com.game.user.itemeffect.service.ItemEffectService;
-import com.game.user.equipstren.service.EquipStrenService;
+import com.game.role.equipstren.service.EquipStrenService;
+import com.resource.core.InitManager;
 import com.resource.core.StorageManager;
 import com.socket.core.session.SessionManager;
 import org.springframework.beans.BeansException;
@@ -42,7 +43,7 @@ public class SpringContext implements ApplicationContextAware {
     public static SpringContext instance;
 
     @PostConstruct
-    private final void init(){
+    private void init(){
         instance = this;
     }
     @Autowired
@@ -88,6 +89,12 @@ public class SpringContext implements ApplicationContextAware {
     private StorageManager storageManager;
     @Autowired
     private GmService gmService;
+    @Autowired
+    private InitManager initManager;
+
+    public static InitManager getInitManager(){
+        return instance.initManager;
+    }
 
     public static GmService getGmService(){
         return instance.gmService;
@@ -113,7 +120,7 @@ public class SpringContext implements ApplicationContextAware {
         return instance.equipUpgradeService;
     }
 
-    public static EquipStrenService getStrenEquipService(){
+    public static EquipStrenService getEquipStrenService(){
         return instance.equipStrenService;
     }
 

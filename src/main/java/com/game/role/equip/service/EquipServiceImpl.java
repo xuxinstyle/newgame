@@ -4,7 +4,6 @@ import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.container.AbstractAttributeContainer;
 import com.game.base.attribute.attributeid.EquipAttributeId;
-import com.game.base.attribute.ImmutableAttribute;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.user.account.entity.AccountEnt;
@@ -30,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -231,17 +229,18 @@ public class EquipServiceImpl implements EquipService {
             if (equipHole.getEquipment() == null) {
                 positionEquipment.put(key.getPosition(), EquipmentVO.valueOf(key.getPosition()));
             } else {
-                Equipment value = equipHole.getEquipment();
+                Equipment equipment = equipHole.getEquipment();
                 EquipmentVO equipmentVO = new EquipmentVO();
-                equipmentVO.setEquipName(value.getName());
-                equipmentVO.setJob(value.getJobLimit());
-                equipmentVO.setQuality(value.getQuality());
-                equipmentVO.setLevel(value.getStrenNum());
+                equipmentVO.setEquipName(equipment.getName());
+                equipmentVO.setJob(equipment.getJobLimit());
+                equipmentVO.setQuality(equipment.getQuality());
+                equipmentVO.setLevel(equipment.getStrenNum());
                 equipmentVO.setPosition(equipHole.getPosition());
-                List<ImmutableAttribute> strenAttributes = new ArrayList<>(value.getStrenAttributeMap().values());
-                equipmentVO.setStrenAttributeList(strenAttributes);
-                List<ImmutableAttribute> attributeList = value.getAttributeList();
-                equipmentVO.setAttributeList(attributeList);
+                /**
+                 * 客户端自己去读取资源数据
+                 */
+                equipmentVO.setBaseAttributeList(equipment.getBaseAttributeList());
+                equipmentVO.setStrenAttributeList(equipment.getStrenAttributeList());
                 positionEquipment.put(key.getPosition(), equipmentVO);
             }
         }

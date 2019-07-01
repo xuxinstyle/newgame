@@ -3,6 +3,7 @@ package com.game.base.attribute;
 import com.game.base.attribute.constant.AttributeType;
 
 /**
+ * FIXME::由于该属性无法存进数据库，所以暂时用不上，等到完善了缓存模型之后再使用
  * @Author：xuxin
  * @Date: 2019/7/1 14:08
  */

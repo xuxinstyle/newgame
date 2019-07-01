@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * TODO:这里在增加缓存之后再增加不可变属性
  * @Author：xuxin
  * @Date: 2019/6/16 17:33
  */
@@ -67,14 +68,7 @@ public class EquipResource {
     @Analyze("analyzeBaseAttribute")
     private String baseAttribute;
 
-    private List<ImmutableAttribute> baseAttributeList;
-    /**
-     * 装备每次强化增加的属性
-     */
-    @Analyze("analyzeUpAttribute")
-    private String upAttribute;
-
-    private List<ImmutableAttribute> upAttributeList;
+    private List<Attribute> baseAttributeList;
 
     public void analyzeEquipCondition() {
         String[] split = this.equipConditions.split("_");
@@ -102,27 +96,16 @@ public class EquipResource {
     }
 
     public void analyzeBaseAttribute() {
-        List<ImmutableAttribute> list = new ArrayList<>();
+        List<Attribute> list = new ArrayList<>();
         String[] split = baseAttribute.split(";");
         for (String str : split) {
             String[] attr = str.split(",");
             Attribute attribute = Attribute.valueOf(AttributeType.valueOf(attr[0]), Long.parseLong(attr[1]));
-            ImmutableAttribute wrapperAttribute = ImmutableAttribute.wrapper(attribute);
-            list.add(wrapperAttribute);
+            list.add(attribute);
         }
         baseAttributeList = list;
     }
-    public void analyzeUpAttribute(){
-        List<ImmutableAttribute> attributeList = new ArrayList<>();
-        String[] split = upAttribute.split(";");
-        for (String str : split) {
-            String[] attr = str.split(",");
-            Attribute attribute = Attribute.valueOf(AttributeType.valueOf(attr[0]), Long.parseLong(attr[1]));
-            ImmutableAttribute wrapper = ImmutableAttribute.wrapper(attribute);
-            attributeList.add(wrapper);
-        }
-        upAttributeList = attributeList;
-    }
+
 
     public int getMaxLevel() {
         return maxLevel;
@@ -152,9 +135,7 @@ public class EquipResource {
         return upgradeCondition;
     }
 
-    public String getUpAttribute() {
-        return upAttribute;
-    }
+
 
     public String getEquipType() {
         return equipType;
@@ -164,12 +145,71 @@ public class EquipResource {
         return equipCondition;
     }
 
-    public List<ImmutableAttribute> getBaseAttributeList() {
+    public List<Attribute> getBaseAttributeList() {
         return baseAttributeList;
     }
 
-    public List<ImmutableAttribute> getUpAttributeList() {
-        return upAttributeList;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
+    public void setEquipName(String equipName) {
+        this.equipName = equipName;
+    }
+
+    public void setEquipType(String equipType) {
+        this.equipType = equipType;
+    }
+
+    public void setUpgradeId(int upgradeId) {
+        this.upgradeId = upgradeId;
+    }
+
+    public void setMaxLevel(int maxLevel) {
+        this.maxLevel = maxLevel;
+    }
+
+    public String getEquipConditions() {
+        return equipConditions;
+    }
+
+    public void setEquipConditions(String equipConditions) {
+        this.equipConditions = equipConditions;
+    }
+
+    public void setEquipCondition(EquipCondition equipCondition) {
+        this.equipCondition = equipCondition;
+    }
+
+    public String getStreConditions() {
+        return streConditions;
+    }
+
+    public void setStreConditions(String streConditions) {
+        this.streConditions = streConditions;
+    }
+
+    public void setStreCondition(StrenCondition streCondition) {
+        this.streCondition = streCondition;
+    }
+
+    public void setUpgradeConditions(String upgradeConditions) {
+        this.upgradeConditions = upgradeConditions;
+    }
+
+    public void setUpgradeCondition(UpgradeCondition upgradeCondition) {
+        this.upgradeCondition = upgradeCondition;
+    }
+
+    public String getBaseAttribute() {
+        return baseAttribute;
+    }
+
+    public void setBaseAttribute(String baseAttribute) {
+        this.baseAttribute = baseAttribute;
+    }
+
+    public void setBaseAttributeList(List<Attribute> baseAttributeList) {
+        this.baseAttributeList = baseAttributeList;
+    }
 }

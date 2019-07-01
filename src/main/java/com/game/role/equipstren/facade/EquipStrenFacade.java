@@ -19,7 +19,7 @@ public class EquipStrenFacade {
     @HandlerAnno
     public void stenEquip(TSession session, CM_StrenEquip cm){
         try {
-            SpringContext.getStrenEquipService().strenEquip(session, cm.getItemObjectId(),cm.getAccountId());
+            SpringContext.getEquipStrenService().strenEquip(session, cm.getItemObjectId(),cm.getAccountId());
         }catch (Exception e){
             logger.error("玩家{}强化装备{}失败！",cm.getAccountId(),cm.getItemObjectId());
             e.printStackTrace();

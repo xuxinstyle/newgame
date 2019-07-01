@@ -28,6 +28,7 @@ public class Start {
         SpringContext.getSceneExecutorService().init();
         logger.info("开始加载静态资源...");
         SpringContext.getStorageManager().init();
+        SpringContext.getInitManager().init();
         logger.info("开始构建场景...");
         SpringContext.getScenceSerivce().init();
         logger.info("初始化完毕...");

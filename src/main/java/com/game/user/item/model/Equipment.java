@@ -2,17 +2,13 @@ package com.game.user.item.model;
 
 import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
-import com.game.base.attribute.ImmutableAttribute;
-import com.game.base.attribute.constant.AttributeType;
-import com.game.base.attribute.util.AttributeUtil;
 import com.game.role.equip.constant.EquipType;
 import com.game.role.equip.resource.EquipResource;
+import com.game.role.equipstren.resource.EquipStrenResource;
 import com.game.user.item.resource.ItemResource;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author：xuxin
@@ -26,11 +22,11 @@ public class Equipment extends AbstractItem {
     /**
      * 基础属性加成
      */
-    private List<Attribute> attributeList;
+    private List<Attribute> baseAttributeList;
     /**
      * 强化属性加成
      */
-    private Map<AttributeType, Attribute> strenAttributeMap;
+    private List<Attribute> strenAttributeList;
     /**
      * 品质
      */
@@ -48,12 +44,12 @@ public class Equipment extends AbstractItem {
         equipment.num = this.getNum();
         equipment.status = this.getStatus();
         equipment.deprecatedTime = this.getDeprecatedTime();
-        equipment.attributeList = this.getAttributeList();
+        equipment.baseAttributeList = this.getBaseAttributeList();
         equipment.equipType = this.getEquipType();
         equipment.strenNum = this.strenNum;
         equipment.itemType = this.itemType;
         equipment.quality = this.quality;
-        equipment.strenAttributeMap = this.strenAttributeMap;
+        equipment.strenAttributeList = this.strenAttributeList;
         return equipment;
     }
 
@@ -64,9 +60,8 @@ public class Equipment extends AbstractItem {
         this.equipType = EquipType.valueOf(equipResource.getEquipType());
         this.strenNum = 0;
         this.quality = itemResource.getQuality();
-        List<Attribute> attributeList = AttributeUtil.computeImmutableAttribute(equipResource.getBaseAttributeList());
-        this.attributeList = attributeList;
-        this.strenAttributeMap = new HashMap<>();
+        this.baseAttributeList = equipResource.getBaseAttributeList();
+        this.strenAttributeList = new ArrayList<>();
     }
 
     /**
@@ -74,31 +69,24 @@ public class Equipment extends AbstractItem {
      * @return
      */
     public boolean doStrenEquip() {
-
-        EquipResource equipResource = SpringContext.getItemService().getEquipResource(itemModelId);
-        if (strenNum >= equipResource.getMaxLevel()) {
+        EquipStrenResource equipStrenResource = SpringContext.getEquipStrenService().
+                getEquipStrenResource(equipType.getPosition(), quality, strenNum+1);
+        if (equipStrenResource==null) {
             return false;
         }
         this.strenNum++;
 
-        List<ImmutableAttribute> upAttributeList = equipResource.getUpAttributeList();
-        for (ImmutableAttribute attribute : upAttributeList) {
-            if (this.strenAttributeMap.get(attribute.getAttributeType()) == null) {
-                this.strenAttributeMap.put(attribute.getAttributeType(), attribute);
-            } else {
-                Attribute attr = strenAttributeMap.get(attribute.getAttributeType());
-                this.strenAttributeMap.get(attribute.getAttributeType()).setValue(attribute.getValue()+attr.getValue());
-            }
-        }
+        strenAttributeList = equipStrenResource.getAttributeList();
+
         return true;
     }
 
-    public Map<AttributeType, Attribute> getStrenAttributeMap() {
-        return strenAttributeMap;
+    public List<Attribute> getStrenAttributeList() {
+        return strenAttributeList;
     }
 
-    public void setStrenAttributeMap(Map<AttributeType, Attribute> strenAttributeMap) {
-        this.strenAttributeMap = strenAttributeMap;
+    public void setStrenAttributeList(List<Attribute> strenAttributeList) {
+        this.strenAttributeList = strenAttributeList;
     }
 
     public EquipType getEquipType() {
@@ -109,17 +97,18 @@ public class Equipment extends AbstractItem {
         this.equipType = equipType;
     }
 
-    public List<Attribute> getAttributeList() {
-        return attributeList;
+    public List<Attribute> getBaseAttributeList() {
+        return baseAttributeList;
     }
 
-    public void setAttributeList(List<Attribute> attributeList) {
-        this.attributeList = attributeList;
+    public void setBaseAttributeList(List<Attribute> baseAttributeList) {
+        this.baseAttributeList = baseAttributeList;
     }
+
     public List<Attribute> getAllAttributes(){
         List<Attribute> allAttributeList = new ArrayList<>();
-        allAttributeList.addAll(attributeList);
-        allAttributeList.addAll(strenAttributeMap.values());
+        allAttributeList.addAll(baseAttributeList);
+        allAttributeList.addAll(strenAttributeList);
         return allAttributeList;
     }
     public int getStrenNum() {

@@ -283,8 +283,8 @@ public class ItemServiceImpl implements ItemService {
         sm.setStrenNum(equipment.getStrenNum());
         sm.setJobType(equipment.getJobLimit());
         sm.setLimitLevel(resource.getUseLevel());
-        sm.setBaseAttributeList(equipment.getAttributeList());
-        sm.setStrenAttributeList(new ArrayList<>(equipment.getStrenAttributeMap().values()));
+        sm.setBaseAttributeList(equipment.getBaseAttributeList());
+        sm.setStrenAttributeList(new ArrayList<>(equipment.getStrenAttributeList()));
         sm.setStatus(1);
         session.sendPacket(sm);
     }

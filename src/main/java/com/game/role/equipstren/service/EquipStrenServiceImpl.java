@@ -1,6 +1,7 @@
 package com.game.role.equipstren.service;
 
 import com.game.SpringContext;
+import com.game.role.equipstren.resource.EquipStrenResource;
 import com.game.user.condition.model.StrenCondition;
 import com.game.role.equip.resource.EquipResource;
 import com.game.user.item.constant.ItemType;
@@ -10,6 +11,7 @@ import com.game.user.item.model.Equipment;
 import com.game.user.item.model.ItemStorageInfo;
 import com.game.role.equipstren.packet.SM_StrenEquip;
 import com.socket.core.session.TSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EquipStrenServiceImpl implements EquipStrenService {
+    @Autowired
+    private EquipStrenManager equipStrenManager;
     /**
      * 强化装备
      * @param session
@@ -69,5 +73,9 @@ public class EquipStrenServiceImpl implements EquipStrenService {
         sm.setStatus(1);
         session.sendPacket(sm);
         return;
+    }
+    @Override
+    public EquipStrenResource getEquipStrenResource(int position,int quality, int level){
+        return equipStrenManager.getEquipStrenResource(position,quality,level);
     }
 }
