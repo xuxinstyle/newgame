@@ -2,6 +2,7 @@ package com.game.base.attribute.constant;
 
 import com.game.base.attribute.Attribute;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -269,18 +270,13 @@ public enum AttributeType {
         }
     },
     ;
+
     private int id;
 
     private String attrName;
+
     private AttributeKind kind;
-    public static AttributeType valueOf(int id){
-        for(AttributeType attributeType:AttributeType.values()){
-            if(attributeType.getId()==id){
-                return attributeType;
-            }
-        }
-        return null;
-    }
+
 
     /**
      * 用于获取影响对应二级属性的其他属性集合

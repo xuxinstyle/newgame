@@ -1,8 +1,8 @@
 package com.game.user.itemeffect.service;
 
 import com.game.SpringContext;
-import com.game.base.attribute.AbstractAttributeContainer;
-import com.game.base.attribute.MedicineAttributeId;
+import com.game.base.attribute.container.AbstractAttributeContainer;
+import com.game.base.attribute.attributeid.MedicineAttributeId;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.event.LogoutEvent;
 import com.game.role.player.model.Player;

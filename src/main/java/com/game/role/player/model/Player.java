@@ -2,9 +2,8 @@ package com.game.role.player.model;
 
 import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
-import com.game.base.attribute.AttributeIdEnum;
-import com.game.base.attribute.CreatureAttributeContainer;
-import com.game.base.attribute.ImmutableAttribute;
+import com.game.base.attribute.attributeid.AttributeIdEnum;
+import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.base.gameobject.model.Creature;
 import com.game.role.player.resource.PlayerLevelResource;

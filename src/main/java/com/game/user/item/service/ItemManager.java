@@ -1,6 +1,6 @@
 package com.game.user.item.service;
 
-import com.game.user.equip.resource.EquipResource;
+import com.game.role.equip.resource.EquipResource;
 import com.game.user.item.resource.ItemResource;
 import com.resource.core.StorageManager;
 import org.springframework.beans.factory.annotation.Autowired;

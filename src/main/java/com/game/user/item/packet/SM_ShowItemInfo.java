@@ -49,11 +49,11 @@ public class SM_ShowItemInfo {
     /**
      * 基础属性
      */
-    private List<ImmutableAttribute> baseAttributeList;
+    private List<Attribute> baseAttributeList;
     /**
      * 强化属性
      */
-    private List<ImmutableAttribute> strenAttributeList;
+    private List<Attribute> strenAttributeList;
     /**
      * 装备限制职业
      */
@@ -127,19 +127,19 @@ public class SM_ShowItemInfo {
         this.strenNum = strenNum;
     }
 
-    public List<ImmutableAttribute> getBaseAttributeList() {
+    public List<Attribute> getBaseAttributeList() {
         return baseAttributeList;
     }
 
-    public void setBaseAttributeList(List<ImmutableAttribute> baseAttributeList) {
+    public void setBaseAttributeList(List<Attribute> baseAttributeList) {
         this.baseAttributeList = baseAttributeList;
     }
 
-    public List<ImmutableAttribute> getStrenAttributeList() {
+    public List<Attribute> getStrenAttributeList() {
         return strenAttributeList;
     }
 
-    public void setStrenAttributeList(List<ImmutableAttribute> strenAttributeList) {
+    public void setStrenAttributeList(List<Attribute> strenAttributeList) {
         this.strenAttributeList = strenAttributeList;
     }
 

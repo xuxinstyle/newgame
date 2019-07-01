@@ -1,10 +1,9 @@
 package com.game.user.item.resource;
 
 import com.game.user.item.constant.UseEffectType;
-import com.game.user.item.model.AbstractUseEffect;
+import com.game.user.itemeffect.model.AbstractUseEffect;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;

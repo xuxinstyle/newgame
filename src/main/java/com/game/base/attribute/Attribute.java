@@ -2,11 +2,13 @@ package com.game.base.attribute;
 
 
 import com.game.base.attribute.constant.AttributeType;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 /**
  * @Author：xuxin
  * @Date: 2019/6/13 15:05
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS)
 public class Attribute {
     /**
      * 属性类型

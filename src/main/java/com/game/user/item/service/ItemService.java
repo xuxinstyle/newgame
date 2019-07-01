@@ -1,6 +1,6 @@
 package com.game.user.item.service;
 
-import com.game.user.equip.resource.EquipResource;
+import com.game.role.equip.resource.EquipResource;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
 import com.game.user.item.resource.ItemResource;

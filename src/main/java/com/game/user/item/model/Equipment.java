@@ -4,8 +4,9 @@ import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.ImmutableAttribute;
 import com.game.base.attribute.constant.AttributeType;
-import com.game.user.equip.constant.EquipType;
-import com.game.user.equip.resource.EquipResource;
+import com.game.base.attribute.util.AttributeUtil;
+import com.game.role.equip.constant.EquipType;
+import com.game.role.equip.resource.EquipResource;
 import com.game.user.item.resource.ItemResource;
 
 import java.util.ArrayList;
@@ -25,11 +26,11 @@ public class Equipment extends AbstractItem {
     /**
      * 基础属性加成
      */
-    private List<ImmutableAttribute> attributeList;
+    private List<Attribute> attributeList;
     /**
      * 强化属性加成
      */
-    private Map<AttributeType, ImmutableAttribute> strenAttributeMap;
+    private Map<AttributeType, Attribute> strenAttributeMap;
     /**
      * 品质
      */
@@ -63,7 +64,8 @@ public class Equipment extends AbstractItem {
         this.equipType = EquipType.valueOf(equipResource.getEquipType());
         this.strenNum = 0;
         this.quality = itemResource.getQuality();
-        this.attributeList = equipResource.getBaseAttributeList();
+        List<Attribute> attributeList = AttributeUtil.computeImmutableAttribute(equipResource.getBaseAttributeList());
+        this.attributeList = attributeList;
         this.strenAttributeMap = new HashMap<>();
     }
 
@@ -71,7 +73,7 @@ public class Equipment extends AbstractItem {
      * 强化装备
      * @return
      */
-    public boolean strenEquip() {
+    public boolean doStrenEquip() {
 
         EquipResource equipResource = SpringContext.getItemService().getEquipResource(itemModelId);
         if (strenNum >= equipResource.getMaxLevel()) {
@@ -91,11 +93,11 @@ public class Equipment extends AbstractItem {
         return true;
     }
 
-    public Map<AttributeType, ImmutableAttribute> getStrenAttributeMap() {
+    public Map<AttributeType, Attribute> getStrenAttributeMap() {
         return strenAttributeMap;
     }
 
-    public void setStrenAttributeMap(Map<AttributeType, ImmutableAttribute> strenAttributeMap) {
+    public void setStrenAttributeMap(Map<AttributeType, Attribute> strenAttributeMap) {
         this.strenAttributeMap = strenAttributeMap;
     }
 
@@ -107,11 +109,11 @@ public class Equipment extends AbstractItem {
         this.equipType = equipType;
     }
 
-    public List<ImmutableAttribute> getAttributeList() {
+    public List<Attribute> getAttributeList() {
         return attributeList;
     }
 
-    public void setAttributeList(List<ImmutableAttribute> attributeList) {
+    public void setAttributeList(List<Attribute> attributeList) {
         this.attributeList = attributeList;
     }
     public List<Attribute> getAllAttributes(){

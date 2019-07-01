@@ -1,16 +1,14 @@
 package com.game.role.player.model;
 
-import com.game.base.attribute.*;
-import com.game.base.attribute.constant.AttributeType;
-
-import java.util.Map;
+import com.game.base.attribute.container.AttributeUpdateSet;
+import com.game.base.attribute.container.CreatureAttributeContainer;
 
 /**
  * @Author：xuxin
  * @Date: 2019/6/25 16:29
  */
 
-public class PlayerAttributeContainer extends CreatureAttributeContainer  {
+public class PlayerAttributeContainer extends CreatureAttributeContainer {
     public PlayerAttributeContainer(){
 
     }

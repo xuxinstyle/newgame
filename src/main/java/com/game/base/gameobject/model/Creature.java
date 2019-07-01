@@ -1,6 +1,6 @@
 package com.game.base.gameobject.model;
 
-import com.game.base.attribute.CreatureAttributeContainer;
+import com.game.base.attribute.container.CreatureAttributeContainer;
 
 /**
  * @Author：xuxin

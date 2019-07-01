@@ -1,10 +1,8 @@
 package com.game.user.item.model;
 
 import com.game.SpringContext;
-import com.game.role.player.model.Player;
 import com.game.user.item.resource.ItemResource;
-
-import java.util.Map;
+import com.game.user.itemeffect.model.ExpUseEffect;
 
 /**
  * @Author：xuxin

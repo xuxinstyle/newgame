@@ -2,6 +2,7 @@ package com.game.user.item.model;
 
 import com.game.SpringContext;
 import com.game.user.item.resource.ItemResource;
+import com.game.user.itemeffect.model.AbstractUseEffect;
 
 /**
  * @Author：xuxin

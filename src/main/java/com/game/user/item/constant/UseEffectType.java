@@ -1,6 +1,8 @@
 package com.game.user.item.constant;
 
-import com.game.user.item.model.*;
+import com.game.user.itemeffect.model.AbstractUseEffect;
+import com.game.user.itemeffect.model.ExpUseEffect;
+import com.game.user.itemeffect.model.MedicineEffect;
 
 /**
  * 使用效果的道具类型
