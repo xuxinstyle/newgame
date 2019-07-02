@@ -1,6 +1,7 @@
 package com.game.user.itemeffect.service;
 
 
+import com.db.EntityBuilder;
 import com.db.cache.EntityCacheService;
 
 import com.game.user.itemeffect.command.ItemExpireDelayCommand;
@@ -48,16 +49,21 @@ public class ItemEffectManager {
     }
 
     public void saveItemEffect(ItemEffectEnt itemEffectEnt){
+
         entityCacheService.saveOrUpdate(itemEffectEnt);
     }
 
+    public ItemEffectEnt getItemEffect(long playerId){
+        return entityCacheService.load(ItemEffectEnt.class,playerId);
+    }
+
     public ItemEffectEnt getItemEffectOrCreate(long playerId){
-        ItemEffectEnt itemEffectEnt = entityCacheService.load(ItemEffectEnt.class, playerId);
-        if(itemEffectEnt==null){
-            ItemEffectEnt nowItemEffectEnt = ItemEffectEnt.valueOf(playerId);
-            saveItemEffect(nowItemEffectEnt);
-            return nowItemEffectEnt;
-        }
+        ItemEffectEnt itemEffectEnt = entityCacheService.loadOrCreate(ItemEffectEnt.class, playerId, new EntityBuilder<Long, ItemEffectEnt>() {
+            @Override
+            public ItemEffectEnt newInstance(Long id) {
+                return ItemEffectEnt.valueOf(playerId);
+            }
+        });
         return itemEffectEnt;
     }
 }

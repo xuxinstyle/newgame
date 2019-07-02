@@ -30,7 +30,7 @@ public class EntityCacheServiceImpl<K extends Serializable & Comparable<K>, T ex
 
         T t = entityCache.get(id);
         if(t == null){
-            t = hibernateDao.find(entityClz,id);
+            t = hibernateDao.findOrSave(entityClz,id,builder);
             entityCache.put(id,t);
         }
         return t;

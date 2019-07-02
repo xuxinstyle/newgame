@@ -35,9 +35,12 @@ public class ItemEffectServiceImpl implements ItemEffectService {
 
     @Override
     public ItemEffectEnt getItemEffectEnt(long playerId) {
+        return itemEffectManager.getItemEffect(playerId);
+    }
+    @Override
+    public ItemEffectEnt getItemEffectEntOrCreate(long playerId){
         return itemEffectManager.getItemEffectOrCreate(playerId);
     }
-
 
     @Override
     public Map<Integer, ItemExpireDelayCommand> getItemExpireDelayCommandMap(long playerId){
@@ -96,15 +99,19 @@ public class ItemEffectServiceImpl implements ItemEffectService {
 
 
         ItemEffectEnt itemEffectEnt = SpringContext.getItemEffectService().getItemEffectEnt(player.getObjectId());
+        if(itemEffectEnt==null){
+            return;
+        }
         ItemEffectInfo itemEffectInfo = itemEffectEnt.getItemEffectInfo();
+        if(itemEffectInfo==null){
+            return;
+        }
         Map<Integer, ItemEffectdetaiInfo> itemEffectdetaiInfoMap = itemEffectInfo.getItemEffectdetaiInfoMap();
         ItemEffectdetaiInfo itemEffectdetaiInfo = itemEffectdetaiInfoMap.get(itemModelId);
 
         /**
          * 达到失效时间，还原玩家属性
          */
-
-
         AbstractAttributeContainer attributeContainer = player.getAttributeContainer();
         attributeContainer.removeAndCompteAttribtues(MedicineAttributeId.getMedicineAttributeId(itemModelId));
         SpringContext.getPlayerSerivce().save(playerEnt);
@@ -163,7 +170,14 @@ public class ItemEffectServiceImpl implements ItemEffectService {
          * 这里如果玩家没有延期的信息，也会在表中存一条信息
          */
         ItemEffectEnt itemEffectEnt = getItemEffectEnt(player.getObjectId());
-        Map<Integer, ItemEffectdetaiInfo> itemEffectdetaiInfoMap = itemEffectEnt.getItemEffectInfo().getItemEffectdetaiInfoMap();
+        if(itemEffectEnt==null){
+            return;
+        }
+        ItemEffectInfo itemEffectInfo = itemEffectEnt.getItemEffectInfo();
+        if(itemEffectInfo==null){
+            return;
+        }
+        Map<Integer, ItemEffectdetaiInfo> itemEffectdetaiInfoMap = itemEffectInfo.getItemEffectdetaiInfoMap();
 
         for(ItemEffectdetaiInfo itemEffectdetaiInfo:itemEffectdetaiInfoMap.values()){
 

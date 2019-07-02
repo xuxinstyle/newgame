@@ -65,7 +65,7 @@ public class MedicineUseEffect extends AbstractUseEffect {
          * 这里第二次使用有问题
          *
          */
-        ItemEffectEnt itemEffectEnt = SpringContext.getItemEffectService().getItemEffectEnt(player.getObjectId());
+        ItemEffectEnt itemEffectEnt = SpringContext.getItemEffectService().getItemEffectEntOrCreate(player.getObjectId());
         ItemEffectInfo itemEffectInfo = itemEffectEnt.getItemEffectInfo();
         Map<Integer, ItemEffectdetaiInfo> itemEffectdetaiInfoMap = itemEffectInfo.getItemEffectdetaiInfoMap();
         ItemEffectdetaiInfo itemEffectdetaiInfo = itemEffectdetaiInfoMap.get(itemModelId);

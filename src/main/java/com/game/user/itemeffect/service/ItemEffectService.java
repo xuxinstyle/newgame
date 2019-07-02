@@ -22,6 +22,12 @@ public interface ItemEffectService {
     ItemEffectEnt getItemEffectEnt(long playerId);
 
     /**
+     * 获取玩家的道具效果信息 数据库中没有则创建一条信息
+     * @param playerId
+     * @return
+     */
+    ItemEffectEnt getItemEffectEntOrCreate(long playerId);
+    /**
      * 做登录后的操作，判断玩家使用的药是否过期
      * @param accountId
      */
