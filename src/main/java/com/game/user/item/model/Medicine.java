@@ -15,10 +15,8 @@ public class Medicine extends AbstractItem{
         Medicine medicine = new Medicine();
         medicine.setObjectId(createItemObjectId());
         medicine.setNum(this.num);
-        medicine.setDeprecatedTime(this.deprecatedTime);
         medicine.setItemModelId(this.itemModelId);
         medicine.setItemType(this.itemType);
-        medicine.setStatus(this.status);
         return medicine;
     }
 

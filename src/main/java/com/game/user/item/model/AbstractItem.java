@@ -21,14 +21,7 @@ public abstract class AbstractItem extends GameObject implements Comparable<Abst
      * 数量
      */
     protected int num;
-    /**
-     * 物品状态 用于有过期时间的道具
-     */
-    protected int status;
-    /**
-     * 过期时间
-     */
-    protected long deprecatedTime;
+
 
     /**
      * 道具类型  用于有过期时间的道具
@@ -43,8 +36,6 @@ public abstract class AbstractItem extends GameObject implements Comparable<Abst
         this.objectId = createItemObjectId();
         this.itemModelId = item.getItemModelId();
         this.num = item.getNum();
-        this.status = item.getStatus();
-        this.deprecatedTime = item.getDeprecatedTime();
         this.itemType = item.getItemType();
     }
 
@@ -113,21 +104,6 @@ public abstract class AbstractItem extends GameObject implements Comparable<Abst
         this.itemType = itemType;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public long getDeprecatedTime() {
-        return deprecatedTime;
-    }
-
-    public void setDeprecatedTime(long deprecatedTime) {
-        this.deprecatedTime = deprecatedTime;
-    }
 
     @Override
     public String getName() {

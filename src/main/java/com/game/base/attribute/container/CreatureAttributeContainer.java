@@ -59,7 +59,7 @@ public class CreatureAttributeContainer<T> extends AbstractAttributeContainer {
                 continue;
             }
             /**
-             * 是二级属性的话 受其他属性的影响，所以需要计算一级属性后加进来
+             * 是二级属性的话 受其他属性的影响，所以需要计算一级属性后加进来 fixme:加力量不会增加血量
              */
             AttributeType[] firstAttributes = type.getFirstAttributes();
             if(firstAttributes!=null){

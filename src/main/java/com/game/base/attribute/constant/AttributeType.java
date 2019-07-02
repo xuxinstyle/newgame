@@ -83,7 +83,7 @@ public enum AttributeType {
 
         @Override
         public AttributeType[] getFirstAttributes() {
-            return new AttributeType[]{ PHYSICAL};
+            return new AttributeType[]{ PHYSICAL,POWER};
         }
 
     },

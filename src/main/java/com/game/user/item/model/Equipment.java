@@ -43,8 +43,7 @@ public class Equipment extends AbstractItem {
         equipment.objectId = createItemObjectId();
         equipment.itemModelId = this.getItemModelId();
         equipment.num = this.getNum();
-        equipment.status = this.getStatus();
-        equipment.deprecatedTime = this.getDeprecatedTime();
+
         equipment.baseAttributeList = this.getBaseAttributeList();
         equipment.equipType = this.getEquipType();
         equipment.strenNum = this.strenNum;
