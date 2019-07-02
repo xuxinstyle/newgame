@@ -78,6 +78,11 @@ public class ItemStorageInfo {
         }
         return ;
     }
+
+    /**
+     * FIXME:没有判断背包是否满 使用前需要判断背包空间是否充足
+     * @param addItem
+     */
     public void addItemQuick(AbstractItem addItem) {
         /**
          *  道具是否可堆叠？

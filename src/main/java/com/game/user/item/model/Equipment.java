@@ -6,6 +6,7 @@ import com.game.role.equip.constant.EquipType;
 import com.game.role.equip.resource.EquipResource;
 import com.game.role.equipstren.resource.EquipStrenResource;
 import com.game.user.item.resource.ItemResource;
+import com.game.util.ItemUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,7 +72,7 @@ public class Equipment extends AbstractItem {
     public boolean doStrenEquip() {
         EquipStrenResource equipStrenResource = SpringContext.getEquipStrenService().
                 getEquipStrenResource(equipType.getPosition(), quality, strenNum+1);
-        if (equipStrenResource==null) {
+        if (equipStrenResource==null||strenNum>= ItemUtil.EQUIP_STREN_MAX_LEVEL) {
             return false;
         }
         this.strenNum++;

@@ -4,6 +4,7 @@ import com.game.SpringContext;
 import com.game.user.condition.model.UpgradeCondition;
 import com.game.role.equip.resource.EquipResource;
 import com.game.role.equipupgrade.packet.SM_EquipUpgrade;
+import com.game.util.ItemUtil;
 import com.game.util.ParamUtil;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.entity.ItemStorageEnt;
@@ -57,11 +58,11 @@ public class EquipUpgradeServiceImpl implements EquipUpgradeService {
             SM_EquipUpgrade sm = new SM_EquipUpgrade();
             sm.setStatus(4);
             session.sendPacket(sm);
-            logger.warn("玩家[{}]升级道具[{}]不足",accountId,equipment.getItemModelId());
+            logger.warn("玩家[{}]升级道具[{}]条件不足",accountId,equipment.getItemModelId());
             return;
         }
         ItemResource newItemResource = SpringContext.getItemService().getItemResource(equipResource.getUpgradeId());
-        if(newItemResource==null){
+        if(newItemResource==null||equipment.getQuality()>= ItemUtil.EQUIP_MAX_QUAILTY){
             SM_EquipUpgrade sm = new SM_EquipUpgrade();
             sm.setStatus(5);
             logger.warn("玩家[{}]装备[{}]达到升级上限",accountId,itemObjectId);
@@ -77,7 +78,7 @@ public class EquipUpgradeServiceImpl implements EquipUpgradeService {
          */
         pack.removeItem(upgradeCondition.getItemModelId(),upgradeCondition.getNum());
         pack.removeByObjectId(itemObjectId);
-        pack.addItem(newEquipment);
+        pack.addItemQuick(newEquipment);
         SpringContext.getItemService().save(itemStorageEnt);
         SM_EquipUpgrade sm = new SM_EquipUpgrade();
         sm.setStatus(1);

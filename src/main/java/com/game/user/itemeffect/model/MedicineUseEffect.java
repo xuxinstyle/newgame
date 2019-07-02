@@ -61,10 +61,6 @@ public class MedicineUseEffect extends AbstractUseEffect {
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(acountId);
         Player player = playerEnt.getPlayer();
 
-        /**
-         * 这里第二次使用有问题
-         *
-         */
         ItemEffectEnt itemEffectEnt = SpringContext.getItemEffectService().getItemEffectEntOrCreate(player.getObjectId());
         ItemEffectInfo itemEffectInfo = itemEffectEnt.getItemEffectInfo();
         Map<Integer, ItemEffectdetaiInfo> itemEffectdetaiInfoMap = itemEffectInfo.getItemEffectdetaiInfoMap();
@@ -94,6 +90,9 @@ public class MedicineUseEffect extends AbstractUseEffect {
             SpringContext.getAccountExecutorService().submit(command);
             Map<Integer, ItemExpireDelayCommand> itemExpireDelayCommandMap = SpringContext.getItemEffectService().getItemExpireDelayCommandMap(player.getObjectId());
             ItemExpireDelayCommand oldCommand = itemExpireDelayCommandMap.get(itemModelId);
+            if(oldCommand==null){
+                return;
+            }
             oldCommand.cancel();
             SpringContext.getItemEffectService().removeDelayCommand(player.getObjectId(),itemModelId);
             SpringContext.getItemEffectService().putCommand(command);

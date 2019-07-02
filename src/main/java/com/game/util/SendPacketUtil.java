@@ -1,4 +1,4 @@
-package com.socket.utils;
+package com.game.util;
 
 import com.game.SpringContext;
 import com.game.role.player.model.Player;

@@ -60,7 +60,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         logger.info("客户端关闭:" + ctx.channel().remoteAddress());
         /**当发生异常时，关闭 ChannelHandlerContext，释放和它相关联的句柄等资源 */
-        cause.printStackTrace();
+        //cause.printStackTrace();
         ctx.channel().close();
     }
 

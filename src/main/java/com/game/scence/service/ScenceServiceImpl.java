@@ -17,7 +17,7 @@ import com.game.user.account.model.AccountInfo;
 import com.game.user.account.packet.SM_EnterCreatePlayer;
 import com.socket.core.session.SessionManager;
 import com.socket.core.session.TSession;
-import com.socket.utils.SendPacketUtil;
+import com.game.util.SendPacketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -88,7 +88,7 @@ public class StorageManager implements BeanPostProcessor {
         Storage<?, ?> storage = getStorage(clz);
         T t = (T) storage.getData().getValues().get(key);
         if(t==null||!t.getClass().equals(clz)){
-            logger.warn("获取{}资源{}失败！",key,clz.getSimpleName());
+            /*logger.warn("获取{}资源{}失败！",key,clz.getSimpleName());*/
             return null;
         }
         return t;
