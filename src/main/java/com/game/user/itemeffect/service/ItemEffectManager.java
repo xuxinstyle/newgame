@@ -54,11 +54,11 @@ public class ItemEffectManager {
     }
 
     public ItemEffectEnt getItemEffect(long playerId){
-        return entityCacheService.load(ItemEffectEnt.class,playerId);
+        return entityCacheService.find(ItemEffectEnt.class,playerId);
     }
 
     public ItemEffectEnt getItemEffectOrCreate(long playerId){
-        ItemEffectEnt itemEffectEnt = entityCacheService.loadOrCreate(ItemEffectEnt.class, playerId, new EntityBuilder<Long, ItemEffectEnt>() {
+        ItemEffectEnt itemEffectEnt = entityCacheService.findOrCreate(ItemEffectEnt.class, playerId, new EntityBuilder<Long, ItemEffectEnt>() {
             @Override
             public ItemEffectEnt newInstance(Long id) {
                 return ItemEffectEnt.valueOf(playerId);

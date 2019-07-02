@@ -32,7 +32,7 @@ public class IdentifyService {
      * @return
      */
     public synchronized long getNextIdentify(ObjectType type){
-        IdentifyEnt identifyEnt = entityCacheService.load(IdentifyEnt.class, type.getTypeId());
+        IdentifyEnt identifyEnt = entityCacheService.find(IdentifyEnt.class, type.getTypeId());
         if(identifyEnt==null){
             identifyEnt= new IdentifyEnt();
             identifyEnt.setTypeId(type.getTypeId());

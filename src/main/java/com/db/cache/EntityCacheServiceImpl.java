@@ -22,7 +22,7 @@ public class EntityCacheServiceImpl<K extends Serializable & Comparable<K>, T ex
     private Map<Class<?>, EntityCache<K,T>> entityCacheMap = new ConcurrentHashMap<>();
 
     @Override
-    public T loadOrCreate(Class<T> entityClz, K id,EntityBuilder<K, T> builder) {
+    public T findOrCreate(Class<T> entityClz, K id, EntityBuilder<K, T> builder) {
         if(!entityCacheMap.containsKey(entityClz)){
             entityCacheMap.put(entityClz,new EntityCache<>());
         }
@@ -37,7 +37,7 @@ public class EntityCacheServiceImpl<K extends Serializable & Comparable<K>, T ex
     }
 
     @Override
-    public T load(Class<T> entityClz, K id) {
+    public T find(Class<T> entityClz, K id) {
         if(!entityCacheMap.containsKey(entityClz)){
             entityCacheMap.put(entityClz,new EntityCache<>());
         }

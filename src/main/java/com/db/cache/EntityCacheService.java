@@ -17,7 +17,7 @@ public interface EntityCacheService<K extends Serializable & Comparable<K>, T ex
      * @param id
      * @return
      */
-    T loadOrCreate(Class<T> entityClz, K id,EntityBuilder<K, T> builder);
+    T findOrCreate(Class<T> entityClz, K id, EntityBuilder<K, T> builder);
     /**
      * 查找 无则返回null
      *
@@ -25,7 +25,7 @@ public interface EntityCacheService<K extends Serializable & Comparable<K>, T ex
      * @param id
      * @return
      */
-    T load(Class<T> entityClz, K id);
+    T find(Class<T> entityClz, K id);
 
     /**
      * 持久化操作

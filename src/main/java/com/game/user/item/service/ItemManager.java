@@ -29,7 +29,7 @@ public class ItemManager {
 
 
     public ItemStorageEnt getItemStorageEnt(String accountId) {
-        return entityCacheService.load(ItemStorageEnt.class, accountId);
+        return entityCacheService.find(ItemStorageEnt.class, accountId);
     }
 
     public void save(ItemStorageEnt itemStorageEnt) {

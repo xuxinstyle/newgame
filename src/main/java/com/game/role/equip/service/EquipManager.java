@@ -31,6 +31,6 @@ public class EquipManager {
     }
 
     public EquipmentEnt getEquipmentEnt(long playerId){
-        return entityCacheService.load(EquipmentEnt.class,playerId);
+        return entityCacheService.find(EquipmentEnt.class,playerId);
     }
 }

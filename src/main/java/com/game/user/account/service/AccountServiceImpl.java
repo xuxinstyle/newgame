@@ -42,7 +42,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountEnt getAccountEnt(String accountId) {
-        AccountEnt accountEnt = entityCacheService.load(AccountEnt.class, accountId);
+        AccountEnt accountEnt = entityCacheService.find(AccountEnt.class, accountId);
 
         if(accountEnt==null){
             logger.warn("数据库中没有["+accountId+"]的账号信息");

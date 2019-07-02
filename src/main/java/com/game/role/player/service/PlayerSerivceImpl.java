@@ -45,7 +45,7 @@ public class PlayerSerivceImpl implements PlayerService {
 
     @Override
     public PlayerEnt getPlayerEnt(long playerId) {
-        return entityCacheService.load(PlayerEnt.class, playerId);
+        return entityCacheService.find(PlayerEnt.class, playerId);
     }
 
     @Override

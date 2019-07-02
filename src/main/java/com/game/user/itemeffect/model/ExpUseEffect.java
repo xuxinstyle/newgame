@@ -44,7 +44,7 @@ public class ExpUseEffect extends AbstractUseEffect {
         SpringContext.getPlayerSerivce().save(playerEnt);
         while (player.getExp() >= upLevelExp) {
             playerLevelResource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel()+1);
-            if (player.getLevel()+1>=PlayerUtil.PLAYER_MAX_LEVEL||playerLevelResource == null) {
+            if (player.getLevel()>=PlayerUtil.PLAYER_MAX_LEVEL||playerLevelResource == null) {
                 SM_PlayerUpLevel res = new SM_PlayerUpLevel();
                 res.setPlayerName(player.getPlayerName());
                 res.setStatus(2);

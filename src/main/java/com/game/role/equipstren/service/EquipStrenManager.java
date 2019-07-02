@@ -23,18 +23,18 @@ public class EquipStrenManager {
      * <装备位置,<装备品质，<强化等级, resource>>>
      */
     @Init("init")
-    private Map<Integer,Map<Integer,Map<Integer,EquipStrenResource>>>  positionQualityLevel;
+    private Map<Integer,Map<Integer,Map<Integer,EquipStrenResource>>> positionQualityLevelMap;
 
     public void init(){
         Collection<EquipStrenResource> resourceAll =
                 (Collection<EquipStrenResource>)storageManager.getResourceAll(EquipStrenResource.class);
-        Map<Integer,Map<Integer,Map<Integer,EquipStrenResource>>>  positionQualityLevel= new HashMap<>();
+        Map<Integer,Map<Integer,Map<Integer,EquipStrenResource>>>  positionQualityLevelMap= new HashMap<>();
         for(EquipStrenResource resource:resourceAll){
-            Map<Integer, Map<Integer, EquipStrenResource>> qualityLevelMap = positionQualityLevel.get(resource.getPosition());
+            Map<Integer, Map<Integer, EquipStrenResource>> qualityLevelMap = positionQualityLevelMap.get(resource.getPosition());
 
             if(qualityLevelMap==null){
                 qualityLevelMap = new HashMap<>();
-                positionQualityLevel.put(resource.getPosition(),qualityLevelMap);
+                positionQualityLevelMap.put(resource.getPosition(),qualityLevelMap);
                 Map<Integer, EquipStrenResource> levelMap = new HashMap<>();
                 qualityLevelMap.put(resource.getQuality(),levelMap);
                 levelMap.put(resource.getLevel(),resource);
@@ -47,11 +47,11 @@ public class EquipStrenManager {
             }
             levelMap.put(resource.getLevel(),resource);
         }
-        this.positionQualityLevel = positionQualityLevel;
+        this.positionQualityLevelMap = positionQualityLevelMap;
     }
 
     public EquipStrenResource getEquipStrenResource(int position,int quality,int level){
-        Map<Integer, Map<Integer, EquipStrenResource>> qualityLevelMap = positionQualityLevel.get(position);
+        Map<Integer, Map<Integer, EquipStrenResource>> qualityLevelMap = positionQualityLevelMap.get(position);
         if(qualityLevelMap==null){
             return null;
         }
