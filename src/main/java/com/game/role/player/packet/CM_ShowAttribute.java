@@ -1,6 +1,7 @@
 package com.game.role.player.packet;
 
 /**
+ * 请求查看玩家属性信息
  * @Author：xuxin
  * @Date: 2019/6/17 11:40
  */

@@ -21,6 +21,7 @@ public class EntityCache<K extends Serializable & Comparable<K>, T extends IEnti
     public boolean isCache(K k) {
         return cache.containsKey(k);
     }
+
     public T get(K k) {
         return cache.get(k);
     }

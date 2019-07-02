@@ -23,11 +23,7 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.9</version>
-        </dependency>
+
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
@@ -38,26 +34,12 @@
             <artifactId>ojdbc6</artifactId>
             <version>11.2.0.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.9</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml-schemas</artifactId>
-            <version>3.9</version>
-        </dependency>
+
 
         <dependency>
             <groupId>org.apache.xmlbeans</groupId>
             <artifactId>xmlbeans</artifactId>
             <version>2.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>commons-csv</artifactId>
-            <version>1.5</version>
         </dependency>
         <!-- ProtoBuff序列化反序列化相关-->
         <dependency>
@@ -176,12 +158,6 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.13</version>
         </dependency>
-        <!--        序列化依赖-->
-        <!--<dependency>
-            <groupId>com.fasterxml.jackson.identify</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.8.3</version>
-        </dependency>-->
 
         <!--     google工具包-->
         <dependency>
