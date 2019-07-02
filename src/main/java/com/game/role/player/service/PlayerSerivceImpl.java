@@ -1,6 +1,6 @@
 package com.game.role.player.service;
 
-import com.db.HibernateDao;
+import com.db.cache.EntityCacheService;
 import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.container.AbstractAttributeContainer;
@@ -35,22 +35,22 @@ public class PlayerSerivceImpl implements PlayerService {
     private static Logger logger = LoggerFactory.getLogger(PlayerSerivceImpl.class);
     @Autowired
     private StorageManager storageManager;
+
     @Autowired
-    private HibernateDao hibernateDao;
+    private EntityCacheService<Long, PlayerEnt> entityCacheService;
     @Override
     public void save(PlayerEnt playerEnt) {
-        hibernateDao.update(PlayerEnt.class, playerEnt);
+        entityCacheService.saveOrUpdate(playerEnt);
     }
 
     @Override
     public PlayerEnt getPlayerEnt(long playerId) {
-        PlayerEnt playerEnt = hibernateDao.find(PlayerEnt.class, playerId);
-        return playerEnt;
+        return entityCacheService.load(PlayerEnt.class, playerId);
     }
 
     @Override
     public void insert(PlayerEnt playerEnt) {
-        hibernateDao.save(PlayerEnt.class, playerEnt);
+        entityCacheService.saveOrUpdate(playerEnt);
     }
 
     @Override

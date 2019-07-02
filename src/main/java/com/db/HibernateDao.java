@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 @Transactional(rollbackFor = {})
 @Component
-public class HibernateDao extends HibernateDaoSupport {
+public class HibernateDao extends HibernateDaoSupport{
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -31,20 +31,41 @@ public class HibernateDao extends HibernateDaoSupport {
         t.unserialize();
         return t;
     }
-    public <PK extends Serializable,T extends IEntity> PK save(Class<T> clz, T entity){
+
+
+    public <PK extends Serializable,T extends IEntity> PK save(Class<? extends IEntity> clz, T entity){
         entity.serialize();
         return (PK) getSession().save(entity);
     }
+
     public <PK extends Serializable,T extends IEntity> void remove(Class<T> clz, T entity){
         getSession().delete(entity);
     }
+
     public <PK extends Serializable,T extends IEntity> void update(Class<T> clz, T entity){
 
         entity.serialize();
         getSession().update(entity);
     }
-    public <PK extends Serializable,T extends IEntity> void saveOrUpdate(Class<T> clz, T entity){
+
+    public <PK extends Serializable,T extends IEntity> void saveOrUpdate(Class<? extends IEntity> clz, T entity){
         entity.serialize();
         getSession().saveOrUpdate(entity);
+    }
+
+    public <PK extends Serializable & Comparable<PK>,T extends IEntity<PK>> T findOrSave(Class<T> clz, PK id, EntityBuilder<PK, T> builder) {
+        Session session = getSession();
+
+        T t = session.get(clz, id);
+
+        if (t == null) {
+            t = builder.newInstance(id);
+            t.serialize();
+            save(clz,t);
+            return t;
+        }
+
+        t.unserialize();
+        return t;
     }
 }

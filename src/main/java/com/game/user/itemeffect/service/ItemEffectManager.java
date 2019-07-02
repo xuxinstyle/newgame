@@ -1,6 +1,8 @@
 package com.game.user.itemeffect.service;
 
-import com.db.HibernateDao;
+
+import com.db.cache.EntityCacheService;
+
 import com.game.user.itemeffect.command.ItemExpireDelayCommand;
 import com.game.user.itemeffect.entity.ItemEffectEnt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,9 @@ import java.util.Map;
  */
 @Component
 public class ItemEffectManager {
+
     @Autowired
-    private HibernateDao hibernateDao;
+    private EntityCacheService<Long, ItemEffectEnt> entityCacheService;
     /**
      * <角色id，<道具表id，道具延迟命令 >>  在登出后取消已经抛出但是还没有过期的命令
      */
@@ -45,11 +48,11 @@ public class ItemEffectManager {
     }
 
     public void saveItemEffect(ItemEffectEnt itemEffectEnt){
-        hibernateDao.saveOrUpdate(ItemEffectEnt.class, itemEffectEnt);
+        entityCacheService.saveOrUpdate(itemEffectEnt);
     }
 
     public ItemEffectEnt getItemEffectOrCreate(long playerId){
-        ItemEffectEnt itemEffectEnt = hibernateDao.find(ItemEffectEnt.class, playerId);
+        ItemEffectEnt itemEffectEnt = entityCacheService.load(ItemEffectEnt.class, playerId);
         if(itemEffectEnt==null){
             ItemEffectEnt nowItemEffectEnt = ItemEffectEnt.valueOf(playerId);
             saveItemEffect(nowItemEffectEnt);

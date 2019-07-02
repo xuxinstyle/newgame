@@ -1,6 +1,8 @@
 package com.game.user.item.service;
 
+import com.db.cache.EntityCacheService;
 import com.game.role.equip.resource.EquipResource;
+import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.resource.ItemResource;
 import com.resource.core.StorageManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,8 @@ import org.springframework.stereotype.Component;
 public class ItemManager {
     @Autowired
     private StorageManager storageManager;
-
+    @Autowired
+    private EntityCacheService<String, ItemStorageEnt> entityCacheService;
 
     public ItemResource getItemResource(int id) {
         return storageManager.getResource(id, ItemResource.class);
@@ -25,4 +28,11 @@ public class ItemManager {
     }
 
 
+    public ItemStorageEnt getItemStorageEnt(String accountId) {
+        return entityCacheService.load(ItemStorageEnt.class, accountId);
+    }
+
+    public void save(ItemStorageEnt itemStorageEnt) {
+        entityCacheService.saveOrUpdate(itemStorageEnt);
+    }
 }

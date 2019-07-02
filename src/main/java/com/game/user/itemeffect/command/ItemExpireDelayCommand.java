@@ -4,6 +4,7 @@ import com.game.SpringContext;
 import com.game.base.executor.account.impl.AbstractAccountDelayCommand;
 
 /**
+ * 道具失效的command
  * @Author：xuxin
  * @Date: 2019/6/20 21:45
  */

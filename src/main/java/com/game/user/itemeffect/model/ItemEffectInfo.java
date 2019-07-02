@@ -12,6 +12,7 @@ public class ItemEffectInfo {
      * <道表id, 道具失效详细信息>
      */
     Map<Integer, ItemEffectdetaiInfo> itemEffectdetaiInfoMap;
+
     public static ItemEffectInfo valueOf(){
         ItemEffectInfo itemEffectInfo = new ItemEffectInfo();
         itemEffectInfo.setItemEffectdetaiInfoMap(new HashMap<>());

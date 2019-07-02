@@ -112,7 +112,7 @@ public class ItemEffectServiceImpl implements ItemEffectService {
         /**
          * 改变玩家身上效果的状态 FIXME: 这里还是不要删数据库信息，如果玩家频繁使用这个道具就会降低效率。
          */
-        itemEffectdetaiInfo.setEffective(false);
+        itemEffectdetaiInfo.setEffectiveStatus(false);
         SpringContext.getItemEffectService().save(itemEffectEnt);
         /**
          * 通知客户端
@@ -167,7 +167,7 @@ public class ItemEffectServiceImpl implements ItemEffectService {
 
         for(ItemEffectdetaiInfo itemEffectdetaiInfo:itemEffectdetaiInfoMap.values()){
 
-            if(!itemEffectdetaiInfo.isEffective()){
+            if(!itemEffectdetaiInfo.isEffectiveStatus()){
                return;
             }
             Map<Integer, ItemExpireDelayCommand> itemDeprecateDelayCommandMap =

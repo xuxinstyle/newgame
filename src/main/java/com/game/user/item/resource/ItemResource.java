@@ -2,6 +2,7 @@ package com.game.user.item.resource;
 
 import com.game.user.item.constant.UseEffectType;
 import com.game.user.itemeffect.model.AbstractUseEffect;
+import com.game.util.ParamUtil;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
 
@@ -61,7 +62,7 @@ public class ItemResource {
 
         AbstractUseEffect useEffect = useEffectType.create();
         Map<String ,Object> param = new HashMap<>();
-        param.put("itemModelId",id);
+        param.put(ParamUtil.ITEM_MODELID,id);
         useEffect.init(effect,param);
         this.useEffect = useEffect;
     }

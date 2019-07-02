@@ -2,7 +2,7 @@ package com.game.user.item.constant;
 
 import com.game.user.itemeffect.model.AbstractUseEffect;
 import com.game.user.itemeffect.model.ExpUseEffect;
-import com.game.user.itemeffect.model.MedicineEffect;
+import com.game.user.itemeffect.model.MedicineUseEffect;
 
 /**
  * 使用效果的道具类型
@@ -13,7 +13,7 @@ public enum UseEffectType {
     /**
      * 药品使用效果
      */
-    MEDICINE(1,MedicineEffect.class),
+    MEDICINE(1,MedicineUseEffect.class),
     /**
      * 经验丹使用效果
      */

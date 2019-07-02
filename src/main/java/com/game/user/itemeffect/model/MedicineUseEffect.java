@@ -9,6 +9,7 @@ import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.user.itemeffect.command.ItemExpireDelayCommand;
 import com.game.user.itemeffect.entity.ItemEffectEnt;
+import com.game.util.ParamUtil;
 import com.game.util.TimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,8 @@ import java.util.Map;
  * @Author：xuxin
  * @Date: 2019/6/17 14:19
  */
-public class MedicineEffect extends AbstractUseEffect {
-    private static final Logger logger  = LoggerFactory.getLogger(MedicineEffect.class);
+public class MedicineUseEffect extends AbstractUseEffect {
+    private static final Logger logger  = LoggerFactory.getLogger(MedicineUseEffect.class);
     /**
      * 增加的属性
      */
@@ -48,7 +49,7 @@ public class MedicineEffect extends AbstractUseEffect {
          * 这个地方配置表中配置的是
          */
         this.effectiveTime = Long.parseLong(split[1])*1000*60;
-        Object itemModelId = param.get("itemModelId");
+        Object itemModelId = param.get(ParamUtil.ITEM_MODELID);
         this.itemModelId = (int)itemModelId;
     }
 
@@ -71,7 +72,7 @@ public class MedicineEffect extends AbstractUseEffect {
         /**
          * 第一次使用
          */
-        if(itemEffectdetaiInfo==null||!itemEffectdetaiInfo.isEffective()||itemEffectdetaiInfo.getInvalidTime()<TimeUtil.now()){
+        if(itemEffectdetaiInfo==null||!itemEffectdetaiInfo.isEffectiveStatus()||itemEffectdetaiInfo.getInvalidTime()<TimeUtil.now()){
             /**
              * 如果没有道具的使用信息则直接加入到数据库中，并做定时操作
              */

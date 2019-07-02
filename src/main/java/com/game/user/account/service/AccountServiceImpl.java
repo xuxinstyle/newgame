@@ -1,6 +1,6 @@
 package com.game.user.account.service;
 
-import com.db.HibernateDao;
+import com.db.cache.EntityCacheService;
 import com.game.SpringContext;
 import com.game.user.account.entity.AccountEnt;
 
@@ -22,8 +22,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AccountServiceImpl implements AccountService {
+
     @Autowired
-    private HibernateDao hibernateDao;
+    private EntityCacheService<String, AccountEnt> entityCacheService;
 
     private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
 
@@ -34,13 +35,15 @@ public class AccountServiceImpl implements AccountService {
         accountEnt.setAccountId(username);
         accountEnt.setPassward(passward);
         accountEnt.setAccountInfo(AccountInfo.valueOf(null));
-        hibernateDao.save(AccountEnt.class, accountEnt);
+        entityCacheService.saveOrUpdate(accountEnt);
+
     }
 
 
     @Override
     public AccountEnt getAccountEnt(String accountId) {
-        AccountEnt accountEnt = hibernateDao.find(AccountEnt.class, accountId);
+        AccountEnt accountEnt = entityCacheService.load(AccountEnt.class, accountId);
+
         if(accountEnt==null){
             logger.warn("数据库中没有["+accountId+"]的账号信息");
             return null;
@@ -77,7 +80,8 @@ public class AccountServiceImpl implements AccountService {
             logger.error("accountEnt为空，持久化失败");
             return ;
         }
-        hibernateDao.saveOrUpdate(AccountEnt.class,accountEnt);
+        entityCacheService.saveOrUpdate(accountEnt);
+        //hibernateDao.saveOrUpdate(AccountEnt.class,accountEnt);
     }
 
 

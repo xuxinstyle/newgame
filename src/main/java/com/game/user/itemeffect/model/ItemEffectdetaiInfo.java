@@ -12,7 +12,7 @@ public class ItemEffectdetaiInfo {
     /**
      * 是否有效 true 有效 ，false 无效
      */
-    private boolean effective;
+    private boolean effectiveStatus;
     /**
      * 失效时间点
      */
@@ -21,7 +21,7 @@ public class ItemEffectdetaiInfo {
     public static ItemEffectdetaiInfo valueOf(int itemModelId, boolean effective, long invalidTime){
         ItemEffectdetaiInfo itemEffectdetaiInfo = new ItemEffectdetaiInfo();
         itemEffectdetaiInfo.setItemModelId(itemModelId);
-        itemEffectdetaiInfo.setEffective(effective);
+        itemEffectdetaiInfo.setEffectiveStatus(effective);
         itemEffectdetaiInfo.setInvalidTime(invalidTime);
         return itemEffectdetaiInfo;
     }
@@ -34,12 +34,12 @@ public class ItemEffectdetaiInfo {
         this.itemModelId = itemModelId;
     }
 
-    public boolean isEffective() {
-        return effective;
+    public boolean isEffectiveStatus() {
+        return effectiveStatus;
     }
 
-    public void setEffective(boolean effective) {
-        this.effective = effective;
+    public void setEffectiveStatus(boolean effectiveStatus) {
+        this.effectiveStatus = effectiveStatus;
     }
 
     public long getInvalidTime() {

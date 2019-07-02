@@ -1,6 +1,5 @@
 package com.game.user.item.service;
 
-import com.db.HibernateDao;
 import com.game.SpringContext;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.equip.resource.EquipResource;
@@ -14,7 +13,6 @@ import com.game.user.item.packet.*;
 import com.game.user.item.packet.bean.ItemVO;
 import com.game.user.item.resource.ItemResource;
 import com.game.util.PlayerUtil;
-import com.resource.core.StorageManager;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +32,6 @@ public class ItemServiceImpl implements ItemService {
     private static final Logger logger = LoggerFactory.getLogger(ItemServiceImpl.class);
     @Autowired
     private ItemManager itemManager;
-
-    @Autowired
-    private StorageManager storageManager;
-
-    @Autowired
-    private HibernateDao hibernateDao;
-
 
     @Override
     public AbstractItem createItem(int itemModelId, int num) {
@@ -87,12 +78,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemStorageEnt getItemStorageEnt(String accountId) {
-        return hibernateDao.find(ItemStorageEnt.class, accountId);
+        return itemManager.getItemStorageEnt(accountId);
     }
 
     @Override
     public void save(ItemStorageEnt itemStorageEnt) {
-        hibernateDao.saveOrUpdate(ItemStorageEnt.class, itemStorageEnt);
+        itemManager.save(itemStorageEnt);
+
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.game.base.identify.service;
 
-import com.db.HibernateDao;
+
+import com.db.cache.EntityCacheService;
 import com.game.base.identify.entity.IdentifyEnt;
 import com.game.base.gameobject.constant.ObjectType;
 import org.slf4j.Logger;
@@ -18,8 +19,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class IdentifyService {
 
     private static Logger logger = LoggerFactory.getLogger(IdentifyService.class);
-    @Autowired(required = false)
-    private HibernateDao hibernateDao;
+
+    @Autowired
+    private EntityCacheService<Integer, IdentifyEnt> entityCacheService;
 
     private static AtomicLong index = new AtomicLong(10000);
 
@@ -30,17 +32,17 @@ public class IdentifyService {
      * @return
      */
     public synchronized long getNextIdentify(ObjectType type){
-        IdentifyEnt identifyEnt = hibernateDao.find(IdentifyEnt.class, type.getTypeId());
+        IdentifyEnt identifyEnt = entityCacheService.load(IdentifyEnt.class, type.getTypeId());
         if(identifyEnt==null){
             identifyEnt= new IdentifyEnt();
             identifyEnt.setTypeId(type.getTypeId());
             identifyEnt.setNow(index.incrementAndGet());
-            hibernateDao.saveOrUpdate(IdentifyEnt.class, identifyEnt);
+            entityCacheService.saveOrUpdate(identifyEnt);
             return identifyEnt.getNow();
         }
-        long l = new AtomicLong(identifyEnt.getNow()).incrementAndGet();
-        identifyEnt.setNow(l);
-        hibernateDao.update(IdentifyEnt.class, identifyEnt);
-        return l;
+        long identify = new AtomicLong(identifyEnt.getNow()).incrementAndGet();
+        identifyEnt.setNow(identify);
+        entityCacheService.saveOrUpdate(identifyEnt);
+        return identify;
     }
 }

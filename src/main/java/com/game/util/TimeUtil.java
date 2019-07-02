@@ -12,6 +12,7 @@ public class TimeUtil {
     public static final String MILL_TIME_FORMAT_TEMPLATE = "yyyy-MM-dd HH:mm:ss.SS";
     /** 五分钟的毫秒数*/
     public static final long FIVE_MINUTES = 5 * 60 * 1000;
+
     public static long now(){
         return System.currentTimeMillis();
     }

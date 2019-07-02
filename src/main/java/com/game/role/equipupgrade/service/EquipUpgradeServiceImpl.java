@@ -4,7 +4,7 @@ import com.game.SpringContext;
 import com.game.user.condition.model.UpgradeCondition;
 import com.game.role.equip.resource.EquipResource;
 import com.game.role.equipupgrade.packet.SM_EquipUpgrade;
-import com.game.util.ConditionUtil;
+import com.game.util.ParamUtil;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
@@ -52,7 +52,7 @@ public class EquipUpgradeServiceImpl implements EquipUpgradeService {
         EquipResource equipResource = SpringContext.getItemService().getEquipResource(equipment.getItemModelId());
         UpgradeCondition upgradeCondition = equipResource.getUpgradeCondition();
         Map<String, Object> param = new HashMap<>();
-        param.put(ConditionUtil.EQUIP_LEVEL, equipment.getStrenNum());
+        param.put(ParamUtil.EQUIP_LEVEL, equipment.getStrenNum());
         if(!upgradeCondition.checkCondition(accountId,param)){
             SM_EquipUpgrade sm = new SM_EquipUpgrade();
             sm.setStatus(4);

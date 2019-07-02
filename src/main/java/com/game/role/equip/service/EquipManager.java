@@ -1,6 +1,6 @@
 package com.game.role.equip.service;
 
-import com.db.HibernateDao;
+import com.db.cache.EntityCacheService;
 import com.game.role.equip.entity.EquipmentEnt;
 import com.game.role.equip.resource.EquipResource;
 import com.resource.core.StorageManager;
@@ -16,21 +16,21 @@ public class EquipManager {
     @Autowired
     private StorageManager storageManager;
     @Autowired
-    private HibernateDao hibernateDao;
+    private EntityCacheService<Long, EquipmentEnt> entityCacheService;
 
     EquipResource getEquipResource(int id){
         return storageManager.getResource(id,EquipResource.class);
     }
 
     public void save(EquipmentEnt equipmentEnt) {
-        hibernateDao.saveOrUpdate(EquipmentEnt.class, equipmentEnt);
+        entityCacheService.saveOrUpdate(equipmentEnt);
     }
 
     public void insert(EquipmentEnt equipmentEnt){
-        hibernateDao.save(EquipmentEnt.class,equipmentEnt);
+        entityCacheService.saveOrUpdate(equipmentEnt);
     }
 
     public EquipmentEnt getEquipmentEnt(long playerId){
-        return hibernateDao.find(EquipmentEnt.class, playerId);
+        return entityCacheService.load(EquipmentEnt.class,playerId);
     }
 }
