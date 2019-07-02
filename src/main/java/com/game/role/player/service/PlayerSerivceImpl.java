@@ -109,9 +109,9 @@ public class PlayerSerivceImpl implements PlayerService {
         List<Attribute> secondList = new ArrayList<>();
         List<Attribute> otherList = new ArrayList<>();
         for(Attribute attribute:finalAttributes.values()){
-            if(attribute.getAttributeType().getKind()==AttributeKind.FIRST_ATTRIBUTE){
+            if(attribute.getType().getKind()==AttributeKind.FIRST_ATTRIBUTE){
                 firstList.add(attribute);
-            }else if(attribute.getAttributeType().getKind()==AttributeKind.SECOND_ATTRIBUTE){
+            }else if(attribute.getType().getKind()==AttributeKind.SECOND_ATTRIBUTE){
                secondList.add(attribute);
             }else {
                 otherList.add(attribute);

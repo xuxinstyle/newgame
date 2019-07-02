@@ -2,11 +2,9 @@ package com.resource.core;
 
 import com.resource.Storage;
 import com.resource.StorageData;
-import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
 import com.resource.model.ResourceDefinition;
 import com.resource.reader.CsvRead;
-import com.resource.reader.XlsxRead;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -18,9 +16,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,7 +46,7 @@ public class StorageManager implements BeanPostProcessor {
     public void init(){
         for(Class<?> clz:definitionMap.keySet()) {
             ResourceDefinition def = definitionMap.get(clz);
-            csvRead.readXlsx(def, caches);
+            csvRead.readCsv(def, caches);
         }
     }
 

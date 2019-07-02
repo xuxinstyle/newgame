@@ -35,7 +35,7 @@ public class EvenManager {
             executors[i] = Executors.newSingleThreadExecutor();
         }
     }
-    
+
     public void registerEvent(Object bean){
         Class<?> clz = bean.getClass();
         Method[] methods = clz.getDeclaredMethods();

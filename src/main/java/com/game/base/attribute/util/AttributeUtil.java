@@ -24,13 +24,13 @@ public class AttributeUtil {
             return;
         }
         for(Attribute attribute : attrs){
-            if(attribute == null|| attribute.getAttributeType() == null){
+            if(attribute == null|| attribute.getType() == null){
                 logger.error("属性数据错误[{}]",attribute);
                 return;
             }
-            Attribute attr = resultMap.get(attribute.getAttributeType());
+            Attribute attr = resultMap.get(attribute.getType());
             if(attr == null){
-                resultMap.put(attribute.getAttributeType(), Attribute.valueOf(attribute.getAttributeType(),attribute.getValue()));
+                resultMap.put(attribute.getType(), Attribute.valueOf(attribute.getType(),attribute.getValue()));
             }else{
                 /**
                  * TODO:这里直接修改了 没有根据类型设置属性值
@@ -45,11 +45,11 @@ public class AttributeUtil {
             if(add==null){
                 continue;
             }
-            Attribute attribute = resultMap.get(add.getAttributeType());
+            Attribute attribute = resultMap.get(add.getType());
             if(attribute != null){
                 attribute.setValue(attribute.getValue()+add.getValue());
             }else {
-                resultMap.put(add.getAttributeType(), Attribute.valueOf(add.getAttributeType(),add.getValue()));
+                resultMap.put(add.getType(), Attribute.valueOf(add.getType(),add.getValue()));
             }
         }
     }
@@ -86,18 +86,18 @@ public class AttributeUtil {
             attribute.setValue(0);
         }
         for (Attribute attr:cloneTarget.values()){
-            Attribute attribute = result.get(attr.getAttributeType());
+            Attribute attribute = result.get(attr.getType());
             if(attribute != null){
                 attribute.setValue(attr.getValue());
             }else{
-                result.put(attr.getAttributeType(), Attribute.valueOf(attr.getAttributeType(), attr.getValue()));
+                result.put(attr.getType(), Attribute.valueOf(attr.getType(), attr.getValue()));
             }
         }
     }
     public static List<Attribute> computeImmutableAttribute(List<ImmutableAttribute> immutableAttributeList){
         List<Attribute> attributeList = new ArrayList<>();
         for(ImmutableAttribute immutableAttribute:immutableAttributeList){
-            Attribute attribute = Attribute.valueOf(immutableAttribute.getAttributeType(), immutableAttribute.getValue());
+            Attribute attribute = Attribute.valueOf(immutableAttribute.getType(), immutableAttribute.getValue());
             attributeList.add(attribute);
         }
         return attributeList;

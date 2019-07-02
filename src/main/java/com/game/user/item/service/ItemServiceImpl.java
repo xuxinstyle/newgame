@@ -13,6 +13,7 @@ import com.game.user.itemeffect.model.AbstractUseEffect;
 import com.game.user.item.packet.*;
 import com.game.user.item.packet.bean.ItemVO;
 import com.game.user.item.resource.ItemResource;
+import com.game.util.PlayerUtil;
 import com.resource.core.StorageManager;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
@@ -30,14 +31,6 @@ import java.util.List;
 @Component
 public class ItemServiceImpl implements ItemService {
 
-    /**
-     * 背包最大格子数 fixme:这里先写死，等后期加了通用配置表的时候再将这个加到通用配置表中
-     */
-    public static final int MAX_PACK_SIZE = 150;
-    /**
-     * 背包初始已使用的格子数
-     */
-    public static final int INIT_PACK_USED_SIZE = 0;
     private static final Logger logger = LoggerFactory.getLogger(ItemServiceImpl.class);
     @Autowired
     private ItemManager itemManager;
@@ -129,7 +122,7 @@ public class ItemServiceImpl implements ItemService {
     public void createStorage(String accountId) {
         ItemStorageEnt itemStorageEnt = new ItemStorageEnt();
         itemStorageEnt.setAccountId(accountId);
-        ItemStorageInfo itemStorageInfo = ItemStorageInfo.valueOf(MAX_PACK_SIZE, INIT_PACK_USED_SIZE);
+        ItemStorageInfo itemStorageInfo = ItemStorageInfo.valueOf(PlayerUtil.PACK_MAX_SIZE, PlayerUtil.INIT_PACK_USE_SIZE);
         itemStorageEnt.setPack(itemStorageInfo);
         save(itemStorageEnt);
     }
@@ -207,7 +200,6 @@ public class ItemServiceImpl implements ItemService {
                 itemVO.setItemModelId(item.getItemModelId());
                 itemVO.setItemName(item.getName());
                 itemVO.setNum(item.getNum());
-
                 list.add(itemVO);
             }
         }

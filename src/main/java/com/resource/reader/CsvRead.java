@@ -48,7 +48,7 @@ public class CsvRead {
     @Autowired
     private ConversionService conversionService;
 
-    public void readXlsx(ResourceDefinition def, Map<String, InputStream> caches) {
+    public void readCsv(ResourceDefinition def, Map<String, InputStream> caches) {
         try {
             String location = def.getLocation();
             InputStream inputStream = caches.get(location);
@@ -103,7 +103,7 @@ public class CsvRead {
                     logger.error("资源[{}]的解析方法[{}]不存在",clz.getSimpleName(),analyze.value());
                     e.printStackTrace();
                 }catch (InvocationTargetException e) {
-                    logger.error("资源[{}]的方法[{}]失败",clz.getSimpleName(),method.getName());
+                    logger.error("解析资源[{}]的方法[{}]失败",clz.getSimpleName(),method.getName());
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
                     logger.error("资源[{}]的方法[{}]是私有的",clz.getSimpleName(),method.getName());
@@ -121,12 +121,6 @@ public class CsvRead {
                 if ("id".equals(fieldInfo.getField().getName())) {
                     TypeDescriptor typeDescriptor = new TypeDescriptor(fieldInfo.getField());
                     String resource = resourceData.get(fieldInfo.getIndex());
-                    String concat = resource;
-                    if (fieldInfo.getField().getType().equals(int.class) || fieldInfo.getField().getType().equals(Integer.class)) {
-                        concat = resource.replace(".0", "");
-                    }
-                    resource = concat;
-
                     Object value = conversionService.convert(resource, SOURCE_TYPE, typeDescriptor);
                     return value;
                 }
@@ -135,11 +129,6 @@ public class CsvRead {
             FieldInfo fieldInfo = fieldInfos.get(0);
             TypeDescriptor typeDescriptor = new TypeDescriptor(fieldInfo.getField());
             String resource = resourceData.get(fieldInfo.getIndex());
-            /*String concat = resource;
-            if (fieldInfo.getField().getType().equals(int.class) || fieldInfo.getField().getType().equals(Integer.class)) {
-                concat = resource.replace(".0", "");
-            }
-            resource = concat;*/
             Object value = conversionService.convert(resource, SOURCE_TYPE, typeDescriptor);
             return value;
 
@@ -178,11 +167,6 @@ public class CsvRead {
         }
         try {
             TypeDescriptor typeDescriptor = new TypeDescriptor(field);
-            String concat = context;
-            if (field.getType().equals(int.class) || field.getType().equals(Integer.class) || field.getType().equals(long.class) || field.getType().equals(Long.class)) {
-                concat = context.replace(".0", "");
-            }
-            context = concat;
             Object value = conversionService.convert(context, SOURCE_TYPE, typeDescriptor);
             field.set(instance, value);
             return true;

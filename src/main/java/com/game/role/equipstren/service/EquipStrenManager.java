@@ -23,7 +23,7 @@ public class EquipStrenManager {
      * <装备位置,<装备品质，<强化等级, resource>>>
      */
     @Init("init")
-    private Map<Integer,Map<Integer,Map<Integer,EquipStrenResource>>>  positionQualityLevel= new HashMap<>();
+    private Map<Integer,Map<Integer,Map<Integer,EquipStrenResource>>>  positionQualityLevel;
 
     public void init(){
         Collection<EquipStrenResource> resourceAll =
@@ -47,9 +47,18 @@ public class EquipStrenManager {
             }
             levelMap.put(resource.getLevel(),resource);
         }
+        this.positionQualityLevel = positionQualityLevel;
     }
 
     public EquipStrenResource getEquipStrenResource(int position,int quality,int level){
-        return positionQualityLevel.get(position).get(quality).get(level);
+        Map<Integer, Map<Integer, EquipStrenResource>> qualityLevelMap = positionQualityLevel.get(position);
+        if(qualityLevelMap==null){
+            return null;
+        }
+        Map<Integer, EquipStrenResource> levelMap = qualityLevelMap.get(quality);
+        if(levelMap==null){
+            return null;
+        }
+        return levelMap.get(level);
     }
 }

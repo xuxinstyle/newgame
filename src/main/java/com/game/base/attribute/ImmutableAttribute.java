@@ -12,18 +12,18 @@ public class ImmutableAttribute extends Attribute{
     public static ImmutableAttribute wrapper(Attribute attribute){
         ImmutableAttribute immutableAttribute = new ImmutableAttribute();
         immutableAttribute.value = attribute.getValue();
-        immutableAttribute.attributeType = attribute.getAttributeType();
+        immutableAttribute.type = attribute.getType();
         return immutableAttribute;
     }
 
 
     @Override
-    public AttributeType getAttributeType() {
-        return attributeType;
+    public AttributeType getType() {
+        return type;
     }
 
     @Override
-    public void setAttributeType(AttributeType attributeType) {
+    public void setType(AttributeType type) {
         throw new UnsupportedOperationException();
     }
 

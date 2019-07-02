@@ -8,6 +8,7 @@ import com.game.role.player.event.PlayerUpLevelEvent;
 import com.game.role.player.model.Player;
 import com.game.role.player.packet.SM_PlayerUpLevel;
 import com.game.role.player.resource.PlayerLevelResource;
+import com.game.util.PlayerUtil;
 import com.socket.core.session.TSession;
 
 import java.util.List;
@@ -43,13 +44,14 @@ public class ExpUseEffect extends AbstractUseEffect {
         SpringContext.getPlayerSerivce().save(playerEnt);
         while (player.getExp() >= upLevelExp) {
             playerLevelResource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel()+1);
-            if (playerLevelResource == null) {
+            if (player.getLevel()+1>=PlayerUtil.PLAYER_MAX_LEVEL||playerLevelResource == null) {
                 SM_PlayerUpLevel res = new SM_PlayerUpLevel();
                 res.setPlayerName(player.getPlayerName());
                 res.setStatus(2);
                 session.sendPacket(res);
                 return;
             }
+
             player.setLevel(player.getLevel() + 1);
             player.setExp(player.getExp() - upLevelExp);
 

@@ -1,9 +1,13 @@
 package com.game.role.equipstren.resource;
 
 import com.game.base.attribute.Attribute;
-import com.game.base.attribute.ImmutableAttribute;
+import com.game.base.attribute.constant.AttributeType;
+import com.game.util.JsonUtils;
+import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,8 +36,31 @@ public class EquipStrenResource {
     /**
      * 该等级的属性
      */
+    private String attrs;
+
+    @Analyze("analyzeAttr")
     private List<Attribute> attributeList;
 
+    /**
+     * 这个方法有点鸡肋，只能解析一个Attribute
+     */
+    public void analyzeAttr(){
+        if("".equals(attrs)||attrs==null){
+            return;
+        }
+        String substring = attrs.substring(2, attrs.length() - 2);
+        String[] split = substring.split(",");
+        String[] type = split[0].split(":");
+        AttributeType attributeType = AttributeType.valueOf(type[1].substring(1, type[1].length() - 1));
+        String[] value = split[1].split(":");
+        long attrValue = Long.parseLong(value[1].substring(1, value[1].length() - 1));
+        Attribute attribute = Attribute.valueOf(attributeType, attrValue);
+        if (attributeList == null) {
+            attributeList = new ArrayList<>();
+        }
+        attributeList.add(attribute);
+
+    }
     /**
      * 强化成功率
      */
@@ -77,6 +104,14 @@ public class EquipStrenResource {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public String getAttrs() {
+        return attrs;
+    }
+
+    public void setAttrs(String attrs) {
+        this.attrs = attrs;
     }
 
     public List<Attribute> getAttributeList() {

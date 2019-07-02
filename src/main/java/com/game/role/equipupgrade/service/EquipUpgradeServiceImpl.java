@@ -4,7 +4,7 @@ import com.game.SpringContext;
 import com.game.user.condition.model.UpgradeCondition;
 import com.game.role.equip.resource.EquipResource;
 import com.game.role.equipupgrade.packet.SM_EquipUpgrade;
-import com.game.user.condition.util.ConditionUtil;
+import com.game.util.ConditionUtil;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;

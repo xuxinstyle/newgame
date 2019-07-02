@@ -31,7 +31,7 @@ public class AttributeUpdateSet {
     public void addAttrs(Collection<Attribute> attrs){
         if(!attrs.isEmpty()){
             for(Attribute attribute : attrs){
-                addType(attribute.getAttributeType());
+                addType(attribute.getType());
             }
         }
     }

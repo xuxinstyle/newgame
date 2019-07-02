@@ -1,7 +1,7 @@
 package com.game.user.condition.model;
 
 import com.game.SpringContext;
-import com.game.user.condition.util.ConditionUtil;
+import com.game.util.ConditionUtil;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
 

@@ -13,26 +13,26 @@ public class Attribute {
     /**
      * 属性类型
      */
-    protected AttributeType attributeType;
+    public AttributeType type;
     /**
      * 属性值
      */
-    protected long value;
+    public long value;
 
 
     public static Attribute valueOf(AttributeType type , long value){
         Attribute attribute = new Attribute();
-        attribute.setAttributeType(type);
+        attribute.setType(type);
         attribute.setValue(value);
         return attribute;
     }
 
-    public AttributeType getAttributeType() {
-        return attributeType;
+    public AttributeType getType() {
+        return type;
     }
 
-    public void setAttributeType(AttributeType attributeType) {
-        this.attributeType = attributeType;
+    public void setType(AttributeType type) {
+        this.type = type;
     }
 
     public long getValue() {

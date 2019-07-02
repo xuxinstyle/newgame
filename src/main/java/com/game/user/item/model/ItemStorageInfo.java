@@ -296,6 +296,7 @@ public class ItemStorageInfo {
             }
             if(items[i].getObjectId()==itemObjectId){
                 items[i] = null;
+                useSize--;
                 return true;
             }
         }
@@ -320,7 +321,7 @@ public class ItemStorageInfo {
     }
 
     /**
-     * FIXME:这里的整理，不会合并同类项
+     * FIXME:这里的整理，不会合并同类项 暂时没有用到
      * 只是将前面空的格子填满 等需要背包排序的时候再合并同类型，否则效率很低
      */
     public void sort() {
