@@ -160,23 +160,13 @@ public class ItemEffectServiceImpl implements ItemEffectService {
     public void doLoginAfter(String accountId) {
 
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-        /**
-         * 可能还没创角
-         */
-        if(player==null){
+        if(!checkUse(player)){
             return;
         }
-        /**
-         * 这里如果玩家没有延期的信息，也会在表中存一条信息
-         */
         ItemEffectEnt itemEffectEnt = getItemEffectEnt(player.getObjectId());
-        if(itemEffectEnt==null){
-            return;
-        }
+
         ItemEffectInfo itemEffectInfo = itemEffectEnt.getItemEffectInfo();
-        if(itemEffectInfo==null){
-            return;
-        }
+
         Map<Integer, ItemEffectdetaiInfo> itemEffectdetaiInfoMap = itemEffectInfo.getItemEffectdetaiInfoMap();
 
         for(ItemEffectdetaiInfo itemEffectdetaiInfo:itemEffectdetaiInfoMap.values()){
@@ -204,6 +194,26 @@ public class ItemEffectServiceImpl implements ItemEffectService {
             SpringContext.getAccountExecutorService().submit(itemExpireDelayCommand);
             putCommand(itemExpireDelayCommand);
         }
+    }
+
+    /**
+     * check该玩家是否使用了有效果的道具
+     * @param player
+     * @return
+     */
+    private boolean checkUse(Player player) {
+        if(player==null){
+            return false;
+        }
+        ItemEffectEnt itemEffectEnt = getItemEffectEnt(player.getObjectId());
+        if(itemEffectEnt==null){
+            return false;
+        }
+        ItemEffectInfo itemEffectInfo = itemEffectEnt.getItemEffectInfo();
+        if(itemEffectInfo==null){
+            return false;
+        }
+        return true;
     }
 
 }
