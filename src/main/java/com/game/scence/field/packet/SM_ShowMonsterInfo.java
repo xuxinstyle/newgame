@@ -31,6 +31,13 @@ public class SM_ShowMonsterInfo {
      * 怪物属性
      */
     private List<Attribute> attributeList;
+
+    /**
+     * 怪物当前血量和蓝量
+     */
+    private long currHp;
+    private long currMp;
+
     public static SM_ShowMonsterInfo valueOf(MonsterUnit monsterUnit){
         SM_ShowMonsterInfo sm = new SM_ShowMonsterInfo();
         sm.setName(monsterUnit.getVisibleName());
@@ -40,8 +47,27 @@ public class SM_ShowMonsterInfo {
         Map<AttributeType, Attribute> finalAttributes = attributeContainer.getFinalAttributes();
         List<Attribute> attributeList = new ArrayList<>(finalAttributes.values());
         sm.setAttributeList(attributeList);
+        sm.setCurrHp(monsterUnit.getCurrHp());
+        sm.setCurrMp(monsterUnit.getCurrMp());
         return sm;
     }
+
+    public long getCurrHp() {
+        return currHp;
+    }
+
+    public void setCurrHp(long currHp) {
+        this.currHp = currHp;
+    }
+
+    public long getCurrMp() {
+        return currMp;
+    }
+
+    public void setCurrMp(long currMp) {
+        this.currMp = currMp;
+    }
+
     public long getMonsterObjectId() {
         return monsterObjectId;
     }

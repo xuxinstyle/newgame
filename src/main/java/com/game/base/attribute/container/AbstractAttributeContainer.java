@@ -46,7 +46,7 @@ public abstract class AbstractAttributeContainer {
      */
     public void putAndComputeAttributes(AttributeId id, List<Attribute> attrs){
         if(attrs == null){
-            logger.error("设置属性不能为空！"+id);
+            logger.error("设置模块{}属性不能为空！",id);
             return;
         }else if(modelAttributes.containsKey(id.toString())||attrs.size()>0){
             AttributeUpdateSet updateSet = new AttributeUpdateSet(id);

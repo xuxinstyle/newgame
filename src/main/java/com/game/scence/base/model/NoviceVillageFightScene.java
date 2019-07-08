@@ -7,6 +7,7 @@ import com.game.role.player.model.Player;
 import com.game.scence.npc.resource.NpcResource;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
+import com.game.scence.visible.packet.bean.VisibleVO;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 
@@ -28,6 +29,7 @@ public class NoviceVillageFightScene extends AbstractScene {
      * 场景中玩家的角色信息
      */
     private List<Player> players;
+
     public NoviceVillageFightScene(){
         super();
     }
@@ -46,6 +48,27 @@ public class NoviceVillageFightScene extends AbstractScene {
     public NoviceVillageFightScene(int mapId) {
         super(mapId);
     }
+
+    @Override
+    public List<VisibleVO> getVisibleVOList() {
+        /**
+         * npc信息 TODO:npc信息暂时不做操作
+         */
+        /**
+         * 玩家信息
+         */
+        List<VisibleVO> visibleVOList = new ArrayList<>();
+        for (Player player:players){
+            VisibleVO visibleVO = new VisibleVO();
+            visibleVO.setObjectId(player.getObjectId());
+            visibleVO.setType(ObjectType.PLAYER);
+            visibleVO.setPosition(player.getPosition());
+            visibleVO.setVisibleName(player.getPlayerName());
+            visibleVOList.add(visibleVO);
+        }
+        return visibleVOList;
+    }
+
     @Override
     public Map<Integer, List<Position>> getVisiblePosition() {
         /**

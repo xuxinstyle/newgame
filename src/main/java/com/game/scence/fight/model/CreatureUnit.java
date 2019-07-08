@@ -28,6 +28,19 @@ public abstract class CreatureUnit extends BaseUnit{
      */
     private long currMp;
 
+    /**
+     * 是否死亡
+     */
+    private boolean isDead;
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
     public long getCurrHp() {
         return currHp;
     }

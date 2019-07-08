@@ -11,6 +11,7 @@ import com.game.scence.monster.resource.MonsterResource;
 import com.game.scence.npc.resource.NpcResource;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
+import com.game.scence.visible.packet.bean.VisibleVO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,14 +26,13 @@ import java.util.Map;
  */
 
 public class FieldFightScene extends AbstractFightScene {
-    /**
-     * fixme:想想是否有问题，场景中玩家杀怪是在场景线程中执行，只要每次怪物死亡时，
-     * fixme:判断是否还有活着的怪物,没有活的怪物就刷新
-     */
+
     private Map<Long,MonsterUnit> monsterUnits = new HashMap<>();
+
     public FieldFightScene(){
         super();
     }
+
     @Override
     public void init() {
         setAccountIds(new ArrayList<>());
@@ -59,6 +59,41 @@ public class FieldFightScene extends AbstractFightScene {
 
     public FieldFightScene(int mapId) {
         super(mapId);
+    }
+
+    @Override
+    public List<VisibleVO> getVisibleVOList() {
+        List<VisibleVO> visibleVOList = new ArrayList<>();
+        /**
+         * 怪物的可视信息
+         */
+        for(MonsterUnit monsterUnit:monsterUnits.values()){
+            VisibleVO visibleVO = new VisibleVO();
+            visibleVO.setVisibleName(monsterUnit.getVisibleName());
+            visibleVO.setPosition(monsterUnit.getPosition());
+            visibleVO.setType(monsterUnit.getType());
+            visibleVO.setObjectId(monsterUnit.getId());
+            visibleVOList.add(visibleVO);
+        }
+        /**
+         * 玩家的可视信息
+         */
+        Map<String, FightAccount> fightAccounts = getFightAccounts();
+        for(FightAccount fightAccount:fightAccounts.values()){
+            Map<Long, CreatureUnit> creatureUnitMap = fightAccount.getCreatureUnitMap();
+            if(creatureUnitMap==null){
+                continue ;
+            }
+            for(CreatureUnit creatureUnit:creatureUnitMap.values()) {
+                VisibleVO visibleVO = new VisibleVO();
+                visibleVO.setObjectId(creatureUnit.getId());
+                visibleVO.setType(creatureUnit.getType());
+                visibleVO.setPosition(creatureUnit.getPosition());
+                visibleVO.setVisibleName(creatureUnit.getVisibleName());
+                visibleVOList.add(visibleVO);
+            }
+        }
+        return visibleVOList;
     }
 
     @Override
@@ -100,8 +135,15 @@ public class FieldFightScene extends AbstractFightScene {
     public void move(String accountId, Position targetpos) {
         Map<String, FightAccount> fightAccounts = getFightAccounts();
         FightAccount fightAccount = fightAccounts.get(accountId);
+        if(accountId==null){
+            return;
+        }
         Map<Long, CreatureUnit> creatureUnitMap = fightAccount.getCreatureUnitMap();
         for(CreatureUnit creatureUnit:creatureUnitMap.values()){
+            if(creatureUnit.isDead()){
+                //FIXME:看需求是否要显示给客户端看战斗单元死亡
+                return;
+            }
             if(creatureUnit!=null) {
                 creatureUnit.setPosition(targetpos);
             }

@@ -31,7 +31,7 @@ public class ScenceFacade {
     @HandlerAnno
     public void showAllAccount(TSession session, CM_ShowAllVisibleInfo req){
         try {
-            SpringContext.getScenceSerivce().showAllAccountInfo(session, req.getMapId());
+            SpringContext.getScenceSerivce().showAllVisibleInfo(session, req.getMapId());
         }catch (Exception e){
             logger.error("请求查看场景中的账号信息失败",e.toString());
             e.printStackTrace();

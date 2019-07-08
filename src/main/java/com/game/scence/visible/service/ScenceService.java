@@ -31,7 +31,7 @@ public interface ScenceService {
      * @param session
      * @param mapId
      */
-    void showAllAccountInfo(TSession session, int mapId);
+    void showAllVisibleInfo(TSession session, int mapId);
 
     /**
      * 查看场景中所有的玩家信息

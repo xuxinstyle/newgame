@@ -185,42 +185,10 @@ public class ScenceServiceImpl implements ScenceService {
      * @param mapId
      */
     @Override
-    public void showAllAccountInfo(TSession session, int mapId) {
+    public void showAllVisibleInfo(TSession session, int mapId) {
         AbstractScene scenceInfo = scenceMangaer.getScence(mapId);
-
-
         SM_ShowAllVisibleInfo sm = new SM_ShowAllVisibleInfo();
-        List<VisibleVO> visibleVOList = new ArrayList<>();
-        /**
-         * TODO:玩家信息 这里的信息和战斗单元不一样,这里考虑一下是否要封装一个抽象方法
-         * TODO:来做显示所有的地图中的对象：怪物，玩家角色，npc
-         */
-        List<String> accountIds = scenceInfo.getAccountIds();
-        for(String accountId:accountIds) {
-            Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-            VisibleVO visibleVO = new VisibleVO();
-            visibleVO.setVisibleName(player.getPlayerName());
-            visibleVO.setPosition(player.getPosition());
-            visibleVO.setType(ObjectType.PLAYER);
-            visibleVO.setObjectId(player.getObjectId());
-            visibleVOList.add(visibleVO);
-        }
-
-        /**
-         * 地图中的怪物信息
-         */
-        if(scenceInfo.getMapId()==MapType.FIELD.getMapId()){
-            FieldFightScene fieldScene = (FieldFightScene) scenceInfo;
-            Map<Long, MonsterUnit> monsterUnits = fieldScene.getMonsterUnits();
-            for(MonsterUnit monsterUnit:monsterUnits.values()){
-                VisibleVO visibleVO = new VisibleVO();
-                visibleVO.setObjectId(monsterUnit.getId());
-                visibleVO.setPosition(monsterUnit.getPosition());
-                visibleVO.setType(monsterUnit.getType());
-                visibleVO.setVisibleName(monsterUnit.getVisibleName());
-                visibleVOList.add(visibleVO);
-            }
-        }
+        List<VisibleVO> visibleVOList = scenceInfo.getVisibleVOList();
         sm.setVisibleVOList(visibleVOList);
         session.sendPacket(sm);
     }

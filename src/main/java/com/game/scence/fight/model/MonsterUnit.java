@@ -41,7 +41,7 @@ public class MonsterUnit extends CreatureUnit {
         Attribute maxHp = attributeContainer.getFinalAttributes().get(AttributeType.MAX_HP);
         Attribute maxMp = attributeContainer.getFinalAttributes().get(AttributeType.MAX_MP);
         /**
-         * 这里配置表已经配了最大血量了，肯定不为空
+         * 这里需要配置表配最大血量的属性，配置表已经配了最大血量了，肯定不为空
          */
         monsterUnit.setCurrHp(maxHp.getValue());
         monsterUnit.setCurrMp(maxMp.getValue());

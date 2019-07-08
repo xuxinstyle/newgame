@@ -69,7 +69,7 @@ public class CreatureAttributeContainer<T> extends AbstractAttributeContainer {
                     }
                     Attribute attribute = collectAttributes.get(attributeType);
                     if(attribute==null){
-                        continue;
+                        attribute = Attribute.valueOf(attributeType,0);
                     }
                     Map<AttributeType, Attribute> attributeMap = attributeType.computeChangeAttribute(attribute.getValue());
                     if(attributeMap==null){
@@ -84,6 +84,7 @@ public class CreatureAttributeContainer<T> extends AbstractAttributeContainer {
                     }
                     finalAttributes.put(type,Attribute.valueOf(type,realValue));
                 }
+                continue;
             }
 
             /**

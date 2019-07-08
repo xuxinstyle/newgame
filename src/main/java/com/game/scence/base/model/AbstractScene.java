@@ -2,6 +2,7 @@ package com.game.scence.base.model;
 
 import com.game.role.player.model.Player;
 import com.game.scence.visible.model.Position;
+import com.game.scence.visible.packet.bean.VisibleVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,13 @@ public abstract class AbstractScene {
      */
     private int sceneId;
     /**
-     * 玩家账号id  FIXME:用来客户端显示用
+     * 玩家账号id  FIXME:用来客户端显示用也可以用来做玩家是否在这个地图的判断
      */
     private List<String> accountIds;
+    /**
+     * 获取可是对象的信息
+     */
+    public abstract List<VisibleVO> getVisibleVOList();
     /**
      * FIXME:只是用来客户端显示
      * @return
@@ -36,6 +41,7 @@ public abstract class AbstractScene {
      * @param targetpos
      */
     public abstract void move(String accountId,Position targetpos);
+
 
     public void enter(Player player){
         if(accountIds==null){
