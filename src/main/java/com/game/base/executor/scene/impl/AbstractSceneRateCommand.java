@@ -10,8 +10,8 @@ public abstract class AbstractSceneRateCommand extends AbstractSceneDelayCommand
      */
     private long period;
 
-    public AbstractSceneRateCommand(int mapId, long delay, long period) {
-        super(mapId, delay);
+    public AbstractSceneRateCommand(int mapId, long delay, long period,String accountId) {
+        super(mapId, delay,accountId);
         this.period = period;
     }
 

@@ -1,0 +1,383 @@
+package com.game.scence.visible.service;
+
+import com.game.SpringContext;
+import com.game.base.gameobject.constant.ObjectType;
+import com.game.role.player.entity.PlayerEnt;
+import com.game.role.player.model.Player;
+import com.game.scence.base.model.AbstractFightScene;
+import com.game.scence.base.model.AbstractScene;
+import com.game.scence.field.model.FieldFightScene;
+import com.game.scence.fight.model.CreatureUnit;
+import com.game.scence.fight.model.FightAccount;
+import com.game.scence.fight.model.MonsterUnit;
+import com.game.scence.fight.model.PlayerUnit;
+import com.game.scence.visible.command.ChangeMapCommand;
+import com.game.scence.visible.command.EnterMapCommand;
+import com.game.scence.visible.command.LeaveMapCommand;
+import com.game.scence.visible.command.MoveCommand;
+import com.game.scence.visible.constant.MapType;
+import com.game.scence.visible.model.Position;
+import com.game.scence.visible.packet.*;
+import com.game.scence.visible.packet.bean.VisibleVO;
+import com.game.scence.visible.resource.MapResource;
+import com.game.user.account.entity.AccountEnt;
+import com.game.user.account.model.AccountInfo;
+import com.game.user.account.packet.SM_EnterCreatePlayer;
+import com.socket.core.session.SessionManager;
+import com.socket.core.session.TSession;
+import com.game.util.SendPacketUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @Author：xuxin
+ * @Date: 2019/6/3 10:42
+ */
+@Component
+public class ScenceServiceImpl implements ScenceService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ScenceServiceImpl.class);
+
+    @Autowired
+    private ScenceManger scenceMangaer;
+    @Autowired
+    private SessionManager sessionManager;
+
+    @Override
+    public void init() {
+        scenceMangaer.init();
+    }
+
+    @Override
+    public void enterMap(TSession session, String accountId, int targetMapId) {
+        /**
+         * 如果没有角色信息，则进入创角页面
+         */
+        if (!checkAccountInfo(accountId)) {
+            SM_EnterCreatePlayer sm = new SM_EnterCreatePlayer();
+            sm.setAccountId(accountId);
+
+            session.sendPacket(sm);
+            logger.info("玩家[{}]进入创角",accountId);
+            return;
+        }
+        /**
+         * 如果有角色信息，则进入玩家上次在的地图
+         */
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        EnterMapCommand command = EnterMapCommand.valueOf(player, player.getCurrMapId(), targetMapId);
+        SpringContext.getSceneExecutorService().submit(command);
+    }
+
+    /**
+     * TODO:等玩家
+     *
+     * @param targetMapId
+     * @param accountId
+     */
+    @Override
+    public void doEnterMap(String accountId, int targetMapId) {
+        try {
+            MapResource mapResource = getMapResource(targetMapId);
+            if(mapResource==null){
+                return;
+            }
+            AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+            PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(accountId);
+            Player player = playerEnt.getPlayer();
+            player.setCurrMapId(targetMapId);
+            /** 初始化位置*/
+            Position position = Position.valueOf(mapResource.getInitX(), mapResource.getInitY());
+            player.setPosition(position);
+
+            AbstractScene scence = scenceMangaer.getScence(targetMapId);
+
+            /** 在新的场景中添加玩家战斗单元信息.*/
+            scence.enter(player);
+            /**
+             * 通知客户端
+             */
+            player.setChangeMapId(false);
+            SpringContext.getPlayerSerivce().save(playerEnt);
+            SpringContext.getAccountService().save(accountEnt);
+            SendPacketUtil.send(accountId,SM_EnterMap.valueOf(accountId,targetMapId));
+        }catch (Exception e){
+            /**
+             * 进入地图错误返回新手村
+             */
+            AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+            PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(accountId);
+            Player player = playerEnt.getPlayer();
+            player.setChangeMapId(false);
+            SpringContext.getAccountService().save(accountEnt);
+            SpringContext.getScenceSerivce().changeMap(accountId,MapType.NoviceVillage.getMapId(),false);
+            SendPacketUtil.send(accountId,SM_EnterMapErr.valueOf(2));
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void doLogoutBefore(String accountId) {
+        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(accountId);
+        Player player = playerEnt.getPlayer();
+        int currMapId = player.getCurrMapId();
+        player.setLastLogoutMapId(currMapId);
+
+        LeaveMapCommand command = new LeaveMapCommand(currMapId,0,accountId);
+        SpringContext.getSceneExecutorService().submit(command);
+    }
+
+    /**
+     * 做进入地图前需要做的事，即离开地图需要做的事,清除之前的场景中的信息
+     *
+     * @param
+     * @param
+     */
+    @Override
+    public void leaveMap(String accountId) {
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        int currentMapId = player.getCurrMapId();
+        /** 1.清除上次地图中玩家存的信息*/
+        AbstractScene scence = scenceMangaer.getScence(currentMapId);
+        scence.leave(accountId);
+        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+        accountEnt.getAccountInfo().getIsChangeMap().getAndSet(true);
+        /**
+         * TODO:判断能否离开地图
+         */
+        /**
+         * 显示地图
+         */
+        showMap(currentMapId);
+
+    }
+
+    /**
+     * 判断玩家是否创角色 如果玩家没有角色 则进入创角
+     *
+     * @param accountId
+     * @return
+     */
+    private boolean checkAccountInfo(String accountId) {
+        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+        /**
+         * 如玩家没有昵称，则说明没有创角色信息
+         */
+        AccountInfo accountInfo = accountEnt.getAccountInfo();
+        if (accountInfo.getAccountName() == null || "".equals(accountInfo.getAccountName())) {
+            logger.info("玩家{}没有角色信息",accountId);
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * 以后显示的信息会增加，先暂时传这些数据
+     *
+     * @param session
+     * @param mapId
+     */
+    @Override
+    public void showAllAccountInfo(TSession session, int mapId) {
+        AbstractScene scenceInfo = scenceMangaer.getScence(mapId);
+
+
+        SM_ShowAllVisibleInfo sm = new SM_ShowAllVisibleInfo();
+        List<VisibleVO> visibleVOList = new ArrayList<>();
+        /**
+         * TODO:玩家信息 这里的信息和战斗单元不一样,这里考虑一下是否要封装一个抽象方法
+         * TODO:来做显示所有的地图中的对象：怪物，玩家角色，npc
+         */
+        List<String> accountIds = scenceInfo.getAccountIds();
+        for(String accountId:accountIds) {
+            Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+            VisibleVO visibleVO = new VisibleVO();
+            visibleVO.setVisibleName(player.getPlayerName());
+            visibleVO.setPosition(player.getPosition());
+            visibleVO.setType(ObjectType.PLAYER);
+            visibleVO.setObjectId(player.getObjectId());
+            visibleVOList.add(visibleVO);
+        }
+
+        /**
+         * 地图中的怪物信息
+         */
+        if(scenceInfo.getMapId()==MapType.FIELD.getMapId()){
+            FieldFightScene fieldScene = (FieldFightScene) scenceInfo;
+            Map<Long, MonsterUnit> monsterUnits = fieldScene.getMonsterUnits();
+            for(MonsterUnit monsterUnit:monsterUnits.values()){
+                VisibleVO visibleVO = new VisibleVO();
+                visibleVO.setObjectId(monsterUnit.getId());
+                visibleVO.setPosition(monsterUnit.getPosition());
+                visibleVO.setType(monsterUnit.getType());
+                visibleVO.setVisibleName(monsterUnit.getVisibleName());
+                visibleVOList.add(visibleVO);
+            }
+        }
+        sm.setVisibleVOList(visibleVOList);
+        session.sendPacket(sm);
+    }
+    @Override
+    public void showAccountIdInfo(TSession session, int mapId, long objectId) {
+        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(objectId);
+        Player player = playerEnt.getPlayer();
+        if(mapId==MapType.NoviceVillage.getMapId()){
+
+            session.sendPacket(SM_ShowAccountInfo.valueOf(player));
+        }else{
+            String accountId = player.getAccountId();
+            AbstractScene scence = scenceMangaer.getScence(mapId);
+            if(scence instanceof AbstractFightScene){
+                Map<String, FightAccount> fightAccounts = ((AbstractFightScene) scence).getFightAccounts();
+                FightAccount fightAccount = fightAccounts.get(accountId);
+                Map<Long, CreatureUnit> creatureUnitMap = fightAccount.getCreatureUnitMap();
+                CreatureUnit creatureUnit = creatureUnitMap.get(objectId);
+                /**
+                 * 如果是玩家战斗单元则发送消息给客户端 否则不发消息
+                 */
+                if(creatureUnit instanceof PlayerUnit){
+                    session.sendPacket(SM_ShowAccountInfo.valueOf((PlayerUnit) creatureUnit));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void move(String accountId, Position targetPos, int mapId) {
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        MoveCommand command = MoveCommand.valueOf(mapId, player, player.getPosition(), targetPos);
+        SpringContext.getSceneExecutorService().submit(command);
+    }
+
+    @Override
+    public void doMove(String accountId, Position targetPos, int mapId) {
+        if (!checkMove(mapId, targetPos)) {
+            if(logger.isDebugEnabled()){
+                logger.debug("不能移动到位置{}",targetPos.toString());
+            }
+            SM_Move sm = new SM_Move();
+            sm.setStatus(0);
+            sm.setPosition(targetPos);
+            SendPacketUtil.send(accountId, sm);
+            return;
+        }
+        AbstractScene scence = scenceMangaer.getScence(mapId);
+        scence.move(accountId,targetPos);
+        SM_Move sm = new SM_Move();
+        sm.setStatus(1);
+        sm.setPosition(targetPos);
+        SendPacketUtil.send(accountId,sm);
+    }
+
+
+    /**
+     * TODO:做战斗同步
+     * @param player
+     */
+    @Override
+    public void doPlayerUpLevel( Player player) {
+        int mapId = player.getCurrMapId();
+    }
+
+    @Override
+    public void changeMap(String accountId, int targetMapId,boolean clientRequest) {
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        ChangeMapCommand command = ChangeMapCommand.valueOf(player, targetMapId);
+        SpringContext.getSceneExecutorService().submit(command);
+    }
+    @Override
+    public void doChangeMap(Player player,int targetMapId){
+        try {
+            if(player.isChangeMap()){
+                return;
+            }
+            if(!checkChangeMap(player,targetMapId)){
+                SendPacketUtil.send(player,SM_ChangeMapErr.valueOf(2));
+                return;
+            }
+            /**
+             * 离开当前地图
+             */
+            leaveMap(player.getAccountId());
+            /**
+             * 进入地图
+             */
+            EnterMapCommand command = EnterMapCommand.valueOf(player,player.getCurrMapId(),targetMapId);
+            SpringContext.getSceneExecutorService().submit(command);
+        }catch (Exception e){
+            AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(player.getAccountId());
+            accountEnt.getAccountInfo().getIsChangeMap().getAndSet(false);
+            SM_ChangeMap sm = new SM_ChangeMap();
+            SendPacketUtil.send(player,SM_ChangeMapErr.valueOf(2));
+            logger.error("玩家[{}]请求从[{}]进入[{}]地图失败,失败原因[{}]",player.getAccountId(),player.getCurrMapId(),targetMapId,e);
+        }
+    }
+
+    /**
+     * TODO:判断进入地图的条件
+     * @param player
+     * @param targetMapId
+     * @return
+     */
+    private boolean checkChangeMap(Player player,int targetMapId) {
+        if(player.getCurrMapId()==targetMapId){
+            return false;
+        }
+        MapResource resource = scenceMangaer.getResource(targetMapId, MapResource.class);
+        if(resource==null){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public MapResource getMapResource(int mapId) {
+        return scenceMangaer.getResource( mapId,MapResource.class);
+    }
+
+    /**
+     * TODO:放进场景线程
+     * @param mapId
+     */
+    @Override
+    public void showMap(int mapId) {
+        AbstractScene scence = scenceMangaer.getScence(mapId);
+        if(scence==null){
+            return;
+        }
+
+        Map<Integer, List<Position>> visiblePosition = scence.getVisiblePosition();
+        List<String> accountIds = scence.getAccountIds();
+        SM_ScenePositionVisible sm = new SM_ScenePositionVisible();
+        sm.setPositionMap(visiblePosition);
+        for(String accountId:accountIds){
+            SendPacketUtil.send(accountId,sm);
+        }
+
+    }
+
+    private boolean checkMove(int mapId, Position targetPos) {
+        MapResource mapResource = getMapResource(mapId);
+        int[][] mapcontext = mapResource.getMapcontext();
+        if(targetPos.getY() >= mapcontext.length||targetPos.getY()<0||
+                targetPos.getX()>=mapcontext[0].length||targetPos.getX()<0){
+            return false;
+        }
+        if(mapcontext[targetPos.getX()][targetPos.getY()]==-1){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public AbstractScene getScene(int mapId) {
+        return scenceMangaer.getScence(mapId);
+    }
+}

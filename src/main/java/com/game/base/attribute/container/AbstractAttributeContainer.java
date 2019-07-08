@@ -34,11 +34,11 @@ public abstract class AbstractAttributeContainer {
     /**
      * 存放模块属性
      */
-    protected Map<String, ModelAttribute> modelAttributes = new HashMap<>();
+    protected Map<String, ModelAttribute> modelAttributes = new ConcurrentHashMap<>();
     /**
      * 各属性模块累加在一起的属性集合
      */
-    protected Map<AttributeType, Attribute> collectAttributes = new HashMap<>();
+    protected Map<AttributeType, Attribute> collectAttributes = new ConcurrentHashMap<>();
     /**
      * 设置该模块的属性 并且重新计算
      * @param id
@@ -90,6 +90,7 @@ public abstract class AbstractAttributeContainer {
         ModelAttribute modelAttribute = modelAttributes.get(id.toString());
         if(modelAttribute == null){
             modelAttribute = new ModelAttribute();
+            modelAttribute.setAttributeId(id);
             modelAttributes.put(id.toString(), modelAttribute);
         }
         //将原来的属性清空覆盖掉

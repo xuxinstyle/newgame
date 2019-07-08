@@ -8,8 +8,8 @@ public abstract class AbstractSceneDelayCommand extends AbstractSceneCommand {
 
     long delay;
 
-    public AbstractSceneDelayCommand(int mapId,long delay) {
-        super(mapId);
+    public AbstractSceneDelayCommand(int mapId,long delay,String accountId) {
+        super(mapId,0, accountId);
         this.delay = delay;
     }
 

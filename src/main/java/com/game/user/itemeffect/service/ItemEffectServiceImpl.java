@@ -75,7 +75,7 @@ public class ItemEffectServiceImpl implements ItemEffectService {
          */
         cancelCommand(player.getObjectId());
         /**
-         * 移除map中的command
+         * 移除玩家map中所有的command
          */
         removeDelayCommandByPlayerId(player.getObjectId());
     }
@@ -172,7 +172,7 @@ public class ItemEffectServiceImpl implements ItemEffectService {
         for(ItemEffectdetaiInfo itemEffectdetaiInfo:itemEffectdetaiInfoMap.values()){
 
             if(!itemEffectdetaiInfo.isEffectiveStatus()){
-               return;
+               continue;
             }
             Map<Integer, ItemExpireDelayCommand> itemDeprecateDelayCommandMap =
                     getItemExpireDelayCommandMap(player.getObjectId());

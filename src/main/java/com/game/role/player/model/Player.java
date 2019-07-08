@@ -7,11 +7,16 @@ import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.base.gameobject.model.Creature;
 import com.game.role.player.resource.PlayerLevelResource;
-import com.game.scence.constant.SceneType;
-import com.game.scence.model.PlayerPosition;
+import com.game.scence.visible.constant.MapType;
+import com.game.scence.visible.model.Position;
+import com.game.user.account.entity.AccountEnt;
+import com.game.user.account.model.AccountInfo;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.stereotype.Component;
 
+import java.beans.Transient;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 public class Player extends Creature<Player> {
@@ -39,7 +44,7 @@ public class Player extends Creature<Player> {
     /**
      * 角色当前位置x坐标
      */
-    private PlayerPosition position;
+    private Position position;
     /**
      * 玩家当前等级拥有的经验
      */
@@ -52,6 +57,10 @@ public class Player extends Creature<Player> {
      * 玩家当前所在的地图
      */
     private int currMapId;
+    /**
+     * 玩家场景id
+     */
+    private int currSceneId;
 
     /**
      *
@@ -68,31 +77,24 @@ public class Player extends Creature<Player> {
         player.setAccountId(accountId);
         player.setPlayerName(nickName);
         player.setSurviveStatus(1);
-        player.setCurrentMapType(SceneType.NoviceVillage.getMapId());
-        player.setLastLogoutMapType(SceneType.NoviceVillage.getMapId());
+        player.setCurrMapId(MapType.NoviceVillage.getMapId());
+        player.setLastLogoutMapId(MapType.NoviceVillage.getMapId());
         // TODO: BUFF容器
+
         player.setAttributeContainer(new PlayerAttributeContainer());
         /** 生成玩家基础属性*/
         PlayerLevelResource resource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel());
         List<Attribute> baseAttributeList = resource.getBaseAttributeList();
-        player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.LEVEL,baseAttributeList);
+        player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.BASE,baseAttributeList);
         return player;
     }
 
-    public int getLastLogoutMapType() {
-        return lastLogoutMapId;
+    public int getCurrSceneId() {
+        return currSceneId;
     }
 
-    public void setLastLogoutMapType(int lastLogoutMapId) {
-        this.lastLogoutMapId = lastLogoutMapId;
-    }
-
-    public int getCurrentMapType() {
-        return currMapId;
-    }
-
-    public void setCurrentMapType(int mapId) {
-        this.currMapId = mapId;
+    public void setCurrSceneId(int currSceneId) {
+        this.currSceneId = currSceneId;
     }
 
     public long getExp() {
@@ -106,7 +108,16 @@ public class Player extends Creature<Player> {
     public String getAccountId() {
         return accountId;
     }
-
+    public AccountInfo getAccount(String accountId){
+        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
+        return accountEnt.getAccountInfo();
+    }
+    public boolean isChangeMap(){
+        return getAccount(this.getAccountId()).getIsChangeMap().get();
+    }
+    public void setChangeMapId(boolean changeMapId){
+        getAccount(this.getAccountId()).getIsChangeMap().getAndSet(changeMapId);
+    }
     public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
@@ -163,11 +174,11 @@ public class Player extends Creature<Player> {
         this.attributeContainer = attributeContainer;
     }
 
-    public PlayerPosition getPosition() {
+    public Position getPosition() {
         return position;
     }
 
-    public void setPosition(PlayerPosition position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 

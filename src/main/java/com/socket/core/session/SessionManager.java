@@ -17,6 +17,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class SessionManager {
     private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
     /** <玩家账号Id, Session> */
+    /**
+     * FIXME:对这个map操作要考虑多线程安全问题： ConcurrentHashMap就已经保证了线程安全
+     */
     private static Map<String, TSession> accountSessionMap = new ConcurrentHashMap<>();
 
     /**
@@ -33,7 +36,7 @@ public class SessionManager {
 
     public static void addAccountSessionMap(String accountId, TSession session) {
         session.setAccountId(accountId);
-        accountSessionMap.putIfAbsent(accountId, session);
+        accountSessionMap.put(accountId, session);
     }
 
 
@@ -41,14 +44,6 @@ public class SessionManager {
         accountSessionMap.remove(accountId);
     }
 
-    public static void clearSession() {
-        for (Map.Entry<String, TSession> entry : accountSessionMap.entrySet()) {
-            TSession session = entry.getValue();
-            if (!session.isActive()) {
-                accountSessionMap.remove(entry.getKey());
-            }
-        }
-    }
     public Map<String, TSession> getAccountSessionMap(){
         return accountSessionMap;
     }

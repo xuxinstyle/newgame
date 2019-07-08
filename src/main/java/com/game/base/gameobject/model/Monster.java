@@ -1,7 +1,7 @@
 package com.game.base.gameobject.model;
 
 import com.game.base.gameobject.constant.ObjectType;
-import com.game.scence.constant.SceneType;
+import com.game.scence.monster.resource.MonsterResource;
 
 /**
  * @Author：xuxin
@@ -11,21 +11,37 @@ public class Monster extends Creature<Monster> {
     /**
      * 怪物所在的场景类型
      */
-    private SceneType currentScene;
-
+    private int currentMapId;
     /**
-     * 怪物
+     * 怪物配置表id
      * @return
      */
-    @Override
-    public String getName() {
-        /** 从配置表中获取*/
-        return null;
-    }
+    private MonsterResource monsterResource;
+
 
     @Override
     public ObjectType getObjectType() {
         return ObjectType.MONSTER;
     }
 
+    @Override
+    public String getName() {
+        return monsterResource.getName();
+    }
+
+    public int getCurrentMapId() {
+        return currentMapId;
+    }
+
+    public void setCurrentMapId(int currentMapId) {
+        this.currentMapId = currentMapId;
+    }
+
+    public MonsterResource getMonsterResource() {
+        return monsterResource;
+    }
+
+    public void setMonsterResource(MonsterResource monsterResource) {
+        this.monsterResource = monsterResource;
+    }
 }

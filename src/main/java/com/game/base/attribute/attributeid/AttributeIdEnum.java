@@ -6,12 +6,21 @@ package com.game.base.attribute.attributeid;
  */
 public enum AttributeIdEnum implements AttributeId {
     /**
-     * 等级成长属性
+     * 基础属性
      */
-    LEVEL{
+    BASE {
         @Override
         public String getName() {
-            return "LEVEL";
+            return "BASE";
+        }
+    },
+    /**
+     * 战斗时使用
+     */
+    PVP{
+        @Override
+        public String getName() {
+            return "PVP";
         }
     },
 

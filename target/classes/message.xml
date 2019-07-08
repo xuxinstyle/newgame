@@ -18,19 +18,19 @@
     <catalog id="12" value="com.game.login.packet.SM_Logout"/>
     <catalog id="13" value="com.game.login.packet.SM_LoginNoAcount"/>
 
-    <catalog id="14" value="com.game.scence.packet.CM_EnterMap"/>
-    <catalog id="15" value="com.game.scence.packet.SM_EnterMap"/>
+    <catalog id="14" value="com.game.scence.visible.packet.CM_EnterMap"/>
+    <catalog id="15" value="com.game.scence.visible.packet.SM_EnterMap"/>
 
-    <catalog id="16" value="com.game.scence.packet.CM_ShowAllAccountInfo"/>
-    <catalog id="17" value="com.game.scence.packet.SM_ShowAllAccountInfo"/>
-    <catalog id="18" value="com.game.scence.packet.CM_ShowAccountInfo"/>
-    <catalog id="19" value="com.game.scence.packet.SM_ShowAccountInfo"/>
+    <catalog id="16" value="com.game.scence.visible.packet.CM_ShowAllVisibleInfo"/>
+    <catalog id="17" value="com.game.scence.visible.packet.SM_ShowAllVisibleInfo"/>
+    <catalog id="18" value="com.game.scence.visible.packet.CM_ShowAccountInfo"/>
+    <catalog id="19" value="com.game.scence.visible.packet.SM_ShowAccountInfo"/>
 
-    <catalog id="20" value="com.game.scence.packet.CM_Move"/>
-    <catalog id="21" value="com.game.scence.packet.SM_Move"/>
+    <catalog id="20" value="com.game.scence.visible.packet.CM_Move"/>
+    <catalog id="21" value="com.game.scence.visible.packet.SM_Move"/>
 
-    <catalog id="22" value="com.game.scence.packet.CM_OnlinePlayerOperate"/>
-    <catalog id="23" value="com.game.scence.packet.SM_OnlinePlayerOperate"/>
+    <catalog id="22" value="com.game.scence.visible.packet.CM_ScenePositionVisible"/>
+    <catalog id="23" value="com.game.scence.visible.packet.SM_ScenePositionVisible"/>
     <!-- 玩家背包相关-->
     <catalog id="24" value="com.game.user.item.packet.SM_RemoveItemFormPack"/>
     <catalog id="25" value="com.game.user.item.packet.CM_RemoveItemFormPack"/>
@@ -66,5 +66,10 @@
 
     <catalog id="50" value="com.game.gm.packet.CM_GMCommond"/>
     <catalog id="51" value="com.game.gm.packet.SM_GMCommond"/>
+
+    <catalog id="52" value="com.game.scence.visible.packet.CM_ChangeMap"/>
+    <catalog id="53" value="com.game.scence.visible.packet.SM_ChangeMap"/>
+    <catalog id="54" value="com.game.scence.visible.packet.SM_ChangeMapErr"/>
+    <catalog id="55" value="com.game.scence.visible.packet.SM_EnterMapErr"/>
 
 </protocols>

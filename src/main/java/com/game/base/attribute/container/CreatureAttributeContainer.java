@@ -84,7 +84,6 @@ public class CreatureAttributeContainer<T> extends AbstractAttributeContainer {
                     }
                     finalAttributes.put(type,Attribute.valueOf(type,realValue));
                 }
-                continue;
             }
 
             /**
@@ -97,7 +96,7 @@ public class CreatureAttributeContainer<T> extends AbstractAttributeContainer {
             finalAttributes.put(type, Attribute.valueOf(type, attr.getValue()));
         }
         /**
-         * 百分比属性
+         * 计算百分比属性
          */
         for(AttributeType type:typelist){
             AttributeType[] calculateAttributes = type.getcalculateAttributes();

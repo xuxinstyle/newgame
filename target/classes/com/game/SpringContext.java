@@ -6,13 +6,15 @@ import com.game.base.executor.account.AccountExecutorService;
 import com.game.base.executor.common.CommonExecutorService;
 import com.game.base.executor.scene.SceneExecutorService;
 import com.game.gm.service.GmService;
-import com.game.gm.service.GmServiceImpl;
+import com.game.scence.field.service.FieldService;
+import com.game.scence.monster.service.MonsterService;
+import com.game.scence.npc.service.NpcService;
 import com.game.user.account.service.AccountService;
 import com.game.base.identify.service.IdentifyService;
 import com.game.role.player.service.PlayerService;
 import com.game.connect.service.ConnectService;
 import com.game.login.service.LoginService;
-import com.game.scence.service.ScenceService;
+import com.game.scence.visible.service.ScenceService;
 import com.game.register.service.RegisterService;
 import com.game.role.equip.service.EquipService;
 import com.game.role.equipupgrade.service.EquipUpgradeService;
@@ -91,6 +93,24 @@ public class SpringContext implements ApplicationContextAware {
     private GmService gmService;
     @Autowired
     private InitManager initManager;
+    @Autowired
+    private NpcService npcService;
+    @Autowired
+    private MonsterService monsterService;
+    @Autowired
+    private FieldService fieldService;
+
+    public static FieldService getFieldService(){
+        return instance.fieldService;
+    }
+
+    public static MonsterService getMonsterService(){
+        return instance.monsterService;
+    }
+
+    public static NpcService getNpcService(){
+        return instance.npcService;
+    }
 
     public static InitManager getInitManager(){
         return instance.initManager;

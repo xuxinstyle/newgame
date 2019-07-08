@@ -35,4 +35,6 @@ public class ItemManager {
     public void save(ItemStorageEnt itemStorageEnt) {
         entityCacheService.saveOrUpdate(itemStorageEnt);
     }
+
+
 }

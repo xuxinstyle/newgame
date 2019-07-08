@@ -7,7 +7,7 @@ import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.user.account.packet.SM_CreatePlayer;
 import com.game.role.player.entity.PlayerEnt;
-import com.game.scence.constant.SceneType;
+import com.game.scence.visible.constant.MapType;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +71,7 @@ public class AccountServiceImpl implements AccountService {
         /**
          * 请求进入场景地图
          */
-        SpringContext.getScenceSerivce().enterMap(session,accountId,SceneType.NoviceVillage.getMapId());
+        SpringContext.getScenceSerivce().enterMap(session,accountId,MapType.NoviceVillage.getMapId());
     }
 
     @Override

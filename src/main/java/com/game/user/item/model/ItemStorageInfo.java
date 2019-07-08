@@ -222,7 +222,19 @@ public class ItemStorageInfo {
         }
         return -1;
     }
-
+    public boolean checkItem(long objectItemId,int num){
+        for(int i = 0;i<items.length;i++){
+            if(items[i]==null){
+                continue;
+            }
+            if(items[i].getObjectId()==objectItemId){
+                if(items[i].getNum()>=num){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     /**
      * 找出所有可以放这个道具的最大数量
      *

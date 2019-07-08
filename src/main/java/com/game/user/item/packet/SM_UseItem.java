@@ -7,7 +7,7 @@ package com.game.user.item.packet;
  */
 public class SM_UseItem {
     /**
-     * 使用状态 1 成功 2 没有道具 3 道具不能使用
+     * 使用状态 1 成功 2 没有道具 3 道具不能使用 4 道具数量不足
      */
     private int status;
     /**

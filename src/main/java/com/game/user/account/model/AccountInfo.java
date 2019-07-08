@@ -1,7 +1,9 @@
 package com.game.user.account.model;
 
-import com.game.scence.constant.SceneType;
 import com.game.util.TimeUtil;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 放账号的信息，如属性等
@@ -35,6 +37,11 @@ public class AccountInfo {
      * 是否是gm玩家
      */
     private boolean isGm;
+    /**
+     * 改变地图的状态
+     */
+    @JsonIgnore
+    private AtomicBoolean isChangeMap = new AtomicBoolean(false);
 
     public static AccountInfo valueOf(String accountName){
         AccountInfo accountInfo = new AccountInfo();
@@ -45,6 +52,14 @@ public class AccountInfo {
         accountInfo.setLastLogoutTime(0L);
         accountInfo.setPlayerId(0L);
         return accountInfo;
+    }
+
+    public AtomicBoolean getIsChangeMap() {
+        return isChangeMap;
+    }
+
+    public void setIsChangeMap(AtomicBoolean isChangeMap) {
+        this.isChangeMap = isChangeMap;
     }
 
     public boolean isGm() {

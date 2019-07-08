@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author：xuxin
@@ -24,7 +25,7 @@ public class ItemEffectManager {
     /**
      * <角色id，<道具表id，道具延迟命令 >>  在登出后取消已经抛出但是还没有过期的命令
      */
-    private Map<Long ,Map<Integer, ItemExpireDelayCommand>> playerItemExpireCommandMap = new HashMap<>();
+    private Map<Long ,Map<Integer, ItemExpireDelayCommand>> playerItemExpireCommandMap = new ConcurrentHashMap<>();
 
     public Map<Integer, ItemExpireDelayCommand> getItemDeprecateDelayCommandMap(long playerId){
         return playerItemExpireCommandMap.get(playerId);
@@ -34,7 +35,7 @@ public class ItemEffectManager {
     public void putCommand(ItemExpireDelayCommand command){
         Map<Integer, ItemExpireDelayCommand> delayCommandMap = playerItemExpireCommandMap.get(command.getPlayerId());
         if(delayCommandMap==null){
-            delayCommandMap = new HashMap<>();
+            delayCommandMap = new ConcurrentHashMap<>();
             delayCommandMap.put(command.getItemModelId(),command);
             playerItemExpireCommandMap.put(command.getPlayerId(),delayCommandMap);
             return;

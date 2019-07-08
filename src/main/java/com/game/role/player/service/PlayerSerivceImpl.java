@@ -1,5 +1,6 @@
 package com.game.role.player.service;
 
+import com.db.EntityBuilder;
 import com.db.cache.EntityCacheService;
 import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
@@ -42,7 +43,11 @@ public class PlayerSerivceImpl implements PlayerService {
     public void save(PlayerEnt playerEnt) {
         entityCacheService.saveOrUpdate(playerEnt);
     }
-
+    public void save(Player player){
+        PlayerEnt playerEnt = entityCacheService.find(PlayerEnt.class, player.getObjectId());
+        playerEnt.setPlayer(player);
+        save(playerEnt);
+    }
     @Override
     public PlayerEnt getPlayerEnt(long playerId) {
         return entityCacheService.find(PlayerEnt.class, playerId);

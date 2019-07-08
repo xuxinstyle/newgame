@@ -224,8 +224,14 @@ public class ItemServiceImpl implements ItemService {
             session.sendPacket(sm);
             return;
         }
+        if(item.getNum()<num){
+            logger.warn("玩家背包没有道具[{}]",itemObjectId);
+            SM_UseItem sm = new SM_UseItem();
+            sm.setStatus(4);
+            session.sendPacket(sm);
+        }
         /**
-         * fixme:这里看调用什么地方的use比较好?  这里调用item的use扩展性比较好，如果以后需要加其他可使用的道具，只要直接调用继续
+         * fixme:这里看调用什么地方的use比较好?  这里调用item的use扩展性比较好，如果以后需要加其他可使用的道具，只要直接调用
          */
         item.use(accountId,num);
         pack.removeByObjectId(itemObjectId,num);

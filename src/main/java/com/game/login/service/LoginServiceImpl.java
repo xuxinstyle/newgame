@@ -5,11 +5,12 @@ import com.game.login.event.LoginEvent;
 import com.game.login.packet.SM_Logout;
 import com.game.role.player.event.LogoutEvent;
 import com.game.role.player.model.Player;
+import com.game.scence.visible.command.RemoveScenceInfoCommand;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.login.packet.SM_Login;
 import com.game.login.packet.SM_LoginNoAcount;
-import com.game.scence.constant.SceneType;
+import com.game.scence.visible.constant.MapType;
 import com.game.util.MD5Util;
 import com.game.util.TimeUtil;
 import com.socket.core.session.SessionManager;
@@ -66,9 +67,9 @@ public class LoginServiceImpl implements LoginService {
         Player player = SpringContext.getPlayerSerivce().getPlayer(usernameDB);
         SM_Login sm = new SM_Login();
         if(player==null){
-            sm.setLastScenceId(SceneType.NoviceVillage.getMapId());
+            sm.setLastScenceId(MapType.NoviceVillage.getMapId());
         }else{
-            sm.setLastScenceId(player.getLastLogoutMapType());
+            sm.setLastScenceId(player.getCurrMapId());
         }
         /** 将accountId放到session中,并将session放到缓存中管理*/
         SessionManager.addAccountSessionMap(usernameDB, session);
@@ -82,6 +83,7 @@ public class LoginServiceImpl implements LoginService {
         onlineAccounts.add(usernameDB);
         sm.setStatus(1);
         sm.setAccountId(usernameDB);
+
         session.sendPacket(sm);
         logger.info(usernameDB + "登录成功！");
     }
@@ -94,26 +96,22 @@ public class LoginServiceImpl implements LoginService {
          */
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-        if(player==null){
-            return;
+        if(player.getCurrMapId()==0){
+            player.setLastLogoutMapId(MapType.NoviceVillage.getMapId());
         }
-        if(player.getCurrentMapType()==0){
-            player.setLastLogoutMapType(SceneType.NoviceVillage.getMapId());
-        }else {
-            player.setLastLogoutMapType(player.getCurrentMapType());
-            accountInfo.setLastLogoutTime(TimeUtil.now());
-            SpringContext.getSessionManager().removeSession(accountId);
-            SpringContext.getScenceSerivce().removeScenceAccountId(player.getCurrentMapType(), accountId);
-            player.setCurrentMapType(0);
-            SpringContext.getAccountService().save(accountEnt);
-            session.logout(accountId);
-        }
-        Set<String> onlineAccounts = SpringContext.getSessionManager().getOnlineAccounts();
-        onlineAccounts.remove(accountId);
+        player.setLastLogoutMapId(player.getCurrMapId());
+        accountInfo.setLastLogoutTime(TimeUtil.now());
         /**
          * 登出时抛出登出事件
          */
+        SpringContext.getSessionManager().removeSession(accountId);
+        RemoveScenceInfoCommand command = RemoveScenceInfoCommand.valueOf(player.getCurrMapId(), accountId);
+        SpringContext.getSceneExecutorService().submit(command);
         LogoutEvent event = LogoutEvent.valueOf(accountId);
         SpringContext.getEvenManager().syncSubmit(event);
+        SpringContext.getAccountService().save(accountEnt);
+        Set<String> onlineAccounts = SpringContext.getSessionManager().getOnlineAccounts();
+        onlineAccounts.remove(accountId);
+        session.logout(accountId);
     }
 }
