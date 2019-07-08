@@ -5,6 +5,7 @@ import com.game.base.identify.service.SessionService;
 import com.game.base.executor.account.AccountExecutorService;
 import com.game.base.executor.common.CommonExecutorService;
 import com.game.base.executor.scene.SceneExecutorService;
+import com.game.role.skill.service.SkillService;
 import com.game.gm.service.GmService;
 import com.game.scence.field.service.FieldService;
 import com.game.scence.monster.service.MonsterService;
@@ -99,6 +100,12 @@ public class SpringContext implements ApplicationContextAware {
     private MonsterService monsterService;
     @Autowired
     private FieldService fieldService;
+    @Autowired
+    private SkillService skillService;
+
+    public static SkillService getSkillService(){
+        return instance.skillService;
+    }
 
     public static FieldService getFieldService(){
         return instance.fieldService;

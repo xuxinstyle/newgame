@@ -67,6 +67,7 @@ public class AccountServiceImpl implements AccountService {
         SM_CreatePlayer sm = new SM_CreatePlayer();
         sm.setAccountId(accountId);
         sm.setStatus(1);
+        sm.setPlayerId(playerId);
         session.sendPacket(sm);
         /**
          * 请求进入场景地图

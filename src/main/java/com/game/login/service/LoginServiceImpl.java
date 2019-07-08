@@ -83,7 +83,9 @@ public class LoginServiceImpl implements LoginService {
         onlineAccounts.add(usernameDB);
         sm.setStatus(1);
         sm.setAccountId(usernameDB);
-
+        if(player!=null) {
+            sm.setPlayerId(player.getObjectId());
+        }
         session.sendPacket(sm);
         logger.info(usernameDB + "登录成功！");
     }

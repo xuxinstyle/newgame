@@ -8,6 +8,8 @@ import com.game.base.attribute.container.AbstractAttributeContainer;
 import com.game.base.attribute.constant.AttributeKind;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.gameobject.constant.ObjectType;
+import com.game.role.skill.entity.SkillEnt;
+import com.game.role.skill.model.SkillInfo;
 import com.game.role.player.packet.SM_ShowAttribute;
 import com.game.role.player.resource.PlayerLevelResource;
 import com.game.user.account.entity.AccountEnt;
@@ -78,7 +80,13 @@ public class PlayerSerivceImpl implements PlayerService {
         equipmentEnt.setPlayerId(playerId);
         equipmentEnt.setEquipmentInfo(EquipmentInfo.valueOf());
         SpringContext.getEquipService().save(equipmentEnt);
-
+        /**
+         * 生成技能栏
+         */
+        SkillEnt skillEnt = new SkillEnt();
+        skillEnt.setPlayerId(playerId);
+        skillEnt.setSkillInfo(SkillInfo.valueOf(player));
+        SpringContext.getSkillService().saveSkill(skillEnt);
         return playerEnt;
     }
     @Override

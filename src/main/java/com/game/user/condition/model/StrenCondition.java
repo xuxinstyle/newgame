@@ -1,6 +1,7 @@
 package com.game.user.condition.model;
 
 import com.game.SpringContext;
+import com.game.role.player.model.Player;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
 
@@ -21,8 +22,8 @@ public class StrenCondition extends AbstractCondition {
     private int num;
 
     @Override
-    public boolean checkCondition(String accountId,Map<String, Object> param) {
-        ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
+    public boolean checkCondition(Player player, Map<String, Object> param) {
+        ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(player.getAccountId());
         AbstractItem[] items = itemStorageEnt.getPack().getItems();
         /**
          * 可使用数量

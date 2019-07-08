@@ -31,7 +31,7 @@ public class ExpUseEffect extends AbstractUseEffect {
     }
 
     @Override
-    public void use(String accountId,int num) {
+    public void active(String accountId, int num) {
         TSession session = SpringContext.getSessionService().getSession(accountId);
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(accountId);
         Player player = playerEnt.getPlayer();

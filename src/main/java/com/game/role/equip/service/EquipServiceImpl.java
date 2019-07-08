@@ -142,7 +142,8 @@ public class EquipServiceImpl implements EquipService {
         }
         EquipResource equipResource = getEquipResource(item.getItemModelId());
         EquipCondition equipCondition = equipResource.getEquipCondition();
-        if (!equipCondition.checkCondition(accountId, null)) {
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        if (!equipCondition.checkCondition(player, null)) {
             if (logger.isDebugEnabled()) {
                 logger.debug("玩家{}不符合穿戴条件", accountId);
             }

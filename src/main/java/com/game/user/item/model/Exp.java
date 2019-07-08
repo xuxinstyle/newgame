@@ -33,6 +33,6 @@ public class Exp extends AbstractItem{
     public void use(String accountId,int num) {
         ItemResource itemResource = SpringContext.getItemService().getItemResource(itemModelId);
         ExpUseEffect useEffect = (ExpUseEffect)itemResource.getUseEffect();
-        useEffect.use(accountId,num);
+        useEffect.active(accountId,num);
     }
 }

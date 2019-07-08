@@ -28,7 +28,7 @@ public class Medicine extends AbstractItem{
     public void use(String accountId,int num){
         ItemResource itemResource = SpringContext.getItemService().getItemResource(itemModelId);
         AbstractUseEffect useEffect = itemResource.getUseEffect();
-        useEffect.use(accountId,num);
+        useEffect.active(accountId,num);
 
     }
 }

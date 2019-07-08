@@ -16,7 +16,7 @@ import java.util.Map;
 public abstract class AbstractCondition {
 
 
-    public boolean checkCondition(String accountId, Map<String, Object> param){
+    public boolean checkCondition(Player player, Map<String, Object> param){
 
         return true;
     }

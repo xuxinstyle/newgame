@@ -2,6 +2,7 @@ package com.game.role.equipstren.service;
 
 import com.game.SpringContext;
 import com.game.role.equipstren.resource.EquipStrenResource;
+import com.game.role.player.model.Player;
 import com.game.user.condition.model.StrenCondition;
 import com.game.role.equip.resource.EquipResource;
 import com.game.user.item.constant.ItemType;
@@ -50,7 +51,8 @@ public class EquipStrenServiceImpl implements EquipStrenService {
         int itemModelId = item.getItemModelId();
         EquipResource equipResource = SpringContext.getItemService().getEquipResource(itemModelId);
         StrenCondition streCondition = equipResource.getStreCondition();
-        if(!streCondition.checkCondition(accountId,null)){
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        if(!streCondition.checkCondition(player,null)){
             SM_StrenEquip sm = new SM_StrenEquip();
             sm.setStatus(3);
             session.sendPacket(sm);

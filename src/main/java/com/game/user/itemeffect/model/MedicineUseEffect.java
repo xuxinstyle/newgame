@@ -57,7 +57,7 @@ public class MedicineUseEffect extends AbstractUseEffect {
      *
      */
     @Override
-    public void use(String acountId,int num) {
+    public void active(String acountId, int num) {
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(acountId);
         Player player = playerEnt.getPlayer();
 

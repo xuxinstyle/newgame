@@ -1,6 +1,7 @@
 package com.game.role.equipupgrade.service;
 
 import com.game.SpringContext;
+import com.game.role.player.model.Player;
 import com.game.user.condition.model.UpgradeCondition;
 import com.game.role.equip.resource.EquipResource;
 import com.game.role.equipupgrade.packet.SM_EquipUpgrade;
@@ -54,7 +55,8 @@ public class EquipUpgradeServiceImpl implements EquipUpgradeService {
         UpgradeCondition upgradeCondition = equipResource.getUpgradeCondition();
         Map<String, Object> param = new HashMap<>();
         param.put(ParamUtil.EQUIP_LEVEL, equipment.getStrenNum());
-        if(!upgradeCondition.checkCondition(accountId,param)){
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        if(!upgradeCondition.checkCondition(player,param)){
             SM_EquipUpgrade sm = new SM_EquipUpgrade();
             sm.setStatus(4);
             session.sendPacket(sm);

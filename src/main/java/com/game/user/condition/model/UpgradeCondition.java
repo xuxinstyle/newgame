@@ -1,6 +1,7 @@
 package com.game.user.condition.model;
 
 import com.game.SpringContext;
+import com.game.role.player.model.Player;
 import com.game.util.ParamUtil;
 import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
@@ -26,13 +27,13 @@ public class UpgradeCondition extends AbstractCondition {
     private int equipNeedLevel;
 
     @Override
-    public boolean checkCondition(String accountId,Map<String, Object> param) {
+    public boolean checkCondition(Player player, Map<String, Object> param) {
 
         int equipLevel = (int)param.get(ParamUtil.EQUIP_LEVEL);
         if(equipLevel<this.equipNeedLevel){
             return false;
         }
-        ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
+        ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(player.getAccountId());
         AbstractItem[] items = itemStorageEnt.getPack().getItems();
         int haveNum = 0;
         for(AbstractItem item:items){

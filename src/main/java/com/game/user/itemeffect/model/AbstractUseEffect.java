@@ -21,7 +21,7 @@ public abstract class AbstractUseEffect {
      * 使用
      * @param
      */
-    public abstract void use(String accountId,int num);
+    public abstract void active(String accountId, int num);
 
     public long getEffectiveTime() {
         return effectiveTime;

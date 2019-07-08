@@ -20,9 +20,7 @@ public class EquipCondition extends AbstractCondition {
     private int playerNeedLevel;
 
     @Override
-    public boolean checkCondition(String accountId,Map<String, Object> param) {
-
-        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+    public boolean checkCondition(Player player,Map<String, Object> param) {
         if(player.getLevel()< this.playerNeedLevel){
             return false;
         }
