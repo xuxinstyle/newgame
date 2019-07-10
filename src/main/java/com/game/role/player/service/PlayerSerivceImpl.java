@@ -45,6 +45,7 @@ public class PlayerSerivceImpl implements PlayerService {
     public void save(PlayerEnt playerEnt) {
         entityCacheService.saveOrUpdate(playerEnt);
     }
+    @Override
     public void save(Player player){
         PlayerEnt playerEnt = entityCacheService.find(PlayerEnt.class, player.getObjectId());
         playerEnt.setPlayer(player);

@@ -18,8 +18,9 @@ public class PlayerUtil {
      */
     public static final int INIT_PACK_USE_SIZE = 0;
     /**
-     * 玩家使用技能栏大小
+     * 玩家快捷技能栏大小
      */
     public static final int SKILL_SLOT_NUM = 5;
+
 
 }

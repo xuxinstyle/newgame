@@ -64,6 +64,7 @@ public enum AttributeType {
     },
     /**
      * 法术防御
+     * 减伤百分比＝x/(x＋602)  x为防御值
      */
     MAGIC_DEFENSE(4,"法术防御",AttributeKind.SECOND_ATTRIBUTE){
         @Override

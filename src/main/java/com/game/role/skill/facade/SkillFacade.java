@@ -1,10 +1,9 @@
 package com.game.role.skill.facade;
 
+import com.event.anno.EventAnn;
 import com.game.SpringContext;
-import com.game.role.player.model.Player;
-import com.game.role.skill.packet.CM_LearnSkill;
-import com.game.role.skill.packet.CM_ShowSkillBar;
-import com.game.role.skill.packet.CM_UpgradeSkill;
+import com.game.role.skill.packet.*;
+import com.game.scence.monster.event.CreatureDeadEvent;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;
@@ -39,12 +38,41 @@ public class SkillFacade {
     }
 
     @HandlerAnno
-    public void showSkill(TSession session, CM_ShowSkillBar cm) {
+    public void showSkill(TSession session, CM_ShowSkillInfo cm) {
         try {
-            SpringContext.getSkillService().showSkillBar(cm.getPlayerId());
+            SpringContext.getSkillService().showSkillInfo(cm.getPlayerId());
         } catch (Exception e) {
-            logger.error("查看玩家[{}]技能栏失败", session.getAccountId());
+            logger.error("玩家[{}]查看技能栏失败", session.getAccountId());
         }
+    }
+    @HandlerAnno
+    public void showSkillBar(TSession session, CM_ShowSkillBar cm){
+        try{
+            SpringContext.getSkillService().showSkillBar(cm.getPlayerId());
+        }catch (Exception e){
+            logger.error("玩家[{}]查看快捷技能栏失败", session.getAccountId());
+        }
+    }
+    @HandlerAnno
+    public void setSkillBar(TSession session, CM_SetSkillBar cm){
+        try{
+            SpringContext.getSkillService().setSkillBar(session,cm.getPlayerId(),cm.getSetStr());
+        }catch (Exception e){
+            logger.error("玩家[{}]设置技能栏失败",session.getAccountId());
+        }
+    }
+    @HandlerAnno
+    public void useSingleSkill(TSession session,CM_UseSkillToMonster cm){
+        try {
+            SpringContext.getSkillService().useSkillToMonster(session,cm.getMapId(),cm.getSceneId(),cm.getSkillTargetId(),cm.getUseId(),cm.getSkillBarId());
+        }catch (Exception e){
+            logger.error("角色[{}]使用技能[{}]出错！",cm.getUseId(),cm.getSkillBarId());
+        }
+    }
+
+    @EventAnn
+    public void doMonsterDeadAfter(CreatureDeadEvent event){
+        SpringContext.getSkillService().doCreatureDeadAfter(event.getMapId(),event.getMonsterUnit());
     }
 
 }

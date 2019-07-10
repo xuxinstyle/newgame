@@ -4,6 +4,8 @@ import com.game.role.skill.entity.SkillEnt;
 import com.game.role.skill.resource.JobSkillResource;
 import com.game.role.skill.resource.SkillLevelResource;
 import com.game.role.skill.resource.SkillResource;
+import com.game.scence.fight.model.CreatureUnit;
+import com.socket.core.session.TSession;
 
 /**
  * @Author：xuxin
@@ -61,5 +63,55 @@ public interface SkillService {
      * 查看技能栏
      * @param playerId
      */
+    void showSkillInfo(long playerId);
+
+    /**
+     * 查看快捷技能栏
+     * @param playerId
+     */
     void showSkillBar(long playerId);
+
+    /**
+     * 设置 技能栏
+     * @param session
+     * @param setStr
+     */
+    void setSkillBar(TSession session,long playerId, String setStr);
+
+
+    /**
+     * 对怪物使用技能
+     * @param session
+     * @param mapId
+     * @param sceneId
+     * @param skillTargetId
+     * @param useId
+     * @param skillBarId
+     */
+    void useSkillToMonster(TSession session, int mapId, int sceneId, long skillTargetId, long useId, int skillBarId);
+
+    /**
+     * 使用技能
+     * @param accountId
+     * @param mapId
+     * @param sceneId
+     * @param skillBarId
+     * @param targetId
+     * @param useId
+     */
+    void doUseSkill(String accountId,int mapId, int sceneId, int skillBarId, long targetId, long useId);
+
+    /**
+     * 做生物死后复活定时处理
+     * @param mapId
+     * @param creatureUnit
+     */
+    void doCreatureDeadAfter(int mapId, CreatureUnit creatureUnit);
+
+    /**
+     * 做生物复活的操作
+     * @param mapId
+     * @param creatureUnit
+     */
+    void doCreatureRevive(int mapId, CreatureUnit creatureUnit);
 }

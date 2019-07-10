@@ -1,8 +1,7 @@
 package com.game.scence.visible.constant;
 
-import com.game.scence.base.model.AbstractFightScene;
 import com.game.scence.base.model.AbstractScene;
-import com.game.scence.base.model.NoviceVillageFightScene;
+import com.game.scence.base.model.NoviceVillageScene;
 import com.game.scence.field.model.FieldFightScene;
 
 import java.util.HashMap;
@@ -18,7 +17,7 @@ public enum MapType {
     /**
      * 新手村
      */
-    NoviceVillage(1, "新手村",NoviceVillageFightScene.class){
+    NoviceVillage(1, "新手村",NoviceVillageScene.class){
 
     },
     /**
@@ -76,7 +75,7 @@ public enum MapType {
         return clz;
     }
 
-    public void setClz(Class<? extends AbstractFightScene> clz) {
+    public void setClz(Class<? extends AbstractScene> clz) {
         this.clz = clz;
     }
 

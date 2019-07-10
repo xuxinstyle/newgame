@@ -20,7 +20,7 @@ public class SkillInfo {
      */
     private Map<Integer, SkillSlot> skillSlotMap;
     /**
-     * 技能栏 <技能栏id, 技能唯一id>
+     * 快捷技能栏 <技能栏id, 技能唯一id> 技能唯一id为 -1 表示该快捷技能栏没有技能
      */
     private Map<Integer, Integer> skillBarMap;
     /**
@@ -42,7 +42,10 @@ public class SkillInfo {
             skillSlot.setLevel(1);
             skillSlotMap.put(skills[i], skillSlot);
         }
-        for (int i = 1; i <= 5; i++) {
+        /**
+         * 快捷技能栏
+         */
+        for (int i = 1; i <= PlayerUtil.SKILL_SLOT_NUM; i++) {
             skillBarMap.put(i, -1);
         }
         skillBarMap.put(1,0);

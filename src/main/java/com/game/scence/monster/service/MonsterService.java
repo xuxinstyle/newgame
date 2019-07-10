@@ -1,5 +1,6 @@
 package com.game.scence.monster.service;
 
+import com.game.scence.fight.model.CreatureUnit;
 import com.game.scence.monster.resource.MonsterResource;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface MonsterService {
      * @return
      */
     List<MonsterResource> getMapMonsterResources(int mapId);
+
+
 }

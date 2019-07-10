@@ -53,6 +53,12 @@ public class MonsterResource {
      * 怪物死后玩家固定增加的经验
      */
     private long exp;
+
+    /**
+     * 怪物的复活cd
+     */
+    private long reviveCd;
+
     public void analyzeAttribute(){
         String[] split = attrStr.split(";");
         List<Attribute> attrs = new ArrayList<>();
@@ -65,6 +71,15 @@ public class MonsterResource {
         }
         this.attrs = attrs;
     }
+
+    public long getReviveCd() {
+        return reviveCd;
+    }
+
+    public void setReviveCd(long reviveCd) {
+        this.reviveCd = reviveCd;
+    }
+
     public int getPx() {
         return px;
     }

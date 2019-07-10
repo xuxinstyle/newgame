@@ -7,6 +7,8 @@ import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.base.gameobject.model.Creature;
 import com.game.role.player.resource.PlayerLevelResource;
+import com.game.role.skill.entity.SkillEnt;
+import com.game.role.skill.model.SkillInfo;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
 import com.game.user.account.entity.AccountEnt;
@@ -88,7 +90,10 @@ public class Player extends Creature<Player> {
         player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.BASE,baseAttributeList);
         return player;
     }
-
+    public SkillInfo getSkillInfo(){
+        SkillEnt skillEnt = SpringContext.getSkillService().getSkillEnt(objectId);
+        return skillEnt.getSkillInfo();
+    }
     public int getCurrSceneId() {
         return currSceneId;
     }

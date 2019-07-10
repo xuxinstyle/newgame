@@ -15,10 +15,10 @@ public class LearnSkillCondition extends AbstractCondition{
     private int level;
 
     public static LearnSkillCondition valueOf(String conditionStr){
-        LearnSkillCondition condition = new LearnSkillCondition();
         if(conditionStr==null||"".equals(conditionStr)){
-            return condition;
+            return null;
         }
+        LearnSkillCondition condition = new LearnSkillCondition();
         condition.setLevel(Integer.parseInt(conditionStr));
         return condition;
     }

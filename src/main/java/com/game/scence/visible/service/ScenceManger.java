@@ -1,6 +1,5 @@
 package com.game.scence.visible.service;
 
-import com.game.scence.base.model.AbstractFightScene;
 import com.game.scence.base.model.AbstractScene;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.resource.MapResource;

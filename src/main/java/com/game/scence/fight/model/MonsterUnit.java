@@ -5,6 +5,7 @@ import com.game.base.attribute.attributeid.AttributeIdEnum;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.gameobject.constant.ObjectType;
+import com.game.role.skill.model.SkillInfo;
 import com.game.scence.monster.resource.MonsterResource;
 import com.game.scence.visible.model.Position;
 
@@ -24,7 +25,10 @@ public class MonsterUnit extends CreatureUnit {
      * 存活状态 true：存活 false：死亡
      */
     private boolean islive;
-
+    /**
+     * TODO:先尝试把存入数据库的技能信息放入战斗单元中 如果有问题再修改
+     */
+    private SkillInfo skillInfo;
     /**
      * 生成怪物战斗单元
      * 生成属性
@@ -34,6 +38,13 @@ public class MonsterUnit extends CreatureUnit {
     public static MonsterUnit valueOf(MonsterResource monsterResource){
         MonsterUnit monsterUnit = new MonsterUnit();
         monsterUnit.setMonsterResource(monsterResource);
+        /**
+         * 技能
+         */
+
+        /**
+         * 属性
+         */
         List<Attribute> attrs = monsterResource.getAttrs();
         monsterUnit.setAttributeContainer(new CreatureAttributeContainer());
         CreatureAttributeContainer attributeContainer = monsterUnit.getAttributeContainer();
@@ -50,6 +61,19 @@ public class MonsterUnit extends CreatureUnit {
         monsterUnit.setIslive(true);
         monsterUnit.setPosition(Position.valueOf(monsterResource.getPx(),monsterResource.getPy()));
         return monsterUnit;
+    }
+    @Override
+    public long getReviveCd(){
+        return monsterResource.getReviveCd();
+    }
+    @Override
+    public SkillInfo getSkillInfo() {
+        return skillInfo;
+    }
+
+    @Override
+    public void setSkillInfo(SkillInfo skillInfo) {
+        this.skillInfo = skillInfo;
     }
 
     public boolean isIslive() {

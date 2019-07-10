@@ -63,5 +63,11 @@ public interface PlayerService {
      */
     void showPlayerAttribute(TSession session, String accountId);
 
+    /**
+     * 保存
+     * @param player
+     */
+    void save(Player player);
+
 
 }

@@ -1,21 +1,21 @@
-技能等级标识id,技能等级,技能伤害类型(1物理 2魔法),最大目标数量,使用距离,使用范围半径,技能基础伤害值,属性伤害加成比例,冷却时间,前置技能,升级条件,被动效果,持续时间,技能描述
-id,level,hurtType,targetNum,useDis,useRangeRadius,hurt,prop,cd,preSkillId,upgradeSkillConditionStr,passiveEffectStr,duration,describe
-string,int,int,int,long,long,long,long,long,string,string,string,long,string
-1_1,1,1,-1,-1,2,0,100,0,,,,,横劈了一下使前方敌人受到[ ]点伤害
-2_1,1,1,-1,-1,4,100,20,10,,2,,,施展横扫千军，使周围敌人受到[ ]点物理伤害
-2_2,2,1,-1,-1,4,120,25,9,,5,,,施展横扫千军，使周围敌人受到[ ]点物理伤害
-2_3,3,1,-1,-1,4,140,30,8,,10,,,施展横扫千军，使周围敌人受到[ ]点物理伤害
-2_4,4,1,-1,-1,4,160,35,7,,20,,,施展横扫千军，使周围敌人受到[ ]点物理伤害
-3_1,1,1,1,-1,-1,0,0,10,,3,"PHYSICAL_ATTACK_PERCENTAGE,5;",6,使用亢奋技能，增加了玩家5%的物理攻击
-3_2,2,1,1,-1,-1,0,0,10,,6,"PHYSICAL_ATTACK_PERCENTAGE,8;",7,使用亢奋技能，增加了玩家8%的物理攻击
-3_3,3,1,1,-1,-1,0,0,10,,11,"PHYSICAL_ATTACK_PERCENTAGE,10;",8,使用亢奋技能，增加了玩家10%的物理攻击
-3_4,4,1,1,-1,-1,0,0,10,,21,"PHYSICAL_ATTACK_PERCENTAGE,12;",9,使用亢奋技能，增加了玩家12%的物理攻击
-4_1,1,1,1,5,0,0,100,0,,,, ,用法杖攻击了[ ]造成了[ ]点伤害 
-5_1,1,2,-1,5,2,100,20,10,,2,,,使用龙卷风，对范围内的玩家造成[ ]点伤害
-5_2,2,2,-1,5,2,120,25,9,,5,,,使用龙卷风，对范围内的玩家造成[ ]点伤害
-5_3,3,2,-1,5,2,140,30,8,,10,,,使用龙卷风，对范围内的玩家造成[ ]点伤害
-5_4,4,2,-1,5,2,160,35,7,,20,,,使用龙卷风，对范围内的玩家造成[ ]点伤害
-6_1,1,2,1,-1,-1,0,0,10,,3,"PHYSICAL_DEFENSE_PERCENTAGE,5;MAGIC_DEFENSE_PERCENTAGE,5;",6,使用法器护身，增加玩家5%的物理防御和法术防御
-6_2,2,2,1,-1,-1,0,0,10,,6,"PHYSICAL_DEFENSE_PERCENTAGE,8;MAGIC_DEFENSE_PERCENTAGE,8;",7,使用法器护身，增加玩家8%的物理防御和法术防御
-6_3,3,2,1,-1,-1,0,0,10,,11,"PHYSICAL_DEFENSE_PERCENTAGE,10;MAGIC_DEFENSE_PERCENTAGE,10;",8,使用法器护身，增加玩家10%的物理防御和法术防御
-6_4,4,2,1,-1,-1,0,0,10,,21,"PHYSICAL_DEFENSE_PERCENTAGE,12;MAGIC_DEFENSE_PERCENTAGE,12;",9,使用法器护身，增加玩家12%的物理防御和法术防御
+技能等级标识id,技能等级,技能伤害类型(1物理 2魔法),最大目标数量,使用距离,使用范围半径,技能基础伤害值,属性伤害加成比例,冷却时间,前置技能,升级条件(玩家等级),被动效果,持续时间,技能消耗,技能描述
+id,level,hurtType,targetNum,useDis,useRangeRadius,hurt,prop,cd,preSkillId,upgradeSkillConditionStr,passiveEffectStr,duration,consume,describe
+string,int,string,int,long,long,long,long,long,string,string,string,long,long,string
+1_1,1,PHYSICAL,0,1,2,0,100,0,,,,,0,横劈了一下使前方敌人受到[ ]点伤害
+2_1,1,PHYSICAL,0,0,4,100,20,10000,,2,,,10,施展横扫千军，使周围敌人受到[ ]点物理伤害
+2_2,2,PHYSICAL,0,0,4,120,25,9000,,5,,,20,施展横扫千军，使周围敌人受到[ ]点物理伤害
+2_3,3,PHYSICAL,0,0,4,140,30,8000,,10,,,30,施展横扫千军，使周围敌人受到[ ]点物理伤害
+2_4,4,PHYSICAL,0,0,4,160,35,7000,,20,,,40,施展横扫千军，使周围敌人受到[ ]点物理伤害
+3_1,1,PHYSICAL,1,0,0,0,0,10000,,3,"PHYSICAL_ATTACK_PERCENTAGE,5;",6000,10,使用亢奋技能，增加了玩家5%的物理攻击
+3_2,2,PHYSICAL,1,0,0,0,0,10000,,6,"PHYSICAL_ATTACK_PERCENTAGE,8;",7000,20,使用亢奋技能，增加了玩家8%的物理攻击
+3_3,3,PHYSICAL,1,0,0,0,0,10000,,11,"PHYSICAL_ATTACK_PERCENTAGE,10;",8000,30,使用亢奋技能，增加了玩家10%的物理攻击
+3_4,4,PHYSICAL,1,0,0,0,0,10000,,21,"PHYSICAL_ATTACK_PERCENTAGE,12;",9000,40,使用亢奋技能，增加了玩家12%的物理攻击
+4_1,1,PHYSICAL,1,5,0,0,100,0,,,, ,0,用法杖攻击了[ ]造成了[ ]点伤害 
+5_1,1,MAGIC,0,5,2,100,20,10000,,2,,,20,使用龙卷风，对范围内的玩家造成[ ]点伤害
+5_2,2,MAGIC,0,5,2,120,25,9000,,5,,,30,使用龙卷风，对范围内的玩家造成[ ]点伤害
+5_3,3,MAGIC,0,5,2,140,30,8000,,10,,,40,使用龙卷风，对范围内的玩家造成[ ]点伤害
+5_4,4,MAGIC,0,5,2,160,35,7000,,20,,,50,使用龙卷风，对范围内的玩家造成[ ]点伤害
+6_1,1,MAGIC,1,0,0,0,0,10000,,3,"PHYSICAL_DEFENSE_PERCENTAGE,5;MAGIC_DEFENSE_PERCENTAGE,5;",6000,10,使用法器护身，增加玩家5%的物理防御和法术防御
+6_2,2,MAGIC,1,0,0,0,0,10000,,6,"PHYSICAL_DEFENSE_PERCENTAGE,8;MAGIC_DEFENSE_PERCENTAGE,8;",7000,20,使用法器护身，增加玩家8%的物理防御和法术防御
+6_3,3,MAGIC,1,0,0,0,0,10000,,11,"PHYSICAL_DEFENSE_PERCENTAGE,10;MAGIC_DEFENSE_PERCENTAGE,10;",8000,30,使用法器护身，增加玩家10%的物理防御和法术防御
+6_4,4,MAGIC,1,0,0,0,0,10000,,21,"PHYSICAL_DEFENSE_PERCENTAGE,12;MAGIC_DEFENSE_PERCENTAGE,12;",9000,40,使用法器护身，增加玩家12%的物理防御和法术防御

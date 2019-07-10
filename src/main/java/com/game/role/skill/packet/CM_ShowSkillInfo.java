@@ -1,11 +1,14 @@
 package com.game.role.skill.packet;
 
 /**
+ * 技能栏
  * @Author：xuxin
- * @Date: 2019/7/9 11:04
+ * @Date: 2019/7/8 22:48
  */
-public class CM_ShowSkillBar {
-
+public class CM_ShowSkillInfo {
+    /**
+     * 角色id
+     */
     private long playerId;
 
     public long getPlayerId() {

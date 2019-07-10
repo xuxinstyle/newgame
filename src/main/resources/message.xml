@@ -80,7 +80,18 @@
     <catalog id="60" value="com.game.role.skill.packet.SM_UpgradeSkill"/>
     <catalog id="61" value="com.game.role.skill.packet.CM_UpgradeSkill"/>
 
-    <catalog id="62" value="com.game.role.skill.packet.SM_ShowSkillBar"/>
-    <catalog id="63" value="com.game.role.skill.packet.CM_ShowSkillBar"/>
+    <catalog id="62" value="com.game.role.skill.packet.SM_ShowSkillInfo"/>
+    <catalog id="63" value="com.game.role.skill.packet.CM_ShowSkillInfo"/>
+    <catalog id="64" value="com.game.role.skill.packet.SM_ShowSkillBar"/>
+    <catalog id="65" value="com.game.role.skill.packet.CM_ShowSkillBar"/>
+    <catalog id="66" value="com.game.role.skill.packet.SM_SetSkillBar"/>
+    <catalog id="67" value="com.game.role.skill.packet.CM_SetSkillBar"/>
+
+    <catalog id="68" value="com.game.role.skill.packet.CM_UseSkillToMonster"/>
+    <catalog id="69" value="com.game.role.skill.packet.SM_UseSkillToMonster"/>
+    <catalog id="70" value="com.game.role.skill.packet.SM_UseSkillToMonsterErr"/>
+
+    <catalog id="71" value="com.game.role.skill.packet.SM_CreatureRevive"/>
+    <catalog id="72" value="com.game.role.skill.packet.SM_CreatureDead"/>
 
 </protocols>

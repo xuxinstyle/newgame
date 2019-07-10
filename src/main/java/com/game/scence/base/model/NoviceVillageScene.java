@@ -4,6 +4,8 @@ import com.game.SpringContext;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
+import com.game.scence.fight.model.CreatureUnit;
+import com.game.scence.fight.model.FightAccount;
 import com.game.scence.npc.resource.NpcResource;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
@@ -20,17 +22,13 @@ import java.util.Map;
  * @Author：xuxin
  * @Date: 2019/7/3 16:10
  */
-public class NoviceVillageFightScene extends AbstractScene {
+public class NoviceVillageScene extends AbstractScene {
     /**
      * 地图中npc信息 npc配置id
      */
     private List<Integer> npcInfoList;
-    /**
-     * 场景中玩家的角色信息
-     */
-    private List<Player> players;
 
-    public NoviceVillageFightScene(){
+    public NoviceVillageScene(){
         super();
     }
     /**
@@ -39,13 +37,12 @@ public class NoviceVillageFightScene extends AbstractScene {
     @Override
     public void init() {
         setMapId(MapType.NoviceVillage.getMapId());
-        setPlayers(new ArrayList<>());
         setSceneId(0);
-        setAccountIds(new ArrayList<>());
+        setFightAccounts(new HashMap<>());
         this.npcInfoList = SpringContext.getNpcService().getNpcIds(getMapId());
     }
 
-    public NoviceVillageFightScene(int mapId) {
+    public NoviceVillageScene(int mapId) {
         super(mapId);
     }
 
@@ -57,16 +54,7 @@ public class NoviceVillageFightScene extends AbstractScene {
         /**
          * 玩家信息
          */
-        List<VisibleVO> visibleVOList = new ArrayList<>();
-        for (Player player:players){
-            VisibleVO visibleVO = new VisibleVO();
-            visibleVO.setObjectId(player.getObjectId());
-            visibleVO.setType(ObjectType.PLAYER);
-            visibleVO.setPosition(player.getPosition());
-            visibleVO.setVisibleName(player.getPlayerName());
-            visibleVOList.add(visibleVO);
-        }
-        return visibleVOList;
+        return super.getVisibleVOList();
     }
 
     @Override
@@ -82,14 +70,7 @@ public class NoviceVillageFightScene extends AbstractScene {
             npcPositions.add(Position.valueOf(npcResource.getPx(),npcResource.getPy()));
         }
         positionMap.put(ObjectType.NPC.getTypeId(),npcPositions);
-        /**
-         * 玩家位置
-         */
-        List<Position> playerPositions = new ArrayList<>();
-        for(Player player:players){
-            playerPositions.add(player.getPosition());
-        }
-        positionMap.put(ObjectType.PLAYER.getTypeId(),playerPositions);
+
         return positionMap;
     }
 
@@ -108,31 +89,24 @@ public class NoviceVillageFightScene extends AbstractScene {
     @Override
     public void leave(String accountId) {
         super.leave(accountId);
-        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-        players.remove(player);
+    }
+
+    @Override
+    public List<String> getAccountIds() {
+        return super.getAccountIds();
     }
 
     @Override
     public void enter(Player player) {
+        player.setCurrMapId(MapType.NoviceVillage.getMapId());
         super.enter(player);
-        if(players==null){
-            players = new ArrayList<>();
-        }
-        players.add(player);
+
     }
 
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<Player> players) {
-        this.players = players;
-    }
 
     public MapType getMapType() {
         return MapType.NoviceVillage;
     }
-
 
     public List<Integer> getNpcInfoList() {
         return npcInfoList;

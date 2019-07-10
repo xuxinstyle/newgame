@@ -30,15 +30,15 @@ public abstract class AbstractAttributeContainer {
     /**
      * 当前属性   计算了一级属性和百分比属性的属性集合
      */
-    protected Map<AttributeType, Attribute> finalAttributes = new ConcurrentHashMap<>();
+    protected Map<AttributeType, Attribute> finalAttributes = new HashMap<>();
     /**
      * 存放模块属性
      */
-    protected Map<String, ModelAttribute> modelAttributes = new ConcurrentHashMap<>();
+    protected Map<String, ModelAttribute> modelAttributes = new HashMap<>();
     /**
      * 各属性模块累加在一起的属性集合
      */
-    protected Map<AttributeType, Attribute> collectAttributes = new ConcurrentHashMap<>();
+    protected Map<AttributeType, Attribute> collectAttributes = new HashMap<>();
     /**
      * 设置该模块的属性 并且重新计算
      * @param id

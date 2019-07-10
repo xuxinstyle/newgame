@@ -1,12 +1,10 @@
 package com.game.role.skill.packet;
 
-import com.game.role.skill.model.SkillSlot;
-
 import java.util.Map;
 
 /**
  * @Author：xuxin
- * @Date: 2019/7/8 22:49
+ * @Date: 2019/7/9 11:04
  */
 public class SM_ShowSkillBar {
     /**
@@ -14,9 +12,9 @@ public class SM_ShowSkillBar {
      */
     private long playerId;
     /**
-     * 技能栏数据
+     * 技能栏map
      */
-    private Map<Integer, SkillSlot> skillSlotMap;
+    private Map<Integer, Integer> skillBarMap;
 
     public long getPlayerId() {
         return playerId;
@@ -26,11 +24,11 @@ public class SM_ShowSkillBar {
         this.playerId = playerId;
     }
 
-    public Map<Integer, SkillSlot> getSkillSlotMap() {
-        return skillSlotMap;
+    public Map<Integer, Integer> getSkillBarMap() {
+        return skillBarMap;
     }
 
-    public void setSkillSlotMap(Map<Integer, SkillSlot> skillSlotMap) {
-        this.skillSlotMap = skillSlotMap;
+    public void setSkillBarMap(Map<Integer, Integer> skillBarMap) {
+        this.skillBarMap = skillBarMap;
     }
 }

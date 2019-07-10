@@ -21,7 +21,7 @@ public abstract class BaseUnit {
     /**
      * 位置
      */
-    Position position;
+    private Position position;
     /**
      * 可视物名字
      */
@@ -31,6 +31,19 @@ public abstract class BaseUnit {
      * 可视物类型
      */
     private ObjectType type;
+
+    /**
+     * 所在的场景id
+     */
+    private int mapId;
+
+    public int getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(int mapId) {
+        this.mapId = mapId;
+    }
 
     public String getVisibleName() {
         return visibleName;

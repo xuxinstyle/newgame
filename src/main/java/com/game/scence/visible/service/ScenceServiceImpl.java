@@ -1,15 +1,11 @@
 package com.game.scence.visible.service;
 
 import com.game.SpringContext;
-import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
-import com.game.scence.base.model.AbstractFightScene;
 import com.game.scence.base.model.AbstractScene;
-import com.game.scence.field.model.FieldFightScene;
 import com.game.scence.fight.model.CreatureUnit;
 import com.game.scence.fight.model.FightAccount;
-import com.game.scence.fight.model.MonsterUnit;
 import com.game.scence.fight.model.PlayerUnit;
 import com.game.scence.visible.command.ChangeMapCommand;
 import com.game.scence.visible.command.EnterMapCommand;
@@ -31,7 +27,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -196,24 +191,29 @@ public class ScenceServiceImpl implements ScenceService {
     public void showAccountIdInfo(TSession session, int mapId, long objectId) {
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(objectId);
         Player player = playerEnt.getPlayer();
-        if(mapId==MapType.NoviceVillage.getMapId()){
-
-            session.sendPacket(SM_ShowAccountInfo.valueOf(player));
-        }else{
-            String accountId = player.getAccountId();
-            AbstractScene scence = scenceMangaer.getScence(mapId);
-            if(scence instanceof AbstractFightScene){
-                Map<String, FightAccount> fightAccounts = ((AbstractFightScene) scence).getFightAccounts();
-                FightAccount fightAccount = fightAccounts.get(accountId);
-                Map<Long, CreatureUnit> creatureUnitMap = fightAccount.getCreatureUnitMap();
-                CreatureUnit creatureUnit = creatureUnitMap.get(objectId);
-                /**
-                 * 如果是玩家战斗单元则发送消息给客户端 否则不发消息
-                 */
-                if(creatureUnit instanceof PlayerUnit){
-                    session.sendPacket(SM_ShowAccountInfo.valueOf((PlayerUnit) creatureUnit));
-                }
+        String accountId = player.getAccountId();
+        AbstractScene scence = scenceMangaer.getScence(mapId);
+        if(scence==null){
+            if(logger.isDebugEnabled()) {
+                logger.debug("玩家[{}]查看的场景为空");
             }
+            return;
+        }
+        Map<String, FightAccount> fightAccounts = scence.getFightAccounts();
+        FightAccount fightAccount = fightAccounts.get(accountId);
+        if(fightAccount==null){
+            if(logger.isDebugEnabled()) {
+                logger.debug("地图[{}]中，没有玩家[{}]",mapId,accountId);
+            }
+            return;
+        }
+        Map<Long, CreatureUnit> creatureUnitMap = fightAccount.getCreatureUnitMap();
+        CreatureUnit creatureUnit = creatureUnitMap.get(objectId);
+        /**
+         * 如果是玩家战斗单元则发送消息给客户端 否则不发消息
+         */
+        if(creatureUnit instanceof PlayerUnit){
+            session.sendPacket(SM_ShowAccountInfo.valueOf((PlayerUnit) creatureUnit));
         }
     }
 
@@ -282,7 +282,6 @@ public class ScenceServiceImpl implements ScenceService {
         }catch (Exception e){
             AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(player.getAccountId());
             accountEnt.getAccountInfo().getIsChangeMap().getAndSet(false);
-            SM_ChangeMap sm = new SM_ChangeMap();
             SendPacketUtil.send(player,SM_ChangeMapErr.valueOf(2));
             logger.error("玩家[{}]请求从[{}]进入[{}]地图失败,失败原因[{}]",player.getAccountId(),player.getCurrMapId(),targetMapId,e);
         }

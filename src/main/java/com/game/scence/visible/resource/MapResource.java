@@ -19,6 +19,10 @@ public class MapResource {
     public int initX;
 
     public int initY;
+    /**
+     * 复活cd
+     */
+    private long reviveCd;
     /** 地图实际形状*/
     public String context;
 
@@ -44,8 +48,10 @@ public class MapResource {
      * 地图中的怪物
      */
     private String monsters;
+
     @Analyze("analyzeMonster")
     private List<Integer> monsterList;
+
     public void analyzeMonster(){
         if(monsters==null){
             return;
@@ -59,6 +65,15 @@ public class MapResource {
             monsterList.add(monsterId);
         }
     }
+
+    public long getReviveCd() {
+        return reviveCd;
+    }
+
+    public void setReviveCd(long reviveCd) {
+        this.reviveCd = reviveCd;
+    }
+
     public String getMonsters() {
         return monsters;
     }

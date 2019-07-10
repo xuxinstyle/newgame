@@ -26,7 +26,7 @@ public class SkillResource {
     /**
      * 技能类型（被动技能或主动技能）
      */
-    private int skillType;
+    private String skillType;
     /**
      * 职业限制
      */
@@ -96,11 +96,11 @@ public class SkillResource {
         this.maxLevel = maxLevel;
     }
 
-    public int getSkillType() {
+    public String getSkillType() {
         return skillType;
     }
 
-    public void setSkillType(int skillType) {
+    public void setSkillType(String skillType) {
         this.skillType = skillType;
     }
 

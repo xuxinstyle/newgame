@@ -23,7 +23,7 @@ public class SkillLevelResource {
     /**
      * 伤害类型 1 物理 2魔法
      */
-    private int hurtType;
+    private String hurtType;
     /**
      * 技能目标数量
      */
@@ -68,6 +68,10 @@ public class SkillLevelResource {
      */
     private long duration;
     /**
+     * 技能消耗MP
+     */
+    private long consume;
+    /**
      * 描述
      */
     private String describe;
@@ -91,6 +95,14 @@ public class SkillLevelResource {
         }
         int level = Integer.parseInt(upgradeSkillConditionStr);
         upgradeSkillCondition = UpgradeSkillCondition.valueOf(level);
+    }
+
+    public long getConsume() {
+        return consume;
+    }
+
+    public void setConsume(long consume) {
+        this.consume = consume;
     }
 
     public String getPassiveEffectStr() {
@@ -165,11 +177,11 @@ public class SkillLevelResource {
         this.level = level;
     }
 
-    public int getHurtType() {
+    public String getHurtType() {
         return hurtType;
     }
 
-    public void setHurtType(int hurtType) {
+    public void setHurtType(String hurtType) {
         this.hurtType = hurtType;
     }
 
