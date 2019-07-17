@@ -5,7 +5,6 @@ import com.game.login.event.LoginEvent;
 import com.game.login.packet.SM_Logout;
 import com.game.role.player.event.LogoutEvent;
 import com.game.role.player.model.Player;
-import com.game.scence.visible.command.RemoveScenceInfoCommand;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.login.packet.SM_Login;
@@ -107,8 +106,7 @@ public class LoginServiceImpl implements LoginService {
          * 登出时抛出登出事件
          */
         SpringContext.getSessionManager().removeSession(accountId);
-        RemoveScenceInfoCommand command = RemoveScenceInfoCommand.valueOf(player.getCurrMapId(), accountId);
-        SpringContext.getSceneExecutorService().submit(command);
+
         LogoutEvent event = LogoutEvent.valueOf(accountId);
         SpringContext.getEvenManager().syncSubmit(event);
         SpringContext.getAccountService().save(accountEnt);

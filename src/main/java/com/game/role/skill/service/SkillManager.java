@@ -37,6 +37,7 @@ public class SkillManager {
     public void save(SkillEnt skillEnt){
         entityCacheService.saveOrUpdate(skillEnt);
     }
+
     public SkillEnt getOrCreateSkillEnt(long playerId){
         return entityCacheService.findOrCreate(SkillEnt.class, playerId, new EntityBuilder<Long, SkillEnt>() {
             @Override

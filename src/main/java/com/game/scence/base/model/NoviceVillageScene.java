@@ -5,8 +5,7 @@ import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.scence.fight.model.CreatureUnit;
-import com.game.scence.fight.model.FightAccount;
-import com.game.scence.npc.resource.NpcResource;
+
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
 import com.game.scence.visible.packet.bean.VisibleVO;
@@ -28,22 +27,11 @@ public class NoviceVillageScene extends AbstractScene {
      */
     private List<Integer> npcInfoList;
 
-    public NoviceVillageScene(){
-        super();
-    }
-    /**
-     * todo：注意以后处理分线
-     */
     @Override
     public void init() {
         setMapId(MapType.NoviceVillage.getMapId());
-        setSceneId(0);
-        setFightAccounts(new HashMap<>());
-        this.npcInfoList = SpringContext.getNpcService().getNpcIds(getMapId());
-    }
 
-    public NoviceVillageScene(int mapId) {
-        super(mapId);
+        this.npcInfoList = SpringContext.getNpcService().getNpcIds(getMapId());
     }
 
     @Override
@@ -60,18 +48,9 @@ public class NoviceVillageScene extends AbstractScene {
     @Override
     public Map<Integer, List<Position>> getVisiblePosition() {
         /**
-         * npc位置
+         * npc位置 FIXME: 这里也不用处理npc
          */
-        Map<Integer, List<Position>> positionMap= new HashMap<>();
-        List<Position> npcPositions = new ArrayList<>();
-
-        for(Integer resourceId:npcInfoList){
-            NpcResource npcResource = SpringContext.getNpcService().getNpcResource(resourceId);
-            npcPositions.add(Position.valueOf(npcResource.getPx(),npcResource.getPy()));
-        }
-        positionMap.put(ObjectType.NPC.getTypeId(),npcPositions);
-
-        return positionMap;
+        return super.getVisiblePosition();
     }
 
     @Override
@@ -87,8 +66,13 @@ public class NoviceVillageScene extends AbstractScene {
     }
 
     @Override
-    public void leave(String accountId) {
-        super.leave(accountId);
+    public CreatureUnit getUnit(ObjectType objectType, long objectId) {
+        return super.getUnit(objectType, objectId);
+    }
+
+    @Override
+    public void leave(Player player) {
+        super.leave(player);
     }
 
     @Override
@@ -99,13 +83,18 @@ public class NoviceVillageScene extends AbstractScene {
     @Override
     public void enter(Player player) {
         player.setCurrMapId(MapType.NoviceVillage.getMapId());
+        SpringContext.getPlayerSerivce().save(player);
         super.enter(player);
-
     }
 
+    @Override
+    public boolean isCanUseSkill() {
+        return false;
+    }
 
-    public MapType getMapType() {
-        return MapType.NoviceVillage;
+    @Override
+    public int getMapId() {
+        return MapType.NoviceVillage.getMapId();
     }
 
     public List<Integer> getNpcInfoList() {

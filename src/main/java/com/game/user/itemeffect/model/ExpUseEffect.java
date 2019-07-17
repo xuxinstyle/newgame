@@ -8,6 +8,7 @@ import com.game.role.player.event.PlayerUpLevelEvent;
 import com.game.role.player.model.Player;
 import com.game.role.player.packet.SM_PlayerUpLevel;
 import com.game.role.player.resource.PlayerLevelResource;
+import com.game.scence.fight.command.AddAttributeBuffSynCommand;
 import com.game.util.PlayerUtil;
 import com.socket.core.session.TSession;
 
@@ -58,7 +59,7 @@ public class ExpUseEffect extends AbstractUseEffect {
             List<Attribute> baseAttributeListEnd = playerLevelResource.getBaseAttributeList();
             player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.BASE,baseAttributeListEnd);
             SpringContext.getPlayerSerivce().save(playerEnt);
-
+            // 抛同步事件 当玩家在战斗的时候升级，玩家的血和蓝回满
             PlayerUpLevelEvent playerUpLevelEvent = PlayerUpLevelEvent.valueOf( player);
             SpringContext.getEvenManager().syncSubmit(playerUpLevelEvent);
 

@@ -2,6 +2,8 @@ package com.game.base.executor.scene;
 
 import com.game.base.executor.NameThreadFactory;
 import com.game.base.executor.scene.impl.AbstractSceneCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;
@@ -29,7 +31,7 @@ public class SceneThreadPoolExecutor {
 
     private static final ScheduledExecutorService SCENE_SCHEDULE_POOL = Executors.newScheduledThreadPool(POOL_SIZE,scheduleNameThreadFactory);
 
-
+    private static final Logger logger = LoggerFactory.getLogger(SceneThreadPoolExecutor.class);
     public void start(){
         NameThreadFactory nameThreadFactory = new NameThreadFactory("SceneExecutorThread");
         for (int i = 0;i < DEFAULT_INITIAL_THREAD_POOL_SIZE ;i++){
@@ -41,12 +43,17 @@ public class SceneThreadPoolExecutor {
         }
     }
 
-    public void addTask(AbstractSceneCommand accountCommond){
-        int modIndex = accountCommond.modIndex(DEFAULT_INITIAL_THREAD_POOL_SIZE);
+    public void addTask(AbstractSceneCommand command) {
+        Object key = command.getKey();
+        int modIndex = command.modIndex(DEFAULT_INITIAL_THREAD_POOL_SIZE);
         SCENE_SERVICE[modIndex].submit(() -> {
-           if(!accountCommond.isCanceled()){
-               accountCommond.active();
-           }
+            try {
+                if (!command.isCanceled()) {
+                    command.active();
+                }
+            } catch (Exception e) {
+                logger.error("SceneThreadPoolExecutor执行：" + command.getName() + ",key:" + key, e);
+            }
         });
     }
 

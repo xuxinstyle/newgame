@@ -2,6 +2,7 @@ package com.game.base.skill.model;
 
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.constant.AttributeType;
+import com.game.role.skilleffect.model.AbstractSkillEffect;
 import com.game.util.StringUtil;
 
 import java.util.ArrayList;

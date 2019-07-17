@@ -103,25 +103,6 @@ public enum AttributeType {
         }
     },
     /**
-     * 攻速  最大2.5次每秒。  初始攻速 1 次每秒   200+x/200 其中x为配置表中的数值
-     */
-    ATTACK_SPEED(7,"攻速",AttributeKind.SECOND_ATTRIBUTE){
-        @Override
-        public AttributeType[] getEffectAttributes() {
-            return new AttributeType[]{ATTACK_SPEED_PERCENTAGE};
-        }
-
-        @Override
-        public AttributeType[] getFirstAttributes() {
-            return new AttributeType[]{AGILE};
-        }
-
-    },
-    /**
-     * 吸血比例   对方减少的血量*  吸血比例 = 回血量
-     */
-    SUCK_BLOOD(12,"吸血比例",AttributeKind.SECOND_ATTRIBUTE),
-    /**
      * 物理穿透率 对方防御= 原始防御*（1-%X） x为物理穿透率
      */
     PHYSICAL_PENETRATION(13,"物理穿透率",AttributeKind.SECOND_ATTRIBUTE),
@@ -192,13 +173,12 @@ public enum AttributeType {
         public Map<AttributeType, Attribute> computeChangeAttribute(long value) {
             Map<AttributeType, Attribute> attributeMap = new ConcurrentHashMap<>();
             attributeMap.put(MAX_MP,Attribute.valueOf(MAX_MP,value*100));
-            attributeMap.put(ATTACK_SPEED, Attribute.valueOf(ATTACK_SPEED, value));
             return attributeMap;
         }
 
         @Override
         public AttributeType[] getEffectAttributes() {
-            return new AttributeType[]{MAX_MP,ATTACK_SPEED};
+            return new AttributeType[]{MAX_MP};
         }
     },
 
@@ -259,15 +239,6 @@ public enum AttributeType {
         @Override
         public AttributeType[] getcalculateAttributes() {
             return new AttributeType[]{MAGIC_ATTACK};
-        }
-    },
-    /**
-     * 增加攻速百分比
-     */
-    ATTACK_SPEED_PERCENTAGE(21,"增加攻速百分比",AttributeKind.OTHER_ATTRIBUTE){
-        @Override
-        public AttributeType[] getcalculateAttributes() {
-            return new AttributeType[]{ATTACK_SPEED};
         }
     },
     ;

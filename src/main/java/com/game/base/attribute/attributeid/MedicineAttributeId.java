@@ -10,8 +10,10 @@ import java.util.Map;
  * @Date: 2019/6/26 14:16
  */
 public class MedicineAttributeId implements AttributeId  {
+
     private static final Map<Integer,MedicineAttributeId> medicineToAttributeId =
             new HashMap<>(MedicineType.values().length);
+
     static {
         for(MedicineType type:MedicineType.values()){
             medicineToAttributeId.put(type.getItemModelId(),new MedicineAttributeId(type.getItemModelId()));
@@ -35,8 +37,6 @@ public class MedicineAttributeId implements AttributeId  {
 
     @Override
     public String toString() {
-        return "MedicineAttributeId{" +
-                "itemModelId=" + itemModelId +
-                '}';
+        return getName();
     }
 }

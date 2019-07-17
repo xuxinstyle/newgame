@@ -17,5 +17,11 @@ public interface MonsterService {
      */
     List<MonsterResource> getMapMonsterResources(int mapId);
 
-
+    /**
+     * 获取怪物信息
+     *
+     * @param monsterId
+     * @return
+     */
+    MonsterResource getMonsterResource(int monsterId);
 }

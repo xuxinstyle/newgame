@@ -1,9 +1,11 @@
 package com.game.scence.base.model;
 
-import com.game.base.executor.ICommand;
+
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.player.model.Player;
 import com.game.scence.fight.model.CreatureUnit;
-import com.game.scence.fight.model.FightAccount;
+
+import com.game.scence.fight.model.PlayerUnit;
 import com.game.scence.visible.model.Position;
 import com.game.scence.visible.packet.bean.VisibleVO;
 
@@ -25,14 +27,11 @@ public abstract class AbstractScene {
      * 场景id
      */
     private int sceneId;
-    /**
-     * 场景战斗数据
-     */
-    private Map<String, FightAccount> fightAccounts;
 
     /**
-     * 场景的定时任务??? FIXME:有什么用？ 用来管理command但是实际 我在项目中没有用到
+     * 玩家战斗单元信息
      */
+    private Map<Long, CreatureUnit> creatureUnitMap = new HashMap<>();
 
 
     public AbstractScene(){
@@ -54,22 +53,30 @@ public abstract class AbstractScene {
          * 玩家的可视信息
          */
         List<VisibleVO> visibleVOList = new ArrayList<>();
-        Map<String, FightAccount> fightAccounts = getFightAccounts();
-        for(FightAccount fightAccount:fightAccounts.values()){
-            Map<Long, CreatureUnit> creatureUnitMap = fightAccount.getCreatureUnitMap();
-            if(creatureUnitMap==null){
-                continue ;
+        Map<Long, CreatureUnit> creatureUnitMap = getCreatureUnitMap();
+        for (CreatureUnit creatureUnit : creatureUnitMap.values()) {
+            if (creatureUnit.isDead()) {
+                continue;
             }
-            for(CreatureUnit creatureUnit:creatureUnitMap.values()) {
-                VisibleVO visibleVO = new VisibleVO();
-                visibleVO.setObjectId(creatureUnit.getId());
-                visibleVO.setType(creatureUnit.getType());
-                visibleVO.setPosition(creatureUnit.getPosition());
-                visibleVO.setVisibleName(creatureUnit.getVisibleName());
-                visibleVOList.add(visibleVO);
-            }
+            VisibleVO visibleVO = new VisibleVO();
+            visibleVO.setObjectId(creatureUnit.getId());
+            visibleVO.setType(creatureUnit.getType());
+            visibleVO.setPosition(creatureUnit.getPosition());
+            visibleVO.setVisibleName(creatureUnit.getVisibleName());
+            visibleVO.setCurrHp(creatureUnit.getCurrHp());
+            visibleVO.setCurrMp(creatureUnit.getCurrMp());
+            visibleVO.setMaxHp(creatureUnit.getMaxHp());
+            visibleVO.setMaxMp(creatureUnit.getMaxMp());
+            visibleVOList.add(visibleVO);
         }
         return visibleVOList;
+    }
+
+    public CreatureUnit getUnit(ObjectType objectType, long objectId) {
+        if (objectType == ObjectType.PLAYER) {
+            return creatureUnitMap.get(objectId);
+        }
+        return null;
     }
     /**
      * FIXME:只是用来客户端显示
@@ -77,21 +84,15 @@ public abstract class AbstractScene {
      */
     public Map<Integer, List<Position>> getVisiblePosition(){
         Map<Integer, List<Position>> positionMap= new HashMap<>();
-        Map<String, FightAccount> fightAccounts = getFightAccounts();
-        for(FightAccount fightAccount:fightAccounts.values()){
-            if(fightAccount==null){
-                continue;
+        for (CreatureUnit creatureUnit : creatureUnitMap.values()) {
+            List<Position> positions = positionMap.get(creatureUnit.getType().getTypeId());
+            if (positions == null) {
+                positions = new ArrayList<>();
+                positionMap.put(creatureUnit.getType().getTypeId(), positions);
             }
-            Map<Long, CreatureUnit> creatureUnitMap = fightAccount.getCreatureUnitMap();
-            for(CreatureUnit creatureUnit:creatureUnitMap.values()){
-                List<Position> positions = positionMap.get(creatureUnit.getType().getTypeId());
-                if(positions==null){
-                    positions =  new ArrayList<>();
-                    positionMap.put(creatureUnit.getType().getTypeId(),positions);
-                }
-                positions.add(creatureUnit.getPosition());
-            }
+            positions.add(creatureUnit.getPosition());
         }
+
         return positionMap;
     }
     /**
@@ -100,9 +101,8 @@ public abstract class AbstractScene {
      */
     public List<String> getAccountIds(){
         List<String> accountIds = new ArrayList<>();
-        Map<String, FightAccount> fightAccounts = getFightAccounts();
-        for(Map.Entry<String, FightAccount> entry:fightAccounts.entrySet()){
-            accountIds.add(entry.getKey());
+        for (CreatureUnit creatureUnit : creatureUnitMap.values()) {
+            accountIds.add(creatureUnit.getAccountId());
         }
         return accountIds;
     }
@@ -126,23 +126,21 @@ public abstract class AbstractScene {
     }
 
     public void enter(Player player){
-        fightAccounts.put(player.getAccountId(),FightAccount.valueOf(player));
+        creatureUnitMap.put(player.getObjectId(), PlayerUnit.valueOf(player));
     }
 
-    public void leave(String accountId){
-        FightAccount fightAccount = fightAccounts.get(accountId);
-        for(CreatureUnit creatureUnit:fightAccount.getCreatureUnitMap().values()){
-            creatureUnit.clearAllCommand();
-        }
-        fightAccounts.remove(accountId);
+    public void leave(Player player) {
+        CreatureUnit creatureUnit = creatureUnitMap.get(player.getObjectId());
+        creatureUnit.clearAllCommand();
+        creatureUnitMap.remove(player.getObjectId());
     }
 
-    public Map<String, FightAccount> getFightAccounts() {
-        return fightAccounts;
+    public Map<Long, CreatureUnit> getCreatureUnitMap() {
+        return creatureUnitMap;
     }
 
-    public void setFightAccounts(Map<String, FightAccount> fightAccounts) {
-        this.fightAccounts = fightAccounts;
+    public void setCreatureUnitMap(Map<Long, CreatureUnit> creatureUnitMap) {
+        this.creatureUnitMap = creatureUnitMap;
     }
 
     public int getMapId() {

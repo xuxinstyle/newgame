@@ -4,13 +4,10 @@ import com.game.SpringContext;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.scence.base.model.AbstractScene;
+import com.game.scence.fight.command.PlayerLevelSyncCommand;
 import com.game.scence.fight.model.CreatureUnit;
-import com.game.scence.fight.model.FightAccount;
 import com.game.scence.fight.model.PlayerUnit;
-import com.game.scence.visible.command.ChangeMapCommand;
-import com.game.scence.visible.command.EnterMapCommand;
-import com.game.scence.visible.command.LeaveMapCommand;
-import com.game.scence.visible.command.MoveCommand;
+import com.game.scence.visible.command.*;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
 import com.game.scence.visible.packet.*;
@@ -136,16 +133,16 @@ public class ScenceServiceImpl implements ScenceService {
      */
     @Override
     public void leaveMap(String accountId) {
+        /**
+         * TODO:在有离开或进入地图的条件的情况下 需要判断能否离开地图 如果不能离开地图 离开失败怎么办
+         */
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
         int currentMapId = player.getCurrMapId();
         /** 1.清除上次地图中玩家存的信息*/
         AbstractScene scence = scenceMangaer.getScence(currentMapId);
-        scence.leave(accountId);
+        scence.leave(player);
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         accountEnt.getAccountInfo().getIsChangeMap().getAndSet(true);
-        /**
-         * TODO:判断能否离开地图
-         */
         /**
          * 显示地图
          */
@@ -174,7 +171,7 @@ public class ScenceServiceImpl implements ScenceService {
 
 
     /**
-     * 以后显示的信息会增加，先暂时传这些数据
+     * 以后显示的信息会增加，先暂时传这些数据 这里需要抛到场景线程中拿吗
      *
      * @param session
      * @param mapId
@@ -189,9 +186,6 @@ public class ScenceServiceImpl implements ScenceService {
     }
     @Override
     public void showAccountIdInfo(TSession session, int mapId, long objectId) {
-        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(objectId);
-        Player player = playerEnt.getPlayer();
-        String accountId = player.getAccountId();
         AbstractScene scence = scenceMangaer.getScence(mapId);
         if(scence==null){
             if(logger.isDebugEnabled()) {
@@ -199,15 +193,8 @@ public class ScenceServiceImpl implements ScenceService {
             }
             return;
         }
-        Map<String, FightAccount> fightAccounts = scence.getFightAccounts();
-        FightAccount fightAccount = fightAccounts.get(accountId);
-        if(fightAccount==null){
-            if(logger.isDebugEnabled()) {
-                logger.debug("地图[{}]中，没有玩家[{}]",mapId,accountId);
-            }
-            return;
-        }
-        Map<Long, CreatureUnit> creatureUnitMap = fightAccount.getCreatureUnitMap();
+
+        Map<Long, CreatureUnit> creatureUnitMap = scence.getCreatureUnitMap();
         CreatureUnit creatureUnit = creatureUnitMap.get(objectId);
         /**
          * 如果是玩家战斗单元则发送消息给客户端 否则不发消息
@@ -243,15 +230,14 @@ public class ScenceServiceImpl implements ScenceService {
         sm.setPosition(targetPos);
         SendPacketUtil.send(accountId,sm);
     }
-
-
     /**
-     * TODO:做战斗同步
+     * 角色将属性同步到场景中
      * @param player
      */
     @Override
-    public void doPlayerUpLevel( Player player) {
-        int mapId = player.getCurrMapId();
+    public void doPlayerUpLevelSyncScene(Player player) {
+        PlayerLevelSyncCommand command = PlayerLevelSyncCommand.valueOf(player.getCurrMapId(), player.getAccountId(), player);
+        SpringContext.getSceneExecutorService().submit(command);
     }
 
     @Override

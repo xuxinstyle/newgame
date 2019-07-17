@@ -23,13 +23,13 @@ public class AccountExecutorServiceImpl implements AccountExecutorService{
 
     @Override
     public void submit(AbstractAccountCommand commond) {
-        if(commond instanceof AbstractAccountDelayCommand){
-            AbstractAccountDelayCommand accountDelayCommond = (AbstractAccountDelayCommand) commond;
-            accountThreadPoolExecutor.schedule(accountDelayCommond,accountDelayCommond.getDelay());
-        }else if(commond instanceof AbstractAccountRateCommand){
+        if (commond instanceof AbstractAccountRateCommand) {
             AbstractAccountRateCommand accountRateCommand = (AbstractAccountRateCommand) commond;
             accountThreadPoolExecutor.schedule(commond,accountRateCommand.getDelay(),accountRateCommand.getPeriod());
-        }else {
+        } else if (commond instanceof AbstractAccountDelayCommand) {
+            AbstractAccountDelayCommand accountDelayCommond = (AbstractAccountDelayCommand) commond;
+            accountThreadPoolExecutor.schedule(accountDelayCommond, accountDelayCommond.getDelay());
+        } else {
             accountThreadPoolExecutor.addTask(commond);
         }
     }

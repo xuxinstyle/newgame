@@ -6,7 +6,7 @@ package com.game.role.skill.packet;
  */
 public class SM_UpgradeSkill {
     /**
-     * 1 成功 2 失败
+     * 1 成功 2 失败达到最大技能等级 3
      */
     private int status;
     public static SM_UpgradeSkill valueOf(int status){

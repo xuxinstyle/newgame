@@ -36,6 +36,10 @@ public class SkillResource {
      */
     private long useDis;
     /**
+     * 技能目标类型
+     */
+    private String targetType;
+    /**
      * 学习条件
      */
     private String learnCondition;
@@ -54,6 +58,14 @@ public class SkillResource {
 
     public void setLearnSkillCondition(LearnSkillCondition learnSkillCondition) {
         this.learnSkillCondition = learnSkillCondition;
+    }
+
+    public String getTargetType() {
+        return targetType;
+    }
+
+    public void setTargetType(String targetType) {
+        this.targetType = targetType;
     }
 
     public long getUseDis() {

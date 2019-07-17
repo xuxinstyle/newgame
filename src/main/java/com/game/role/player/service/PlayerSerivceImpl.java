@@ -1,6 +1,5 @@
 package com.game.role.player.service;
 
-import com.db.EntityBuilder;
 import com.db.cache.EntityCacheService;
 import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
@@ -62,7 +61,7 @@ public class PlayerSerivceImpl implements PlayerService {
     }
 
     @Override
-    public PlayerEnt createPlayer(String accountId, int type, String nickName) {
+    public PlayerEnt createPlayer(String accountId, int job, String nickName) {
         /**
          * 生成角色
          */
@@ -70,17 +69,8 @@ public class PlayerSerivceImpl implements PlayerService {
         long playerId = SpringContext.getIdentifyService().getNextIdentify(ObjectType.PLAYER);
         playerEnt.setPlayerId(playerId);
         playerEnt.setAccountId(accountId);
-        Player player = Player.valueOf(playerId, accountId, type,nickName);
 
-        playerEnt.setPlayer(player);
-        insert(playerEnt);
-        /**
-         * 生成装备栏
-         */
-        EquipmentEnt equipmentEnt = new EquipmentEnt();
-        equipmentEnt.setPlayerId(playerId);
-        equipmentEnt.setEquipmentInfo(EquipmentInfo.valueOf());
-        SpringContext.getEquipService().save(equipmentEnt);
+        Player player = Player.valueOf(playerId, accountId, job, nickName);
         /**
          * 生成技能栏
          */
@@ -88,6 +78,16 @@ public class PlayerSerivceImpl implements PlayerService {
         skillEnt.setPlayerId(playerId);
         skillEnt.setSkillInfo(SkillInfo.valueOf(player));
         SpringContext.getSkillService().saveSkill(skillEnt);
+        /**
+         * 生成装备栏
+         */
+        EquipmentEnt equipmentEnt = new EquipmentEnt();
+        equipmentEnt.setPlayerId(playerId);
+        equipmentEnt.setEquipmentInfo(EquipmentInfo.valueOf());
+        SpringContext.getEquipService().save(equipmentEnt);
+
+        playerEnt.setPlayer(player);
+        insert(playerEnt);
         return playerEnt;
     }
     @Override

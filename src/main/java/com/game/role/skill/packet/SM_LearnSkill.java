@@ -7,7 +7,7 @@ package com.game.role.skill.packet;
  */
 public class SM_LearnSkill {
     /**
-     * 1 成功 2 失败
+     * 1 成功 2 失败 3 你已经学了该技能 无法重复学习 4 没有该技能
      */
     private int status;
 

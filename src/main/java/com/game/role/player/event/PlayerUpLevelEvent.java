@@ -13,6 +13,7 @@ public class PlayerUpLevelEvent implements IEvent {
      * 玩家
      */
     private Player player;
+
     public static PlayerUpLevelEvent valueOf(Player player){
         PlayerUpLevelEvent event = new PlayerUpLevelEvent();
         event.setPlayer(player);

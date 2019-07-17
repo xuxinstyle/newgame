@@ -42,6 +42,9 @@ public class EntityCacheServiceImpl<K extends Serializable & Comparable<K>, T ex
             entityCacheMap.put(entityClz,new EntityCache<>());
         }
         EntityCache<K, T> entityCache = entityCacheMap.get(entityClz);
+        if (entityCache == null) {
+            entityCacheMap.put(entityClz, new EntityCache<>());
+        }
         T t = entityCache.get(id);
         if(t==null){
             t = hibernateDao.find(entityClz, id);

@@ -2,6 +2,8 @@ package com.game.base.executor.account;
 
 import com.game.base.executor.NameThreadFactory;
 import com.game.base.executor.account.impl.AbstractAccountCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;
@@ -29,6 +31,7 @@ public class AccountThreadPoolExecutor{
 
     private static final ScheduledExecutorService ACCOUNT_SCHEDULE_POOL = Executors.newScheduledThreadPool(POOL_SIZE,scheduleNameThreadFactory);
 
+    private static final Logger logger = LoggerFactory.getLogger(AccountThreadPoolExecutor.class);
     public void start(){
         NameThreadFactory nameThreadFactory = new NameThreadFactory("AccountExecutorThread");
         for (int i = 0;i < DEFAULT_INITIAL_THREAD_POOL_SIZE ;i++){
@@ -44,10 +47,15 @@ public class AccountThreadPoolExecutor{
     public void addTask(AbstractAccountCommand accountCommond){
 
         int modIndex = accountCommond.modIndex(DEFAULT_INITIAL_THREAD_POOL_SIZE);
+        Object key = accountCommond.getKey();
         ACCOUNT_SERVICE[modIndex].submit(() -> {
-           if(!accountCommond.isCanceled()){
-               accountCommond.active();
-           }
+            try {
+                if (!accountCommond.isCanceled()) {
+                    accountCommond.active();
+                }
+            } catch (Exception e) {
+                logger.error("AccountThreadPoolExecutor执行：" + accountCommond.getName() + ",key:" + key, e);
+            }
         });
     }
 

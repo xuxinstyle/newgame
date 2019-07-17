@@ -6,6 +6,8 @@ import com.game.user.item.model.AbstractItem;
 import com.game.user.item.resource.ItemResource;
 import com.socket.core.session.TSession;
 
+import java.util.List;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/13 11:36
@@ -71,9 +73,15 @@ public interface ItemService {
     void createStorage(String accountId);
 
     /**
-     * 响应添加道具到背包的请求
+     * gm命令添加道具到背包的请求
      */
-    void awardToPack(TSession session, String accountId, int itemModelId, int num);
+    void gmAwardToPack(String accountId, int itemModelId, int num);
+
+    /**
+     * @param accountId
+     * @param items
+     */
+    void awardToPack(String accountId, List<AbstractItem> items);
     /**
      * 移除道具
      */

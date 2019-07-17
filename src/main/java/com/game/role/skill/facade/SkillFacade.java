@@ -1,9 +1,7 @@
 package com.game.role.skill.facade;
 
-import com.event.anno.EventAnn;
 import com.game.SpringContext;
 import com.game.role.skill.packet.*;
-import com.game.scence.monster.event.CreatureDeadEvent;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;
@@ -24,7 +22,8 @@ public class SkillFacade {
         try {
             SpringContext.getSkillService().learnSkill(cm.getSkillId(), cm.getPlayerId());
         } catch (Exception e) {
-            logger.error("玩家[{}]学习技能[{}]失败", session.getAccountId(), cm.getSkillId());
+            session.sendPacket(SM_LearnSkill.valueOf(0));
+            logger.error("玩家[{}]学习技能[{}]失败", session.getAccountId(), cm.getSkillId(), e);
         }
     }
 
@@ -62,17 +61,13 @@ public class SkillFacade {
         }
     }
     @HandlerAnno
-    public void useSingleSkill(TSession session,CM_UseSkillToMonster cm){
+    public void useSingleSkill(TSession session, CM_UseSkill cm) {
         try {
-            SpringContext.getSkillService().useSkillToMonster(session,cm.getMapId(),cm.getSceneId(),cm.getSkillTargetId(),cm.getUseId(),cm.getSkillBarId());
+            SpringContext.getSkillService().useSkill(session, cm.getMapId(), cm.getSceneId(), cm.getSkillTargetId(), cm.getUseId(), cm.getUseType(), cm.getSkillBarId(), cm.getObjectType());
         }catch (Exception e){
             logger.error("角色[{}]使用技能[{}]出错！",cm.getUseId(),cm.getSkillBarId());
         }
     }
 
-    @EventAnn
-    public void doMonsterDeadAfter(CreatureDeadEvent event){
-        SpringContext.getSkillService().doCreatureDeadAfter(event.getMapId(),event.getMonsterUnit());
-    }
 
 }

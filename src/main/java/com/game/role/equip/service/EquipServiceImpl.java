@@ -23,6 +23,8 @@ import com.game.user.item.entity.ItemStorageEnt;
 import com.game.user.item.model.AbstractItem;
 import com.game.user.item.model.Equipment;
 import com.game.user.item.model.ItemStorageInfo;
+import com.game.scence.fight.command.AddAttributeBuffSynCommand;
+import com.game.scence.fight.command.RemoveAttributeBuffSynCommand;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,6 +115,11 @@ public class EquipServiceImpl implements EquipService {
         List<Attribute> newAttributeList = equipment.getAllAttributes();
 
         attributeContainer.putAndComputeAttributes(attributeId,newAttributeList);
+        // 做战斗同步
+        AddAttributeBuffSynCommand synCommand = AddAttributeBuffSynCommand.valueOf(player,
+                attributeId, newAttributeList);
+        SpringContext.getSceneExecutorService().submit(synCommand);
+
         /**
          * 保存 并响应客户端
          */
@@ -193,9 +200,10 @@ public class EquipServiceImpl implements EquipService {
         EquipAttributeId attributeId = EquipAttributeId.getAttributeId(equipment.getEquipType().getPosition());
         AbstractAttributeContainer attributeContainer = player.getAttributeContainer();
         attributeContainer.removeAndCompteAttribtues(attributeId);
-
-
         SpringContext.getPlayerSerivce().save(playerEnt);
+        // FIXME: 2019/7/17 做战斗同步
+        RemoveAttributeBuffSynCommand command = RemoveAttributeBuffSynCommand.valueOf(player, attributeId);
+        SpringContext.getSceneExecutorService().submit(command);
         /**
          * 保存玩家数据和装备栏数据和背包数据
          */

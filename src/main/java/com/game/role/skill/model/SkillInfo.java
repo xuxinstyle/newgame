@@ -3,7 +3,10 @@ package com.game.role.skill.model;
 import com.game.SpringContext;
 import com.game.role.skill.resource.JobSkillResource;
 import com.game.role.player.model.Player;
+import com.game.role.skill.resource.SkillLevelResource;
+import com.game.role.skill.resource.SkillResource;
 import com.game.util.PlayerUtil;
+import com.game.util.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +57,52 @@ public class SkillInfo {
         SkillSlot skillSlot = skillSlotMap.get(skillInfo.getDefaultSkill());
         skillSlot.setCanUse(true);
         return skillInfo;
+    }
+
+    public SkillInfo deepCopy() {
+        Map<Integer, SkillSlot> skillSlotMap = new HashMap<>();
+        Map<Integer, Integer> skillBarMap = new HashMap<>();
+        for (Map.Entry<Integer, SkillSlot> entry : this.skillSlotMap.entrySet()) {
+            skillSlotMap.put(entry.getKey(), entry.getValue().deepCopy());
+        }
+        for (Map.Entry<Integer, Integer> entry : this.skillBarMap.entrySet()) {
+            skillBarMap.put(entry.getKey(), entry.getValue());
+        }
+        SkillInfo skillInfo = new SkillInfo();
+        skillInfo.setDefaultSkill(this.defaultSkill);
+        skillInfo.setSkillBarMap(skillBarMap);
+        skillInfo.setSkillSlotMap(skillSlotMap);
+        return skillInfo;
+    }
+
+    /**
+     * 根据快捷栏id获取SkillLevelResource
+     *
+     * @param skillBarId
+     * @return
+     */
+    public SkillLevelResource getSkillLevelResource(int skillBarId) {
+        int skillId = skillBarMap.get(skillBarId);
+        SkillSlot skillSlot = skillSlotMap.get(skillId);
+        if (skillSlot == null) {
+            return null;
+        }
+        int level = skillSlot.getLevel();
+        return SpringContext.getSkillService().getSkillLevelResource(skillId + StringUtil.XIA_HUA_XIAN + level);
+    }
+
+    /**
+     * 根据快捷技能栏id获取SkillResource
+     *
+     * @param skillBarId
+     * @return
+     */
+    public SkillResource getSkillResource(int skillBarId) {
+        Integer skillId = skillBarMap.get(skillBarId);
+        if (skillId == null) {
+            return null;
+        }
+        return SpringContext.getSkillService().getSkillResource(skillId);
     }
 
     public Map<Integer, SkillSlot> getSkillSlotMap() {

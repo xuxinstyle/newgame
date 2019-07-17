@@ -32,7 +32,7 @@ public class ReviveCreatureCommand extends AbstractSceneDelayCommand {
 
     @Override
     public void active() {
-        SpringContext.getSkillService().doCreatureRevive(getMapId(),creatureUnit);
+        creatureUnit.doRevive();
     }
 
     public CreatureUnit getCreatureUnit() {

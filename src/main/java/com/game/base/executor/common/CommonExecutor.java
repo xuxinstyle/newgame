@@ -4,6 +4,8 @@ import com.game.base.executor.NameThreadFactory;
 import com.game.base.executor.common.impl.AbstractCommonDelayCommand;
 import com.game.base.executor.common.impl.AbstractCommonRateCommand;
 import com.game.base.executor.common.impl.AbstractCommonCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;
@@ -30,6 +32,7 @@ public class CommonExecutor {
 
     private static final ScheduledExecutorService COMMON_SCHEDULE_POOL = Executors.newScheduledThreadPool(POOL_SIZE,scheduleNameThreadFactory);
 
+    private static Logger logger = LoggerFactory.getLogger(CommonExecutor.class);
     public void start(){
         NameThreadFactory nameThreadFactory = new NameThreadFactory("CommondThread");
         for (int i = 0;i < DEFAULT_INITIAL_THREAD_POOL_SIZE ;i++){
@@ -59,9 +62,14 @@ public class CommonExecutor {
     public void addTask(AbstractCommonCommand command){
 
         int modIndex = command.modIndex(DEFAULT_INITIAL_THREAD_POOL_SIZE);
+        Object key = command.getKey();
         COMMON_SERVICE[modIndex].submit(() -> {
-            if(!command.isCanceled()){
-                command.active();
+            try {
+                if (!command.isCanceled()) {
+                    command.active();
+                }
+            } catch (Exception e) {
+                logger.error("CommonExecutor执行：" + command.getName() + ",key:" + key, e);
             }
         });
     }

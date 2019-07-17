@@ -87,11 +87,15 @@
     <catalog id="66" value="com.game.role.skill.packet.SM_SetSkillBar"/>
     <catalog id="67" value="com.game.role.skill.packet.CM_SetSkillBar"/>
 
-    <catalog id="68" value="com.game.role.skill.packet.CM_UseSkillToMonster"/>
-    <catalog id="69" value="com.game.role.skill.packet.SM_UseSkillToMonster"/>
-    <catalog id="70" value="com.game.role.skill.packet.SM_UseSkillToMonsterErr"/>
+    <catalog id="68" value="com.game.role.skill.packet.CM_UseSkill"/>
+    <catalog id="69" value="com.game.role.skill.packet.SM_UseSkill"/>
+    <catalog id="70" value="com.game.role.skill.packet.SM_UseSkillErr"/>
 
     <catalog id="71" value="com.game.role.skill.packet.SM_CreatureRevive"/>
     <catalog id="72" value="com.game.role.skill.packet.SM_CreatureDead"/>
+    <catalog id="73" value="com.game.role.skill.packet.SM_SkillStatus"/>
+    <catalog id="74" value="com.game.role.skill.packet.SM_AddAttributeEffect"/>
+
+    <catalog id="75" value="com.game.role.skilleffect.packet.SM_CreatureHurt"/>
 
 </protocols>

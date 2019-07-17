@@ -7,6 +7,8 @@ import com.game.base.executor.common.CommonExecutorService;
 import com.game.base.executor.scene.SceneExecutorService;
 import com.game.role.skill.service.SkillService;
 import com.game.gm.service.GmService;
+import com.game.role.skilleffect.service.SkillEffectService;
+import com.game.scence.drop.service.DropService;
 import com.game.scence.field.service.FieldService;
 import com.game.scence.monster.service.MonsterService;
 import com.game.scence.npc.service.NpcService;
@@ -102,6 +104,18 @@ public class SpringContext implements ApplicationContextAware {
     private FieldService fieldService;
     @Autowired
     private SkillService skillService;
+    @Autowired
+    private SkillEffectService skillEffectService;
+    @Autowired
+    private DropService dropService;
+
+    public static DropService getDropService() {
+        return instance.dropService;
+    }
+
+    public static SkillEffectService getEffectService() {
+        return instance.skillEffectService;
+    }
 
     public static SkillService getSkillService(){
         return instance.skillService;

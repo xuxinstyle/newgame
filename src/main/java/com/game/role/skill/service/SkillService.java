@@ -1,9 +1,11 @@
 package com.game.role.skill.service;
 
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.skill.entity.SkillEnt;
 import com.game.role.skill.resource.JobSkillResource;
 import com.game.role.skill.resource.SkillLevelResource;
 import com.game.role.skill.resource.SkillResource;
+import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
 import com.socket.core.session.TSession;
 
@@ -80,38 +82,28 @@ public interface SkillService {
 
 
     /**
-     * 对怪物使用技能
+     *
      * @param session
      * @param mapId
      * @param sceneId
-     * @param skillTargetId
-     * @param useId
-     * @param skillBarId
-     */
-    void useSkillToMonster(TSession session, int mapId, int sceneId, long skillTargetId, long useId, int skillBarId);
-
-    /**
-     * 使用技能
-     * @param accountId
-     * @param mapId
-     * @param sceneId
-     * @param skillBarId
      * @param targetId
      * @param useId
+     * @param useType
+     * @param skillBarId
+     * @param targetType
      */
-    void doUseSkill(String accountId,int mapId, int sceneId, int skillBarId, long targetId, long useId);
+    void useSkill(TSession session, int mapId, int sceneId, long targetId, long useId, ObjectType useType, int skillBarId, ObjectType targetType);
 
     /**
-     * 做生物死后复活定时处理
+     *
+     * @param accountId
      * @param mapId
-     * @param creatureUnit
+     * @param useId
+     * @param targetId
+     * @param targetType
+     * @param skillBarId
      */
-    void doCreatureDeadAfter(int mapId, CreatureUnit creatureUnit);
+    void doUseSkill(String accountId, int mapId, long useId, ObjectType useType, long targetId, ObjectType targetType, int skillBarId);
 
-    /**
-     * 做生物复活的操作
-     * @param mapId
-     * @param creatureUnit
-     */
-    void doCreatureRevive(int mapId, CreatureUnit creatureUnit);
+
 }

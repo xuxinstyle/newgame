@@ -1,12 +1,11 @@
 package com.game.scence.monster.resource;
 
 import com.game.base.attribute.Attribute;
-import com.game.base.attribute.constant.AttributeType;
+import com.game.scence.drop.model.RandDrop;
+import com.game.util.AttributeAnalyzeUtil;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
-import org.codehaus.jackson.annotate.JsonIgnore;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,28 +47,53 @@ public class MonsterResource {
     /**
      * 怪物随机掉落物，TODO:需要解析
      */
+
     private String dropStr;
     /**
      * 怪物死后玩家固定增加的经验
      */
-    private long exp;
-
+    private int exp;
     /**
      * 怪物的复活cd
      */
     private long reviveCd;
+    /**
+     * 道具列表
+     */
+    @Analyze("analyzeDrop")
+    private RandDrop randDrop;
+
+    /**
+     * 掉落物掉落概率
+     */
+    private int prop;
+    /**
+     * 技能id
+     */
+    private int[] skillIds;
+
+    public void analyzeDrop() {
+        randDrop = RandDrop.analyzeDrop(dropStr);
+    }
 
     public void analyzeAttribute(){
-        String[] split = attrStr.split(";");
-        List<Attribute> attrs = new ArrayList<>();
-        for(String str:split){
-            String[] attr = str.split(",");
-            AttributeType attributeType = AttributeType.valueOf(attr[0]);
-            long value = Long.parseLong(attr[1]);
-            Attribute attribute = Attribute.valueOf(attributeType, value);
-            attrs.add(attribute);
-        }
-        this.attrs = attrs;
+        this.attrs = AttributeAnalyzeUtil.analyzeAttr(attrStr);
+    }
+
+    public int[] getSkillIds() {
+        return skillIds;
+    }
+
+    public void setSkillIds(int[] skillIds) {
+        this.skillIds = skillIds;
+    }
+
+    public int getProp() {
+        return prop;
+    }
+
+    public void setProp(int prop) {
+        this.prop = prop;
     }
 
     public long getReviveCd() {
@@ -144,11 +168,19 @@ public class MonsterResource {
         this.dropStr = dropStr;
     }
 
-    public long getExp() {
+    public int getExp() {
         return exp;
     }
 
-    public void setExp(long exp) {
+    public void setExp(int exp) {
         this.exp = exp;
+    }
+
+    public RandDrop getRandDrop() {
+        return randDrop;
+    }
+
+    public void setRandDrop(RandDrop randDrop) {
+        this.randDrop = randDrop;
     }
 }

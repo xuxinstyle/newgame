@@ -23,12 +23,12 @@ public class SceneExecutorServiceImpl implements SceneExecutorService {
 
     @Override
     public void submit(AbstractSceneCommand commond) {
-        if(commond instanceof AbstractSceneDelayCommand){
-            AbstractSceneDelayCommand sceneDelayCommand = (AbstractSceneDelayCommand) commond;
-            sceneThreadPoolExecutor.schedule(sceneDelayCommand,sceneDelayCommand.getDelay());
-        }else if(commond instanceof AbstractSceneRateCommand){
+        if (commond instanceof AbstractSceneRateCommand) {
             AbstractSceneRateCommand sceneRateCommand = (AbstractSceneRateCommand) commond;
             sceneThreadPoolExecutor.schedule(sceneRateCommand,sceneRateCommand.getDelay(), sceneRateCommand.getPeriod());
+        } else if (commond instanceof AbstractSceneDelayCommand) {
+            AbstractSceneDelayCommand sceneDelayCommand = (AbstractSceneDelayCommand) commond;
+            sceneThreadPoolExecutor.schedule(sceneDelayCommand, sceneDelayCommand.getDelay());
         }else {
             sceneThreadPoolExecutor.addTask(commond);
         }

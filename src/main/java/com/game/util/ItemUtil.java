@@ -13,4 +13,8 @@ public class ItemUtil {
      * 升级装备最高品质
      */
     public static final int EQUIP_MAX_QUAILTY = 3;
+    /**
+     * 经验的道具id
+     */
+    public static final int EXP_ITEM_ID = 3;
 }

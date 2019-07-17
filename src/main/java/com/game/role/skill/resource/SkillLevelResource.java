@@ -37,13 +37,9 @@ public class SkillLevelResource {
      */
     private long useRangeRadius;
     /**
-     * 技能基础伤害
+     * 技能效果组合
      */
-    private long hurt;
-    /**
-     * 技能属性加成伤害百分比
-     */
-    private long prop;
+    private int[] effects;
     /**
      * 技能释放cd 普攻的技能cd为攻速
      */
@@ -70,7 +66,7 @@ public class SkillLevelResource {
     /**
      * 技能消耗MP
      */
-    private long consume;
+    private long consumeMp;
     /**
      * 描述
      */
@@ -97,12 +93,20 @@ public class SkillLevelResource {
         upgradeSkillCondition = UpgradeSkillCondition.valueOf(level);
     }
 
-    public long getConsume() {
-        return consume;
+    public int[] getEffects() {
+        return effects;
     }
 
-    public void setConsume(long consume) {
-        this.consume = consume;
+    public void setEffects(int[] effects) {
+        this.effects = effects;
+    }
+
+    public long getConsumeMp() {
+        return consumeMp;
+    }
+
+    public void setConsumeMp(long consumeMp) {
+        this.consumeMp = consumeMp;
     }
 
     public String getPassiveEffectStr() {
@@ -207,22 +211,6 @@ public class SkillLevelResource {
 
     public void setUseRangeRadius(long useRangeRadius) {
         this.useRangeRadius = useRangeRadius;
-    }
-
-    public long getHurt() {
-        return hurt;
-    }
-
-    public void setHurt(long hurt) {
-        this.hurt = hurt;
-    }
-
-    public long getProp() {
-        return prop;
-    }
-
-    public void setProp(long prop) {
-        this.prop = prop;
     }
 
     public long getCd() {

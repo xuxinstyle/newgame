@@ -3,6 +3,7 @@ package com.game.scence.field.packet;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.container.CreatureAttributeContainer;
+import com.game.scence.fight.model.CreatureUnit;
 import com.game.scence.fight.model.MonsterUnit;
 import com.game.scence.visible.model.Position;
 
@@ -38,7 +39,7 @@ public class SM_ShowMonsterInfo {
     private long currHp;
     private long currMp;
 
-    public static SM_ShowMonsterInfo valueOf(MonsterUnit monsterUnit){
+    public static SM_ShowMonsterInfo valueOf(CreatureUnit monsterUnit) {
         SM_ShowMonsterInfo sm = new SM_ShowMonsterInfo();
         sm.setName(monsterUnit.getVisibleName());
         sm.setPosition(monsterUnit.getPosition());

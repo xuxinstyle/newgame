@@ -42,4 +42,19 @@ public class ComputeUtil {
     public static double getHurtValue(long attributeValue, long hurt, long prop) {
         return attributeValue * prop / 100.0 + hurt;
     }
+
+    /**
+     * 根据攻击者 的属性和被攻击者的属性计算最终伤害
+     *
+     * @param useAttackAttr     使用技能者的攻击属性
+     * @param targetDefenseAttr 目标的防御属性
+     * @param fixedHurt         技能固定伤害
+     * @param hurtProp          技能的属性伤害比例
+     * @return
+     */
+    public static double getRealHurt(Attribute useAttackAttr, Attribute targetDefenseAttr, long fixedHurt, long hurtProp) {
+        double hurtValue = getHurtValue(useAttackAttr.getValue(), fixedHurt, hurtProp);
+        return getRealHurt(hurtValue, targetDefenseAttr.getValue());
+    }
+
 }

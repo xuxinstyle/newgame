@@ -45,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
         AccountEnt accountEnt = entityCacheService.find(AccountEnt.class, accountId);
 
         if(accountEnt==null){
-            logger.warn("数据库中没有["+accountId+"]的账号信息");
+            logger.info("数据库中没有[" + accountId + "]的账号信息");
             return null;
         }
         return accountEnt;

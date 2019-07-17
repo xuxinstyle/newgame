@@ -9,11 +9,12 @@ import com.game.role.player.model.Player;
 import com.game.user.item.packet.SM_EffectEnd;
 import com.game.user.item.resource.ItemResource;
 import com.game.user.itemeffect.command.ItemExpireDelayCommand;
+import com.game.scence.fight.command.RemoveAttributeBuffSynCommand;
 import com.game.user.itemeffect.entity.ItemEffectEnt;
 import com.game.user.itemeffect.model.ItemEffectInfo;
 import com.game.user.itemeffect.model.ItemEffectdetaiInfo;
+import com.game.util.SendPacketUtil;
 import com.game.util.TimeUtil;
-import com.socket.core.session.TSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -115,6 +116,12 @@ public class ItemEffectServiceImpl implements ItemEffectService {
         AbstractAttributeContainer attributeContainer = player.getAttributeContainer();
         attributeContainer.removeAndCompteAttribtues(MedicineAttributeId.getMedicineAttributeId(itemModelId));
         SpringContext.getPlayerSerivce().save(playerEnt);
+        /**
+         *    做战斗同步
+         */
+        RemoveAttributeBuffSynCommand command = RemoveAttributeBuffSynCommand.valueOf(player,
+                MedicineAttributeId.getMedicineAttributeId(itemModelId));
+        SpringContext.getSceneExecutorService().submit(command);
 
         /**
          * 改变玩家身上效果的状态 FIXME: 这里还是不要删数据库信息，如果玩家频繁使用这个道具就会降低效率。
@@ -124,12 +131,12 @@ public class ItemEffectServiceImpl implements ItemEffectService {
         /**
          * 通知客户端
          */
-        TSession tSession = SpringContext.getSessionManager().getAccountSessionMap().get(accountId);
         ItemResource itemResource = SpringContext.getItemService().getItemResource(itemModelId);
         String itemName = itemResource.getName();
         SM_EffectEnd sm = new SM_EffectEnd();
         sm.setItemName(itemName);
-        tSession.sendPacket(sm);
+        SendPacketUtil.send(accountId, sm);
+
     }
 
     public void removeDelayCommandByPlayerId(long playerId){

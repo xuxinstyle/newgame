@@ -13,6 +13,7 @@ import com.game.user.item.packet.*;
 import com.game.user.item.packet.bean.ItemVO;
 import com.game.user.item.resource.ItemResource;
 import com.game.util.PlayerUtil;
+import com.game.util.SendPacketUtil;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,10 +34,16 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemManager itemManager;
 
+    /**
+     * fixme: 创建道具时统一使用这个方法
+     *
+     * @param itemModelId
+     * @param num
+     * @return
+     */
     @Override
     public AbstractItem createItem(int itemModelId, int num) {
         ItemResource resource = getItemResource(itemModelId);
-
         AbstractItem item = ItemType.valueOf(resource.getItemType()).create();
         item.init(resource);
         item.setNum(num);
@@ -72,6 +79,7 @@ public class ItemServiceImpl implements ItemService {
          */
         pack.addItemQuick(item);
         save(itemStorageEnt);
+        SendPacketUtil.send(accountId, SM_AwardToPack.valueOf(1));
 
     }
 
@@ -119,34 +127,59 @@ public class ItemServiceImpl implements ItemService {
         save(itemStorageEnt);
     }
 
+    /**
+     * 这里发奖先一个个加进去 背包满了就消失了
+     *
+     * @param accountId
+     * @param items
+     */
     @Override
-    public void awardToPack(TSession session, String accountId, int itemModelId, int num) {
+    public void awardToPack(String accountId, List<AbstractItem> items) {
+
+        ItemStorageEnt itemStorageEnt = getItemStorageEnt(accountId);
+        ItemStorageInfo pack = itemStorageEnt.getPack();
+        for (AbstractItem item : items) {
+            ItemResource itemResource = SpringContext.getItemService().getItemResource(item.getItemModelId());
+            if (itemResource.isAutoUse()) {
+                item.use(accountId, item.getNum());
+                SendPacketUtil.send(accountId, SM_AwardToPack.valueOf(4));
+                if (logger.isDebugEnabled()) {
+                    logger.debug("道具[{}][{}]自动使用数量[{}]", item.getName(), item.getObjectId(), item.getNum());
+                }
+                continue;
+            }
+            if (!pack.checkPackEnough(item)) {
+                logger.warn("玩家{}背包空间不足发奖失败", accountId);
+                SM_AwardToPack sm = SM_AwardToPack.valueOf(3);
+                SendPacketUtil.send(accountId, sm);
+                return;
+            }
+
+            addItemToPackAndSave(accountId, item);
+        }
+    }
+
+    @Override
+    public void gmAwardToPack(String accountId, int itemModelId, int num) {
         ItemStorageEnt itemStorageEnt = getItemStorageEnt(accountId);
         ItemStorageInfo pack = itemStorageEnt.getPack();
         if (!checkResource(itemModelId)) {
-            SM_AwardToPack sm = new SM_AwardToPack();
-            sm.setStatus(2);
-            session.sendPacket(sm);
+            SendPacketUtil.send(accountId, SM_AwardToPack.valueOf(2));
             return;
         }
         AbstractItem item = createItem(itemModelId, num);
-
-        if (!pack.checkPackEnough(item)) {
-            logger.warn("玩家{}背包空间不足发奖失败", accountId);
-            SM_AwardToPack sm = new SM_AwardToPack();
-            sm.setStatus(3);
-            session.sendPacket(sm);
-            return;
-        }
         ItemResource itemResource = SpringContext.getItemService().getItemResource(item.getItemModelId());
         if (itemResource.isAutoUse()) {
             item.use(accountId, num);
-        } else {
-            addItemToPackAndSave(accountId, item);
+            SendPacketUtil.send(accountId, SM_AwardToPack.valueOf(1));
+            return;
         }
-        SM_AwardToPack sm = new SM_AwardToPack();
-        sm.setStatus(1);
-        session.sendPacket(sm);
+        if (!pack.checkPackEnough(item)) {
+            logger.warn("玩家{}背包空间不足发奖失败", accountId);
+            SendPacketUtil.send(accountId, SM_AwardToPack.valueOf(3));
+            return;
+        }
+        addItemToPackAndSave(accountId, item);
     }
 
     private boolean checkResource(int itemModelId) {
@@ -224,11 +257,12 @@ public class ItemServiceImpl implements ItemService {
             session.sendPacket(sm);
             return;
         }
-        if(item.getNum()<num){
-            logger.warn("玩家背包没有道具[{}]",itemObjectId);
+        if (item.getNum() < num) {
+            logger.warn("玩家背包道具[{}]数量不足", itemObjectId);
             SM_UseItem sm = new SM_UseItem();
             sm.setStatus(4);
             session.sendPacket(sm);
+            return;
         }
         /**
          * fixme:这里看调用什么地方的use比较好?  这里调用item的use扩展性比较好，如果以后需要加其他可使用的道具，只要直接调用

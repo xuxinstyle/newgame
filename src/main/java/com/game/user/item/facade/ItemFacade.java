@@ -18,7 +18,7 @@ public class ItemFacade {
     @HandlerAnno
     public void addItemToPack(TSession session, CM_AwardToPack cm){
         try{
-            SpringContext.getItemService().awardToPack(session, cm.getAccountId(),cm.getItemModelId(), cm.getNum());
+            SpringContext.getItemService().gmAwardToPack(cm.getAccountId(), cm.getItemModelId(), cm.getNum());
         }catch (Exception e){
             e.printStackTrace();
             logger.error("玩家{}添加道具{}失败",cm.getAccountId(), cm.getItemModelId());

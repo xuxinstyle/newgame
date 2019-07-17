@@ -18,6 +18,27 @@ public class SkillSlot {
      */
     private boolean isCanUse = true;
 
+    public static SkillSlot valueOf(int skillId, int level, boolean isCanUse) {
+        SkillSlot skillSlot = new SkillSlot();
+        skillSlot.setId(skillId);
+        skillSlot.setLevel(level);
+        skillSlot.setCanUse(isCanUse);
+        return skillSlot;
+    }
+
+    /**
+     * 深克隆
+     *
+     * @return
+     */
+    public SkillSlot deepCopy() {
+        SkillSlot skillSlot = new SkillSlot();
+        skillSlot.setCanUse(isCanUse);
+        skillSlot.setLevel(level);
+        skillSlot.setId(id);
+        return skillSlot;
+    }
+
     public int getId() {
         return id;
     }

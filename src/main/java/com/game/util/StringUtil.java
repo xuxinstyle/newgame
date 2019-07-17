@@ -12,9 +12,14 @@ public class StringUtil {
     /**
      * 逗号
      */
-    public static final String DOU_HAO = ",";
+    public static final String DOU_HAO = ",|，";
     /**
      * 分号
      */
-    public static final String FEN_HAO = ";";
+    public static final String FEN_HAO = ";|；";
+    /**
+     * 冒号
+     */
+    public static final String MAOHAO = ":|：";
+
 }

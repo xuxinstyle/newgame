@@ -15,8 +15,8 @@ public class GMCommand {
      * @param num
      */
     public void addItem(String accountId,int itemModelId, int num){
-        TSession session = SpringContext.getSessionService().getSession(accountId);
-        SpringContext.getItemService().awardToPack(session,accountId,itemModelId,num);
+
+        SpringContext.getItemService().gmAwardToPack(accountId, itemModelId, num);
     }
 
 }

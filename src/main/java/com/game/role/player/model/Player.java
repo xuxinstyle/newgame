@@ -9,6 +9,8 @@ import com.game.base.gameobject.model.Creature;
 import com.game.role.player.resource.PlayerLevelResource;
 import com.game.role.skill.entity.SkillEnt;
 import com.game.role.skill.model.SkillInfo;
+import com.game.scence.base.model.AbstractScene;
+import com.game.scence.fight.model.CreatureUnit;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
 import com.game.user.account.entity.AccountEnt;
@@ -81,7 +83,6 @@ public class Player extends Creature<Player> {
         player.setSurviveStatus(1);
         player.setCurrMapId(MapType.NoviceVillage.getMapId());
         player.setLastLogoutMapId(MapType.NoviceVillage.getMapId());
-        // TODO: BUFF容器
 
         player.setAttributeContainer(new PlayerAttributeContainer());
         /** 生成玩家基础属性*/
@@ -90,10 +91,7 @@ public class Player extends Creature<Player> {
         player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.BASE,baseAttributeList);
         return player;
     }
-    public SkillInfo getSkillInfo(){
-        SkillEnt skillEnt = SpringContext.getSkillService().getSkillEnt(objectId);
-        return skillEnt.getSkillInfo();
-    }
+
     public int getCurrSceneId() {
         return currSceneId;
     }
@@ -113,6 +111,7 @@ public class Player extends Creature<Player> {
     public String getAccountId() {
         return accountId;
     }
+
     public AccountInfo getAccount(String accountId){
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         return accountEnt.getAccountInfo();

@@ -2,22 +2,16 @@ package com.game.scence.fight.model;
 
 import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
-import com.game.base.attribute.attributeid.AttributeId;
-import com.game.base.attribute.attributeid.AttributeIdEnum;
-import com.game.base.attribute.attributeid.MedicineAttributeId;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.attribute.container.ModelAttribute;
 import com.game.base.gameobject.constant.ObjectType;
-import com.game.role.player.constant.Job;
 import com.game.role.player.model.Player;
-import com.game.role.player.resource.PlayerLevelResource;
 import com.game.role.skill.entity.SkillEnt;
 import com.game.role.skill.model.SkillInfo;
 import com.game.scence.visible.resource.MapResource;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -57,10 +51,11 @@ public class PlayerUnit extends CreatureUnit {
          */
         SkillEnt skillEnt = SpringContext.getSkillService().getSkillEnt(player.getObjectId());
         SkillInfo skillInfo = skillEnt.getSkillInfo();
+        SkillInfo unitSkillInfo = skillInfo.deepCopy();
         /**
          * FIXME:这里直接放进去 如果玩家在账号线程池修改技能信息，则场景中的信息也跟着改
          */
-        playerUnit.setSkillInfo(skillInfo);
+        playerUnit.setSkillInfo(unitSkillInfo);
         playerUnit.setId(player.getObjectId());
         playerUnit.setPosition(player.getPosition());
         playerUnit.setVisibleName(player.getPlayerName());
@@ -78,6 +73,11 @@ public class PlayerUnit extends CreatureUnit {
      * @param targetUnit
      */
     public void useSkill(int skillId, CreatureUnit targetUnit){
+
+    }
+
+    @Override
+    protected void doAttackAfter(CreatureUnit attacker) {
 
     }
 

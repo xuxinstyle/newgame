@@ -1,14 +1,20 @@
 package com.game.scence.fight.model;
 
+import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.attributeid.AttributeIdEnum;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.skill.model.SkillInfo;
+import com.game.role.skill.model.SkillSlot;
+import com.game.scence.drop.command.DropItemAddCommand;
+import com.game.scence.drop.model.RandDrop;
 import com.game.scence.monster.resource.MonsterResource;
 import com.game.scence.visible.model.Position;
+import com.game.user.item.model.AbstractItem;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,14 +27,7 @@ public class MonsterUnit extends CreatureUnit {
      * 怪物对应的配置表
      */
     private MonsterResource monsterResource;
-    /**
-     * 存活状态 true：存活 false：死亡
-     */
-    private boolean islive;
-    /**
-     * TODO:先尝试把存入数据库的技能信息放入战斗单元中 如果有问题再修改
-     */
-    private SkillInfo skillInfo;
+
     /**
      * 生成怪物战斗单元
      * 生成属性
@@ -41,7 +40,18 @@ public class MonsterUnit extends CreatureUnit {
         /**
          * 技能
          */
-
+        SkillInfo skillInfo = new SkillInfo();
+        int[] skillIds = monsterResource.getSkillIds();
+        Map<Integer, SkillSlot> skillSlotMap = new HashMap<>();
+        for (int i = 0; i < skillIds.length; i++) {
+            skillSlotMap.put(skillIds[i], SkillSlot.valueOf(skillIds[i], 1, true));
+        }
+        skillInfo.setSkillSlotMap(skillSlotMap);
+        Map<Integer, Integer> skillBarMap = new HashMap<>();
+        skillBarMap.put(1, skillIds[0]);
+        skillInfo.setSkillBarMap(skillBarMap);
+        skillInfo.setDefaultSkill(0);
+        monsterUnit.setSkillInfo(skillInfo);
         /**
          * 属性
          */
@@ -58,30 +68,34 @@ public class MonsterUnit extends CreatureUnit {
         monsterUnit.setCurrMp(maxMp.getValue());
         monsterUnit.setVisibleName(monsterResource.getName());
         monsterUnit.setType(ObjectType.MONSTER);
-        monsterUnit.setIslive(true);
+        monsterUnit.setDead(false);
         monsterUnit.setPosition(Position.valueOf(monsterResource.getPx(),monsterResource.getPy()));
         return monsterUnit;
     }
+
     @Override
-    public long getReviveCd(){
+    protected void doAttackAfter(CreatureUnit attacker) {
+        // TODO: 2019/7/17 怪物反击 暂时不做
+    }
+
+    /**
+     * 做掉落物处理
+     *
+     * @param attacker
+     */
+    @Override
+    public void doDropHandle(CreatureUnit attacker) {
+        if (attacker.getType() != ObjectType.PLAYER) {
+            return;
+        }
+        PlayerUnit unit = (PlayerUnit) attacker;
+        DropItemAddCommand command = DropItemAddCommand.valueOf(unit.getAccountId(), getMonsterResource(), unit.getJobId());
+        SpringContext.getAccountExecutorService().submit(command);
+    }
+
+    @Override
+    public long getReviveCd() {
         return monsterResource.getReviveCd();
-    }
-    @Override
-    public SkillInfo getSkillInfo() {
-        return skillInfo;
-    }
-
-    @Override
-    public void setSkillInfo(SkillInfo skillInfo) {
-        this.skillInfo = skillInfo;
-    }
-
-    public boolean isIslive() {
-        return islive;
-    }
-
-    public void setIslive(boolean islive) {
-        this.islive = islive;
     }
 
     public MonsterResource getMonsterResource() {

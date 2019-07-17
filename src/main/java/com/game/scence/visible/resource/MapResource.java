@@ -1,9 +1,11 @@
 package com.game.scence.visible.resource;
 
+import com.game.util.StringUtil;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,6 +17,10 @@ public class MapResource {
     /** 这里的属性必须为public的权限*/
     /** 地图id*/
     public int id;
+    /**
+     * 地图名称
+     */
+    private String mapName;
 
     public int initX;
 
@@ -28,7 +34,43 @@ public class MapResource {
 
     @Analyze("analyzeMap")
     private int[][] mapcontext;
+    /**
+     * 可攻击的目标类型目标
+     */
+    private String targetStr;
+    @Analyze("analyzetargetTypes")
+    private List<String> targetTypes;
+    /**
+     * 地图中的怪物
+     */
+    private String monsters;
 
+    @Analyze("analyzeMonster")
+    private List<Integer> monsterList;
+
+    public String getTargetStr() {
+        return targetStr;
+    }
+
+    public void setTargetStr(String targetStr) {
+        this.targetStr = targetStr;
+    }
+
+    public List<String> getTargetTypes() {
+        return targetTypes;
+    }
+
+    public void setTargetTypes(List<String> targetTypes) {
+        this.targetTypes = targetTypes;
+    }
+
+    public void analyzetargetTypes() {
+        if (targetStr == null) {
+            return;
+        }
+        String[] split = targetStr.split(StringUtil.DOU_HAO);
+        targetTypes = Arrays.asList(split);
+    }
     public void analyzeMap(){
         String[] mapY = this.context.split(",");
         if(mapY.length<=0) {
@@ -44,13 +86,7 @@ public class MapResource {
         }
         this.mapcontext = mapcontext;
     }
-    /**
-     * 地图中的怪物
-     */
-    private String monsters;
 
-    @Analyze("analyzeMonster")
-    private List<Integer> monsterList;
 
     public void analyzeMonster(){
         if(monsters==null){
@@ -64,6 +100,14 @@ public class MapResource {
             }
             monsterList.add(monsterId);
         }
+    }
+
+    public String getMapName() {
+        return mapName;
+    }
+
+    public void setMapName(String mapName) {
+        this.mapName = mapName;
     }
 
     public long getReviveCd() {

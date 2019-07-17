@@ -70,7 +70,7 @@ public interface ScenceService {
     /**
      * 做玩家升级
      */
-    void doPlayerUpLevel( Player player);
+    void doPlayerUpLevelSyncScene(Player player);
 
     /**
      * 切换地图

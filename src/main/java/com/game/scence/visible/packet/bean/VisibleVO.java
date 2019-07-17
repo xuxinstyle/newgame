@@ -24,6 +24,55 @@ public class VisibleVO {
      * 位置坐标
      */
     private Position position;
+    /**
+     * 当前血量
+     */
+    private long currHp;
+    /**
+     * 最大血量
+     */
+    private long maxHp;
+    /**
+     * 当前蓝量
+     */
+    private long currMp;
+
+    /**
+     * 最大蓝量
+     */
+    private long maxMp;
+
+    public long getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(long maxHp) {
+        this.maxHp = maxHp;
+    }
+
+    public long getMaxMp() {
+        return maxMp;
+    }
+
+    public void setMaxMp(long maxMp) {
+        this.maxMp = maxMp;
+    }
+
+    public long getCurrHp() {
+        return currHp;
+    }
+
+    public void setCurrHp(long currHp) {
+        this.currHp = currHp;
+    }
+
+    public long getCurrMp() {
+        return currMp;
+    }
+
+    public void setCurrMp(long currMp) {
+        this.currMp = currMp;
+    }
 
     public ObjectType getType() {
         return type;
