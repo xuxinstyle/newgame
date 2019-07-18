@@ -19,4 +19,8 @@ public class GMCommand {
         SpringContext.getItemService().gmAwardToPack(accountId, itemModelId, num);
     }
 
+    public void monsterAttack(String accountId) {
+        SpringContext.getMonsterService().fieldMonsterAttack(accountId);
+    }
+
 }

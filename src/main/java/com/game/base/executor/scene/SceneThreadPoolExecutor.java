@@ -2,6 +2,8 @@ package com.game.base.executor.scene;
 
 import com.game.base.executor.NameThreadFactory;
 import com.game.base.executor.scene.impl.AbstractSceneCommand;
+import com.game.common.exception.RequestException;
+import com.game.util.SendPacketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -51,6 +53,8 @@ public class SceneThreadPoolExecutor {
                 if (!command.isCanceled()) {
                     command.active();
                 }
+            } catch (RequestException e) {
+                SendPacketUtil.send(command.getAccountId(), e.getErrorCode());
             } catch (Exception e) {
                 logger.error("SceneThreadPoolExecutor执行：" + command.getName() + ",key:" + key, e);
             }

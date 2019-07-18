@@ -20,7 +20,7 @@ public class EquipStrenResource {
     /**
      * 唯一id
      */
-    private int id;
+    private String id;
     /**
      * 装备位置
      */
@@ -82,11 +82,11 @@ public class EquipStrenResource {
         this.succRate = succRate;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

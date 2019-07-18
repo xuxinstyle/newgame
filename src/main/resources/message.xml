@@ -97,5 +97,6 @@
     <catalog id="74" value="com.game.role.skill.packet.SM_AddAttributeEffect"/>
 
     <catalog id="75" value="com.game.role.skilleffect.packet.SM_CreatureHurt"/>
+    <catalog id="76" value="com.game.common.packet.SM_Exception"/>
 
 </protocols>

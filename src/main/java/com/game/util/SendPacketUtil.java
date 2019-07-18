@@ -1,6 +1,7 @@
 package com.game.util;
 
 import com.game.SpringContext;
+import com.game.common.packet.SM_Exception;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.socket.core.session.TSession;
@@ -23,5 +24,9 @@ public class SendPacketUtil {
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(playerId);
         Player player = playerEnt.getPlayer();
         send(player.getAccountId(),object);
+    }
+
+    public static void send(String accountId, int i18nId) {
+        send(accountId, SM_Exception.valueOf(i18nId));
     }
 }

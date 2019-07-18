@@ -117,7 +117,7 @@ public class ItemEffectServiceImpl implements ItemEffectService {
         attributeContainer.removeAndCompteAttribtues(MedicineAttributeId.getMedicineAttributeId(itemModelId));
         SpringContext.getPlayerSerivce().save(playerEnt);
         /**
-         *    做战斗同步
+         *    做战斗同步 账号线程的属性buff是只在buff生效和失效的做同步，其他时候
          */
         RemoveAttributeBuffSynCommand command = RemoveAttributeBuffSynCommand.valueOf(player,
                 MedicineAttributeId.getMedicineAttributeId(itemModelId));

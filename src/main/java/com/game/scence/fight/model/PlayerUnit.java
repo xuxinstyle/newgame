@@ -67,17 +67,8 @@ public class PlayerUnit extends CreatureUnit {
         return playerUnit;
     }
 
-    /**
-     * TODO:未来将使用技能的方法封装在这里
-     * @param skillId
-     * @param targetUnit
-     */
-    public void useSkill(int skillId, CreatureUnit targetUnit){
-
-    }
-
     @Override
-    protected void doAttackAfter(CreatureUnit attacker) {
+    public void doAttackAfter(CreatureUnit attacker) {
 
     }
 

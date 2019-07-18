@@ -1,7 +1,6 @@
 package com.game.role.equip.resource;
 
 import com.game.base.attribute.Attribute;
-import com.game.base.attribute.ImmutableAttribute;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.user.condition.model.EquipCondition;
 import com.game.user.condition.model.StrenCondition;

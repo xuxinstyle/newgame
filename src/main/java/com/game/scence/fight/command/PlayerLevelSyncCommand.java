@@ -1,12 +1,19 @@
 package com.game.scence.fight.command;
 
 import com.game.SpringContext;
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.attributeid.AttributeIdEnum;
+import com.game.base.attribute.constant.AttributeType;
+import com.game.base.attribute.container.CreatureAttributeContainer;
+import com.game.base.attribute.container.ModelAttribute;
 import com.game.base.executor.scene.impl.AbstractSceneCommand;
 import com.game.role.player.model.Player;
 import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
 import com.game.scence.fight.model.PlayerUnit;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,12 +43,20 @@ public class PlayerLevelSyncCommand extends AbstractSceneCommand {
     public void active() {
         AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId());
         Map<Long, CreatureUnit> creatureUnitMap = scene.getCreatureUnitMap();
-        CreatureUnit creatureUnit = creatureUnitMap.get(player.getObjectId());
-        if (creatureUnit == null) {
+        PlayerUnit playerUnit = (PlayerUnit) creatureUnitMap.get(player.getObjectId());
+        if (playerUnit == null) {
             return;
         }
-        PlayerUnit playerUnit = PlayerUnit.valueOf(player);
-        creatureUnitMap.put(player.getObjectId(), playerUnit);
+        Map<String, ModelAttribute> modelAttributes = player.getAttributeContainer().getModelAttributes();
+        ModelAttribute modelAttribute = modelAttributes.get(AttributeIdEnum.BASE.toString());
+        Map<AttributeType, Attribute> attributeMap = modelAttribute.getAttributeMap();
+        List<Attribute> attrs = new ArrayList<>(attributeMap.values());
+        CreatureAttributeContainer attributeContainer = playerUnit.getAttributeContainer();
+        attributeContainer.putAndComputeAttributes(AttributeIdEnum.BASE, attrs);
+        playerUnit.setCurrHp(playerUnit.getMaxHp());
+        playerUnit.setCurrMp(playerUnit.getMaxMp());
+        playerUnit.setLevel(player.getLevel());
+
 
     }
 

@@ -1,10 +1,12 @@
 package com.game.gm.service;
 
 import com.game.SpringContext;
+import com.game.common.exception.RequestException;
 import com.game.gm.model.GMCommand;
 import com.game.gm.packet.SM_GMCommond;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
+import com.game.util.SendPacketUtil;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ public class GmServiceImpl implements GmService {
     private static final Logger logger = LoggerFactory.getLogger(GmServiceImpl.class);
     @Autowired
     private ConversionService conversionService;
+
     private Map<String, Method> commandMethods = new HashMap<>();
 
     @PostConstruct
@@ -55,15 +58,18 @@ public class GmServiceImpl implements GmService {
             Class<?>[] parameterTypes = method.getParameterTypes();
             Object[] params = new Object[parameterTypes.length];
             params[0] = session.getAccountId();
-            for (int i = 1;i<parameterTypes.length;i++){
+            for (int i = 1; i<parameterTypes.length; i++){
                 params[i] = conversionService.convert(split[i],parameterTypes[i]);
             }
             method.invoke(new GMCommand(),params);
             SM_GMCommond sm = new SM_GMCommond();
             sm.setStatus(1);
             session.sendPacket(sm);
+        } catch (RequestException e) {
+            logger.warn("GM命令[{}]执行错误,错误代码{}", command, e.getErrorCode());
+            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
         } catch (Exception e) {
-            logger.warn("GM命令[{}]执行错误",command,e);
+            logger.warn("GM命令[{}]执行错误", command);
             SM_GMCommond sm = new SM_GMCommond();
             sm.setStatus(2);
             session.sendPacket(sm);

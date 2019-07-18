@@ -2,6 +2,8 @@ package com.game.base.executor.account;
 
 import com.game.base.executor.NameThreadFactory;
 import com.game.base.executor.account.impl.AbstractAccountCommand;
+import com.game.common.exception.RequestException;
+import com.game.util.SendPacketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -53,6 +55,8 @@ public class AccountThreadPoolExecutor{
                 if (!accountCommond.isCanceled()) {
                     accountCommond.active();
                 }
+            } catch (RequestException e) {
+                SendPacketUtil.send(accountCommond.getAccountId(), e.getErrorCode());
             } catch (Exception e) {
                 logger.error("AccountThreadPoolExecutor执行：" + accountCommond.getName() + ",key:" + key, e);
             }

@@ -50,7 +50,7 @@ public class MonsterUnit extends CreatureUnit {
         Map<Integer, Integer> skillBarMap = new HashMap<>();
         skillBarMap.put(1, skillIds[0]);
         skillInfo.setSkillBarMap(skillBarMap);
-        skillInfo.setDefaultSkill(0);
+        skillInfo.setDefaultSkill(1);
         monsterUnit.setSkillInfo(skillInfo);
         /**
          * 属性
@@ -74,8 +74,14 @@ public class MonsterUnit extends CreatureUnit {
     }
 
     @Override
-    protected void doAttackAfter(CreatureUnit attacker) {
+    public void doAttackAfter(CreatureUnit attacker) {
         // TODO: 2019/7/17 怪物反击 暂时不做
+        if (attacker == null) {
+            return;
+        }
+        SkillInfo skillInfo = getSkillInfo();
+        int defaultSkill = skillInfo.getDefaultSkill();
+        SpringContext.getSkillService().doUseSkill(null, getMapId(), this.getId(), this.getType(), attacker.getId(), attacker.getType(), defaultSkill);
     }
 
     /**

@@ -24,4 +24,9 @@ public interface MonsterService {
      * @return
      */
     MonsterResource getMonsterResource(int monsterId);
+
+    /**
+     * 怪物反击
+     */
+    void fieldMonsterAttack(String accountId);
 }

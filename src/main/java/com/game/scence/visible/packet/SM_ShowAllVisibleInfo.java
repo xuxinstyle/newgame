@@ -1,6 +1,5 @@
 package com.game.scence.visible.packet;
 
-import com.game.scence.visible.packet.bean.PlayerVO;
 import com.game.scence.visible.packet.bean.VisibleVO;
 
 import java.util.List;

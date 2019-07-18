@@ -1,6 +1,7 @@
 package com.game.scence.visible.service;
 
 import com.game.SpringContext;
+import com.game.common.exception.RequestException;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.scence.base.model.AbstractScene;
@@ -16,6 +17,7 @@ import com.game.scence.visible.resource.MapResource;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.user.account.packet.SM_EnterCreatePlayer;
+import com.game.util.I18nId;
 import com.socket.core.session.SessionManager;
 import com.socket.core.session.TSession;
 import com.game.util.SendPacketUtil;
@@ -135,6 +137,7 @@ public class ScenceServiceImpl implements ScenceService {
     public void leaveMap(String accountId) {
         /**
          * TODO:在有离开或进入地图的条件的情况下 需要判断能否离开地图 如果不能离开地图 离开失败怎么办
+         * 只有在副本的时候再会存在离开地图失败 在这种情况下可以断线重连副本
          */
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
         int currentMapId = player.getCurrMapId();
@@ -217,11 +220,7 @@ public class ScenceServiceImpl implements ScenceService {
             if(logger.isDebugEnabled()){
                 logger.debug("不能移动到位置{}",targetPos.toString());
             }
-            SM_Move sm = new SM_Move();
-            sm.setStatus(0);
-            sm.setPosition(targetPos);
-            SendPacketUtil.send(accountId, sm);
-            return;
+            RequestException.throwException(I18nId.MOVE_ERROR);
         }
         AbstractScene scence = scenceMangaer.getScence(mapId);
         scence.move(accountId,targetPos);
@@ -254,6 +253,7 @@ public class ScenceServiceImpl implements ScenceService {
             }
             if(!checkChangeMap(player,targetMapId)){
                 SendPacketUtil.send(player,SM_ChangeMapErr.valueOf(2));
+                RequestException.throwException(I18nId.CHANGE_MAP_ERROE);
                 return;
             }
             /**
@@ -270,6 +270,8 @@ public class ScenceServiceImpl implements ScenceService {
             accountEnt.getAccountInfo().getIsChangeMap().getAndSet(false);
             SendPacketUtil.send(player,SM_ChangeMapErr.valueOf(2));
             logger.error("玩家[{}]请求从[{}]进入[{}]地图失败,失败原因[{}]",player.getAccountId(),player.getCurrMapId(),targetMapId,e);
+            RequestException.throwException(I18nId.CHANGE_MAP_ERROE);
+
         }
     }
 

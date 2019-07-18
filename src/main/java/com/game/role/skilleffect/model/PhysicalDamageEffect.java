@@ -3,6 +3,7 @@ package com.game.role.skilleffect.model;
 import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.constant.AttributeType;
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.skill.packet.SM_UseSkill;
 import com.game.role.skill.resource.SkillLevelResource;
 import com.game.role.skill.resource.SkillResource;
@@ -50,61 +51,18 @@ public class PhysicalDamageEffect extends AbstractSkillEffect {
         return (long) ComputeUtil.getRealHurt(hurtValue, targetDefenceAttribute.getValue());
     }
 
-    public boolean checkRange(VisibleVO visibleVO, long useRangeRadius, Position position) {
-        double dis = ComputeUtil.computeDis(visibleVO.getPosition(), position);
-        if (dis <= useRangeRadius) {
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public void doActive(int mapId, CreatureUnit useUnit, CreatureUnit targetUnit, SkillLevelResource skillLevelResource, SkillResource skillResource) {
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId);
-        List<VisibleVO> visibleVOList = scene.getVisibleVOList();
-        /**
-         * 可多目标
-         * fixme：这里先暂时遍历地图中所有目标类型的生物，看是否在技能范围内，之后再想有没有更好的办法
-         */
-        List<CreatureUnit> effectCreatureUnits = new ArrayList<>();
 
-        MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(mapId);
-        List<String> targetTypes = mapResource.getTargetTypes();
-        if (targetTypes == null) {
-            return;
-        }
-        /**
-         * 计算目标范围的怪物集合  fixme: 这里如果每次使用单目标的技能 总会去查找所该类型所以的生物
-         */
-        for (VisibleVO visibleVO : visibleVOList) {
-            if (!targetTypes.contains(visibleVO.getType().name())) {
-                continue;
-            }
-            if (!checkRange(visibleVO, skillLevelResource.getUseRangeRadius(), targetUnit.getPosition())) {
-                continue;
-            }
-            CreatureUnit effectCreatureUnit = scene.getUnit(visibleVO.getType(), visibleVO.getObjectId());
-            if (!effectCreatureUnit.isDead()) {
-                effectCreatureUnits.add(effectCreatureUnit);
-            }
-
-        }
-
-        Map<String, Long> creatureUnitHurtMap = new HashMap<>();
         /**
          * 计算真实扣血量
          */
-        for (CreatureUnit creatureUnit : effectCreatureUnits) {
-            long realHurt = computeRealHurt(useUnit, targetUnit);
-            String key = creatureUnit.getType().getTypeId() + StringUtil.XIA_HUA_XIAN + creatureUnit.getId();
-            creatureUnitHurtMap.put(key, realHurt);
-            /**
-             * 做减血操作，如果死了就做死亡处理
-             */
-            creatureUnit.consumeHpAndDoDead(realHurt, useUnit);
-        }
-
-
+        long realHurt = computeRealHurt(useUnit, targetUnit);
+        /**
+         * 做减血操作，如果死了就做死亡处理
+         */
+        targetUnit.consumeHpAndDoDead(realHurt, useUnit);
     }
 
     public long getAttackDamageRatio() {

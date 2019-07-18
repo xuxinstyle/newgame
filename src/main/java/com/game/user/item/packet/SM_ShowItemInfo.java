@@ -1,7 +1,6 @@
 package com.game.user.item.packet;
 
 import com.game.base.attribute.Attribute;
-import com.game.base.attribute.ImmutableAttribute;
 
 import java.util.List;
 

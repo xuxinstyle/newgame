@@ -31,6 +31,9 @@ public class SessionManager {
         if (logger.isDebugEnabled()) {
             logger.debug("");
         }
+        if (accountId == null) {
+            return null;
+        }
         return accountSessionMap.get(accountId);
     }
 

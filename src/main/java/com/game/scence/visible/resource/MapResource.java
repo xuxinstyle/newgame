@@ -1,5 +1,6 @@
 package com.game.scence.visible.resource;
 
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.util.StringUtil;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
@@ -39,7 +40,7 @@ public class MapResource {
      */
     private String targetStr;
     @Analyze("analyzetargetTypes")
-    private List<String> targetTypes;
+    private List<ObjectType> targetTypes;
     /**
      * 地图中的怪物
      */
@@ -56,11 +57,11 @@ public class MapResource {
         this.targetStr = targetStr;
     }
 
-    public List<String> getTargetTypes() {
+    public List<ObjectType> getTargetTypes() {
         return targetTypes;
     }
 
-    public void setTargetTypes(List<String> targetTypes) {
+    public void setTargetTypes(List<ObjectType> targetTypes) {
         this.targetTypes = targetTypes;
     }
 
@@ -69,7 +70,11 @@ public class MapResource {
             return;
         }
         String[] split = targetStr.split(StringUtil.DOU_HAO);
-        targetTypes = Arrays.asList(split);
+        List<ObjectType> typeList = new ArrayList<>();
+        for (String typestr : split) {
+            typeList.add(ObjectType.valueOf(typestr));
+        }
+        targetTypes = typeList;
     }
     public void analyzeMap(){
         String[] mapY = this.context.split(",");

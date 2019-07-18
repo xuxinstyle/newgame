@@ -2,6 +2,7 @@ package com.game.role.skill.service;
 
 import com.game.SpringContext;
 import com.game.base.gameobject.constant.ObjectType;
+import com.game.common.exception.RequestException;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.role.skill.command.SkillSynCommand;
@@ -16,19 +17,19 @@ import com.game.role.skill.resource.SkillLevelResource;
 import com.game.role.skill.resource.SkillResource;
 import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
+import com.game.scence.visible.model.Position;
+import com.game.scence.visible.packet.bean.VisibleVO;
 import com.game.scence.visible.resource.MapResource;
 import com.game.user.condition.model.LearnSkillCondition;
 import com.game.user.condition.model.UpgradeSkillCondition;
-import com.game.util.ComputeUtil;
-import com.game.util.PlayerUtil;
-import com.game.util.SendPacketUtil;
-import com.game.util.StringUtil;
+import com.game.util.*;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -82,26 +83,19 @@ public class SkillServiceImpl implements SkillService {
         SkillInfo skillInfo = skillEnt.getSkillInfo();
         SkillSlot learnSlot = skillInfo.getSkillSlotMap().get(skillId);
         if (learnSlot == null) {
-            SendPacketUtil.send(player, SM_LearnSkill.valueOf(4));
-            return;
+            RequestException.throwException(I18nId.NOT_SKILL_IN_SLOT);
         }
         if (learnSlot.isCanUse()) {
-            SendPacketUtil.send(player, SM_LearnSkill.valueOf(3));
-            return;
+            RequestException.throwException(I18nId.SKILL_IS_LEARN);
         }
         // 判断前置技能
         if (preSkillId != null) {
             String[] split = preSkillId.split(StringUtil.XIA_HUA_XIAN);
             SkillSlot skillSlot = skillInfo.getSkillSlotMap().get(Integer.parseInt(split[0]));
-            if (!skillSlot.isCanUse()) {
-                SendPacketUtil.send(player, SM_LearnSkill.valueOf(2));
+            if (!skillSlot.isCanUse() || skillSlot.getLevel() < Integer.parseInt(split[1])) {
                 logger.error("玩家[{}]角色[{}]没有学习前置技能[{}]无法学习[{}]", player.getAccountId(), playerId, preSkillId, skillId);
-                return;
-            }
-            if (skillSlot.getLevel() < Integer.parseInt(split[1])) {
-                SendPacketUtil.send(player, SM_LearnSkill.valueOf(2));
-                logger.error("玩家[{}]角色[{}]没有学习前置技能[{}]无法学习[{}]", player.getAccountId(), playerId, preSkillId, skillId);
-                return;
+                RequestException.throwException(I18nId.SKILL_CONDITION_NOT);
+
             }
         }
 
@@ -117,9 +111,8 @@ public class SkillServiceImpl implements SkillService {
             return;
         }
         if (!learnSkillCondition.checkCondition(player, null)) {
-            SendPacketUtil.send(player, SM_LearnSkill.valueOf(2));
             logger.error("玩家[{}]角色[{}]学习技能[{}]条件不足", player.getAccountId(), playerId, skillId);
-            return;
+            RequestException.throwException(I18nId.SKILL_CONDITION_NOT);
         }
         learnSlot.setCanUse(true);
         learnSlot.setLevel(skillLevel);
@@ -144,14 +137,13 @@ public class SkillServiceImpl implements SkillService {
 
         SkillSlot skillSlot = skillSlotMap.get(skillId);
         if (!skillSlot.isCanUse()) {
-            SendPacketUtil.send(playerId, SM_UpgradeSkill.valueOf(2));
             logger.error("角色[{}]未学习技能[{}]", playerId, skillId);
-            return;
+            RequestException.throwException(I18nId.NOT_UPGRADE_NOT_LEARN);
+
         }
         if (skillResource.getMaxLevel() <= skillSlot.getLevel()) {
-            SendPacketUtil.send(playerId, SM_UpgradeSkill.valueOf(2));
             logger.error("角色[{}]的技能[{}]达到最大等级无法升级", playerId, skillId);
-            return;
+            RequestException.throwException(I18nId.SKILL_LEVEL_LIMINT);
         }
         int level = skillSlot.getLevel();
         SkillLevelResource skillLevelResource = getSkillLevelResource(skillId + StringUtil.XIA_HUA_XIAN + level);
@@ -159,9 +151,9 @@ public class SkillServiceImpl implements SkillService {
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(playerId);
         Player player = playerEnt.getPlayer();
         if (!upgradeSkillCondition.checkCondition(player, null)) {
-            SendPacketUtil.send(playerId, SM_UpgradeSkill.valueOf(2));
             logger.error("角色[{}]的技能[{}]升级条件不足", playerId, skillId);
-            return;
+            RequestException.throwException(I18nId.SKILL_UPGRADE_INSUFFICIENT);
+
         }
         skillSlot.setLevel(level + 1);
         /**
@@ -269,39 +261,90 @@ public class SkillServiceImpl implements SkillService {
         }
         SkillLevelResource skillLevelResource = skillInfo.getSkillLevelResource(skillBarId);
         if (skillLevelResource == null) {
-            SendPacketUtil.send(useUnit.getAccountId(), SM_UseSkillErr.valueOf(3));
-            return;
+            RequestException.throwException(I18nId.NOT_SKILL_IN_SLOT);
         }
         // 做蓝量的消耗
         long consume = skillLevelResource.getConsumeMp();
         if (!useUnit.consumeMpAndCheck(consume)) {
             return;
         }
+        List<CreatureUnit> targetUnits = getTargetUnits(mapId, scene, useUnit, targetUnit, skillLevelResource);
+
         // 使用技能
-        useUnit.usSkill(skillLevelResource, targetUnit, skillResource);
+        useUnit.usSkill(skillLevelResource, targetUnits, skillResource);
         /**
          * 将command放在unit身上方便管理
          */
         useUnit.useSkillAfter(skillResource, skillLevelResource, useUnit);
         SendPacketUtil.send(useUnit.getAccountId(), SM_SkillStatus.valueOf(skillResource.getId(), 2));
+        /**
+         * 设置怪物的最后一次攻击者
+         */
+        for (CreatureUnit unit : targetUnits) {
+            if (unit.getType() == ObjectType.MONSTER && useUnit.getType() == ObjectType.PLAYER) {
+                unit.setAttacker(useUnit);
+            }
+        }
     }
 
+    private List<CreatureUnit> getTargetUnits(int mapId, AbstractScene scene, CreatureUnit useUnit, CreatureUnit targetUnit, SkillLevelResource skillLevelResource) {
+        /**
+         * 可多目标
+         * fixme：这里先暂时遍历地图中所有目标类型的生物，看是否在技能范围内，之后再想有没有更好的办法
+         */
+        MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(mapId);
+        List<ObjectType> targetTypes = mapResource.getTargetTypes();
+        if (targetTypes == null) {
+            return null;
+        }
+        /**
+         * 计算目标范围的怪物集合  fixme: 这里如果每次使用单目标的技能 总会去查找所该类型所以的生物
+         */
+        List<VisibleVO> visibleVOList = scene.getVisibleVOList();
+        int targetNum = skillLevelResource.getTargetNum();
+        List<CreatureUnit> targetUnits = new ArrayList<>();
+        if (targetNum == 1) {
+            targetUnits.add(targetUnit);
+        } else {
+            for (VisibleVO visibleVO : visibleVOList) {
+                if (!targetTypes.contains(visibleVO.getType())) {
+                    continue;
+                }
+                if (!checkRange(visibleVO, skillLevelResource.getUseRangeRadius(), targetUnit.getPosition())) {
+                    continue;
+                }
+                CreatureUnit effectCreatureUnit = scene.getUnit(visibleVO.getType(), visibleVO.getObjectId());
+                if (!effectCreatureUnit.isDead() && effectCreatureUnit.getType() != useUnit.getType() && effectCreatureUnit.getId() != useUnit.getId()) {
+                    targetUnits.add(effectCreatureUnit);
+                }
+            }
+        }
+        return targetUnits;
+    }
+
+    public boolean checkRange(VisibleVO visibleVO, long useRangeRadius, Position position) {
+        double dis = ComputeUtil.computeDis(visibleVO.getPosition(), position);
+        if (dis <= useRangeRadius) {
+            return true;
+        }
+        return false;
+    }
     private boolean checkUseSkill(CreatureUnit useUnit, SkillResource skillResource, CreatureUnit targetUnit) {
 
         // 使用技能者是否已死亡
         if (useUnit.isDead()) {
-            SendPacketUtil.send(useUnit.getAccountId(), SM_UseSkillErr.valueOf(6));
-            return false;
+            RequestException.throwException(I18nId.DEAD_NOT_USE_SKILL);
+        }
+        if (targetUnit == null) {
+            RequestException.throwException(I18nId.MAP_NOT_TARGET);
         }
         // 目标是否死亡
-        if (targetUnit == null || targetUnit.isDead()) {
-            SendPacketUtil.send(useUnit.getAccountId(), SM_UseSkillErr.valueOf(1));
-            return false;
+        if (targetUnit.isDead()) {
+            RequestException.throwException(I18nId.TARGET_DEAD);
         }
         // 检查技能栏是否有技能
         if (skillResource == null) {
-            SendPacketUtil.send(useUnit.getAccountId(), SM_UseSkillErr.valueOf(3));
-            return false;
+            RequestException.throwException(I18nId.NOT_USE_SKILL_NOT_SKILL);
         }
         // 检查技能的目标类型
         String useType = skillResource.getTargetType();
@@ -315,53 +358,47 @@ public class SkillServiceImpl implements SkillService {
         AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId);
         MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(mapId);
         if (type != SkillTargetType.MYSELF) {
-            List<String> targetList = mapResource.getTargetTypes();
+            List<ObjectType> targetList = mapResource.getTargetTypes();
             if (targetList == null) {
-                SendPacketUtil.send(useUnit.getAccountId(), SM_UseSkillErr.valueOf(5));
                 logger.info("地图[{}]不可以释放技能", mapId);
-                return false;
+                RequestException.throwException(I18nId.MAP_NOT_USE_SKILL);
             }
-            if (!targetList.contains(targetUnit.getType().name())) {
-                return false;
+            if (!targetList.contains(targetUnit.getType())) {
+                RequestException.throwException(I18nId.MAP_NOT_USE_SKILL);
             }
         }
         // 检查玩家技能cd
         SkillInfo skillInfo = useUnit.getSkillInfo();
         if (useUnit.getSkillCdStatus(skillModelId) != null && useUnit.getSkillCdStatus(skillModelId)) {
-            SendPacketUtil.send(useUnit.getAccountId(), SM_UseSkillErr.valueOf(7));
             logger.info("玩家[{}]技能[{}]处于cd状态", useUnit.getAccountId(), skillModelId);
-            return false;
+            RequestException.throwException(I18nId.SKILL_CD);
         }
         SkillSlot skillSlot = skillInfo.getSkillSlotMap().get(skillModelId);
         // 是否学习该技能
         if (!skillSlot.isCanUse()) {
             // 没有学习 无法使用
-            SendPacketUtil.send(useUnit.getAccountId(), SM_UseSkillErr.valueOf(3));
             logger.info("玩家[{}]没有学习技能[{}]", useUnit.getAccountId(), skillModelId);
-            return false;
+            RequestException.throwException(I18nId.NOT_LEARN_SKILL);
         }
         if (skillModelId <= 0) {
             return false;
         }
         //判断该场景下能否使用技能
         if (!scene.isCanUseSkill()) {
-            SendPacketUtil.send(useUnit.getAccountId(), SM_UseSkillErr.valueOf(5));
-            return false;
+            RequestException.throwException(I18nId.MAP_NOT_USE_SKILL);
         }
         // 检查蓝量
         SkillLevelResource skillLevelResource = getSkillLevelResource(skillModelId + StringUtil.XIA_HUA_XIAN + skillSlot.getLevel());
         long currMp = useUnit.getCurrMp();
         if (skillLevelResource.getConsumeMp() > currMp) {
             // 蓝不足
-            SendPacketUtil.send(useUnit.getAccountId(), SM_UseSkillErr.valueOf(8));
-            return false;
+            RequestException.throwException(I18nId.MP_NOT_ENOUGH);
         }
 
         //  检查施法距离
         double useDis = ComputeUtil.computeDis(targetUnit.getPosition(), useUnit.getPosition());
         if (useDis > skillLevelResource.getUseDis()) {
-            SendPacketUtil.send(useUnit.getAccountId(), SM_UseSkillErr.valueOf(4));
-            return false;
+            RequestException.throwException(I18nId.TARGET_TO_LONG);
         }
 
         return true;

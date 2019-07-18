@@ -21,6 +21,7 @@ public class PlayerMoveEvent implements IEvent {
      * 目标位置
      */
     private Position targetPosition;
+
     public static PlayerMoveEvent valueOf(int mapId, Player player, Position currPosition, Position targetPosition ){
         PlayerMoveEvent event = new PlayerMoveEvent();
         event.setCurrPosition(currPosition);

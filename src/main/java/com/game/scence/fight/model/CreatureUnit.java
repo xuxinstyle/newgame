@@ -6,6 +6,7 @@ import com.game.base.attribute.attributeid.AttributeId;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.executor.ICommand;
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.skill.command.ReviveCreatureCommand;
 import com.game.role.skill.command.SkillCdCommand;
 import com.game.role.skill.model.SkillInfo;
@@ -72,6 +73,8 @@ public abstract class CreatureUnit extends BaseUnit{
      */
     private Map<Integer, Boolean> skillCdMap = new HashMap<>();
 
+    private CreatureUnit attacker;
+
     public void putSkillCd(int skillId, boolean status) {
         skillCdMap.put(skillId, status);
     }
@@ -119,10 +122,9 @@ public abstract class CreatureUnit extends BaseUnit{
         for (String accountId : accountIds) {
             SendPacketUtil.send(accountId, SM_CreatureHurt.valueOf(this, consumeHp));
         }
-        doAttackAfter(attacker);
     }
 
-    protected abstract void doAttackAfter(CreatureUnit attacker);
+    public abstract void doAttackAfter(CreatureUnit attacker);
 
     public void doDropHandle(CreatureUnit attacker) {
 
@@ -150,6 +152,14 @@ public abstract class CreatureUnit extends BaseUnit{
         for (String accountId : accountIds) {
             SendPacketUtil.send(accountId, sm);
         }
+    }
+
+    public CreatureUnit getAttacker() {
+        return attacker;
+    }
+
+    public void setAttacker(CreatureUnit attacker) {
+        this.attacker = attacker;
     }
 
     /**
@@ -354,6 +364,9 @@ public abstract class CreatureUnit extends BaseUnit{
         /**
          * 抛出技能cd的command
          */
+        if (skillLevelResource.getCd() <= 0) {
+            return;
+        }
         SkillCdCommand command = SkillCdCommand.valueOf(getMapId(), skillResource.getId(), skillLevelResource.getCd(), useUnit.getAccountId(), useUnit);
         SpringContext.getSceneExecutorService().submit(command);
         putCdCommand(skillResource.getId(), command);
@@ -361,14 +374,17 @@ public abstract class CreatureUnit extends BaseUnit{
 
     }
 
-    public void usSkill(SkillLevelResource skillLevelResource, CreatureUnit targetUnit, SkillResource skillResource) {
+    public void usSkill(SkillLevelResource skillLevelResource, List<CreatureUnit> targetUnits, SkillResource skillResource) {
         int[] effects = skillLevelResource.getEffects();
         for (int effectId : effects) {
-            AbstractSkillEffect skillEffect = SpringContext.getEffectService().getSkillEffect(effectId);
-            skillEffect.doActive(getMapId(), this, targetUnit, skillLevelResource, skillResource);
-            if (targetUnit.isDead()) {
-                break;
+            for (CreatureUnit targetUnit : targetUnits) {
+                AbstractSkillEffect skillEffect = SpringContext.getEffectService().getSkillEffect(effectId);
+                skillEffect.doActive(getMapId(), this, targetUnit, skillLevelResource, skillResource);
+                if (targetUnit.isDead()) {
+                    break;
+                }
             }
         }
+
     }
 }
