@@ -6,7 +6,6 @@ import com.game.base.attribute.attributeid.AttributeId;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.executor.ICommand;
-import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.skill.command.ReviveCreatureCommand;
 import com.game.role.skill.command.SkillCdCommand;
 import com.game.role.skill.model.SkillInfo;
@@ -72,7 +71,7 @@ public abstract class CreatureUnit extends BaseUnit{
      * 技能是否再cd状态
      */
     private Map<Integer, Boolean> skillCdMap = new HashMap<>();
-
+    // 被攻击者
     private CreatureUnit attacker;
 
     public void putSkillCd(int skillId, boolean status) {
@@ -378,7 +377,7 @@ public abstract class CreatureUnit extends BaseUnit{
         int[] effects = skillLevelResource.getEffects();
         for (int effectId : effects) {
             for (CreatureUnit targetUnit : targetUnits) {
-                AbstractSkillEffect skillEffect = SpringContext.getEffectService().getSkillEffect(effectId);
+                AbstractSkillEffect skillEffect = SpringContext.getSkillEffectService().getSkillEffect(effectId);
                 skillEffect.doActive(getMapId(), this, targetUnit, skillLevelResource, skillResource);
                 if (targetUnit.isDead()) {
                     break;

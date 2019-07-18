@@ -72,7 +72,7 @@ public class DurationDamageEffect extends AbstractSkillEffect {
         targetUnit.putBuffCommand(SkillEffectAttributeId.getSkillAttributeId(effectId), command);
     }
 
-    @Override
+
     protected void doDestroy(CreatureUnit targetUnit) {
         ICommand command = targetUnit.getBuffCommandMap().get(SkillEffectAttributeId.getSkillAttributeId(effectId));
         command.cancel();

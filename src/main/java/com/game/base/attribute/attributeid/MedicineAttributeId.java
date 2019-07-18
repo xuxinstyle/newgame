@@ -39,4 +39,16 @@ public class MedicineAttributeId implements AttributeId  {
     public String toString() {
         return getName();
     }
+
+    public static Map<Integer, MedicineAttributeId> getMedicineToAttributeId() {
+        return medicineToAttributeId;
+    }
+
+    public int getItemModelId() {
+        return itemModelId;
+    }
+
+    public void setItemModelId(int itemModelId) {
+        this.itemModelId = itemModelId;
+    }
 }

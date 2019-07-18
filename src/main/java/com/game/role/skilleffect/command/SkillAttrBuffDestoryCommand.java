@@ -11,7 +11,7 @@ import com.game.util.SendPacketUtil;
  * @Author：xuxin
  * @Date: 2019/7/12 10:16
  */
-public class SkillBuffDelayCommand extends AbstractSceneDelayCommand {
+public class SkillAttrBuffDestoryCommand extends AbstractSceneDelayCommand {
     /**
      * 目标单元
      */
@@ -25,15 +25,15 @@ public class SkillBuffDelayCommand extends AbstractSceneDelayCommand {
      */
     private int skillId;
 
-    public static SkillBuffDelayCommand valueOf(int mapId, long delay, String accountId, CreatureUnit targetUnit, AttributeId attributeId, int skillId) {
-        SkillBuffDelayCommand command = new SkillBuffDelayCommand(mapId, delay, accountId);
+    public static SkillAttrBuffDestoryCommand valueOf(int mapId, long delay, String accountId, CreatureUnit targetUnit, AttributeId attributeId, int skillId) {
+        SkillAttrBuffDestoryCommand command = new SkillAttrBuffDestoryCommand(mapId, delay, accountId);
         command.setAttributeId(attributeId);
         command.setTargetUnit(targetUnit);
         command.setSkillId(skillId);
         return command;
     }
 
-    public SkillBuffDelayCommand(int mapId, long delay, String accountId) {
+    public SkillAttrBuffDestoryCommand(int mapId, long delay, String accountId) {
         super(mapId, delay, accountId);
     }
 
@@ -47,7 +47,7 @@ public class SkillBuffDelayCommand extends AbstractSceneDelayCommand {
 
     @Override
     public String getName() {
-        return "SkillBuffDelayCommand";
+        return "SkillAttrBuffDestoryCommand";
     }
 
     @Override

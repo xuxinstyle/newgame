@@ -12,9 +12,13 @@ import com.game.scence.fight.model.CreatureUnit;
  * @Date: 2019/7/8 21:00
  */
 public abstract class AbstractSkillEffect {
-
+    /**
+     * 效果id
+     */
     protected int effectId;
-
+    /**
+     * 持续时间
+     */
     protected long duration;
 
     public void init(SkillEffectResource skillEffectResource) {
@@ -26,9 +30,6 @@ public abstract class AbstractSkillEffect {
 
     }
 
-    protected void doDestroy(CreatureUnit targetUnit) {
-
-    }
 
     public long getDuration() {
         return duration;

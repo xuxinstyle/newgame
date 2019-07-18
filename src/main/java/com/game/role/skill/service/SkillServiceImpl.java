@@ -314,7 +314,7 @@ public class SkillServiceImpl implements SkillService {
                     continue;
                 }
                 CreatureUnit effectCreatureUnit = scene.getUnit(visibleVO.getType(), visibleVO.getObjectId());
-                if (!effectCreatureUnit.isDead() && effectCreatureUnit.getType() != useUnit.getType() && effectCreatureUnit.getId() != useUnit.getId()) {
+                if (!effectCreatureUnit.isDead() && !(effectCreatureUnit.getType() == useUnit.getType() && effectCreatureUnit.getId() == useUnit.getId())) {
                     targetUnits.add(effectCreatureUnit);
                 }
             }

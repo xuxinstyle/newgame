@@ -72,7 +72,7 @@
     <catalog id="54" value="com.game.scence.visible.packet.SM_ChangeMapErr"/>
     <catalog id="55" value="com.game.scence.visible.packet.SM_EnterMapErr"/>
 
-    <catalog id="56" value="com.game.scence.field.packet.CM_ShowMonsterInfo"/>
+    <catalog id="56" value="com.game.scence.field.packet.CM_ShowObjectInfo"/>
     <catalog id="57" value="com.game.scence.field.packet.SM_ShowMonsterInfo"/>
 
     <catalog id="58" value="com.game.role.skill.packet.CM_LearnSkill"/>
@@ -98,5 +98,7 @@
 
     <catalog id="75" value="com.game.role.skilleffect.packet.SM_CreatureHurt"/>
     <catalog id="76" value="com.game.common.packet.SM_Exception"/>
+    <catalog id="77" value="com.game.role.skilleffect.packet.CM_ShowUnitEffect"/>
+    <catalog id="78" value="com.game.role.skilleffect.packet.SM_ShowUnitEffect"/>
 
 </protocols>

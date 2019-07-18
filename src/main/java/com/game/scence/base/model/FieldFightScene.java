@@ -1,4 +1,4 @@
-package com.game.scence.field.model;
+package com.game.scence.base.model;
 
 import com.game.SpringContext;
 import com.game.base.gameobject.constant.ObjectType;

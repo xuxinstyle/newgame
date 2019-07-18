@@ -21,23 +21,8 @@ public enum SkillEffectType {
     /**
      * 持续减血效果
      */
-    DURATION_DAMAGE(3, DurationDamageEffect.class),
+    DURATION_DAMAGE(3, DurationDamageEffect.class),;
 
-    /**
-     * 减少目标属性
-     *//*
-    REDUCE_ATTRIBUTE(),
-    *//**
-     * 回固定的血
-     */
-    /*ADD_HP(),*/
-    /**
-     * 回固定的蓝
-     *//*
-    ADD_MP(),*/;
-    /**
-     * 技能效果id
-     */
     private int id;
 
     private Class<? extends AbstractSkillEffect> skillEffectClazz;

@@ -4,6 +4,7 @@ import com.event.anno.EventAnn;
 import com.game.common.exception.RequestException;
 import com.game.role.player.event.LogoutEvent;
 import com.game.role.player.event.PlayerUpLevelEvent;
+import com.game.scence.field.packet.CM_ShowObjectInfo;
 import com.game.scence.visible.packet.*;
 import com.game.SpringContext;
 import com.game.util.SendPacketUtil;
@@ -43,17 +44,7 @@ public class ScenceFacade {
             e.printStackTrace();
         }
     }
-    @HandlerAnno
-    public void showAccountIdInfo(TSession session, CM_ShowAccountInfo req){
-        try {
-            SpringContext.getScenceSerivce().showAccountIdInfo(session,req.getMapId(),req.getObjectId());
-        } catch (RequestException e) {
-            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
-        } catch (Exception e) {
-            logger.error("请求查看场景中的账号信息失败",e.toString());
-            e.printStackTrace();
-        }
-    }
+
     @HandlerAnno
     public void move(TSession session, CM_Move cm){
         try{
@@ -97,5 +88,15 @@ public class ScenceFacade {
     @EventAnn
     public void logout(LogoutEvent event){
         SpringContext.getScenceSerivce().doLogoutBefore(event.getAccountId());
+    }
+
+    @HandlerAnno
+    public void showMonster(TSession session, CM_ShowObjectInfo cm) {
+        try {
+            SpringContext.getScenceSerivce().showObjectInfo(session.getAccountId(), cm.getMapId(), cm.getObjectType(), cm.getObjectId());
+        } catch (Exception e) {
+            logger.error("查看地图[{}]中的怪物[{}]信息失败", cm.getMapId(), cm.getObjectId(), e);
+
+        }
     }
 }

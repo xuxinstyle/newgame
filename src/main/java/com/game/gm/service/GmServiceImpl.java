@@ -65,9 +65,6 @@ public class GmServiceImpl implements GmService {
             SM_GMCommond sm = new SM_GMCommond();
             sm.setStatus(1);
             session.sendPacket(sm);
-        } catch (RequestException e) {
-            logger.warn("GM命令[{}]执行错误,错误代码{}", command, e.getErrorCode());
-            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
         } catch (Exception e) {
             logger.warn("GM命令[{}]执行错误", command);
             SM_GMCommond sm = new SM_GMCommond();

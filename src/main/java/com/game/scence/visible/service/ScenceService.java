@@ -1,6 +1,7 @@
 package com.game.scence.visible.service;
 
 
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.player.model.Player;
 import com.game.scence.base.model.AbstractScene;
 import com.game.scence.visible.model.Position;
@@ -40,7 +41,7 @@ public interface ScenceService {
      * @param mapId
      */
 
-    void showAccountIdInfo(TSession session, int mapId, long objectId);
+    /*void showAccountIdInfo(TSession session, int mapId, long objectId);*/
 
     /**
      * 处理移动请求
@@ -104,4 +105,12 @@ public interface ScenceService {
      * @return
      */
     AbstractScene getScene(int mapId);
+
+    /**
+     * 查看怪物信息
+     *
+     * @param mapId
+     * @param monsterObjectId
+     */
+    void showObjectInfo(String accountId, int mapId, ObjectType objectType, long monsterObjectId);
 }

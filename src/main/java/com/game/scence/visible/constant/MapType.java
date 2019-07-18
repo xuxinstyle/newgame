@@ -2,7 +2,7 @@ package com.game.scence.visible.constant;
 
 import com.game.scence.base.model.AbstractScene;
 import com.game.scence.base.model.NoviceVillageScene;
-import com.game.scence.field.model.FieldFightScene;
+import com.game.scence.base.model.FieldFightScene;
 
 import java.util.HashMap;
 import java.util.Map;

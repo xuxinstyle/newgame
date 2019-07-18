@@ -13,11 +13,12 @@ import java.util.Map;
  * @Date: 2019/7/12 9:54
  */
 public class SkillEffectAttributeId implements AttributeId {
+
     private static final Map<Integer, SkillEffectAttributeId> skillEffectAttributeId =
             new HashMap<>(SkillEffectType.values().length);
 
     static {
-        Collection<SkillEffectResource> skillEffectResourceAll = SpringContext.getEffectService().getSkillEffectResourceAll();
+        Collection<SkillEffectResource> skillEffectResourceAll = SpringContext.getSkillEffectService().getSkillEffectResourceAll();
         for (SkillEffectResource resource : skillEffectResourceAll) {
             skillEffectAttributeId.put(resource.getId(), new SkillEffectAttributeId(resource.getId()));
         }

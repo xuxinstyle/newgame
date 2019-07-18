@@ -1,26 +1,13 @@
 package com.game.scence.monster.service;
 
 import com.game.SpringContext;
-import com.game.role.skill.command.SkillCdCommand;
-import com.game.role.skill.constant.SkillTargetType;
-import com.game.role.skill.model.SkillInfo;
-import com.game.role.skill.model.SkillSlot;
-import com.game.role.skill.packet.SM_SkillStatus;
-import com.game.role.skill.packet.SM_UseSkillErr;
-import com.game.role.skill.resource.SkillLevelResource;
-import com.game.role.skill.resource.SkillResource;
-import com.game.role.skilleffect.model.AbstractSkillEffect;
-import com.game.scence.base.model.AbstractScene;
-import com.game.scence.field.model.FieldFightScene;
-import com.game.scence.fight.model.CreatureUnit;
+import com.game.common.exception.RequestException;
+import com.game.scence.base.model.FieldFightScene;
 import com.game.scence.fight.model.MonsterUnit;
-import com.game.scence.fight.model.PlayerUnit;
 import com.game.scence.monster.resource.MonsterResource;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.resource.MapResource;
-import com.game.util.ComputeUtil;
 import com.game.util.SendPacketUtil;
-import com.game.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +58,13 @@ public class MonsterServiceImpl implements MonsterService {
         FieldFightScene scene = (FieldFightScene) SpringContext.getScenceSerivce().getScene(MapType.FIELD.getMapId());
         Map<Long, MonsterUnit> monsterUnits = scene.getMonsterUnits();
         for (MonsterUnit monsterUnit : monsterUnits.values()) {
-            monsterUnit.doAttackAfter(monsterUnit.getAttacker());
+            try {
+                monsterUnit.doAttackAfter(monsterUnit.getAttacker());
+            } catch (RequestException e) {
+                logger.warn("怪物[{}][{}]反击失败", monsterUnit.getId(), monsterUnit.getVisibleName());
+                SendPacketUtil.send(accountId, e.getErrorCode());
+
+            }
         }
     }
 

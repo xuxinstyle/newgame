@@ -1,10 +1,12 @@
 package com.game.scence.visible.service;
 
 import com.game.SpringContext;
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.common.exception.RequestException;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.scence.base.model.AbstractScene;
+import com.game.scence.field.packet.SM_ShowMonsterInfo;
 import com.game.scence.fight.command.PlayerLevelSyncCommand;
 import com.game.scence.fight.model.CreatureUnit;
 import com.game.scence.fight.model.PlayerUnit;
@@ -122,7 +124,7 @@ public class ScenceServiceImpl implements ScenceService {
         Player player = playerEnt.getPlayer();
         int currMapId = player.getCurrMapId();
         player.setLastLogoutMapId(currMapId);
-
+        // 离开地图需要到对应的场景线程中处理数据
         LeaveMapCommand command = new LeaveMapCommand(currMapId,0,accountId);
         SpringContext.getSceneExecutorService().submit(command);
     }
@@ -181,32 +183,25 @@ public class ScenceServiceImpl implements ScenceService {
      */
     @Override
     public void showAllVisibleInfo(TSession session, int mapId) {
-        AbstractScene scenceInfo = scenceMangaer.getScence(mapId);
-        SM_ShowAllVisibleInfo sm = new SM_ShowAllVisibleInfo();
-        List<VisibleVO> visibleVOList = scenceInfo.getVisibleVOList();
-        sm.setVisibleVOList(visibleVOList);
-        session.sendPacket(sm);
-    }
-    @Override
-    public void showAccountIdInfo(TSession session, int mapId, long objectId) {
-        AbstractScene scence = scenceMangaer.getScence(mapId);
-        if(scence==null){
-            if(logger.isDebugEnabled()) {
-                logger.debug("玩家[{}]查看的场景为空");
-            }
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId);
+        if (scene == null) {
             return;
         }
-
-        Map<Long, CreatureUnit> creatureUnitMap = scence.getCreatureUnitMap();
-        CreatureUnit creatureUnit = creatureUnitMap.get(objectId);
-        /**
-         * 如果是玩家战斗单元则发送消息给客户端 否则不发消息
-         */
-        if(creatureUnit instanceof PlayerUnit){
-            session.sendPacket(SM_ShowAccountInfo.valueOf((PlayerUnit) creatureUnit));
-        }
+        ShowAllVisibleCommand command = ShowAllVisibleCommand.valueOf(mapId, 0, session.getAccountId());
+        SpringContext.getSceneExecutorService().submit(command);
     }
 
+    @Override
+    public void showObjectInfo(String accountId, int mapId, ObjectType objectType, long objectId) {
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId);
+        if (scene == null) {
+            return;
+        }
+        // todo：这里的sceneId 在做副本的时候再考虑换成对应的sceneId
+        ShowTargetCommand command = ShowTargetCommand.valueOf(mapId, 0, accountId, objectType, objectId);
+        SpringContext.getSceneExecutorService().submit(command);
+
+    }
     @Override
     public void move(String accountId, Position targetPos, int mapId) {
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);

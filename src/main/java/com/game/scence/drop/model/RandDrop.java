@@ -51,7 +51,9 @@ public class RandDrop {
         int itemModelId = itemIds.get(random.nextInt(itemIds.size()));
         AbstractItem item = SpringContext.getItemService().createItem(itemModelId, 1);
         List<AbstractItem> items = new ArrayList<>();
-        items.add(item);
+        if (item != null) {
+            items.add(item);
+        }
         return items;
     }
 

@@ -113,7 +113,7 @@ public class SpringContext implements ApplicationContextAware {
         return instance.dropService;
     }
 
-    public static SkillEffectService getEffectService() {
+    public static SkillEffectService getSkillEffectService() {
         return instance.skillEffectService;
     }
 

@@ -7,7 +7,7 @@ import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.role.skill.packet.SM_AddAttributeEffect;
 import com.game.role.skill.resource.SkillLevelResource;
 import com.game.role.skill.resource.SkillResource;
-import com.game.role.skilleffect.command.SkillBuffDelayCommand;
+import com.game.role.skilleffect.command.SkillAttrBuffDestoryCommand;
 import com.game.role.skilleffect.constant.SkillEffectType;
 import com.game.role.skilleffect.resource.SkillEffectResource;
 import com.game.scence.fight.model.CreatureUnit;
@@ -48,18 +48,13 @@ public class AddMyselfAttributeEffect extends AbstractSkillEffect {
         /**
          * 抛出command 定时移除效果
          */
-        SkillBuffDelayCommand command = SkillBuffDelayCommand.valueOf(mapId, duration, useUnit.getAccountId(), targetUnit,
+        SkillAttrBuffDestoryCommand command = SkillAttrBuffDestoryCommand.valueOf(mapId, duration, useUnit.getAccountId(), targetUnit,
                 SkillEffectAttributeId.getSkillAttributeId(SkillEffectType.ADD_ATTRIBUTE.getId()), skillResource.getId());
         SpringContext.getSceneExecutorService().submit(command);
         targetUnit.putBuffCommand(SkillEffectAttributeId.getSkillAttributeId(SkillEffectType.ADD_ATTRIBUTE.getId()), command);
 
     }
 
-    @Override
-    protected void doDestroy(CreatureUnit targetUnit) {
-        super.doDestroy(targetUnit);
-
-    }
 
     public List<Attribute> getAttributeList() {
         return attributeList;
