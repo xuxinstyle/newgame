@@ -1,6 +1,6 @@
 唯一id,装备位置,装备品质,强化等级,强化属性,强化成功率
 id,position,quality,level,attrs,succRate
-int,int,int,int,string,int
+String,int,int,int,string,int
 1_1_0,1,1,0,,100
 1_1_1,1,1,1,"[{""type"":""PHYSICAL_ATTACK"",""value"":""1""}]",100
 1_1_2,1,1,2,"[{""type"":""PHYSICAL_ATTACK"",""value"":""2""}]",95

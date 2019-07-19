@@ -57,7 +57,6 @@ public class PlayerLevelSyncCommand extends AbstractSceneCommand {
         playerUnit.setCurrMp(playerUnit.getMaxMp());
         playerUnit.setLevel(player.getLevel());
 
-
     }
 
     public Player getPlayer() {

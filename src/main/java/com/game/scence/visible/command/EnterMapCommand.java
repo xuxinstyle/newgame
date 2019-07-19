@@ -13,13 +13,14 @@ public class EnterMapCommand extends AbstractSceneCommand {
 
     private int targetMapId;
 
-    public EnterMapCommand(int currMapId, int targetMapId, Player player) {
+    public EnterMapCommand(int targetMapId, Player player) {
         super(player.getCurrMapId(),player.getCurrSceneId(),player.getAccountId());
         this.targetMapId = targetMapId;
         this.player = player;
     }
-    public static EnterMapCommand valueOf(Player player, int currMapId,int targetMapId){
-        EnterMapCommand command = new EnterMapCommand(currMapId, targetMapId, player);
+
+    public static EnterMapCommand valueOf(Player player, int targetMapId) {
+        EnterMapCommand command = new EnterMapCommand(targetMapId, player);
         return command;
     }
     @Override
@@ -29,7 +30,7 @@ public class EnterMapCommand extends AbstractSceneCommand {
 
     @Override
     public void active() {
-        SpringContext.getScenceSerivce().doEnterMap(player.getAccountId(),targetMapId);
+        SpringContext.getScenceSerivce().doEnterMap(player, targetMapId);
     }
 
     public Player getPlayer() {

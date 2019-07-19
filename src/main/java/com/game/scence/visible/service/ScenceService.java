@@ -21,11 +21,11 @@ public interface ScenceService {
     void enterMap(TSession session, String accountId, int mapId);
 
     /**
-     *
-     * @param session
+     *  @param session
+     * @param player
      * @param mapId
      */
-    void doEnterMap(String accountId, int mapId);
+    void doEnterMap(Player player, int mapId);
 
     /**
      * 查看地图中所有的账号简略信息
@@ -48,8 +48,9 @@ public interface ScenceService {
      * @param session
      * @param x
      * @param y
+     * @param playerId
      */
-    void move(String accountId, Position targetPos, int mapId);
+    void move(long playerId, Position targetPos, int mapId);
 
     /**
      * 实际做移动的地方
@@ -57,7 +58,7 @@ public interface ScenceService {
      * @param targetPos
      * @param mapId
      */
-    void doMove(String accountId, Position targetPos, int mapId);
+    void doMove(long accountId, Position targetPos, int mapId);
 
     MapResource getMapResource(int mapId);
 
@@ -71,7 +72,7 @@ public interface ScenceService {
     /**
      * 做玩家升级
      */
-    void doPlayerUpLevelSyncScene(Player player);
+    void doPlayerUpLevelSync(Player player);
 
     /**
      * 切换地图

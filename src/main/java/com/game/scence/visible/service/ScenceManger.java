@@ -25,6 +25,10 @@ public class ScenceManger {
     private static final Logger logger = LoggerFactory.getLogger(ScenceManger.class);
     /**
      * <MapId, 地图中的数据>
+     *     todo:存在副本中分线的概念的话map中的key可以换成用字符串拼接的方式
+     *     todo：或者，每个场景的id都是唯一的，即sceneid唯一 如果分线的话 <mapid,MapInfo>
+     *         其中mapInfo可存放分线场景
+     *     todo：这里到第四阶段要大改，先暂时这样做
      */
     private static Map<Integer, AbstractScene> scenceMap = new ConcurrentHashMap<>(MapType.values().length);
 
@@ -32,9 +36,9 @@ public class ScenceManger {
         Collection<MapResource> resourceAll = (Collection<MapResource>) storageManager.getResourceAll(MapResource.class);
         for(MapResource resource:resourceAll){
             MapType mapType = MapType.getMapType(resource.getId());
-            AbstractScene abstractFightScene = mapType.create();
-            abstractFightScene.init();
-            scenceMap.put(mapType.getMapId(), abstractFightScene);
+            AbstractScene scene = mapType.create();
+            scene.init();
+            scenceMap.put(mapType.getMapId(), scene);
         }
 
     }

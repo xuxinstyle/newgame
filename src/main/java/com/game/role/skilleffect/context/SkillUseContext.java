@@ -4,6 +4,8 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
+ * fixme:用于保存技能释放的中间参数
+ * todo: 被动触发时产生的结果
  * @Author：xuxin
  * @Date: 2019/7/18 20:26
  */
@@ -13,11 +15,11 @@ public class SkillUseContext {
      */
     private Map<SkillUseContextEnm, Object> keyParamMap = new EnumMap<>(SkillUseContextEnm.class);
 
-    public Object getParam(SkillUseContextEnm key) {
-        return keyParamMap.get(key);
+    public <T> T getParam(SkillUseContextEnm key) {
+        return (T) keyParamMap.get(key);
     }
 
-    public void putSkillContextEnum(SkillUseContextEnm enm, Object value) {
-        keyParamMap.put(enm, value);
+    public void putSkillContextEnum(SkillUseContextEnm key, Object value) {
+        keyParamMap.put(key, value);
     }
 }

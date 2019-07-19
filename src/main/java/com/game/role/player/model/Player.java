@@ -7,20 +7,14 @@ import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.base.gameobject.model.Creature;
 import com.game.role.player.resource.PlayerLevelResource;
-import com.game.role.skill.entity.SkillEnt;
-import com.game.role.skill.model.SkillInfo;
-import com.game.scence.base.model.AbstractScene;
-import com.game.scence.fight.model.CreatureUnit;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.stereotype.Component;
 
-import java.beans.Transient;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class Player extends Creature<Player> {
@@ -60,9 +54,10 @@ public class Player extends Creature<Player> {
     /**
      * 玩家当前所在的地图
      */
-    private int currMapId;
+    private AtomicInteger currMapId = new AtomicInteger(MapType.NoviceVillage.getMapId());
     /**
-     * 玩家场景id
+     * 玩家场景id 同mapId
+     *
      */
     private int currSceneId;
 
@@ -116,11 +111,13 @@ public class Player extends Creature<Player> {
         AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
         return accountEnt.getAccountInfo();
     }
-    public boolean isChangeMap(){
+
+    public boolean isChangeIngMap() {
         return getAccount(this.getAccountId()).getIsChangeMap().get();
     }
-    public void setChangeMapId(boolean changeMapId){
-        getAccount(this.getAccountId()).getIsChangeMap().getAndSet(changeMapId);
+
+    public void setChangeIngMap(boolean changeIngMap) {
+        getAccount(this.getAccountId()).getIsChangeMap().getAndSet(changeIngMap);
     }
     public void setAccountId(String accountId) {
         this.accountId = accountId;
@@ -195,10 +192,11 @@ public class Player extends Creature<Player> {
     }
 
     public int getCurrMapId() {
-        return currMapId;
+        return currMapId.get();
     }
 
     public void setCurrMapId(int currMapId) {
-        this.currMapId = currMapId;
+        this.currMapId.set(currMapId);
+        ;
     }
 }

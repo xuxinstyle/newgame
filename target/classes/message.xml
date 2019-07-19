@@ -72,7 +72,7 @@
     <catalog id="54" value="com.game.scence.visible.packet.SM_ChangeMapErr"/>
     <catalog id="55" value="com.game.scence.visible.packet.SM_EnterMapErr"/>
 
-    <catalog id="56" value="com.game.scence.field.packet.CM_ShowMonsterInfo"/>
+    <catalog id="56" value="com.game.scence.field.packet.CM_ShowObjectInfo"/>
     <catalog id="57" value="com.game.scence.field.packet.SM_ShowMonsterInfo"/>
 
     <catalog id="58" value="com.game.role.skill.packet.CM_LearnSkill"/>

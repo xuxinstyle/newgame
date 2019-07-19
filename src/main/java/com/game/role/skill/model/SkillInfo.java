@@ -51,7 +51,7 @@ public class SkillInfo {
         for (int i = 1; i <= PlayerUtil.SKILL_SLOT_NUM; i++) {
             skillBarMap.put(i, -1);
         }
-        skillBarMap.put(1,0);
+        skillBarMap.put(1, skillInfo.getDefaultSkill());
         skillInfo.setSkillSlotMap(skillSlotMap);
         skillInfo.setSkillBarMap(skillBarMap);
         SkillSlot skillSlot = skillSlotMap.get(skillInfo.getDefaultSkill());

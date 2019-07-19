@@ -2,12 +2,14 @@ package com.game.scence.base.model;
 
 
 import com.game.base.gameobject.constant.ObjectType;
+import com.game.common.exception.RequestException;
 import com.game.role.player.model.Player;
 import com.game.scence.fight.model.CreatureUnit;
 
 import com.game.scence.fight.model.PlayerUnit;
 import com.game.scence.visible.model.Position;
 import com.game.scence.visible.packet.bean.VisibleVO;
+import com.game.util.I18nId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +26,7 @@ public abstract class AbstractScene {
      */
     private int mapId;
     /**
-     * 场景id
+     * 场景id 唯一id
      */
     private int sceneId;
 
@@ -108,10 +110,20 @@ public abstract class AbstractScene {
     }
     /**
      * 移动
-     * @param accountId
+     * @param playerId
      * @param targetpos
      */
-    public abstract void move(String accountId,Position targetpos);
+    public boolean moveAndThrow(long playerId, Position targetpos) {
+        CreatureUnit creatureUnit = getCreatureUnitMap().get(playerId);
+        if (creatureUnit == null) {
+            return false;
+        }
+        if (creatureUnit.isDead()) {
+            RequestException.throwException(I18nId.DEAD_NOT_MOVE);
+        }
+        creatureUnit.setPosition(targetpos);
+        return true;
+    }
 
     /**
      * 初始化地图
@@ -134,7 +146,6 @@ public abstract class AbstractScene {
         creatureUnit.clearAllCommand();
         creatureUnitMap.remove(player.getObjectId());
     }
-
     public Map<Long, CreatureUnit> getCreatureUnitMap() {
         return creatureUnitMap;
     }

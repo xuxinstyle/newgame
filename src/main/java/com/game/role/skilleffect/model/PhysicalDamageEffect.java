@@ -7,6 +7,8 @@ import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.skill.packet.SM_UseSkill;
 import com.game.role.skill.resource.SkillLevelResource;
 import com.game.role.skill.resource.SkillResource;
+import com.game.role.skilleffect.context.SkillUseContext;
+import com.game.role.skilleffect.context.SkillUseContextEnm;
 import com.game.role.skilleffect.resource.SkillEffectResource;
 import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
@@ -53,8 +55,9 @@ public class PhysicalDamageEffect extends AbstractSkillEffect {
 
 
     @Override
-    public void doActive(int mapId, CreatureUnit useUnit, CreatureUnit targetUnit, SkillLevelResource skillLevelResource, SkillResource skillResource) {
+    public void doActive(SkillUseContext skillUseContext, CreatureUnit targetUnit) {
 
+        CreatureUnit useUnit = skillUseContext.getParam(SkillUseContextEnm.SKILL_ATTACKER);
         /**
          * 计算真实扣血量
          */

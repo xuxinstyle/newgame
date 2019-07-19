@@ -61,7 +61,7 @@ public class MonsterServiceImpl implements MonsterService {
             try {
                 monsterUnit.doAttackAfter(monsterUnit.getAttacker());
             } catch (RequestException e) {
-                logger.warn("怪物[{}][{}]反击失败", monsterUnit.getId(), monsterUnit.getVisibleName());
+                logger.warn("怪物[{}][{}]反击失败,原因[{}]", monsterUnit.getId(), monsterUnit.getVisibleName(), e.getErrorCode());
                 SendPacketUtil.send(accountId, e.getErrorCode());
 
             }

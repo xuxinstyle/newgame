@@ -9,6 +9,8 @@ import com.game.role.skill.resource.SkillLevelResource;
 import com.game.role.skill.resource.SkillResource;
 import com.game.role.skilleffect.command.SkillAttrBuffDestoryCommand;
 import com.game.role.skilleffect.constant.SkillEffectType;
+import com.game.role.skilleffect.context.SkillUseContext;
+import com.game.role.skilleffect.context.SkillUseContextEnm;
 import com.game.role.skilleffect.resource.SkillEffectResource;
 import com.game.scence.fight.model.CreatureUnit;
 import com.game.util.AttributeAnalyzeUtil;
@@ -34,8 +36,13 @@ public class AddMyselfAttributeEffect extends AbstractSkillEffect {
         duration = skillEffectResource.getDuration();
     }
 
+
     @Override
-    public void doActive(int mapId, CreatureUnit useUnit, CreatureUnit targetUnit, SkillLevelResource skillLevelResource, SkillResource skillResource) {
+    public void doActive(SkillUseContext skillUseContext, CreatureUnit targetUnit) {
+        CreatureUnit useUnit = skillUseContext.getParam(SkillUseContextEnm.SKILL_ATTACKER);
+        SkillLevelResource skillLevelResource = skillUseContext.getParam(SkillUseContextEnm.SKILL_LEVEL_RESOURCE);
+        SkillResource skillResource = skillUseContext.getParam(SkillUseContextEnm.SKILL_RESOURCE);
+        int mapId = useUnit.getMapId();
         useUnit.setCurrMp(useUnit.getCurrMp() - skillLevelResource.getConsumeMp());
         CreatureAttributeContainer attributeContainer = targetUnit.getAttributeContainer();
         /**
@@ -46,15 +53,13 @@ public class AddMyselfAttributeEffect extends AbstractSkillEffect {
         SendPacketUtil.send(useUnit.getAccountId(), SM_AddAttributeEffect.valueOf(attributeList));
 
         /**
-         * 抛出command 定时移除效果
+         * 抛出command 定时移除效果h
          */
         SkillAttrBuffDestoryCommand command = SkillAttrBuffDestoryCommand.valueOf(mapId, duration, useUnit.getAccountId(), targetUnit,
                 SkillEffectAttributeId.getSkillAttributeId(SkillEffectType.ADD_ATTRIBUTE.getId()), skillResource.getId());
         SpringContext.getSceneExecutorService().submit(command);
         targetUnit.putBuffCommand(SkillEffectAttributeId.getSkillAttributeId(SkillEffectType.ADD_ATTRIBUTE.getId()), command);
-
     }
-
 
     public List<Attribute> getAttributeList() {
         return attributeList;

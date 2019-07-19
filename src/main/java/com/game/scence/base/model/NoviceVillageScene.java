@@ -12,8 +12,6 @@ import com.game.scence.visible.packet.bean.VisibleVO;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,17 +51,7 @@ public class NoviceVillageScene extends AbstractScene {
         return super.getVisiblePosition();
     }
 
-    @Override
-    public void move(String accountId, Position targetpos) {
-        AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(accountId);
-        AccountInfo accountInfo = accountEnt.getAccountInfo();
-        long playerId = accountInfo.getPlayerId();
 
-        PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(playerId);
-        Player player = playerEnt.getPlayer();
-        player.setPosition(targetpos);
-        SpringContext.getPlayerSerivce().save(playerEnt);
-    }
 
     @Override
     public CreatureUnit getUnit(ObjectType objectType, long objectId) {

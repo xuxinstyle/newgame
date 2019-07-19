@@ -79,7 +79,7 @@ public class EquipUpgradeServiceImpl implements EquipUpgradeService {
          * 消耗道具 移除原来的装备 添加新装备到背包
          */
         pack.removeItem(upgradeCondition.getItemModelId(),upgradeCondition.getNum());
-        pack.removeByObjectId(itemObjectId);
+        pack.removeAndThrow(itemObjectId);
         pack.addItemQuick(newEquipment);
         SpringContext.getItemService().save(itemStorageEnt);
         SM_EquipUpgrade sm = new SM_EquipUpgrade();

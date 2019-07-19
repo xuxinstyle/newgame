@@ -1,7 +1,9 @@
 package com.game.user.item.facade;
 
 import com.game.SpringContext;
+import com.game.common.exception.RequestException;
 import com.game.user.item.packet.*;
+import com.game.util.SendPacketUtil;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;
@@ -19,6 +21,8 @@ public class ItemFacade {
     public void addItemToPack(TSession session, CM_AwardToPack cm){
         try{
             SpringContext.getItemService().gmAwardToPack(cm.getAccountId(), cm.getItemModelId(), cm.getNum());
+        } catch (RequestException e) {
+            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
         }catch (Exception e){
             e.printStackTrace();
             logger.error("玩家{}添加道具{}失败",cm.getAccountId(), cm.getItemModelId());
@@ -28,6 +32,8 @@ public class ItemFacade {
     public void removeItem(TSession session, CM_RemoveItemFormPack cm){
         try{
             SpringContext.getItemService().removeItem(session,cm.getAccountId(),cm.getObjectId(), cm.getNum());
+        } catch (RequestException e) {
+            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
         }catch (Exception e){
             e.printStackTrace();
             logger.error("玩家{}移除道具{}失败",cm.getAccountId(), cm.getAccountId(), cm.getObjectId());
@@ -37,6 +43,8 @@ public class ItemFacade {
     public void showItem(TSession session,CM_ShowPackItem cm){
         try{
             SpringContext.getItemService().showItem(session,cm.getAccountId());
+        } catch (RequestException e) {
+            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
         }catch (Exception e){
             e.printStackTrace();
             logger.error("查看玩家{}背包信息失败",cm.getAccountId());
@@ -47,7 +55,9 @@ public class ItemFacade {
     public void useItem(TSession session, CM_UseItem cm){
         try{
             SpringContext.getItemService().useItem(session, cm.getItemObjectId(),cm.getNum());
-        }catch (Exception e){
+        } catch (RequestException e) {
+            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
+        } catch (Exception e) {
             logger.error("玩家{}使用道具{}失败",session.getAccountId(),cm.getItemObjectId());
             e.printStackTrace();
         }
@@ -56,6 +66,8 @@ public class ItemFacade {
     public void showItemInfo(TSession session, CM_ShowItemInfo cm){
         try{
             SpringContext.getItemService().showItemInfo(session, cm.getItemObjectId());
+        } catch (RequestException e) {
+            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
         }catch (Exception e){
             logger.error("玩家{}查看道具{}信息失败",session.getAccountId(),cm.getItemObjectId());
             e.printStackTrace();

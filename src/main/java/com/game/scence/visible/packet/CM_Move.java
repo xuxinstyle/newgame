@@ -10,7 +10,7 @@ public class CM_Move {
     /**
      * 用户id
      */
-    private String accountId;
+    private long playerId;
     /**
      *地图id
      */
@@ -28,12 +28,12 @@ public class CM_Move {
         this.mapId = mapId;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public long getPlayerId() {
+        return playerId;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setPlayerId(long playerId) {
+        this.playerId = playerId;
     }
 
     public Position getTargetPos() {

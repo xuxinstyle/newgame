@@ -10,6 +10,8 @@ import com.game.base.executor.ICommand;
 import com.game.role.skill.resource.SkillLevelResource;
 import com.game.role.skill.resource.SkillResource;
 import com.game.role.skilleffect.command.SkillDurationDamageCommand;
+import com.game.role.skilleffect.context.SkillUseContext;
+import com.game.role.skilleffect.context.SkillUseContextEnm;
 import com.game.role.skilleffect.resource.SkillEffectResource;
 import com.game.scence.fight.model.CreatureUnit;
 import com.game.util.ComputeUtil;
@@ -46,9 +48,11 @@ public class DurationDamageEffect extends AbstractSkillEffect {
         period = Long.parseLong(split[2]);
     }
 
-    @Override
-    public void doActive(int mapId, CreatureUnit useUnit, CreatureUnit targetUnit, SkillLevelResource skillLevelResource, SkillResource skillResource) {
 
+    @Override
+    public void doActive(SkillUseContext skillUseContext, CreatureUnit targetUnit) {
+        CreatureUnit useUnit = skillUseContext.getParam(SkillUseContextEnm.SKILL_ATTACKER);
+        int mapId = useUnit.getMapId();
         CreatureAttributeContainer attributeContainer = useUnit.getAttributeContainer();
         Map<AttributeType, Attribute> finalAttributes = attributeContainer.getFinalAttributes();
         Attribute useAttackAttr = finalAttributes.get(AttributeType.MAGIC_ATTACK);
@@ -71,7 +75,6 @@ public class DurationDamageEffect extends AbstractSkillEffect {
         SpringContext.getSceneExecutorService().submit(command);
         targetUnit.putBuffCommand(SkillEffectAttributeId.getSkillAttributeId(effectId), command);
     }
-
 
     protected void doDestroy(CreatureUnit targetUnit) {
         ICommand command = targetUnit.getBuffCommandMap().get(SkillEffectAttributeId.getSkillAttributeId(effectId));

@@ -2,6 +2,7 @@ package com.game.user.item.service;
 
 import com.game.SpringContext;
 import com.game.base.gameobject.constant.ObjectType;
+import com.game.common.exception.RequestException;
 import com.game.role.equip.resource.EquipResource;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.entity.ItemStorageEnt;
@@ -12,6 +13,7 @@ import com.game.user.itemeffect.model.AbstractUseEffect;
 import com.game.user.item.packet.*;
 import com.game.user.item.packet.bean.ItemVO;
 import com.game.user.item.resource.ItemResource;
+import com.game.util.I18nId;
 import com.game.util.PlayerUtil;
 import com.game.util.SendPacketUtil;
 import com.socket.core.session.TSession;
@@ -194,7 +196,7 @@ public class ItemServiceImpl implements ItemService {
     public void removeItem(TSession session, String accountId, long objectId, int num) {
         ItemStorageEnt itemStorageEnt = SpringContext.getItemService().getItemStorageEnt(accountId);
         ItemStorageInfo pack = itemStorageEnt.getPack();
-        if (!pack.removeByObjectId(objectId, num)) {
+        if (!pack.removeAndThrow(objectId, num)) {
             SM_RemoveItemFormPack sm = new SM_RemoveItemFormPack();
             sm.setStatus(0);
             session.sendPacket(sm);
@@ -257,18 +259,14 @@ public class ItemServiceImpl implements ItemService {
             session.sendPacket(sm);
             return;
         }
-        if (item.getNum() < num) {
-            logger.warn("玩家背包道具[{}]数量不足", itemObjectId);
-            SM_UseItem sm = new SM_UseItem();
-            sm.setStatus(4);
-            session.sendPacket(sm);
-            return;
-        }
         /**
          * fixme:这里看调用什么地方的use比较好?  这里调用item的use扩展性比较好，如果以后需要加其他可使用的道具，只要直接调用
          */
+        if (!pack.removeAndThrow(itemObjectId, num)) {
+            RequestException.throwException(I18nId.PACK_ITEM_NUM_INSUFFICIENT);
+        }
+
         item.use(accountId,num);
-        pack.removeByObjectId(itemObjectId,num);
         save(itemStorageEnt);
         SM_UseItem sm = new SM_UseItem();
         sm.setEffectiveTime(num*useEffect.getEffectiveTime());

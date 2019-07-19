@@ -26,6 +26,10 @@ public enum SkillUseContextEnm {
      */
     SKILL_RESOURCE,
     /**
+     * 技能等级资源
+     */
+    SKILL_LEVEL_RESOURCE,
+    /**
      * mapId
      */
     MAP_ID,;

@@ -15,6 +15,8 @@ import com.game.role.skill.packet.*;
 import com.game.role.skill.resource.JobSkillResource;
 import com.game.role.skill.resource.SkillLevelResource;
 import com.game.role.skill.resource.SkillResource;
+import com.game.role.skilleffect.context.SkillUseContext;
+import com.game.role.skilleffect.context.SkillUseContextEnm;
 import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
 import com.game.scence.visible.model.Position;
@@ -93,7 +95,7 @@ public class SkillServiceImpl implements SkillService {
             String[] split = preSkillId.split(StringUtil.XIA_HUA_XIAN);
             SkillSlot skillSlot = skillInfo.getSkillSlotMap().get(Integer.parseInt(split[0]));
             if (!skillSlot.isCanUse() || skillSlot.getLevel() < Integer.parseInt(split[1])) {
-                logger.error("玩家[{}]角色[{}]没有学习前置技能[{}]无法学习[{}]", player.getAccountId(), playerId, preSkillId, skillId);
+                logger.info("玩家[{}]角色[{}]没有学习前置技能[{}]无法学习[{}]", player.getAccountId(), playerId, preSkillId, skillId);
                 RequestException.throwException(I18nId.SKILL_CONDITION_NOT);
 
             }
@@ -101,17 +103,17 @@ public class SkillServiceImpl implements SkillService {
 
         SkillResource skillResource = getSkillResource(skillId);
         if (skillResource == null) {
-            logger.error("资源[{}]为空", SkillResource.class.getSimpleName());
+            logger.warn("资源[{}]为空", SkillResource.class.getSimpleName());
             return;
         }
         LearnSkillCondition learnSkillCondition = skillResource.getLearnSkillCondition();
 
         if (learnSkillCondition == null) {
-            logger.error("资源[{}]为空", LearnSkillCondition.class.getSimpleName());
+            logger.warn("资源[{}]为空", LearnSkillCondition.class.getSimpleName());
             return;
         }
         if (!learnSkillCondition.checkCondition(player, null)) {
-            logger.error("玩家[{}]角色[{}]学习技能[{}]条件不足", player.getAccountId(), playerId, skillId);
+            logger.info("玩家[{}]角色[{}]学习技能[{}]条件不足", player.getAccountId(), playerId, skillId);
             RequestException.throwException(I18nId.SKILL_CONDITION_NOT);
         }
         learnSlot.setCanUse(true);
@@ -134,15 +136,13 @@ public class SkillServiceImpl implements SkillService {
             return;
         }
         SkillResource skillResource = getSkillResource(skillId);
-
         SkillSlot skillSlot = skillSlotMap.get(skillId);
         if (!skillSlot.isCanUse()) {
-            logger.error("角色[{}]未学习技能[{}]", playerId, skillId);
+            logger.info("角色[{}]未学习技能[{}]", playerId, skillId);
             RequestException.throwException(I18nId.NOT_UPGRADE_NOT_LEARN);
-
         }
         if (skillResource.getMaxLevel() <= skillSlot.getLevel()) {
-            logger.error("角色[{}]的技能[{}]达到最大等级无法升级", playerId, skillId);
+            logger.info("角色[{}]的技能[{}]达到最大等级无法升级", playerId, skillId);
             RequestException.throwException(I18nId.SKILL_LEVEL_LIMINT);
         }
         int level = skillSlot.getLevel();
@@ -151,7 +151,7 @@ public class SkillServiceImpl implements SkillService {
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(playerId);
         Player player = playerEnt.getPlayer();
         if (!upgradeSkillCondition.checkCondition(player, null)) {
-            logger.error("角色[{}]的技能[{}]升级条件不足", playerId, skillId);
+            logger.info("角色[{}]的技能[{}]升级条件不足", playerId, skillId);
             RequestException.throwException(I18nId.SKILL_UPGRADE_INSUFFICIENT);
 
         }
@@ -263,15 +263,21 @@ public class SkillServiceImpl implements SkillService {
         if (skillLevelResource == null) {
             RequestException.throwException(I18nId.NOT_SKILL_IN_SLOT);
         }
-        // 做蓝量的消耗
+        // TODO: 2019/7/19 doUseSkillBefore应该实现一些技能在触发之前的特殊效果或者，如放技能前可能需要蓄力，触发霸体效果等
+        // TODO: 2019/7/19 做蓝量的消耗，使用技能之前固定回血等效果
+        // 本游戏还比较简单 暂时不做这些 只做一些基本的消耗
         long consume = skillLevelResource.getConsumeMp();
         if (!useUnit.consumeMpAndCheck(consume)) {
             return;
         }
-        List<CreatureUnit> targetUnits = getTargetUnits(mapId, scene, useUnit, targetUnit, skillLevelResource);
+        SkillUseContext skillUseContext = new SkillUseContext();
+        skillUseContext.putSkillContextEnum(SkillUseContextEnm.SKILL_ATTACKER, useUnit);
+        skillUseContext.putSkillContextEnum(SkillUseContextEnm.SKILL_RESOURCE, skillResource);
+        skillUseContext.putSkillContextEnum(SkillUseContextEnm.SKILL_LEVEL_RESOURCE, skillLevelResource);
 
+        List<CreatureUnit> targetUnits = getTargetUnits(mapId, scene, useUnit, targetUnit, skillLevelResource);
         // 使用技能
-        useUnit.usSkill(skillLevelResource, targetUnits, skillResource);
+        useUnit.useSkill(skillUseContext, targetUnits);
         /**
          * 将command放在unit身上方便管理
          */

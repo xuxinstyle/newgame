@@ -3,11 +3,12 @@ package com.game.role.skilleffect.model;
 
 import com.game.role.skill.resource.SkillLevelResource;
 import com.game.role.skill.resource.SkillResource;
+import com.game.role.skilleffect.context.SkillUseContext;
 import com.game.role.skilleffect.resource.SkillEffectResource;
 import com.game.scence.fight.model.CreatureUnit;
 
 /**
- * 技能效果
+ * 技能效果 合并的判断 合并的实现 效果的失效 合并时间等 触发点
  * @Author：xuxin
  * @Date: 2019/7/8 21:00
  */
@@ -26,7 +27,7 @@ public abstract class AbstractSkillEffect {
         this.duration = skillEffectResource.getDuration();
     }
 
-    public void doActive(int mapId, CreatureUnit useUnit, CreatureUnit targetUnit, SkillLevelResource skillLevelResource, SkillResource skillResource) {
+    public void doActive(SkillUseContext skillUseContext, CreatureUnit targetUnit) {
 
     }
 
@@ -46,4 +47,6 @@ public abstract class AbstractSkillEffect {
     public void setEffectId(int effectId) {
         this.effectId = effectId;
     }
+
+
 }

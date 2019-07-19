@@ -14,6 +14,8 @@ import com.game.role.skill.packet.SM_CreatureRevive;
 import com.game.role.skill.packet.SM_SkillStatus;
 import com.game.role.skill.resource.SkillLevelResource;
 import com.game.role.skill.resource.SkillResource;
+import com.game.role.skilleffect.context.SkillUseContext;
+import com.game.role.skilleffect.context.SkillUseContextEnm;
 import com.game.role.skilleffect.model.AbstractSkillEffect;
 import com.game.scence.base.model.AbstractScene;
 import com.game.role.skilleffect.packet.SM_CreatureHurt;
@@ -100,19 +102,18 @@ public abstract class CreatureUnit extends BaseUnit{
             return;
         }
         if (this.currHp <= consumeHp) {
-
-            AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId());
-            List<String> accountIds = scene.getAccountIds();
-            // 通知客户端
-            for (String accountId : accountIds) {
-                SendPacketUtil.send(accountId, SM_CreatureHurt.valueOf(this, this.currHp));
-            }
             this.setDead(true);
             this.currHp = 0;
             // 清空生物的状态
             afterDead();
             doDropHandle(attacker);
             doDelayRevive();
+            // 通知场景中的玩家
+            AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId());
+            List<String> accountIds = scene.getAccountIds();
+            for (String accountId : accountIds) {
+                SendPacketUtil.send(accountId, SM_CreatureHurt.valueOf(this, this.currHp));
+            }
             return;
         }
         this.currHp = this.currHp - consumeHp;
@@ -373,17 +374,17 @@ public abstract class CreatureUnit extends BaseUnit{
 
     }
 
-    public void usSkill(SkillLevelResource skillLevelResource, List<CreatureUnit> targetUnits, SkillResource skillResource) {
+    public void useSkill(SkillUseContext skillUseContext, List<CreatureUnit> targetUnits) {
+        SkillLevelResource skillLevelResource = skillUseContext.getParam(SkillUseContextEnm.SKILL_LEVEL_RESOURCE);
         int[] effects = skillLevelResource.getEffects();
         for (int effectId : effects) {
             for (CreatureUnit targetUnit : targetUnits) {
                 AbstractSkillEffect skillEffect = SpringContext.getSkillEffectService().getSkillEffect(effectId);
-                skillEffect.doActive(getMapId(), this, targetUnit, skillLevelResource, skillResource);
+                skillEffect.doActive(skillUseContext, targetUnit);
                 if (targetUnit.isDead()) {
                     break;
                 }
             }
         }
-
     }
 }

@@ -59,5 +59,13 @@ public interface I18nId {
     int SKILL_UPGRADE_INSUFFICIENT = 10026;
     // 没有学习该技能,无法升级
     int NOT_UPGRADE_NOT_LEARN = 10027;
+    // 背包中道具数量不足
+    int PACK_ITEM_NUM_INSUFFICIENT = 10028;
+    // 你已经死了无法移动
+    int DEAD_NOT_MOVE = 10029;
+    // 离开地图失败
+    int LEAVE_MAP_ERROR = 10030;
+    //没有目标地图
+    int NOT_TARGET_MAP = 10031;
 
 }

@@ -97,7 +97,7 @@ public class EquipServiceImpl implements EquipService {
         /**
          * 从背包扣除新装备 将旧装备加到玩家背包中
          */
-        pack.removeByObjectId(equipObjectId);
+        pack.removeAndThrow(equipObjectId);
         SpringContext.getItemService().save(itemStorageEnt);
         if (oldEquipment != null) {
             SpringContext.getItemService().addItemToPackAndSave(accountId, oldEquipment);

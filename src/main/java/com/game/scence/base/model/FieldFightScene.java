@@ -2,14 +2,15 @@ package com.game.scence.base.model;
 
 import com.game.SpringContext;
 import com.game.base.gameobject.constant.ObjectType;
+import com.game.common.exception.RequestException;
 import com.game.role.player.model.Player;
-import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
 import com.game.scence.fight.model.MonsterUnit;
 import com.game.scence.monster.resource.MonsterResource;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
 import com.game.scence.visible.packet.bean.VisibleVO;
+import com.game.util.I18nId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,24 +100,6 @@ public class FieldFightScene extends AbstractScene {
             positions.add(monsterUnit.getPosition());
         }
         return positionMap;
-    }
-
-    /**
-     * 做移动时的一些判断 玩家是否活的
-     * @param accountId
-     * @param targetpos
-     */
-    @Override
-    public void move(String accountId, Position targetpos) {
-        for (CreatureUnit creatureUnit : getCreatureUnitMap().values()) {
-            if(creatureUnit.isDead()){
-                //FIXME:看需求是否要显示给客户端看战斗单元死亡
-                return;
-            }
-            if(creatureUnit!=null) {
-                creatureUnit.setPosition(targetpos);
-            }
-        }
     }
 
     @Override

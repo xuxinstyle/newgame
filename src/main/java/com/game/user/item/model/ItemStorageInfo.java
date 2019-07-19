@@ -1,7 +1,9 @@
 package com.game.user.item.model;
 
 import com.game.SpringContext;
+import com.game.common.exception.RequestException;
 import com.game.user.item.resource.ItemResource;
+import com.game.util.I18nId;
 
 /**
  * @Author：xuxin
@@ -274,7 +276,7 @@ public class ItemStorageInfo {
      * @param objectId
      * @param num
      */
-    public boolean removeByObjectId(long objectId, int num) {
+    public boolean removeAndThrow(long objectId, int num) {
         /**
          * 1.可能数量不够
          * 2.可能数量够 但是不在同一个格子中
@@ -287,7 +289,7 @@ public class ItemStorageInfo {
             }
             if (items[i].getObjectId() == objectId) {
                 if (items[i].getNum() < num) {
-                    return false;
+                    RequestException.throwException(I18nId.PACK_ITEM_NUM_INSUFFICIENT);
                 }
                 if (items[i].getNum() == num) {
                     items[i] = null;
@@ -306,7 +308,7 @@ public class ItemStorageInfo {
      * 移除指定道具
      * @param itemObjectId
      */
-    public boolean removeByObjectId(long itemObjectId){
+    public boolean removeAndThrow(long itemObjectId) {
         for(int i=0;i<items.length;i++){
             if(items[i]==null){
                 continue;
