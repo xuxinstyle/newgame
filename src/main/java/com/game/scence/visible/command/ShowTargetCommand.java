@@ -19,7 +19,20 @@ public class ShowTargetCommand extends AbstractSceneCommand {
     private long objectId;
 
     public ShowTargetCommand(int mapId, int sceneId, String accountId) {
+
         super(mapId, sceneId, accountId);
+    }
+
+    public ShowTargetCommand(AbstractScene scene, String accountId) {
+
+        super(scene, accountId);
+    }
+
+    public static ShowTargetCommand valueOf(AbstractScene scene, String accountId, ObjectType objectType, long objectId) {
+        ShowTargetCommand command = new ShowTargetCommand(scene, accountId);
+        command.setObjectId(objectId);
+        command.setObjectType(objectType);
+        return command;
     }
 
     public static ShowTargetCommand valueOf(int mapId, int sceneId, String accountId, ObjectType objectType, long objectId) {
@@ -36,7 +49,7 @@ public class ShowTargetCommand extends AbstractSceneCommand {
 
     @Override
     public void active() {
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId());
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId(), getAccountId());
         if (scene == null) {
             return;
         }

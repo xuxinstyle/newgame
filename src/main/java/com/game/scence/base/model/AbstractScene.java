@@ -1,6 +1,7 @@
 package com.game.scence.base.model;
 
 
+import com.game.SpringContext;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.common.exception.RequestException;
 import com.game.role.player.model.Player;
@@ -15,12 +16,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @Author：xuxin
  * @Date: 2019/7/4 21:10
  */
 public abstract class AbstractScene {
+
+    public static final AtomicInteger SCENE_ID = new AtomicInteger(Integer.MAX_VALUE - 1);
     /**
      * 地图id
      */
@@ -29,6 +33,10 @@ public abstract class AbstractScene {
      * 场景id 唯一id
      */
     private int sceneId;
+    /**
+     * 场景是否结束
+     */
+    private boolean isEnd = false;
 
     /**
      * 玩家战斗单元信息
@@ -133,16 +141,34 @@ public abstract class AbstractScene {
     /**
      * 是否可以释放技能
      */
-    public boolean isCanUseSkill(){
-        return false;
+    public abstract boolean isCanUseSkill();
+
+    /**
+     * 进入地图的操作
+     *
+     * @param player
+     */
+    public void doEnter(Player player) {
+        player.setCurrMapId(getMapId());
+        player.setCurrSceneId(getSceneId());
+        SpringContext.getPlayerSerivce().save(player);
+        //
+        PlayerUnit playerUnit = PlayerUnit.valueOf(player);
+        creatureUnitMap.put(player.getObjectId(), playerUnit);
+        playerUnit.setScene(this);
     }
 
-    public void enter(Player player){
-        creatureUnitMap.put(player.getObjectId(), PlayerUnit.valueOf(player));
-    }
-
-    public void leave(Player player) {
+    /**
+     * 做离开操作
+     *
+     * @param player
+     */
+    public void doLeave(Player player) {
         CreatureUnit creatureUnit = creatureUnitMap.get(player.getObjectId());
+        if (creatureUnit == null) {
+            return;
+        }
+        creatureUnit.reset();
         creatureUnit.clearAllCommand();
         creatureUnitMap.remove(player.getObjectId());
     }
@@ -169,6 +195,41 @@ public abstract class AbstractScene {
     public void setSceneId(int sceneId) {
         this.sceneId = sceneId;
     }
+
+    /**
+     * 做副本的结算
+     */
+    public void doEnd() {
+
+    }
+
+    /**
+     * 判断从当前地图能否进入到目标地图
+     *
+     * @param targetMapId
+     * @return
+     */
+    public abstract boolean canChangeToMap(int targetMapId);
+
+    /**
+     * 判断能否进入该地图 有些地图有特殊的进入 如副本中当玩家进入个人副本之后，其他玩家无法进入
+     *
+     * @param player
+     * @return
+     */
+    public boolean canEnter(Player player) {
+        return true;
+    }
+
+    /**
+     * 判断能否离开地图 如玩家进入地图后 玩家无法离开
+     *
+     * @return
+     */
+    public boolean isCanLeave() {
+        return true;
+    }
+
 
 
 }

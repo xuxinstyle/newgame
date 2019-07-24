@@ -37,7 +37,7 @@ public class MoveCommand extends AbstractSceneCommand {
 
     @Override
     public void active() {
-        SpringContext.getScenceSerivce().doMove(player.getObjectId(), targetPosition, getMapId());
+        SpringContext.getScenceSerivce().doMove(player, targetPosition, getMapId());
     }
 
     public Player getPlayer() {

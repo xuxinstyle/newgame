@@ -8,11 +8,10 @@ import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.skill.model.SkillInfo;
 import com.game.role.skill.model.SkillSlot;
+import com.game.scence.base.model.AbstractScene;
 import com.game.scence.drop.command.DropItemAddCommand;
-import com.game.scence.drop.model.RandDrop;
 import com.game.scence.monster.resource.MonsterResource;
-import com.game.scence.visible.model.Position;
-import com.game.user.item.model.AbstractItem;
+import com.game.world.hopetower.event.MonsterDeadEvent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,19 +68,23 @@ public class MonsterUnit extends CreatureUnit {
         monsterUnit.setVisibleName(monsterResource.getName());
         monsterUnit.setType(ObjectType.MONSTER);
         monsterUnit.setDead(false);
-        monsterUnit.setPosition(Position.valueOf(monsterResource.getPx(),monsterResource.getPy()));
+
         return monsterUnit;
     }
 
     @Override
-    public void doAttackAfter(CreatureUnit attacker) {
+    public void doAttackAfter(String accountId, CreatureUnit attacker) {
         // TODO: 2019/7/17 怪物反击 暂时不做
         if (attacker == null) {
             return;
         }
         SkillInfo skillInfo = getSkillInfo();
         int defaultSkill = skillInfo.getDefaultSkill();
-        SpringContext.getSkillService().doUseSkill(null, getMapId(), this.getId(), this.getType(), attacker.getId(), attacker.getType(), defaultSkill);
+        AbstractScene scene = getScene();
+        if (scene == null) {
+            return;
+        }
+        SpringContext.getSkillService().useSkill(accountId, scene.getMapId(), scene.getSceneId(), attacker.getId(), this.getId(), getType(), defaultSkill, attacker.getType());
     }
 
     /**
@@ -97,6 +100,16 @@ public class MonsterUnit extends CreatureUnit {
         PlayerUnit unit = (PlayerUnit) attacker;
         DropItemAddCommand command = DropItemAddCommand.valueOf(unit.getAccountId(), getMonsterResource(), unit.getJobId());
         SpringContext.getAccountExecutorService().submit(command);
+    }
+
+    @Override
+    public void afterDead(CreatureUnit attacker) {
+        super.afterDead(attacker);
+        if (getType() == ObjectType.MONSTER) {
+            MonsterResource monsterResource = getMonsterResource();
+            MonsterDeadEvent event = MonsterDeadEvent.valueOf(attacker, monsterResource.getId());
+            SpringContext.getEvenManager().syncSubmit(event);
+        }
     }
 
     @Override

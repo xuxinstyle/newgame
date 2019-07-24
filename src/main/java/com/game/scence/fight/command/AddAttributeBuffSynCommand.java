@@ -29,7 +29,7 @@ public class AddAttributeBuffSynCommand extends AbstractSceneCommand {
     private Player player;
 
     public static AddAttributeBuffSynCommand valueOf(Player player, AttributeId attrId, List<Attribute> attrs) {
-        AddAttributeBuffSynCommand command = new AddAttributeBuffSynCommand(player.getCurrMapId(), 0, player.getAccountId());
+        AddAttributeBuffSynCommand command = new AddAttributeBuffSynCommand(player.getCurrMapId(), player.getCurrSceneId(), player.getAccountId());
         command.setAttrId(attrId);
         command.setAttrs(attrs);
         command.setPlayer(player);
@@ -47,7 +47,7 @@ public class AddAttributeBuffSynCommand extends AbstractSceneCommand {
 
     @Override
     public void active() {
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId());
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId(), player.getAccountId());
         CreatureUnit unit = scene.getUnit(ObjectType.PLAYER, player.getObjectId());
         CreatureAttributeContainer attributeContainerUnit = unit.getAttributeContainer();
         attributeContainerUnit.putAndComputeAttributes(attrId, attrs);

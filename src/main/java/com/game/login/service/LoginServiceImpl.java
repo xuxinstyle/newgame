@@ -65,10 +65,9 @@ public class LoginServiceImpl implements LoginService {
         accountInfo.setLastLoginTime(TimeUtil.now());
         Player player = SpringContext.getPlayerSerivce().getPlayer(usernameDB);
         SM_Login sm = new SM_Login();
-        if(player==null){
-            sm.setLastScenceId(MapType.NoviceVillage.getMapId());
-        }else{
-            sm.setLastScenceId(player.getCurrMapId());
+        int targetMapId = MapType.NoviceVillage.getId();
+        if (player != null) {
+            targetMapId = player.getLastLogoutMapId();
         }
         /** 将accountId放到session中,并将session放到缓存中管理*/
         SessionManager.addAccountSessionMap(usernameDB, session);
@@ -86,6 +85,7 @@ public class LoginServiceImpl implements LoginService {
             sm.setPlayerId(player.getObjectId());
         }
         session.sendPacket(sm);
+        SpringContext.getScenceSerivce().loginAfterEnterMap(session, session.getAccountId(), targetMapId);
         logger.info(usernameDB + "登录成功！");
     }
 
@@ -98,7 +98,7 @@ public class LoginServiceImpl implements LoginService {
         AccountInfo accountInfo = accountEnt.getAccountInfo();
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
         if(player.getCurrMapId()==0){
-            player.setLastLogoutMapId(MapType.NoviceVillage.getMapId());
+            player.setLastLogoutMapId(MapType.NoviceVillage.getId());
         }
         player.setLastLogoutMapId(player.getCurrMapId());
         accountInfo.setLastLogoutTime(TimeUtil.now());

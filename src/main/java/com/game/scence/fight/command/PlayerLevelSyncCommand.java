@@ -25,7 +25,7 @@ public class PlayerLevelSyncCommand extends AbstractSceneCommand {
     private Player player;
 
     public static PlayerLevelSyncCommand valueOf(int mapId, String accountId, Player player) {
-        PlayerLevelSyncCommand command = new PlayerLevelSyncCommand(mapId, 0, accountId);
+        PlayerLevelSyncCommand command = new PlayerLevelSyncCommand(mapId, player.getCurrSceneId(), accountId);
         command.setPlayer(player);
         return command;
     }
@@ -41,7 +41,10 @@ public class PlayerLevelSyncCommand extends AbstractSceneCommand {
 
     @Override
     public void active() {
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId());
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId(), player.getAccountId());
+        if (scene == null) {
+            return;
+        }
         Map<Long, CreatureUnit> creatureUnitMap = scene.getCreatureUnitMap();
         PlayerUnit playerUnit = (PlayerUnit) creatureUnitMap.get(player.getObjectId());
         if (playerUnit == null) {

@@ -32,7 +32,7 @@ public class ShowAllVisibleCommand extends AbstractSceneCommand {
 
     @Override
     public void active() {
-        AbstractScene scence = SpringContext.getScenceSerivce().getScene(getMapId());
+        AbstractScene scence = SpringContext.getScenceSerivce().getScene(getMapId(), getAccountId());
         if (scence == null) {
             return;
         }

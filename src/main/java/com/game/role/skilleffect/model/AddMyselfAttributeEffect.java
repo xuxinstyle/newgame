@@ -12,6 +12,7 @@ import com.game.role.skilleffect.constant.SkillEffectType;
 import com.game.role.skilleffect.context.SkillUseContext;
 import com.game.role.skilleffect.context.SkillUseContextEnm;
 import com.game.role.skilleffect.resource.SkillEffectResource;
+import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
 import com.game.util.AttributeAnalyzeUtil;
 import com.game.util.SendPacketUtil;
@@ -49,16 +50,17 @@ public class AddMyselfAttributeEffect extends AbstractSkillEffect {
          * 将效果加到unit身上
          */
         attributeContainer.putAndComputeAttributes(SkillEffectAttributeId.
-                getSkillAttributeId(SkillEffectType.ADD_ATTRIBUTE.getId()), attributeList);
+                getSkillAttributeId(effectId), attributeList);
         SendPacketUtil.send(useUnit.getAccountId(), SM_AddAttributeEffect.valueOf(attributeList));
 
         /**
          * 抛出command 定时移除效果h
          */
-        SkillAttrBuffDestoryCommand command = SkillAttrBuffDestoryCommand.valueOf(mapId, duration, useUnit.getAccountId(), targetUnit,
-                SkillEffectAttributeId.getSkillAttributeId(SkillEffectType.ADD_ATTRIBUTE.getId()), skillResource.getId());
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId, useUnit.getAccountId());
+        SkillAttrBuffDestoryCommand command = SkillAttrBuffDestoryCommand.valueOf(scene, duration, useUnit.getAccountId(), targetUnit,
+                SkillEffectAttributeId.getSkillAttributeId(effectId), skillResource.getId());
         SpringContext.getSceneExecutorService().submit(command);
-        targetUnit.putBuffCommand(SkillEffectAttributeId.getSkillAttributeId(SkillEffectType.ADD_ATTRIBUTE.getId()), command);
+        targetUnit.putBuffCommand(SkillEffectAttributeId.getSkillAttributeId(effectId), command);
     }
 
     public List<Attribute> getAttributeList() {

@@ -9,18 +9,21 @@ import com.game.role.player.model.Player;
  * @Date: 2019/6/27 11:47
  */
 public class EnterMapCommand extends AbstractSceneCommand {
+
     private Player player;
+    /**
+     * 是否是登陆时的进入请求
+     */
+    private boolean isLoginEnterRequest;
 
-    private int targetMapId;
-
-    public EnterMapCommand(int targetMapId, Player player) {
-        super(player.getCurrMapId(),player.getCurrSceneId(),player.getAccountId());
-        this.targetMapId = targetMapId;
+    public EnterMapCommand(int targetMapId, int sceneId, Player player) {
+        super(targetMapId, sceneId, player.getAccountId());
         this.player = player;
     }
 
-    public static EnterMapCommand valueOf(Player player, int targetMapId) {
-        EnterMapCommand command = new EnterMapCommand(targetMapId, player);
+    public static EnterMapCommand valueOf(Player player, int sceneId, int targetMapId, boolean isLoginEnterRequest) {
+        EnterMapCommand command = new EnterMapCommand(targetMapId, sceneId, player);
+        command.setLoginEnterRequest(isLoginEnterRequest);
         return command;
     }
     @Override
@@ -30,7 +33,15 @@ public class EnterMapCommand extends AbstractSceneCommand {
 
     @Override
     public void active() {
-        SpringContext.getScenceSerivce().doEnterMap(player, targetMapId);
+        SpringContext.getScenceSerivce().doEnterMap(player, getMapId(), isLoginEnterRequest);
+    }
+
+    public boolean isLoginEnterRequest() {
+        return isLoginEnterRequest;
+    }
+
+    public void setLoginEnterRequest(boolean loginEnterRequest) {
+        this.isLoginEnterRequest = loginEnterRequest;
     }
 
     public Player getPlayer() {
@@ -41,11 +52,4 @@ public class EnterMapCommand extends AbstractSceneCommand {
         this.player = player;
     }
 
-    public int getTargetMapId() {
-        return targetMapId;
-    }
-
-    public void setTargetMapId(int targetMapId) {
-        this.targetMapId = targetMapId;
-    }
 }

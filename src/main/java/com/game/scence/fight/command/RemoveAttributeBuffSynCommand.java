@@ -25,7 +25,7 @@ public class RemoveAttributeBuffSynCommand extends AbstractSceneCommand {
     private Player player;
 
     public static RemoveAttributeBuffSynCommand valueOf(Player player, AttributeId attrId) {
-        RemoveAttributeBuffSynCommand command = new RemoveAttributeBuffSynCommand(player.getCurrMapId(), 0, player.getAccountId());
+        RemoveAttributeBuffSynCommand command = new RemoveAttributeBuffSynCommand(player.getCurrMapId(), player.getCurrSceneId(), player.getAccountId());
         command.setAttrId(attrId);
         command.setPlayer(player);
         return command;
@@ -58,7 +58,7 @@ public class RemoveAttributeBuffSynCommand extends AbstractSceneCommand {
 
     @Override
     public void active() {
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(player.getCurrMapId());
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(player.getCurrMapId(), player.getAccountId());
         CreatureUnit unit = scene.getUnit(ObjectType.PLAYER, player.getObjectId());
         CreatureAttributeContainer attributeContainer = unit.getAttributeContainer();
         attributeContainer.removeAndCompteAttribtues(attrId);

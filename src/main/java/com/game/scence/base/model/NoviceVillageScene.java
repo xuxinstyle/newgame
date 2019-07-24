@@ -2,15 +2,13 @@ package com.game.scence.base.model;
 
 import com.game.SpringContext;
 import com.game.base.gameobject.constant.ObjectType;
-import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.scence.fight.model.CreatureUnit;
 
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
 import com.game.scence.visible.packet.bean.VisibleVO;
-import com.game.user.account.entity.AccountEnt;
-import com.game.user.account.model.AccountInfo;
+import com.game.scence.visible.resource.MapResource;
 
 import java.util.List;
 import java.util.Map;
@@ -21,14 +19,14 @@ import java.util.Map;
  */
 public class NoviceVillageScene extends AbstractScene {
     /**
-     * 地图中npc信息 npc配置id
+     * fixme: 这里先放这里 未来任务有需要在地图中npc信息 npc配置id
      */
     private List<Integer> npcInfoList;
 
     @Override
     public void init() {
-        setMapId(MapType.NoviceVillage.getMapId());
-
+        setMapId(MapType.NoviceVillage.getId());
+        setSceneId(0);
         this.npcInfoList = SpringContext.getNpcService().getNpcIds(getMapId());
     }
 
@@ -59,8 +57,8 @@ public class NoviceVillageScene extends AbstractScene {
     }
 
     @Override
-    public void leave(Player player) {
-        super.leave(player);
+    public void doLeave(Player player) {
+        super.doLeave(player);
     }
 
     @Override
@@ -68,12 +66,7 @@ public class NoviceVillageScene extends AbstractScene {
         return super.getAccountIds();
     }
 
-    @Override
-    public void enter(Player player) {
-        player.setCurrMapId(MapType.NoviceVillage.getMapId());
-        SpringContext.getPlayerSerivce().save(player);
-        super.enter(player);
-    }
+
 
     @Override
     public boolean isCanUseSkill() {
@@ -82,7 +75,17 @@ public class NoviceVillageScene extends AbstractScene {
 
     @Override
     public int getMapId() {
-        return MapType.NoviceVillage.getMapId();
+        return MapType.NoviceVillage.getId();
+    }
+
+    @Override
+    public boolean canChangeToMap(int targetMapId) {
+        MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(targetMapId);
+        if (mapResource == null) {
+            return false;
+        }
+
+        return true;
     }
 
     public List<Integer> getNpcInfoList() {

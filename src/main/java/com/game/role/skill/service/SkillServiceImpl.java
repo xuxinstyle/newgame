@@ -234,48 +234,44 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public void useSkill(TSession session, int mapId, int sceneId, long targetId, long useId, ObjectType useType, int skillBarId, ObjectType targetType) {
-        UseSkillCommand useSkillCommand = UseSkillCommand.valueOf(session.getAccountId(), mapId, targetId, useId, useType, skillBarId, targetType);
-        SpringContext.getSceneExecutorService().submit(useSkillCommand);
-    }
-
-
-    @Override
-    public void doUseSkill(String accountId, int mapId, long useId, ObjectType useType, long targetId, ObjectType targetType, int skillBarId) {
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId);
+    public void useSkill(String accountId, int mapId, int sceneId, long targetId, long useId, ObjectType useType, int skillBarId, ObjectType targetType) {
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId, accountId);
         if (scene == null) {
             return;
         }
-        CreatureUnit useUnit = scene.getUnit(useType, useId);
         CreatureUnit targetUnit = scene.getUnit(targetType, targetId);
+        CreatureUnit useUnit = scene.getUnit(useType, useId);
         if (useUnit == null) {
             return;
         }
         SkillInfo skillInfo = useUnit.getSkillInfo();
         SkillResource skillResource = skillInfo.getSkillResource(skillBarId);
 
-
         // 检查是否可以释放技能
         if (!checkUseSkill(useUnit, skillResource, targetUnit)) {
             return;
         }
-        SkillLevelResource skillLevelResource = skillInfo.getSkillLevelResource(skillBarId);
-        if (skillLevelResource == null) {
-            RequestException.throwException(I18nId.NOT_SKILL_IN_SLOT);
-        }
+
+        UseSkillCommand useSkillCommand = UseSkillCommand.valueOf(accountId, scene, targetUnit, useUnit, skillBarId);
+        SpringContext.getSceneExecutorService().submit(useSkillCommand);
+    }
+
+
+    @Override
+    public void doUseSkill(AbstractScene scene, CreatureUnit useUnit, CreatureUnit targetUnit, int skillBarId) {
+
+        SkillInfo skillInfo = useUnit.getSkillInfo();
+        SkillResource skillResource = skillInfo.getSkillResource(skillBarId);
+
         // TODO: 2019/7/19 doUseSkillBefore应该实现一些技能在触发之前的特殊效果或者，如放技能前可能需要蓄力，触发霸体效果等
         // TODO: 2019/7/19 做蓝量的消耗，使用技能之前固定回血等效果
-        // 本游戏还比较简单 暂时不做这些 只做一些基本的消耗
-        long consume = skillLevelResource.getConsumeMp();
-        if (!useUnit.consumeMpAndCheck(consume)) {
-            return;
-        }
+        SkillLevelResource skillLevelResource = skillInfo.getSkillLevelResource(skillBarId);
         SkillUseContext skillUseContext = new SkillUseContext();
         skillUseContext.putSkillContextEnum(SkillUseContextEnm.SKILL_ATTACKER, useUnit);
         skillUseContext.putSkillContextEnum(SkillUseContextEnm.SKILL_RESOURCE, skillResource);
         skillUseContext.putSkillContextEnum(SkillUseContextEnm.SKILL_LEVEL_RESOURCE, skillLevelResource);
 
-        List<CreatureUnit> targetUnits = getTargetUnits(mapId, scene, useUnit, targetUnit, skillLevelResource);
+        List<CreatureUnit> targetUnits = getTargetUnits(scene, useUnit, targetUnit, skillLevelResource);
         // 使用技能
         useUnit.useSkill(skillUseContext, targetUnits);
         /**
@@ -293,12 +289,12 @@ public class SkillServiceImpl implements SkillService {
         }
     }
 
-    private List<CreatureUnit> getTargetUnits(int mapId, AbstractScene scene, CreatureUnit useUnit, CreatureUnit targetUnit, SkillLevelResource skillLevelResource) {
+    private List<CreatureUnit> getTargetUnits(AbstractScene scene, CreatureUnit useUnit, CreatureUnit targetUnit, SkillLevelResource skillLevelResource) {
         /**
          * 可多目标
          * fixme：这里先暂时遍历地图中所有目标类型的生物，看是否在技能范围内，之后再想有没有更好的办法
          */
-        MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(mapId);
+        MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(scene.getMapId());
         List<ObjectType> targetTypes = mapResource.getTargetTypes();
         if (targetTypes == null) {
             return null;
@@ -361,7 +357,7 @@ public class SkillServiceImpl implements SkillService {
         }
         int mapId = useUnit.getMapId();
         // 判断地图中技能的使用限制
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId);
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId, useUnit.getAccountId());
         MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(mapId);
         if (type != SkillTargetType.MYSELF) {
             List<ObjectType> targetList = mapResource.getTargetTypes();
@@ -375,7 +371,8 @@ public class SkillServiceImpl implements SkillService {
         }
         // 检查玩家技能cd
         SkillInfo skillInfo = useUnit.getSkillInfo();
-        if (useUnit.getSkillCdStatus(skillModelId) != null && useUnit.getSkillCdStatus(skillModelId)) {
+        Map<Integer, Long> cdTimeMap = useUnit.getCdTimeMap();
+        if (cdTimeMap.get(skillModelId) != null && cdTimeMap.get(skillModelId) > TimeUtil.now()) {
             logger.info("玩家[{}]技能[{}]处于cd状态", useUnit.getAccountId(), skillModelId);
             RequestException.throwException(I18nId.SKILL_CD);
         }
@@ -395,6 +392,9 @@ public class SkillServiceImpl implements SkillService {
         }
         // 检查蓝量
         SkillLevelResource skillLevelResource = getSkillLevelResource(skillModelId + StringUtil.XIA_HUA_XIAN + skillSlot.getLevel());
+        if (skillLevelResource == null) {
+            return false;
+        }
         long currMp = useUnit.getCurrMp();
         if (skillLevelResource.getConsumeMp() > currMp) {
             // 蓝不足

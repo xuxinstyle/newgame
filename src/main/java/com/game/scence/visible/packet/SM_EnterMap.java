@@ -11,7 +11,10 @@ public class SM_EnterMap {
 
     /** mapId*/
     private int mapId;
-
+    /**
+     * 场景id
+     */
+    private int sceneId;
     /**
      * 账号Id
      */
@@ -23,6 +26,15 @@ public class SM_EnterMap {
         sm.setMapId(targetMapId);
         return sm;
     }
+
+    public int getSceneId() {
+        return sceneId;
+    }
+
+    public void setSceneId(int sceneId) {
+        this.sceneId = sceneId;
+    }
+
     public String getAccountId() {
         return accountId;
     }

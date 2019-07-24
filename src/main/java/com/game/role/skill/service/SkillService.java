@@ -83,7 +83,6 @@ public interface SkillService {
 
     /**
      *
-     * @param session
      * @param mapId
      * @param sceneId
      * @param targetId
@@ -92,18 +91,17 @@ public interface SkillService {
      * @param skillBarId
      * @param targetType
      */
-    void useSkill(TSession session, int mapId, int sceneId, long targetId, long useId, ObjectType useType, int skillBarId, ObjectType targetType);
+    void useSkill(String accountId, int mapId, int sceneId, long targetId, long useId, ObjectType useType, int skillBarId, ObjectType targetType);
+
 
     /**
      *
-     * @param accountId
-     * @param mapId
-     * @param useId
-     * @param targetId
-     * @param targetType
+     * 做使用技能的操作
+     * @param scene
+     * @param useUnit
+     * @param targetUnit
      * @param skillBarId
      */
-    void doUseSkill(String accountId, int mapId, long useId, ObjectType useType, long targetId, ObjectType targetType, int skillBarId);
-
+    void doUseSkill(AbstractScene scene, CreatureUnit useUnit, CreatureUnit targetUnit, int skillBarId);
 
 }

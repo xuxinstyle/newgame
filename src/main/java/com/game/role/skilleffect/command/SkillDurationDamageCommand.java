@@ -6,6 +6,7 @@ import com.game.base.attribute.constant.AttributeType;
 import com.game.base.executor.scene.impl.AbstractSceneRateCommand;
 import com.game.role.skilleffect.model.AbstractSkillEffect;
 import com.game.role.skilleffect.model.DurationDamageEffect;
+import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
 import com.game.util.ComputeUtil;
 import com.game.util.TimeUtil;
@@ -42,9 +43,9 @@ public class SkillDurationDamageCommand extends AbstractSceneRateCommand {
      */
     private int effectId;
 
-    public static SkillDurationDamageCommand valueOf(int mapId, CreatureUnit useUnit,
+    public static SkillDurationDamageCommand valueOf(AbstractScene scene, CreatureUnit useUnit,
                                                      long period, double hurt, CreatureUnit targetUnit, AttributeType defenceType, long invalidTime, int effectId) {
-        SkillDurationDamageCommand command = new SkillDurationDamageCommand(mapId, period, period, useUnit.getAccountId());
+        SkillDurationDamageCommand command = new SkillDurationDamageCommand(scene, period, period, useUnit.getAccountId());
         command.setHurt(hurt);
         command.setTargetUnit(targetUnit);
         command.setDefenceType(defenceType);
@@ -54,8 +55,8 @@ public class SkillDurationDamageCommand extends AbstractSceneRateCommand {
         return command;
     }
 
-    public SkillDurationDamageCommand(int mapId, long delay, long period, String accountId) {
-        super(mapId, delay, period, accountId);
+    public SkillDurationDamageCommand(AbstractScene scene, long delay, long period, String accountId) {
+        super(scene, delay, period, accountId);
     }
 
     @Override

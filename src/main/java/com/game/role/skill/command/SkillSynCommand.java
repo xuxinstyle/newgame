@@ -24,7 +24,7 @@ public class SkillSynCommand extends AbstractSceneCommand {
     private Player player;
 
     public static SkillSynCommand valueOf(Player player, SkillInfo skillInfo) {
-        SkillSynCommand command = new SkillSynCommand(player.getCurrMapId(), 0, player.getAccountId());
+        SkillSynCommand command = new SkillSynCommand(player.getCurrMapId(), player.getCurrSceneId(), player.getAccountId());
         command.setSkillInfo(skillInfo);
         command.setPlayer(player);
         return command;
@@ -42,7 +42,7 @@ public class SkillSynCommand extends AbstractSceneCommand {
     @Override
     public void active() {
         SkillInfo skillInfo = this.skillInfo;
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId());
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId(), player.getAccountId());
         CreatureUnit unit = scene.getUnit(ObjectType.PLAYER, player.getObjectId());
         unit.setSkillInfo(skillInfo);
     }

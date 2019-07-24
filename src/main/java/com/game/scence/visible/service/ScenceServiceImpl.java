@@ -7,6 +7,7 @@ import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.command.PlayerLevelSyncCommand;
+import com.game.scence.fight.model.PlayerUnit;
 import com.game.scence.visible.command.*;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
@@ -16,6 +17,9 @@ import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.user.account.packet.SM_EnterCreatePlayer;
 import com.game.util.I18nId;
+import com.game.world.base.entity.MapInfoEnt;
+import com.game.world.base.model.AbstractMapInfo;
+import com.game.world.base.model.MapInfo;
 import com.socket.core.session.SessionManager;
 import com.socket.core.session.TSession;
 import com.game.util.SendPacketUtil;
@@ -47,7 +51,7 @@ public class ScenceServiceImpl implements ScenceService {
     }
 
     @Override
-    public void enterMap(TSession session, String accountId, int targetMapId) {
+    public void loginAfterEnterMap(TSession session, String accountId, int targetMapId) {
         /**
          * 如果没有角色信息，则进入创角页面
          */
@@ -62,51 +66,65 @@ public class ScenceServiceImpl implements ScenceService {
          * 如果有角色信息，则进入玩家上次在的地图
          */
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-        EnterMapCommand command = EnterMapCommand.valueOf(player, targetMapId);
+        EnterMapCommand command = EnterMapCommand.valueOf(player, player.getCurrSceneId(), targetMapId, true);
         SpringContext.getSceneExecutorService().submit(command);
     }
 
+    @Override
+    public void putPlayerUnit(Player player) {
+        scenceMangaer.putPlayerUnit(player);
+    }
+
+    @Override
+    public PlayerUnit getPlayerUnit(Player player) {
+        return scenceMangaer.getPlayerUnit(player);
+    }
     /**
      * TODO:等玩家
-     *
-     * @param player
+     *  @param player
      * @param targetMapId
+     * @param loginEnterRequest
      */
     @Override
-    public void doEnterMap(Player player, int targetMapId) {
+    public void doEnterMap(Player player, int targetMapId, boolean loginEnterRequest) {
         try {
+            // 在抛EnterMapCommand之前已经做了验证 所以mapResource不可能会等于null
             MapResource mapResource = getMapResource(targetMapId);
-            if(mapResource==null){
-                SendPacketUtil.send(player, SM_EnterMapErr.valueOf(2));
-                return;
-            }
-            AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(player.getAccountId());
-            player.setCurrMapId(targetMapId);
             /** 初始化位置*/
-            Position position = Position.valueOf(mapResource.getInitX(), mapResource.getInitY());
-            player.setPosition(position);
+            player.setPosition(Position.valueOf(mapResource.getInitX(), mapResource.getInitY()));
 
-            AbstractScene scence = scenceMangaer.getScence(targetMapId);
-
+            AbstractScene scence = scenceMangaer.getScence(targetMapId, player.getAccountId());
+            // 如果 scene==null 且是第一次登陆 直接进入新手村   可能做断线重连也有可能
+            // 断线重连的话 则需要 在玩家退出的时候不清理副本的数据，而是在后台继续运行，直到副本时间到才清理
+            if (scence == null && loginEnterRequest) {
+                // 第一次进入的地图为空时直接让玩家 进入新手村
+                scence = scenceMangaer.getScence(MapType.NoviceVillage.getId(), player.getAccountId());
+            }
+            // 进入地图
             /** 在新的场景中添加玩家战斗单元信息.*/
-            scence.enter(player);
-            /**
-             * 通知客户端
-             */
+            scence.doEnter(player);
             player.setChangeIngMap(false);
+            player.setCurrMapId(scence.getMapId());
+            player.setCurrSceneId(scence.getSceneId());
             SpringContext.getPlayerSerivce().save(player);
-            SpringContext.getAccountService().save(accountEnt);
-            SendPacketUtil.send(player, SM_EnterMap.valueOf(player.getAccountId(), targetMapId));
+            /**
+             * 通知客户端 登陆时请求进入，
+             */
+            if (loginEnterRequest) {
+                SendPacketUtil.send(player, SM_LoginEnterMap.valueOf(player.getAccountId(), scence.getMapId()));
+            } else {
+                SendPacketUtil.send(player, SM_EnterMap.valueOf(player.getAccountId(), scence.getMapId()));
+            }
         }catch (Exception e){
             /**
              * 进入地图错误返回新手村
              */
+            logger.error("[{}]进入地图失败原因[{}]", player.getAccountId(), e);
             AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(player.getAccountId());
             player.setChangeIngMap(false);
             SpringContext.getAccountService().save(accountEnt);
-            SpringContext.getScenceSerivce().changeMap(player.getAccountId(), MapType.NoviceVillage.getMapId(), false);
+            SpringContext.getScenceSerivce().changeMap(player.getAccountId(), MapType.NoviceVillage.getId(), false);
             SendPacketUtil.send(player, SM_EnterMapErr.valueOf(2));
-            logger.error("[{}]进入地图失败", player.getAccountId(), e);
         }
     }
 
@@ -117,38 +135,46 @@ public class ScenceServiceImpl implements ScenceService {
         int currMapId = player.getCurrMapId();
         player.setLastLogoutMapId(currMapId);
         // 离开地图需要到对应的场景线程中处理数据
-        LeaveMapCommand command = new LeaveMapCommand(currMapId,0,accountId);
+        LeaveMapCommand command = new LeaveMapCommand(currMapId, player.getCurrSceneId(), accountId, false);
         SpringContext.getSceneExecutorService().submit(command);
     }
 
     /**
      * 做进入地图前需要做的事，即离开地图需要做的事,清除之前的场景中的信息
-     *
+     *  @param
      * @param
-     * @param
+     * @param clientRequest
      */
     @Override
-    public void leaveMap(String accountId) {
+    public void leaveMap(String accountId, boolean clientRequest) {
         /**
-         * TODO:在有离开或进入地图的条件的情况下 需要判断能否离开地图 如果不能离开地图 离开失败怎么办
-         * 离开失败的时候返回大地图
+         *
+         * 离开失败的时候留在原地图
          * 只有在副本的时候再会存在离开地图失败 在这种情况下可以断线重连副本
          * 或者通过发包发来一个错的mapId也有可能
          */
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
         int currentMapId = player.getCurrMapId();
         /** 1.清除上次地图中玩家存的信息*/
-        AbstractScene scence = scenceMangaer.getScence(currentMapId);
-        if (scence == null) {
-            SendPacketUtil.send(player, SM_ChangeMapErr.valueOf(2));
+        AbstractScene scence = scenceMangaer.getScence(currentMapId, player.getAccountId());
+        if (!clientRequest) {
+            if (scence == null) {
+                return;
+            }
+            scence.doLeave(player);
             return;
         }
-        scence.leave(player);
+
+        if (!scence.isCanLeave()) {
+            RequestException.throwException(I18nId.LEAVE_MAP_ERROR);
+        }
+
         player.setChangeIngMap(true);
+        scence.doLeave(player);
         /**
          * 显示地图
          */
-        showMap(currentMapId);
+        showMap(currentMapId, accountId);
 
     }
 
@@ -180,22 +206,22 @@ public class ScenceServiceImpl implements ScenceService {
      */
     @Override
     public void showAllVisibleInfo(TSession session, int mapId) {
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId);
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId, session.getAccountId());
         if (scene == null) {
             return;
         }
-        ShowAllVisibleCommand command = ShowAllVisibleCommand.valueOf(mapId, 0, session.getAccountId());
+        ShowAllVisibleCommand command = ShowAllVisibleCommand.valueOf(mapId, scene.getSceneId(), session.getAccountId());
         SpringContext.getSceneExecutorService().submit(command);
     }
 
     @Override
     public void showObjectInfo(String accountId, int mapId, ObjectType objectType, long objectId) {
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId);
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId, accountId);
         if (scene == null) {
             return;
         }
         // todo：这里的sceneId 在做副本的时候再考虑换成对应的sceneId
-        ShowTargetCommand command = ShowTargetCommand.valueOf(mapId, 0, accountId, objectType, objectId);
+        ShowTargetCommand command = ShowTargetCommand.valueOf(mapId, scene.getSceneId(), accountId, objectType, objectId);
         SpringContext.getSceneExecutorService().submit(command);
 
     }
@@ -208,25 +234,28 @@ public class ScenceServiceImpl implements ScenceService {
     }
 
     @Override
-    public void doMove(long playerId, Position targetPos, int mapId) {
+    public void doMove(Player player, Position targetPos, int mapId) {
         if (!checkMove(mapId, targetPos)) {
             if(logger.isDebugEnabled()){
                 logger.debug("不能移动到位置{}",targetPos.toString());
             }
             RequestException.throwException(I18nId.MOVE_ERROR);
         }
-        AbstractScene scence = scenceMangaer.getScence(mapId);
-        if (!scence.moveAndThrow(playerId, targetPos)) {
+        AbstractScene scence = scenceMangaer.getScence(mapId, player.getAccountId());
+        if (scence == null) {
+            RequestException.throwException(I18nId.MOVE_ERROR);
+        }
+        if (!scence.moveAndThrow(player.getObjectId(), targetPos)) {
             SM_Move sm = new SM_Move();
             sm.setStatus(0);
             sm.setPosition(targetPos);
-            SendPacketUtil.send(playerId, sm);
+            SendPacketUtil.send(player, sm);
             return;
         }
         SM_Move sm = new SM_Move();
         sm.setStatus(1);
         sm.setPosition(targetPos);
-        SendPacketUtil.send(playerId, sm);
+        SendPacketUtil.send(player, sm);
     }
     /**
      * 角色将属性同步到场景中
@@ -237,32 +266,91 @@ public class ScenceServiceImpl implements ScenceService {
         PlayerLevelSyncCommand command = PlayerLevelSyncCommand.valueOf(player.getCurrMapId(), player.getAccountId(), player);
         SpringContext.getSceneExecutorService().submit(command);
     }
+
+    @Override
+    public void removeCopyScene(String accountId) {
+        scenceMangaer.removeCopyScene(accountId);
+    }
+
     @Override
     public void changeMap(String accountId, int targetMapId,boolean clientRequest) {
+
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-        if (player == null) {
-            return;
+        if (player.isChangeIngMap()) {
+            RequestException.throwException(I18nId.CHANGE_MAP_ERROE);
         }
-        ChangeMapCommand command = ChangeMapCommand.valueOf(player, targetMapId);
+        AbstractScene scene = getScene(player.getCurrMapId(), accountId);
+        if (scene == null) {
+            RequestException.throwException(I18nId.CHANGE_MAP_ERROE);
+        }
+        // 玩家当前地图无法去目标地图
+        if (!scene.canChangeToMap(targetMapId)) {
+            RequestException.throwException(I18nId.NOT_ENTER_MAP);
+        }
+        AbstractScene targetScene = getScene(targetMapId, accountId);
+        // 如果当前的地图是副本 切目标地图也是副本 则不能切图 只有目标地图不是副本才能从副本切 每个地图能否切至其他地图 写在抽象方法canChangeMap中
+        // 是副本 初始化地图
+        if (targetScene == null) {
+            targetScene = checkAndInitScene(targetMapId, player);
+        }
+        // 副本未开启
+        if (targetScene == null) {
+            RequestException.throwException(I18nId.NOT_OPEN_MAP);
+        }
+
+        ChangeMapCommand command = ChangeMapCommand.valueOf(player, targetScene.getSceneId(), targetMapId, clientRequest);
         SpringContext.getSceneExecutorService().submit(command);
     }
+
+    public AbstractScene checkAndInitScene(int mapId, Player player) {
+        MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(mapId);
+        MapType mapType = MapType.getMapTypeMap().get(mapResource.getMapType());
+        if (mapType == null) {
+            RequestException.throwException(I18nId.NOT_ENTER_MAP);
+        }
+        // 判断副本是否开启
+        if (!isOpenMap(player, mapId, mapType)) {
+            RequestException.throwException(I18nId.NOT_OPEN_MAP);
+        }
+
+        //初始化创建场景处理类
+        AbstractScene scenceInfo = mapType.create();
+        scenceInfo.setMapId(mapId);
+        scenceInfo.init();
+        scenceMangaer.putCopyScene(player.getAccountId(), scenceInfo);
+        return scenceInfo;
+    }
+
+    private boolean isOpenMap(Player player, int mapId, MapType mapType) {
+        MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(player.getAccountId());
+        MapInfo mapInfo = mapInfoEnt.getMapInfo();
+        Map<Integer, AbstractMapInfo> infoMap = mapInfo.getInfoMap();
+        AbstractMapInfo abstractMapInfo = infoMap.get(mapType.getId());
+        if (abstractMapInfo.isOpen(mapId)) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
-    public void doChangeMap(Player player,int targetMapId){
+    public void doChangeMap(Player player, int targetMapId, boolean clientRequest) {
         try {
 
-            if(!checkChangeMap(player,targetMapId)){
-                SM_ChangeMapErr sm = SM_ChangeMapErr.valueOf(2);
-                SendPacketUtil.send(player, sm);
-                return;
-            }
+            // 判断进入的地图是副本还是普通地图
+            // 是副本 初始化副本 不是副本则直接进入地图
+            AbstractScene scene = getScene(targetMapId, player.getAccountId());
             /**
              * 离开当前地图
              */
-            leaveMap(player.getAccountId());
+            leaveMap(player.getAccountId(), clientRequest);
             /**
              * 进入地图
              */
-            EnterMapCommand command = EnterMapCommand.valueOf(player, targetMapId);
+
+            if (!scene.canEnter(player)) {
+                RequestException.throwException(I18nId.ENTER_MAP_ERROR);
+            }
+            EnterMapCommand command = EnterMapCommand.valueOf(player, scene.getSceneId(), targetMapId, false);
             SpringContext.getSceneExecutorService().submit(command);
         }catch (Exception e){
             AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(player.getAccountId());
@@ -274,25 +362,6 @@ public class ScenceServiceImpl implements ScenceService {
         }
     }
 
-    /**
-     * TODO:判断进入地图的条件
-     * @param player
-     * @param targetMapId
-     * @return
-     */
-    private boolean checkChangeMap(Player player,int targetMapId) {
-        if(player.getCurrMapId()==targetMapId){
-            return false;
-        }
-        MapResource resource = scenceMangaer.getResource(targetMapId, MapResource.class);
-        if(resource==null){
-            return false;
-        }
-        if (player.isChangeIngMap()) {
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public MapResource getMapResource(int mapId) {
@@ -302,10 +371,11 @@ public class ScenceServiceImpl implements ScenceService {
     /**
      * TODO:放进场景线程
      * @param mapId
+     * @param accountId
      */
     @Override
-    public void showMap(int mapId) {
-        AbstractScene scence = scenceMangaer.getScence(mapId);
+    public void showMap(int mapId, String accountId) {
+        AbstractScene scence = scenceMangaer.getScence(mapId, accountId);
         if(scence==null){
             return;
         }
@@ -314,8 +384,8 @@ public class ScenceServiceImpl implements ScenceService {
         List<String> accountIds = scence.getAccountIds();
         SM_ScenePositionVisible sm = new SM_ScenePositionVisible();
         sm.setPositionMap(visiblePosition);
-        for(String accountId:accountIds){
-            SendPacketUtil.send(accountId,sm);
+        for (String account : accountIds) {
+            SendPacketUtil.send(account, sm);
         }
 
     }
@@ -334,7 +404,16 @@ public class ScenceServiceImpl implements ScenceService {
     }
 
     @Override
-    public AbstractScene getScene(int mapId) {
-        return scenceMangaer.getScence(mapId);
+    public AbstractScene getScene(int mapId, String accountId) {
+        return scenceMangaer.getScence(mapId, accountId);
+    }
+
+    @Override
+    public ScenceManger getScenceMangaer() {
+        return scenceMangaer;
+    }
+
+    public void setScenceMangaer(ScenceManger scenceMangaer) {
+        this.scenceMangaer = scenceMangaer;
     }
 }

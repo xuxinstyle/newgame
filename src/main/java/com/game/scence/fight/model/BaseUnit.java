@@ -3,6 +3,7 @@ package com.game.scence.fight.model;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.gameobject.constant.ObjectType;
+import com.game.scence.base.model.AbstractScene;
 import com.game.scence.visible.model.Position;
 
 import java.util.List;
@@ -36,6 +37,19 @@ public abstract class BaseUnit {
      * 所在的场景id
      */
     private int mapId;
+
+    /**
+     * 所在的场景
+     */
+    private AbstractScene scene;
+
+    public AbstractScene getScene() {
+        return scene;
+    }
+
+    public void setScene(AbstractScene scene) {
+        this.scene = scene;
+    }
 
     public int getMapId() {
         return mapId;

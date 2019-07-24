@@ -1,6 +1,7 @@
 package com.game.scence.visible.facade;
 
 import com.event.anno.EventAnn;
+import com.game.common.exception.RequestException;
 import com.game.role.player.event.LogoutEvent;
 import com.game.role.player.event.PlayerUpLevelEvent;
 import com.game.scence.field.packet.CM_ShowObjectInfo;
@@ -21,15 +22,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScenceFacade {
     private static final Logger logger = LoggerFactory.getLogger(ScenceFacade.class);
-    @HandlerAnno
-    public void enterMap(TSession session, CM_EnterMap req){
-        try {
-            SpringContext.getScenceSerivce().enterMap(session,req.getAccountId(),req.getMapId());
-        } catch (Exception e) {
-            logger.error("进入地图失败", e);
-
-        }
-    }
 
     @HandlerAnno
     public void showAllAccount(TSession session, CM_ShowAllVisibleInfo req){
@@ -52,7 +44,7 @@ public class ScenceFacade {
     @HandlerAnno
     public void showMap(TSession session, CM_ScenePositionVisible cm){
         try{
-            SpringContext.getScenceSerivce().showMap(cm.getMapId());
+            SpringContext.getScenceSerivce().showMap(cm.getMapId(), session.getAccountId());
         } catch (Exception e) {
             logger.error("显示地图失败", e);
         }
@@ -66,9 +58,12 @@ public class ScenceFacade {
     public void changeMap(TSession session, CM_ChangeMap req){
         try{
             SpringContext.getScenceSerivce().changeMap(session.getAccountId(),req.getTargetMapId(),true);
+        } catch (RequestException e) {
+            logger.error("切换地图[{}]失败,原因[{}]", req.getTargetMapId(), e.getErrorCode());
+            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
         } catch (Exception e) {
-            logger.error("切换地图{}失败",req.getTargetMapId(),e);
-
+            logger.error("切换地图[{}]失败", req.getTargetMapId(), e);
+            SendPacketUtil.send(session.getAccountId(), I18nId.ERROR);
         }
     }
 
@@ -81,9 +76,11 @@ public class ScenceFacade {
     public void showMonster(TSession session, CM_ShowObjectInfo cm) {
         try {
             SpringContext.getScenceSerivce().showObjectInfo(session.getAccountId(), cm.getMapId(), cm.getObjectType(), cm.getObjectId());
+        } catch (RequestException e) {
+            logger.error("查看地图[{}]中的怪物[{}]信息失败,原因[{}]", cm.getMapId(), cm.getObjectId(), e.getErrorCode());
+            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
         } catch (Exception e) {
             logger.error("查看地图[{}]中的怪物[{}]信息失败", cm.getMapId(), cm.getObjectId(), e);
-
         }
     }
 }

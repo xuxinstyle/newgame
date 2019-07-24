@@ -80,7 +80,7 @@ public class SkillFacade {
     @HandlerAnno
     public void useSingleSkill(TSession session, CM_UseSkill cm) {
         try {
-            SpringContext.getSkillService().useSkill(session, cm.getMapId(), cm.getSceneId(), cm.getSkillTargetId(), cm.getUseId(), cm.getUseType(), cm.getSkillBarId(), cm.getObjectType());
+            SpringContext.getSkillService().useSkill(session.getAccountId(), cm.getMapId(), cm.getSceneId(), cm.getSkillTargetId(), cm.getUseId(), cm.getUseType(), cm.getSkillBarId(), cm.getObjectType());
         } catch (RequestException e) {
             SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
         } catch (Exception e) {

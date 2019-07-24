@@ -31,6 +31,9 @@ public class DropServiceImpl implements DropService {
     @Override
     public List<AbstractItem> getRandDropItems(MonsterResource monsterResource, int killerJobType) {
         RandDrop randDrop = monsterResource.getRandDrop();
+        if (randDrop == null) {
+            return null;
+        }
         List<AbstractItem> items = randDrop.getRandDropItem(killerJobType);
         /**
          * 加经验

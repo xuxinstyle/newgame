@@ -24,9 +24,13 @@ import com.game.role.equipupgrade.service.EquipUpgradeService;
 import com.game.user.item.service.ItemService;
 import com.game.user.itemeffect.service.ItemEffectService;
 import com.game.role.equipstren.service.EquipStrenService;
+import com.game.user.reward.service.RewardService;
+import com.game.world.base.service.MapInfoService;
+import com.game.world.hopetower.service.HopeTowerService;
 import com.resource.core.InitManager;
 import com.resource.core.StorageManager;
 import com.socket.core.session.SessionManager;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -108,6 +112,25 @@ public class SpringContext implements ApplicationContextAware {
     private SkillEffectService skillEffectService;
     @Autowired
     private DropService dropService;
+    @Autowired
+    private MapInfoService mapInfoService;
+    @Autowired
+    private HopeTowerService hopeTowerService;
+    @Autowired
+    private RewardService rewardService;
+
+
+    public static RewardService getRewardService() {
+        return instance.rewardService;
+    }
+
+    public static HopeTowerService getHopeTowerService() {
+        return instance.hopeTowerService;
+    }
+
+    public static MapInfoService getMapInfoService() {
+        return instance.mapInfoService;
+    }
 
     public static DropService getDropService() {
         return instance.dropService;

@@ -151,10 +151,10 @@ public class ItemServiceImpl implements ItemService {
                 continue;
             }
             if (!pack.checkPackEnough(item)) {
-                logger.warn("玩家{}背包空间不足发奖失败", accountId);
+                logger.warn("玩家{}背包空间不足发奖{}失败", accountId, item);
                 SM_AwardToPack sm = SM_AwardToPack.valueOf(3);
                 SendPacketUtil.send(accountId, sm);
-                return;
+                continue;
             }
 
             addItemToPackAndSave(accountId, item);

@@ -35,12 +35,24 @@ public class JsonToArrayConverter implements ConditionalGenericConverter {
             return null;
         }
         if(targetType.getElementTypeDescriptor().isPrimitive()){
-            return JsonUtils.string2Object(content,targetType.getType());
+            try {
+                return JsonUtils.string2Object(content, targetType.getType());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+
+            }
         }else{
             if(!content.startsWith("[")){
                 content = "[" + content +"]";
             }
-            return JsonUtils.string2Array(content,targetType.getElementTypeDescriptor().getType());
+            try {
+                return JsonUtils.string2Array(content, targetType.getElementTypeDescriptor().getType());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+
+            }
         }
     }
 }

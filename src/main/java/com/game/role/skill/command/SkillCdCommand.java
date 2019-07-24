@@ -18,7 +18,7 @@ public class SkillCdCommand extends AbstractSceneDelayCommand {
     private CreatureUnit creatureUnit;
 
     public SkillCdCommand(int mapId, long delay, String accountId) {
-        super(mapId, delay, accountId);
+        super(mapId, 0, delay, accountId);
     }
 
     public static SkillCdCommand valueOf(int mapId, int skillId, long delay, String accountId, CreatureUnit creatureUnit) {

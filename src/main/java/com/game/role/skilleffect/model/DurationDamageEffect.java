@@ -13,6 +13,7 @@ import com.game.role.skilleffect.command.SkillDurationDamageCommand;
 import com.game.role.skilleffect.context.SkillUseContext;
 import com.game.role.skilleffect.context.SkillUseContextEnm;
 import com.game.role.skilleffect.resource.SkillEffectResource;
+import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
 import com.game.util.ComputeUtil;
 import com.game.util.StringUtil;
@@ -70,7 +71,8 @@ public class DurationDamageEffect extends AbstractSkillEffect {
         /**
          * 定时扣血
          */
-        SkillDurationDamageCommand command = SkillDurationDamageCommand.valueOf(mapId, useUnit, period,
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId, useUnit.getAccountId());
+        SkillDurationDamageCommand command = SkillDurationDamageCommand.valueOf(scene, useUnit, period,
                 hurt, targetUnit, AttributeType.MAGIC_DEFENSE, TimeUtil.now() + duration, getEffectId());
         SpringContext.getSceneExecutorService().submit(command);
         targetUnit.putBuffCommand(SkillEffectAttributeId.getSkillAttributeId(effectId), command);

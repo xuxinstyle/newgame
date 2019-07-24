@@ -54,7 +54,7 @@ public class Player extends Creature<Player> {
     /**
      * 玩家当前所在的地图
      */
-    private AtomicInteger currMapId = new AtomicInteger(MapType.NoviceVillage.getMapId());
+    private AtomicInteger currMapId = new AtomicInteger(MapType.NoviceVillage.getId());
     /**
      * 玩家场景id 同mapId
      *
@@ -76,8 +76,8 @@ public class Player extends Creature<Player> {
         player.setAccountId(accountId);
         player.setPlayerName(nickName);
         player.setSurviveStatus(1);
-        player.setCurrMapId(MapType.NoviceVillage.getMapId());
-        player.setLastLogoutMapId(MapType.NoviceVillage.getMapId());
+        player.setCurrMapId(MapType.NoviceVillage.getId());
+        player.setLastLogoutMapId(MapType.NoviceVillage.getId());
 
         player.setAttributeContainer(new PlayerAttributeContainer());
         /** 生成玩家基础属性*/

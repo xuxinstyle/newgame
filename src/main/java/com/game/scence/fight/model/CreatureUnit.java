@@ -6,8 +6,8 @@ import com.game.base.attribute.attributeid.AttributeId;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.executor.ICommand;
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.skill.command.ReviveCreatureCommand;
-import com.game.role.skill.command.SkillCdCommand;
 import com.game.role.skill.model.SkillInfo;
 import com.game.role.skill.packet.SM_CreatureDead;
 import com.game.role.skill.packet.SM_CreatureRevive;
@@ -19,7 +19,10 @@ import com.game.role.skilleffect.context.SkillUseContextEnm;
 import com.game.role.skilleffect.model.AbstractSkillEffect;
 import com.game.scence.base.model.AbstractScene;
 import com.game.role.skilleffect.packet.SM_CreatureHurt;
+import com.game.scence.monster.resource.MonsterResource;
 import com.game.util.SendPacketUtil;
+import com.game.util.TimeUtil;
+import com.game.world.hopetower.event.MonsterDeadEvent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +38,7 @@ public abstract class CreatureUnit extends BaseUnit{
      * 账号id
      */
     private String accountId;
+
     /**
      * 属性容器
      */
@@ -64,25 +68,16 @@ public abstract class CreatureUnit extends BaseUnit{
     /**
      * 技能cd command  《技能id,技能cd 的command》
      */
-    private Map<Integer,ICommand> cdCommandMap = new HashMap<>();
+    private Map<Integer, Long> cdTimeMap = new HashMap<>();
+
     /**
      * 玩家的属性buff的command
      */
     private Map<AttributeId, ICommand> buffCommandMap = new HashMap<>();
-    /**
-     * 技能是否再cd状态
-     */
-    private Map<Integer, Boolean> skillCdMap = new HashMap<>();
+
     // 被攻击者
     private CreatureUnit attacker;
 
-    public void putSkillCd(int skillId, boolean status) {
-        skillCdMap.put(skillId, status);
-    }
-
-    public Boolean getSkillCdStatus(int skillId) {
-        return skillCdMap.get(skillId);
-    }
 
     public boolean consumeMpAndCheck(long consumeMp) {
         if (this.currMp < consumeMp) {
@@ -93,7 +88,6 @@ public abstract class CreatureUnit extends BaseUnit{
     }
 
     /**
-     * 调用之前需要检查是否充足
      *
      * @param consumeHp
      */
@@ -101,30 +95,29 @@ public abstract class CreatureUnit extends BaseUnit{
         if (this.isDead) {
             return;
         }
+        AbstractScene scene = getScene();
+        List<String> accountIds = scene.getAccountIds();
         if (this.currHp <= consumeHp) {
-            this.setDead(true);
-            this.currHp = 0;
-            // 清空生物的状态
-            afterDead();
-            doDropHandle(attacker);
-            doDelayRevive();
             // 通知场景中的玩家
-            AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId());
-            List<String> accountIds = scene.getAccountIds();
             for (String accountId : accountIds) {
                 SendPacketUtil.send(accountId, SM_CreatureHurt.valueOf(this, this.currHp));
             }
+            // 生物死亡
+            this.setDead(true);
+            // 清空生物的状态
+            afterDead(attacker);
+            doDropHandle(attacker);
+            doDelayRevive();
+            this.currHp = 0;
             return;
         }
         this.currHp = this.currHp - consumeHp;
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId());
-        List<String> accountIds = scene.getAccountIds();
         for (String accountId : accountIds) {
             SendPacketUtil.send(accountId, SM_CreatureHurt.valueOf(this, consumeHp));
         }
     }
 
-    public abstract void doAttackAfter(CreatureUnit attacker);
+    public abstract void doAttackAfter(String accountId, CreatureUnit attacker);
 
     public void doDropHandle(CreatureUnit attacker) {
 
@@ -134,19 +127,26 @@ public abstract class CreatureUnit extends BaseUnit{
         /**
          * 抛一个定时器 定时复活怪物
          */
-        ReviveCreatureCommand command = ReviveCreatureCommand.valueOf(getMapId(), getReviveCd(), getAccountId(), this);
+        if (getReviveCd() <= 0) {
+            return;
+        }
+        ReviveCreatureCommand command = ReviveCreatureCommand.valueOf(getScene(), getReviveCd(), getAccountId(), this);
         putCommand(command);
         SpringContext.getSceneExecutorService().submit(command);
     }
 
-    public void doRevive() {
+    public void reset() {
         this.setCurrHp(this.getMaxHp());
         this.setCurrMp(this.getMaxMp());
         this.setDead(false);
+    }
+
+    public void doRevive() {
+        reset();
         /**
          * 通知客户端
          */
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId());
+        AbstractScene scene = getScene();
         List<String> accountIds = scene.getAccountIds();
         SM_CreatureRevive sm = SM_CreatureRevive.valueOf(this);
         for (String accountId : accountIds) {
@@ -192,20 +192,10 @@ public abstract class CreatureUnit extends BaseUnit{
         this.buffCommandMap = buffCommandMap;
     }
 
-    public Map<Integer, Boolean> getSkillCdMap() {
-        return skillCdMap;
-    }
 
-    public void setSkillCdMap(Map<Integer, Boolean> skillCdMap) {
-        this.skillCdMap = skillCdMap;
-    }
+    public void putCdTime(int skillId, long coolDown) {
 
-    public void putCdCommand(int skillId, ICommand command) {
-        ICommand cdCommand = cdCommandMap.get(skillId);
-        if (cdCommand != null) {
-            cdCommand.cancel();
-        }
-        cdCommandMap.put(skillId, command);
+        cdTimeMap.put(skillId, coolDown);
     }
 
     /**
@@ -214,16 +204,14 @@ public abstract class CreatureUnit extends BaseUnit{
      * @param skillId
      */
     public void clearSkillCd(int skillId) {
-        ICommand command = cdCommandMap.get(skillId);
-        if (command == null) {
+        Long coolDown = cdTimeMap.get(skillId);
+        if (coolDown == null) {
             return;
         }
-        command.cancel();
         /**
          * fixme:这里要清除cd的command吗？
          */
-        cdCommandMap.remove(skillId);
-        skillCdMap.put(skillId, false);
+        cdTimeMap.remove(skillId);
         SendPacketUtil.send(getAccountId(), SM_SkillStatus.valueOf(skillId, 1));
     }
 
@@ -235,23 +223,20 @@ public abstract class CreatureUnit extends BaseUnit{
         commandMap.put(command.getClass(), command);
     }
 
-    public void afterDead() {
+    public void afterDead(CreatureUnit attacker) {
+
         /**
          * 清空状态
          */
-        for (ICommand command : cdCommandMap.values()) {
-            command.cancel();
-        }
-        cdCommandMap.clear();
+        cdTimeMap.clear();
         for (ICommand command : buffCommandMap.values()) {
             command.cancel();
         }
         buffCommandMap.clear();
-        skillCdMap.clear();
         /**
          * 通知客户端
          */
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(getMapId());
+        AbstractScene scene = getScene();
         List<String> accountIds = scene.getAccountIds();
         for (String accountId : accountIds) {
             SendPacketUtil.send(accountId, SM_CreatureDead.valueOf(getMapId(), this));
@@ -262,10 +247,6 @@ public abstract class CreatureUnit extends BaseUnit{
             command.cancel();
         }
         commandMap.clear();
-        for(ICommand command:cdCommandMap.values()){
-            command.cancel();
-        }
-        cdCommandMap.clear();
         for (ICommand command : buffCommandMap.values()) {
             command.cancel();
         }
@@ -346,12 +327,12 @@ public abstract class CreatureUnit extends BaseUnit{
         return attribute.getValue();
     }
 
-    public Map<Integer, ICommand> getCdCommandMap() {
-        return cdCommandMap;
+    public Map<Integer, Long> getCdTimeMap() {
+        return cdTimeMap;
     }
 
-    public void setCdCommandMap(Map<Integer, ICommand> cdCommandMap) {
-        this.cdCommandMap = cdCommandMap;
+    public void setCdTimeMap(Map<Integer, Long> cdTimeMap) {
+        this.cdTimeMap = cdTimeMap;
     }
 
     /**
@@ -362,15 +343,9 @@ public abstract class CreatureUnit extends BaseUnit{
     public void useSkillAfter(SkillResource skillResource, SkillLevelResource skillLevelResource, CreatureUnit useUnit) {
 
         /**
-         * 抛出技能cd的command
+         * 记录技能冷却时间技能cd的command
          */
-        if (skillLevelResource.getCd() <= 0) {
-            return;
-        }
-        SkillCdCommand command = SkillCdCommand.valueOf(getMapId(), skillResource.getId(), skillLevelResource.getCd(), useUnit.getAccountId(), useUnit);
-        SpringContext.getSceneExecutorService().submit(command);
-        putCdCommand(skillResource.getId(), command);
-        putSkillCd(skillResource.getId(), true);
+        putCdTime(skillResource.getId(), TimeUtil.now() + skillLevelResource.getCd());
 
     }
 
@@ -379,11 +354,11 @@ public abstract class CreatureUnit extends BaseUnit{
         int[] effects = skillLevelResource.getEffects();
         for (int effectId : effects) {
             for (CreatureUnit targetUnit : targetUnits) {
+                if (targetUnit.isDead()) {
+                    continue;
+                }
                 AbstractSkillEffect skillEffect = SpringContext.getSkillEffectService().getSkillEffect(effectId);
                 skillEffect.doActive(skillUseContext, targetUnit);
-                if (targetUnit.isDead()) {
-                    break;
-                }
             }
         }
     }

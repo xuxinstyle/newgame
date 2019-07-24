@@ -39,6 +39,9 @@ public class DropItemAddCommand extends AbstractAccountCommand {
     public void active() {
         MonsterResource monsterResource = getMonsterResource();
         List<AbstractItem> dropItems = SpringContext.getDropService().getRandDropItems(monsterResource, job);
+        if (dropItems == null) {
+            return;
+        }
         SpringContext.getItemService().awardToPack(getAccountId(), dropItems);
     }
 

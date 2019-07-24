@@ -3,6 +3,7 @@ package com.game.role.skill.command;
 import com.game.SpringContext;
 import com.game.base.executor.scene.impl.AbstractSceneDelayCommand;
 import com.game.base.gameobject.model.Creature;
+import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
 
 /**
@@ -16,12 +17,12 @@ public class ReviveCreatureCommand extends AbstractSceneDelayCommand {
      */
     private CreatureUnit creatureUnit;
 
-    public ReviveCreatureCommand(int mapId, long delay, String accountId) {
-        super(mapId, delay, accountId);
+    public ReviveCreatureCommand(AbstractScene scene, long delay, String accountId) {
+        super(scene, accountId, delay);
     }
 
-    public static ReviveCreatureCommand valueOf(int mapId, long delay, String accountId,CreatureUnit creatureUnit){
-        ReviveCreatureCommand command = new ReviveCreatureCommand(mapId,delay,accountId);
+    public static ReviveCreatureCommand valueOf(AbstractScene scene, long delay, String accountId, CreatureUnit creatureUnit) {
+        ReviveCreatureCommand command = new ReviveCreatureCommand(scene, delay, accountId);
         command.setCreatureUnit(creatureUnit);
         return command;
     }

@@ -73,6 +73,9 @@ public class MonsterResource {
     private int[] skillIds;
 
     public void analyzeDrop() {
+        if (dropStr == null) {
+            return;
+        }
         randDrop = RandDrop.analyzeDrop(dropStr);
     }
 

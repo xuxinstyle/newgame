@@ -120,4 +120,12 @@ public abstract class AbstractItem extends GameObject implements Comparable<Abst
         return 0;
     }
 
+    @Override
+    public String toString() {
+        return "AbstractItem{" +
+                "itemModelId=" + itemModelId +
+                ", num=" + num +
+                ", itemType=" + itemType +
+                '}';
+    }
 }

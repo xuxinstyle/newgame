@@ -15,16 +15,30 @@ public class ChangeMapCommand extends AbstractSceneCommand {
      * 目标地图id
      */
     private int targetMapId;
+    /**
+     * 是否第一次进入
+     */
+    private boolean clientRequest;
 
     public ChangeMapCommand(Player player,int mapId,int sceneId){
         super(mapId,sceneId,player.getAccountId());
         this.player = player;
 
     }
-    public static ChangeMapCommand valueOf(Player player,int targetMapId){
-        ChangeMapCommand command = new ChangeMapCommand(player,player.getCurrMapId(),player.getCurrSceneId());
+
+    public static ChangeMapCommand valueOf(Player player, int sceneId, int targetMapId, boolean clientRequest) {
+        ChangeMapCommand command = new ChangeMapCommand(player, player.getCurrMapId(), sceneId);
         command.setTargetMapId(targetMapId);
+        command.setClientRequest(clientRequest);
         return command;
+    }
+
+    public boolean isClientRequest() {
+        return clientRequest;
+    }
+
+    public void setClientRequest(boolean clientRequest) {
+        this.clientRequest = clientRequest;
     }
 
     public int getTargetMapId() {
@@ -42,7 +56,7 @@ public class ChangeMapCommand extends AbstractSceneCommand {
 
     @Override
     public void active() {
-        SpringContext.getScenceSerivce().doChangeMap(player,targetMapId);
+        SpringContext.getScenceSerivce().doChangeMap(player, targetMapId, clientRequest);
     }
 
     public Player getPlayer() {

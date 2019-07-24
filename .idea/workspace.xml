@@ -5,40 +5,103 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93cc0952-b069-437a-9235-91722d943ce6" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/AbstractMonsterScene.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/HopeTowerScene.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/model/MonsterDef.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_LoginEnterMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/reward/model/RewardDef.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/reward/resource/RewardResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/reward/service/RewardManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/reward/service/RewardService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/reward/service/RewardServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/task/constant/TaskLineType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/task/constant/TaskStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/task/entity/TaskEnt.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/task/model/TaskInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/task/model/TaskLineInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/util/CommonUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/util/RewardUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/base/entity/MapInfoEnt.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/base/model/AbstractMapInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/base/model/MapInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/base/service/MapInfoManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/base/service/MapInfoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/base/service/MapInfoServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/command/HopeTowerSettlementCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/event/MonsterDeadEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/event/PlayerDeadEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/facade/HopeTowerFacade.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/model/HopeTowerInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/packet/CM_ExitHopeTower.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/packet/CM_ShowHopeTowerInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/packet/SM_CloseScene.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/packet/SM_ShowHopeTowerInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/场景说明.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/场景说明.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc/开发计划.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/开发计划.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/equip/service/EquipServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/equip/service/EquipServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/equipupgrade/service/EquipUpgradeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/equipupgrade/service/EquipUpgradeServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/SpringContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/SpringContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/executor/scene/impl/AbstractSceneCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/executor/scene/impl/AbstractSceneCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/executor/scene/impl/AbstractSceneDelayCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/executor/scene/impl/AbstractSceneDelayCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/base/executor/scene/impl/AbstractSceneRateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/base/executor/scene/impl/AbstractSceneRateCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/login/packet/SM_Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/login/packet/SM_Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/login/service/LoginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/login/service/LoginServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skill/model/SkillInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skill/model/SkillInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skill/command/ReviveCreatureCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skill/command/ReviveCreatureCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skill/command/SkillCdCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skill/command/SkillCdCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skill/command/SkillSynCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skill/command/SkillSynCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skill/command/UseSkillCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skill/command/UseSkillCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skill/facade/SkillFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skill/facade/SkillFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/context/SkillUseContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/context/SkillUseContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/context/SkillUseContextEnm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/context/SkillUseContextEnm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/AbstractSkillEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/AbstractSkillEffect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/command/SkillAttrBuffDestoryCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/command/SkillAttrBuffDestoryCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/command/SkillDurationDamageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/command/SkillDurationDamageCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/AddMyselfAttributeEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/AddMyselfAttributeEffect.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/DurationDamageEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/DurationDamageEffect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/PhysicalDamageEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/PhysicalDamageEffect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/service/SkillEffectServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/service/SkillEffectServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/AbstractScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/AbstractScene.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/FieldFightScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/FieldFightScene.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/NoviceVillageScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/NoviceVillageScene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/drop/command/DropItemAddCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/drop/command/DropItemAddCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/drop/service/DropServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/drop/service/DropServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/AddAttributeBuffSynCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/AddAttributeBuffSynCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/PlayerLevelSyncCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/PlayerLevelSyncCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/RemoveAttributeBuffSynCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/RemoveAttributeBuffSynCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/BaseUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/BaseUnit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/CreatureUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/CreatureUnit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/MonsterUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/MonsterUnit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/PlayerUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/PlayerUnit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/resource/MonsterResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/resource/MonsterResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ChangeMapCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ChangeMapCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/EnterMapCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/EnterMapCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/LeaveMapCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/LeaveMapCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/MoveCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/MoveCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/event/PlayerEnterMapEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/event/PlayerMoveEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ShowAllVisibleCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ShowAllVisibleCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ShowTargetCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ShowTargetCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/constant/MapType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/constant/MapType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/facade/ScenceFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/facade/ScenceFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/CM_Move.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/CM_Move.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_EnterMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_EnterMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/resource/MapResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/resource/MapResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceManger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceManger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/user/item/facade/ItemFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/user/item/facade/ItemFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/user/item/model/ItemStorageInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/user/item/model/ItemStorageInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/user/account/service/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/user/account/service/AccountServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/user/item/model/AbstractItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/user/item/model/AbstractItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/user/item/service/ItemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/user/item/service/ItemServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/util/I18nId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/util/I18nId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/resource/EquipStrenResource.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/resource/EquipStrenResource.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/util/PlayerUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/util/PlayerUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/resource/support/JsonToArrayConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/resource/support/JsonToArrayConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/message.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/message.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/resource/MapResource.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/resource/MapResource.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/resource/MonsterResource.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/resource/MonsterResource.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/resource/NpcResource.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/resource/NpcResource.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/game/SpringContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/game/SpringContext.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/message.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/message.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -50,7 +113,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/newgame$Start.ic" NAME="Start Coverage Results" MODIFIED="1561119574327" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/newgame$Start.ic" NAME="Start Coverage Results" MODIFIED="1563870780518" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.game.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/newgame$start.ic" NAME="start Coverage Results" MODIFIED="1559642292399" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
@@ -59,74 +122,130 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ScenceManger.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceManger.java">
+      <file leaf-file-name="TaskLineInfo.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/model/TaskLineInfo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
+            <state relative-caret-position="124">
+              <caret line="16" column="24" lean-forward="true" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
+              <folding>
+                <element signature="e#382#383#0" expanded="true" />
+                <element signature="e#429#430#0" expanded="true" />
+                <element signature="e#453#454#0" expanded="true" />
+                <element signature="e#507#508#0" expanded="true" />
+                <element signature="e#311#312#0" expanded="true" />
+                <element signature="e#342#343#0" expanded="true" />
+                <element signature="e#387#388#0" expanded="true" />
+                <element signature="e#427#428#0" expanded="true" />
+                <element signature="e#459#460#0" expanded="true" />
+                <element signature="e#490#491#0" expanded="true" />
+                <element signature="e#535#536#0" expanded="true" />
+                <element signature="e#575#576#0" expanded="true" />
+                <element signature="e#605#606#0" expanded="true" />
+                <element signature="e#634#635#0" expanded="true" />
+                <element signature="e#675#676#0" expanded="true" />
+                <element signature="e#711#712#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SM_ShowAllVisibleInfo.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_ShowAllVisibleInfo.java">
+      <file leaf-file-name="TaskService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+            <state relative-caret-position="114">
+              <caret line="6" column="28" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="28" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SM_ShowAccountInfo.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_ShowAccountInfo.java">
+      <file leaf-file-name="TaskServiceImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+            <state relative-caret-position="240">
+              <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#743#744#0" expanded="true" />
+                <element signature="e#786#787#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Position.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/model/Position.java">
+      <file leaf-file-name="TaskEnt.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/entity/TaskEnt.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            <state relative-caret-position="181">
+              <caret line="28" column="42" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ScenceFacade.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/facade/ScenceFacade.java">
+      <file leaf-file-name="TaskInfo.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/model/TaskInfo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-391">
-              <caret line="45" column="46" selection-start-line="45" selection-start-column="46" selection-end-line="45" selection-end-column="46" />
+            <state relative-caret-position="112">
+              <caret line="13" column="24" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#374#375#0" expanded="true" />
+                <element signature="e#429#430#0" expanded="true" />
+                <element signature="e#602#603#0" expanded="true" />
+                <element signature="e#632#633#0" expanded="true" />
+                <element signature="e#698#699#0" expanded="true" />
+                <element signature="e#736#737#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MapType.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/constant/MapType.java">
+      <file leaf-file-name="SceneThreadPoolExecutor.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/executor/scene/SceneThreadPoolExecutor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="371">
-              <caret line="43" column="29" lean-forward="true" selection-start-line="43" selection-start-column="29" selection-end-line="43" selection-end-column="29" />
+            <state relative-caret-position="284">
+              <caret line="33" column="49" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="49" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AbstractScene.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/AbstractScene.java">
+      <file leaf-file-name="ItemStorageEnt.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/item/entity/ItemStorageEnt.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+            <state relative-caret-position="191">
+              <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="25" selection-end-column="77" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NoviceVillageScene.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/NoviceVillageScene.java">
+      <file leaf-file-name="TaskManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="21" column="26" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+            <state relative-caret-position="190">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="开发计划.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/doc/开发计划.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="195">
+                <caret line="166" column="13" selection-start-line="166" selection-start-column="13" selection-end-line="166" selection-end-column="13" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HopeTowerInfo.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/hopetower/model/HopeTowerInfo.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="392">
+              <caret line="42" column="13" lean-forward="true" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -136,8 +255,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -147,36 +266,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>INTEL</find>
-      <find>save</find>
-      <find>passiveEffectStr</find>
-      <find>analyzeLearnCondition</find>
-      <find>enter</find>
-      <find>ACTIVE_SKILL</find>
-      <find>PASSIVE_SKILL</find>
-      <find>creatureUnit</find>
-      <find>sceneId</find>
-      <find>CM_ScenePositionVisible</find>
-      <find>do</find>
-      <find>useSkill</find>
-      <find>Math.random(</find>
-      <find>dropService</find>
       <find>SynCommand</find>
       <find>learn</find>
       <find>getMax</find>
       <find>PlayerUnit</find>
       <find>SkillCdCommand</find>
       <find>learnSkill</find>
-      <find>leave</find>
       <find>ischangeMap</find>
       <find>addItem</find>
       <find>RemoveScenceInfoCommand</find>
       <find>SUCK_BLOOD</find>
       <find>ATTACK_SPEED</find>
-      <find>analyzetargetTypes</find>
-      <find>changeMap</find>
       <find>getMap</find>
       <find>leaveMap</find>
+      <find>useSkill</find>
+      <find>Position</find>
+      <find>changeMap</find>
+      <find>analyzeReward</find>
+      <find>进入地图失败</find>
+      <find>doEnterMap</find>
+      <find>analyzeMonster</find>
+      <find>CM_CloseScene</find>
+      <find>can</find>
+      <find>isCan</find>
+      <find>analyzetargetTypes</find>
+      <find>leave</find>
+      <find>canEnter</find>
+      <find>enter</find>
+      <find>accountId</find>
+      <find>canLe</find>
+      <find>doEn</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -188,57 +307,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/game/gm/service/GmServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/constant/BuffType.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/command/SM_ShowEffect.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/packet/CM_ShowUnitEffect.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/SpringContext.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/attributeid/MedicineAttributeId.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/message.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/service/SkillEffectService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/facade/SkillEffectFacde.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/command/ShowEffectCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/service/SkillEffectServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/packet/SM_ShowUnitEffect.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/drop/model/RandDrop.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/base/attribute/attributeid/SkillEffectAttributeId.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/constant/SkillEffectType.java" />
-        <option value="$PROJECT_DIR$/doc/系统架构.md" />
-        <option value="$PROJECT_DIR$/doc/技能系统说明.md" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ShowAllVisibleCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/field/service/FieldServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/field/service/FieldService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/field/facade/FieldFacade.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ShowTargetCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/field/packet/CM_ShowObjectInfo.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/user/item/model/ItemStorageInfo.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/user/item/service/ItemServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/user/item/facade/ItemFacade.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/context/SkillUseContext.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/PhysicalDamageEffect.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/AbstractSkillEffect.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/context/SkillUseContextEnm.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/CM_Move.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/MoveCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/NoviceVillageScene.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/FieldFightScene.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/util/I18nId.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/AbstractFightScene.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/AbstractMonsterScene.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_EnterMap.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_FirstEnterMap.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/AddMyselfAttributeEffect.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/event/MonsterDeadEvent.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/drop/service/DropServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/drop/command/DropItemAddCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ChangeMapCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/login/service/LoginServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/PlayerLevelSyncCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/EnterMapCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/facade/ScenceFacade.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/PlayerLevelSyncCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterServiceImpl.java" />
-        <option value="$PROJECT_DIR$/doc/场景说明.md" />
-        <option value="$PROJECT_DIR$/doc/开发计划.md" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skill/model/SkillInfo.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/CreatureUnit.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/DurationDamageEffect.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/AddMyselfAttributeEffect.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/AbstractScene.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceManger.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skill/command/UseSkillCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/LeaveMapCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/world/base/model/AbstractMapInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/packet/SM_ShowHopeTowerInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/role/skill/facade/SkillFacade.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/FieldFightScene.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/util/I18nId.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/NoviceVillageScene.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/AbstractScene.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/event/PlayerDeadEvent.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/PlayerUnit.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/MonsterUnit.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/CreatureUnit.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/facade/HopeTowerFacade.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/message.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/user/task/constant/TaskType.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/user/task/constant/TaskLineType.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/user/task/model/TaskDetailInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/user/task/constant/TaskStatus.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/user/task/model/TaskLineInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/HopeTowerScene.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/util/PlayerUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/util/CommonUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/model/HopeTowerInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/user/task/entity/TaskEnt.java" />
+        <option value="$PROJECT_DIR$/doc/开发计划.md" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/user/task/model/TaskInfo.java" />
       </list>
     </option>
   </component>
@@ -258,11 +377,11 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="429" />
-    <option name="y" value="53" />
-    <option name="width" value="999" />
-    <option name="height" value="710" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="93" />
+    <option name="y" value="6" />
+    <option name="width" value="1188" />
+    <option name="height" value="732" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -274,7 +393,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -363,7 +482,7 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="scence" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
@@ -373,8 +492,8 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="scence" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+              <item name="item" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
@@ -384,9 +503,9 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="scence" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+              <item name="item" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
@@ -396,8 +515,8 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="scence" type="462c0819:PsiDirectoryNode" />
-              <item name="visible" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+              <item name="task" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
@@ -407,8 +526,8 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="scence" type="462c0819:PsiDirectoryNode" />
-              <item name="visible" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+              <item name="task" type="462c0819:PsiDirectoryNode" />
               <item name="constant" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -419,9 +538,9 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="scence" type="462c0819:PsiDirectoryNode" />
-              <item name="visible" type="462c0819:PsiDirectoryNode" />
-              <item name="facade" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+              <item name="task" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
@@ -431,8 +550,8 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="scence" type="462c0819:PsiDirectoryNode" />
-              <item name="visible" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+              <item name="task" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -443,33 +562,29 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="scence" type="462c0819:PsiDirectoryNode" />
-              <item name="visible" type="462c0819:PsiDirectoryNode" />
-              <item name="packet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="scence" type="462c0819:PsiDirectoryNode" />
-              <item name="visible" type="462c0819:PsiDirectoryNode" />
-              <item name="resource" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="scence" type="462c0819:PsiDirectoryNode" />
-              <item name="visible" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+              <item name="task" type="462c0819:PsiDirectoryNode" />
               <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="world" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
@@ -478,12 +593,20 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newgame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="resource" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="AndroidView" />
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -491,7 +614,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../client" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Project" />
@@ -501,11 +624,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.game.scence.visible.packet" />
+      <recent name="com.game.world.base.model" />
       <recent name="com.game.role.skill.constant" />
       <recent name="com.resource.support" />
       <recent name="com.socket.utils" />
-      <recent name="com.socket.heartbeat" />
-      <recent name="com.game.base.core.service" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\项目\git本地仓库代码\newgame\doc" />
@@ -671,7 +794,10 @@
       <workItem from="1563240502332" duration="66933000" />
       <workItem from="1563411827756" duration="36514000" />
       <workItem from="1563500754257" duration="1357000" />
-      <workItem from="1563504978466" duration="20887000" />
+      <workItem from="1563504978466" duration="25275000" />
+      <workItem from="1563541458301" duration="2376000" />
+      <workItem from="1563714386243" duration="2502000" />
+      <workItem from="1563758669419" duration="112326000" />
     </task>
     <task id="LOCAL-00001" summary="修复怪物掉落物的bug，并将玩家中的攻速和吸血相关的属性删除">
       <created>1563336763999</created>
@@ -694,11 +820,18 @@
       <option name="project" value="LOCAL" />
       <updated>1563465106237</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="修改changemap和move的操作">
+      <created>1563531252446</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1563531252446</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1115302000" />
+    <option name="totallyTimeSpent" value="1236894000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -710,7 +843,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
+    <frame x="444" y="34" width="1188" height="732" extended-state="0" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="FindBugs-IDEA" order="7" sideWeight="0.812093" weight="0.38709676" />
@@ -719,31 +852,64 @@
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Designer" order="2" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.16868381" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.20212767" />
       <window_info anchor="right" id="Database" order="7" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.24934153" />
       <window_info id="UI Designer" order="4" />
-      <window_info anchor="bottom" x="375" y="81" width="568" height="553" id="Debug" order="5" sideWeight="0.52879584" visible="true" weight="0.11827957" />
+      <window_info anchor="bottom" x="375" y="81" width="568" height="553" id="Debug" order="5" sideWeight="0.52879584" visible="true" weight="0.28046745" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3296501" />
-      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.43717277" weight="0.34715822" />
+      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.43717277" weight="0.24207012" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
       <window_info id="Image Layers" order="3" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49924356" weight="0.32615894" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.4355717" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.43327555" />
       <window_info anchor="bottom" id="Spring" order="13" weight="0.65154266" />
       <window_info anchor="bottom" id="Terminal" order="14" weight="0.0" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22541603" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32180852" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4891962" weight="0.6313364" />
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4891962" weight="0.6328725" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.21505377" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="bottom" id="FindBugs-IDEA" order="7" sideWeight="0.812093" weight="0.38709676" />
+      <window_info id="Designer" order="2" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.43327555" />
+      <window_info anchor="bottom" id="Spring" order="13" weight="0.65154266" />
+      <window_info id="Image Layers" order="3" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.24934153" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="14" weight="0.0" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.21505377" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.4712042" side_tool="true" weight="0.45789474" />
+      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.43717277" weight="0.24270353" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.20212767" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49924356" weight="0.32615894" />
+      <window_info anchor="right" id="Maven Projects" order="6" weight="0.4337138" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4891962" weight="0.6313364" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09219858" />
+      <window_info anchor="right" id="Database" order="7" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3296501" />
+      <window_info anchor="right" id="Palette&#9;" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
+      <window_info active="true" anchor="bottom" x="375" y="81" width="568" height="553" id="Debug" order="5" sideWeight="0.52879584" visible="true" weight="0.46215782" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -758,18 +924,13 @@
     <MESSAGE value="修复怪物掉落物的bug，并将玩家中的攻速和吸血相关的属性删除" />
     <MESSAGE value="怪物反击，使用gm命令执行" />
     <MESSAGE value="添加技能系统说明文件 和场景说明文件优化查看场景中的玩家信息" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加技能系统说明文件 和场景说明文件优化查看场景中的玩家信息" />
+    <MESSAGE value="修改changemap和move的操作" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改changemap和move的操作" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java</url>
-          <line>244</line>
-          <properties />
-          <option name="timeStamp" value="826" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/AddAttributeBuffSynCommand.java</url>
           <line>49</line>
@@ -784,37 +945,31 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/MonsterUnit.java</url>
-          <line>83</line>
+          <line>86</line>
           <properties />
           <option name="timeStamp" value="830" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/PlayerLevelSyncCommand.java</url>
-          <line>46</line>
+          <line>49</line>
           <properties />
           <option name="timeStamp" value="836" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/PlayerLevelSyncCommand.java</url>
-          <line>50</line>
+          <line>53</line>
           <properties />
           <option name="timeStamp" value="837" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/CreatureUnit.java</url>
-          <line>226</line>
+          <line>213</line>
           <properties />
           <option name="timeStamp" value="838" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/CreatureUnit.java</url>
-          <line>366</line>
-          <properties />
-          <option name="timeStamp" value="839" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java</url>
-          <line>284</line>
+          <line>281</line>
           <properties />
           <option name="timeStamp" value="840" />
         </line-breakpoint>
@@ -832,25 +987,19 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java</url>
-          <line>377</line>
+          <line>375</line>
           <properties />
           <option name="timeStamp" value="843" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java</url>
-          <line>300</line>
-          <properties />
-          <option name="timeStamp" value="844" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java</url>
-          <line>322</line>
+          <line>319</line>
           <properties />
           <option name="timeStamp" value="845" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java</url>
-          <line>310</line>
+          <line>307</line>
           <properties />
           <option name="timeStamp" value="846" />
         </line-breakpoint>
@@ -862,21 +1011,147 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/PhysicalDamageEffect.java</url>
-          <line>61</line>
+          <line>59</line>
           <properties />
           <option name="timeStamp" value="851" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java</url>
-          <line>241</line>
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/EnterMapCommand.java</url>
+          <line>35</line>
           <properties />
-          <option name="timeStamp" value="854" />
+          <option name="timeStamp" value="879" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ChangeMapCommand.java</url>
+          <line>57</line>
+          <properties />
+          <option name="timeStamp" value="882" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ChangeMapCommand.java</url>
+          <line>28</line>
+          <properties />
+          <option name="timeStamp" value="883" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerServiceImpl.java</url>
+          <line>35</line>
+          <properties />
+          <option name="timeStamp" value="889" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/CreatureUnit.java</url>
+          <line>237</line>
+          <properties />
+          <option name="timeStamp" value="917" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerServiceImpl.java</url>
+          <line>52</line>
+          <properties />
+          <option name="timeStamp" value="920" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/HopeTowerScene.java</url>
+          <line>105</line>
+          <properties />
+          <option name="timeStamp" value="921" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/CreatureUnit.java</url>
+          <line>102</line>
+          <properties />
+          <option name="timeStamp" value="923" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/CreatureUnit.java</url>
+          <line>101</line>
+          <properties />
+          <option name="timeStamp" value="924" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java</url>
+          <line>100</line>
+          <properties />
+          <option name="timeStamp" value="929" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/user/item/service/ItemServiceImpl.java</url>
+          <line>143</line>
+          <properties />
+          <option name="timeStamp" value="930" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/HopeTowerScene.java</url>
+          <line>153</line>
+          <properties />
+          <option name="timeStamp" value="932" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java</url>
+          <line>98</line>
+          <properties />
+          <option name="timeStamp" value="933" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java</url>
+          <line>95</line>
+          <properties />
+          <option name="timeStamp" value="934" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/login/service/LoginServiceImpl.java</url>
+          <line>87</line>
+          <properties />
+          <option name="timeStamp" value="935" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java</url>
+          <line>339</line>
+          <properties />
+          <option name="timeStamp" value="936" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java</url>
+          <line>357</line>
+          <properties />
+          <option name="timeStamp" value="937" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/HopeTowerScene.java</url>
+          <line>79</line>
+          <properties />
+          <option name="timeStamp" value="939" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java</url>
+          <line>292</line>
+          <properties />
+          <option name="timeStamp" value="941" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java</url>
+          <line>304</line>
+          <properties />
+          <option name="timeStamp" value="942" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java</url>
+          <line>160</line>
+          <properties />
+          <option name="timeStamp" value="943" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java</url>
+          <line>343</line>
+          <properties />
+          <option name="timeStamp" value="944" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="858" />
+      <option name="time" value="945" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -948,413 +1223,476 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/context/SkillUseContextEnm.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/base/service/MapInfoServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/account/model/AccountInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="56" column="25" selection-start-line="56" selection-start-column="25" selection-end-line="56" selection-end-column="25" />
+        <state relative-caret-position="266">
+          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
           <folding>
-            <element signature="e#1154#1155#0" expanded="true" />
-            <element signature="e#1188#1189#0" expanded="true" />
+            <element signature="e#493#494#0" expanded="true" />
+            <element signature="e#540#541#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_EnterMap.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/base/entity/MapInfoEnt.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
+        <state relative-caret-position="380">
+          <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/base/model/AbstractMapInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/base/model/MapInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+          <folding>
+            <element signature="e#833#834#0" expanded="true" />
+            <element signature="e#863#864#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/hopetower/packet/SM_ShowHopeTowerInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_EnterMapErr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_ChangeMapErr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="11" column="34" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/itemeffect/model/ExpUseEffect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="62" column="86" selection-start-line="62" selection-start-column="80" selection-end-line="62" selection-end-column="86" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/player/event/PlayerUpLevelEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/command/PlayerLevelSyncCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="26" column="45" lean-forward="true" selection-start-line="26" selection-start-column="45" selection-end-line="26" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/message.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="69" column="59" selection-start-line="69" selection-start-column="59" selection-end-line="69" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/CM_ChangeMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="116" column="16" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="16" />
           <folding>
-            <element signature="e#2793#2794#0" expanded="true" />
-            <element signature="e#2825#2826#0" expanded="true" />
-            <element signature="e#3055#3056#0" expanded="true" />
-            <element signature="e#3132#3133#0" expanded="true" />
-            <element signature="e#4831#4832#0" expanded="true" />
-            <element signature="e#4869#4870#0" expanded="true" />
+            <element signature="e#257#258#0" expanded="true" />
+            <element signature="e#289#290#0" expanded="true" />
+            <element signature="e#336#337#0" expanded="true" />
+            <element signature="e#378#379#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/CM_Move.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+        <state relative-caret-position="146">
+          <caret line="86" column="21" selection-start-line="86" selection-start-column="21" selection-end-line="86" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/gm/model/GMCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="22" column="42" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
           <folding>
-            <element signature="e#488#489#0" expanded="true" />
-            <element signature="e#519#520#0" expanded="true" />
-            <element signature="e#565#566#0" expanded="true" />
-            <element signature="e#605#606#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/util/I18nId.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="48" column="8" selection-start-line="48" selection-start-column="8" selection-end-line="48" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_Move.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_ScenePositionVisible.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="16" column="7" lean-forward="true" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/MoveCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="39" column="44" selection-start-line="39" selection-start-column="44" selection-end-line="39" selection-end-column="44" />
-          <folding>
-            <element signature="e#1066#1067#0" expanded="true" />
-            <element signature="e#1169#1170#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/executor/scene/SceneExecutorService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_181/src.zip!/java/lang/Runnable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/executor/scene/SceneThreadPoolExecutor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="49" column="35" selection-start-line="49" selection-start-column="35" selection-end-line="49" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/EnterMapCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding>
-            <element signature="e#875#876#0" expanded="true" />
-            <element signature="e#954#955#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ChangeMapCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="44" column="50" selection-start-line="44" selection-start-column="50" selection-end-line="44" selection-end-column="50" />
-          <folding>
-            <element signature="e#1086#1087#0" expanded="true" />
-            <element signature="e#1166#1167#0" expanded="true" />
+            <element signature="e#482#483#0" expanded="true" />
+            <element signature="e#561#562#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="64" selection-start-line="64" selection-end-line="64" />
+        <state relative-caret-position="199">
+          <caret line="74" column="54" selection-start-line="74" selection-start-column="54" selection-end-line="74" selection-end-column="54" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc/新人培养方案.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="52">
-            <caret line="93" column="6" lean-forward="true" selection-start-line="93" selection-start-column="6" selection-end-line="93" selection-end-column="6" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/executor/scene/SceneExecutorServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skill/facade/SkillFacade.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="21" column="5" lean-forward="true" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
+        <state relative-caret-position="223">
+          <caret line="80" column="66" selection-start-line="80" selection-start-column="66" selection-end-line="80" selection-end-column="66" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/MonsterUnit.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/PhysicalDamageEffect.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="738">
-          <caret line="76" column="16" selection-start-line="76" selection-start-column="16" selection-end-line="76" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skill/command/UseSkillCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="59" column="44" selection-start-line="59" selection-start-column="44" selection-end-line="59" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skill/command/SkillSynCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/util/PlayerUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="22" column="28" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skill/model/SkillInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="51" column="35" lean-forward="true" selection-start-line="51" selection-start-column="35" selection-end-line="51" selection-end-column="35" />
-          <folding>
-            <element signature="e#3942#3943#0" expanded="true" />
-            <element signature="e#3977#3978#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc/场景说明.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="285">
-            <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/LeaveMapCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
-          <folding>
-            <element signature="e#492#493#0" expanded="true" />
-            <element signature="e#565#566#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/BaseUnit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="36" column="7" lean-forward="true" selection-start-line="36" selection-start-column="7" selection-end-line="36" selection-end-column="7" />
-          <folding>
-            <element signature="e#681#682#0" expanded="true" />
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#1324#1325#0" expanded="true" />
-            <element signature="e#1364#1365#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/AbstractSkillEffect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="29" column="22" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/DurationDamageEffect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="52" column="24" selection-start-line="52" selection-start-column="24" selection-end-line="52" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/CreatureUnit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="381" column="34" selection-start-line="381" selection-start-column="34" selection-end-line="381" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/model/AddMyselfAttributeEffect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="45" column="36" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skilleffect/context/SkillUseContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-473">
-          <caret line="286" column="23" lean-forward="true" selection-start-line="286" selection-start-column="23" selection-end-line="286" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc/开发计划.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="222">
-            <caret line="135" lean-forward="true" selection-start-line="135" selection-end-line="135" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="140" column="50" selection-start-line="140" selection-start-column="50" selection-end-line="140" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/FieldFightScene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/NoviceVillageScene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="21" column="26" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/AbstractScene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_ShowAllVisibleInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/packet/SM_ShowAccountInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/model/Position.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/event/PlayerEnterMapEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="20" column="42" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/event/PlayerMoveEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="20" column="11" lean-forward="true" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/facade/ScenceFacade.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-391">
-          <caret line="45" column="46" selection-start-line="45" selection-start-column="46" selection-end-line="45" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/constant/MapType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="43" column="29" lean-forward="true" selection-start-line="43" selection-start-column="29" selection-end-line="43" selection-end-column="29" />
+        <state relative-caret-position="101">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceManger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
+        <state relative-caret-position="138">
+          <caret line="105" column="30" selection-start-line="105" selection-start-column="30" selection-end-line="105" selection-end-column="30" />
+          <folding>
+            <element signature="e#2868#2869#0" expanded="true" />
+            <element signature="e#2914#2915#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/skill/service/SkillServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="376" column="62" selection-start-line="376" selection-start-column="62" selection-end-line="376" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/FieldFightScene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="51" column="19" selection-start-line="51" selection-start-column="19" selection-end-line="51" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/NoviceVillageScene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="79" selection-start-line="79" selection-end-line="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/player/model/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="101">
+          <caret line="106" selection-start-line="106" selection-end-line="106" />
+          <folding>
+            <element signature="e#2816#2817#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/SpringContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="243" selection-start-line="243" selection-end-line="243" />
+          <folding>
+            <element signature="e#4807#4808#0" expanded="true" />
+            <element signature="e#4853#4854#0" expanded="true" />
+            <element signature="e#5175#5176#0" expanded="true" />
+            <element signature="e#5221#5222#0" expanded="true" />
+            <element signature="e#7216#7217#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/EnterMapCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding>
+            <element signature="e#978#979#0" expanded="true" />
+            <element signature="e#1078#1079#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/command/ChangeMapCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="79">
+          <caret line="57" column="48" selection-start-line="57" selection-start-column="48" selection-end-line="57" selection-end-column="48" />
+          <folding>
+            <element signature="e#1407#1408#0" expanded="true" />
+            <element signature="e#1502#1503#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/login/service/LoginServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="87" selection-start-line="87" selection-end-line="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/facade/ScenceFacade.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="66" column="9" selection-start-line="66" selection-start-column="9" selection-end-line="66" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/util/I18nId.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="76" column="15" selection-start-line="76" selection-start-column="15" selection-end-line="76" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/role/player/event/LogoutEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/hopetower/event/MonsterDeadEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/BaseUnit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/PlayerUnit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="387">
+          <caret line="99" column="19" selection-start-line="99" selection-start-column="19" selection-end-line="99" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/MonsterUnit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="106" column="20" selection-start-line="106" selection-start-column="20" selection-end-line="106" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/fight/model/CreatureUnit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="225" selection-start-line="225" selection-end-line="225" />
+          <folding>
+            <element signature="e#7743#7744#0" expanded="true" />
+            <element signature="e#7775#7776#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/hopetower/event/PlayerDeadEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="38" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#211#212#0" expanded="true" />
+            <element signature="e#235#236#0" expanded="true" />
+            <element signature="e#368#369#0" expanded="true" />
+            <element signature="e#401#402#0" expanded="true" />
+            <element signature="e#457#458#0" expanded="true" />
+            <element signature="e#501#502#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/hopetower/facade/HopeTowerFacade.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="55" column="47" selection-start-line="55" selection-start-column="47" selection-end-line="55" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="129" column="18" selection-start-line="129" selection-start-column="18" selection-end-line="129" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/AbstractScene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="199" column="16" selection-start-line="199" selection-start-column="16" selection-end-line="199" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="89" column="29" selection-start-line="89" selection-start-column="29" selection-end-line="89" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="408" column="13" selection-start-line="408" selection-start-column="13" selection-end-line="408" selection-end-column="13" />
+          <folding>
+            <element signature="e#13399#13400#0" expanded="true" />
+            <element signature="e#13473#13474#0" expanded="true" />
+            <element signature="e#14678#14679#0" expanded="true" />
+            <element signature="e#14742#14743#0" expanded="true" />
+            <element signature="e#14788#14789#0" expanded="true" />
+            <element signature="e#14824#14825#0" expanded="true" />
+            <element signature="e#14888#14889#0" expanded="true" />
+            <element signature="e#14938#14939#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/message.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="108" column="63" lean-forward="true" selection-start-line="108" selection-start-column="63" selection-end-line="108" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/hopetower/packet/CM_ExitHopeTower.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="3" lean-forward="true" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/constant/TaskLineType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="74">
+          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
+          <folding>
+            <element signature="e#280#281#0" expanded="true" />
+            <element signature="e#312#313#0" expanded="true" />
+            <element signature="e#325#326#0" expanded="true" />
+            <element signature="e#350#351#0" expanded="true" />
+            <element signature="e#383#384#0" expanded="true" />
+            <element signature="e#411#412#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/constant/TaskStatus.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="26" column="24" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
+          <folding>
+            <element signature="e#274#275#0" expanded="true" />
+            <element signature="e#302#303#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/scence/base/model/HopeTowerScene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="182" column="95" selection-start-line="182" selection-start-column="95" selection-end-line="182" selection-end-column="95" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/util/PlayerUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/util/CommonUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="18" column="50" selection-start-line="18" selection-start-column="50" selection-end-line="18" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/hopetower/model/HopeTowerInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="42" column="13" lean-forward="true" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="28" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/item/entity/ItemStorageEnt.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="25" selection-end-column="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/base/executor/scene/SceneThreadPoolExecutor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="33" column="49" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/开发计划.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="195">
+            <caret line="166" column="13" selection-start-line="166" selection-start-column="13" selection-end-line="166" selection-end-column="13" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/service/TaskServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#743#744#0" expanded="true" />
+            <element signature="e#786#787#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/entity/TaskEnt.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="28" column="42" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/model/TaskInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="13" column="24" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#374#375#0" expanded="true" />
+            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#602#603#0" expanded="true" />
+            <element signature="e#632#633#0" expanded="true" />
+            <element signature="e#698#699#0" expanded="true" />
+            <element signature="e#736#737#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/user/task/model/TaskLineInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="16" column="24" lean-forward="true" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
+          <folding>
+            <element signature="e#382#383#0" expanded="true" />
+            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#453#454#0" expanded="true" />
+            <element signature="e#507#508#0" expanded="true" />
+            <element signature="e#311#312#0" expanded="true" />
+            <element signature="e#342#343#0" expanded="true" />
+            <element signature="e#387#388#0" expanded="true" />
+            <element signature="e#427#428#0" expanded="true" />
+            <element signature="e#459#460#0" expanded="true" />
+            <element signature="e#490#491#0" expanded="true" />
+            <element signature="e#535#536#0" expanded="true" />
+            <element signature="e#575#576#0" expanded="true" />
+            <element signature="e#605#606#0" expanded="true" />
+            <element signature="e#634#635#0" expanded="true" />
+            <element signature="e#675#676#0" expanded="true" />
+            <element signature="e#711#712#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

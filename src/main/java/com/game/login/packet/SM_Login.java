@@ -22,7 +22,7 @@ public class SM_Login {
     /**
      * 玩家上次登出时所在的场景Id
      */
-    private int lastScenceId;
+    private int lastMapId;
 
     public long getPlayerId() {
         return playerId;
@@ -32,12 +32,12 @@ public class SM_Login {
         this.playerId = playerId;
     }
 
-    public int getLastScenceId() {
-        return lastScenceId;
+    public int getLastMapId() {
+        return lastMapId;
     }
 
-    public void setLastScenceId(int lastScenceId) {
-        this.lastScenceId = lastScenceId;
+    public void setLastMapId(int lastMapId) {
+        this.lastMapId = lastMapId;
     }
 
     public String getAccountId() {

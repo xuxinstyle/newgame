@@ -49,7 +49,7 @@ public class SkillEffectServiceImpl implements SkillEffectService {
     @Override
     public void showUnitEffect(String accountId, int mapId, ObjectType targetType, long targetId) {
 
-        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId);
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(mapId, accountId);
         CreatureUnit unit = scene.getUnit(targetType, targetId);
         Map<AttributeId, ICommand> buffCommandMap = unit.getBuffCommandMap();
         for (Map.Entry<AttributeId, ICommand> entry : buffCommandMap.entrySet()) {

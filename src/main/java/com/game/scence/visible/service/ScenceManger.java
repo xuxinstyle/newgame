@@ -1,6 +1,9 @@
 package com.game.scence.visible.service;
 
+import com.game.SpringContext;
+import com.game.role.player.model.Player;
 import com.game.scence.base.model.AbstractScene;
+import com.game.scence.fight.model.PlayerUnit;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.resource.MapResource;
 import com.resource.core.StorageManager;
@@ -10,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author：xuxin
@@ -30,18 +33,43 @@ public class ScenceManger {
      *         其中mapInfo可存放分线场景
      *     todo：这里到第四阶段要大改，先暂时这样做
      */
-    private static Map<Integer, AbstractScene> scenceMap = new ConcurrentHashMap<>(MapType.values().length);
+    private Map<Integer, AbstractScene> scenceMap = new HashMap<>(MapType.values().length);
+    /**
+     * 副本场景对象信息《accountId,AbstractScene》
+     */
+    private Map<String, AbstractScene> copySceneMap = new HashMap<>();
+
+    /**
+     * 存放unit
+     */
+    private Map<Long, PlayerUnit> playerUnitMap = new HashMap<>();
 
     public void init(){
         Collection<MapResource> resourceAll = (Collection<MapResource>) storageManager.getResourceAll(MapResource.class);
         for(MapResource resource:resourceAll){
-            MapType mapType = MapType.getMapType(resource.getId());
-            AbstractScene scene = mapType.create();
-            scene.init();
-            scenceMap.put(mapType.getMapId(), scene);
+            if (resource.isNeedToInit()) {
+                MapType mapType = MapType.getMapType(resource.getId());
+                AbstractScene scene = mapType.create();
+                scene.init();
+                scenceMap.put(mapType.getId(), scene);
+            }
         }
 
     }
+
+    public PlayerUnit getPlayerUnit(Player player) {
+        PlayerUnit playerUnit = playerUnitMap.get(player.getObjectId());
+        if (playerUnit == null) {
+            playerUnit = PlayerUnit.valueOf(player);
+            playerUnitMap.put(player.getObjectId(), playerUnit);
+        }
+        return playerUnit;
+    }
+
+    public void putPlayerUnit(Player player) {
+        playerUnitMap.put(player.getObjectId(), PlayerUnit.valueOf(player));
+    }
+
     /**
      * 获取某张表的某个id字段对应的资源
      * @param id
@@ -62,16 +90,44 @@ public class ScenceManger {
         return storageManager.getResourceAll(clz);
     }
 
-    public AbstractScene getScence(int mapId){
+    public void putCopyScene(String accountId, AbstractScene scene) {
+        copySceneMap.put(accountId, scene);
+    }
+
+    public void removeCopyScene(String accountId) {
+        copySceneMap.remove(accountId);
+    }
+
+    /**
+     * 获取地图的场景信息实体和
+     *
+     * @param mapId
+     * @param accountId
+     * @return
+     */
+    public AbstractScene getScence(int mapId, String accountId) {
         AbstractScene scenceInfo = scenceMap.get(mapId);
+        if (scenceInfo == null) {
+            // 如果玩家已经创建了副本？玩家不可能已经创建了副本 除非他正在副本中
+            AbstractScene abstractScene = copySceneMap.get(accountId);
+            return abstractScene;
+        }
         return scenceInfo;
     }
 
-    public static Map<Integer, AbstractScene> getScenceMap() {
+    public Map<Integer, AbstractScene> getScenceMap() {
         return scenceMap;
     }
 
-    public static void setScenceMap(Map<Integer, AbstractScene> scenceMap) {
-        ScenceManger.scenceMap = scenceMap;
+    public void setScenceMap(Map<Integer, AbstractScene> scenceMap) {
+        this.scenceMap = scenceMap;
+    }
+
+    public Map<String, AbstractScene> getCopySceneMap() {
+        return copySceneMap;
+    }
+
+    public void setCopySceneMap(Map<String, AbstractScene> copySceneMap) {
+        this.copySceneMap = copySceneMap;
     }
 }

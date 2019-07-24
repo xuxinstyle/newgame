@@ -10,6 +10,7 @@ import com.game.role.player.model.Player;
 import com.game.role.skill.entity.SkillEnt;
 import com.game.role.skill.model.SkillInfo;
 import com.game.scence.visible.resource.MapResource;
+import com.game.world.hopetower.event.PlayerDeadEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,7 @@ public class PlayerUnit extends CreatureUnit {
     }
 
     @Override
-    public void doAttackAfter(CreatureUnit attacker) {
+    public void doAttackAfter(String accountId, CreatureUnit attacker) {
 
     }
 
@@ -92,5 +93,11 @@ public class PlayerUnit extends CreatureUnit {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    @Override
+    public void afterDead(CreatureUnit attacker) {
+        super.afterDead(attacker);
+        SpringContext.getEvenManager().syncSubmit(PlayerDeadEvent.valueOf(this));
     }
 }

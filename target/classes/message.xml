@@ -101,4 +101,10 @@
     <catalog id="77" value="com.game.role.skilleffect.packet.CM_ShowUnitEffect"/>
     <catalog id="78" value="com.game.role.skilleffect.packet.SM_ShowUnitEffect"/>
 
+    <catalog id="79" value="com.game.world.hopetower.packet.CM_ShowHopeTowerInfo"/>
+    <catalog id="80" value="com.game.world.hopetower.packet.SM_ShowHopeTowerInfo"/>
+
+    <catalog id="82" value="com.game.world.hopetower.packet.SM_CloseScene"/>
+    <catalog id="83" value="com.game.scence.visible.packet.SM_LoginEnterMap"/>
+
 </protocols>

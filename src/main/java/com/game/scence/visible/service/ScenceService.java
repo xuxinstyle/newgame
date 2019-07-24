@@ -4,6 +4,7 @@ package com.game.scence.visible.service;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.role.player.model.Player;
 import com.game.scence.base.model.AbstractScene;
+import com.game.scence.fight.model.PlayerUnit;
 import com.game.scence.visible.model.Position;
 import com.game.scence.visible.resource.MapResource;
 import com.socket.core.session.TSession;
@@ -18,39 +19,49 @@ public interface ScenceService {
      * @param session
      * @param accountId
      */
-    void enterMap(TSession session, String accountId, int mapId);
+    void loginAfterEnterMap(TSession session, String accountId, int mapId);
 
     /**
-     *  @param session
+     * @param session
      * @param player
      * @param mapId
+     * @param firstRequest
      */
-    void doEnterMap(Player player, int mapId);
+    void doEnterMap(Player player, int mapId, boolean firstRequest);
 
     /**
-     * 查看地图中所有的账号简略信息
+     * 查看地图中所有的可视物信息
      * @param session
      * @param mapId
      */
     void showAllVisibleInfo(TSession session, int mapId);
 
     /**
-     * 查看场景中所有的玩家信息
-     * @param session
-     * @param accountId
-     * @param mapId
+     *
+     * @param player
      */
-
-    /*void showAccountIdInfo(TSession session, int mapId, long objectId);*/
+    void putPlayerUnit(Player player);
 
     /**
-     * 处理移动请求
-     * @param session
-     * @param x
-     * @param y
+     * @param player
+     * @return
+     */
+    PlayerUnit getPlayerUnit(Player player);
+
+    /**
+     * 移动
      * @param playerId
+     * @param targetPos
+     * @param mapId
      */
     void move(long playerId, Position targetPos, int mapId);
+
+    /**
+     * 移除副本信息
+     *
+     * @param accountId
+     */
+    void removeCopyScene(String accountId);
 
     /**
      * 实际做移动的地方
@@ -58,11 +69,11 @@ public interface ScenceService {
      * @param targetPos
      * @param mapId
      */
-    void doMove(long accountId, Position targetPos, int mapId);
+    void doMove(Player accountId, Position targetPos, int mapId);
 
     MapResource getMapResource(int mapId);
 
-    void showMap(int mapId);
+    void showMap(int mapId, String accountId);
 
     /**
      * 服务器启动时初始化场景
@@ -79,14 +90,15 @@ public interface ScenceService {
      * @param accountId
      * @param mapId
      */
-    void changeMap(String accountId,int mapId,boolean clientRequest);
+    void changeMap(String accountId, int mapId, boolean clientRequest);
 
     /**
      * 实际做切换地图的地方
      * @param player
      * @param targetMapId
+     * @param clientRequest
      */
-    void doChangeMap(Player player,int targetMapId);
+    void doChangeMap(Player player, int targetMapId, boolean clientRequest);
 
     /**
      * 做登出时场景相关操作
@@ -97,15 +109,16 @@ public interface ScenceService {
     /**
      * 做离开地图的操作
      * @param accountId
+     * @param clientRequest
      */
-    void leaveMap(String accountId);
+    void leaveMap(String accountId, boolean clientRequest);
 
     /**
      * 获取地图信息
      * @param mapId
      * @return
      */
-    AbstractScene getScene(int mapId);
+    AbstractScene getScene(int mapId, String accountId);
 
     /**
      * 查看怪物信息
@@ -114,4 +127,11 @@ public interface ScenceService {
      * @param monsterObjectId
      */
     void showObjectInfo(String accountId, int mapId, ObjectType objectType, long monsterObjectId);
+
+    /**
+     * 获取场景manager
+     *
+     * @return
+     */
+    ScenceManger getScenceMangaer();
 }

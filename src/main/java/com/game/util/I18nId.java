@@ -67,5 +67,13 @@ public interface I18nId {
     int LEAVE_MAP_ERROR = 10030;
     //没有目标地图
     int NOT_TARGET_MAP = 10031;
+    /**
+     * 没有开启目标地图
+     */
+    int NOT_OPEN_MAP = 10032;
+    /**
+     * 不能前往该地图
+     */
+    int NOT_ENTER_MAP = 10033;
 
 }

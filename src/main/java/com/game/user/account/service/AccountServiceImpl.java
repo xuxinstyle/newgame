@@ -72,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
         /**
          * 请求进入场景地图
          */
-        SpringContext.getScenceSerivce().enterMap(session,accountId,MapType.NoviceVillage.getMapId());
+        SpringContext.getScenceSerivce().loginAfterEnterMap(session, accountId, MapType.NoviceVillage.getId());
     }
 
     @Override

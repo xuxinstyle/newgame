@@ -1,6 +1,7 @@
 package com.game.base.executor.scene.impl;
 
 import com.game.base.executor.AbstractCommand;
+import com.game.scence.base.model.AbstractScene;
 
 /**
  * @Author：xuxin
@@ -18,25 +19,49 @@ public abstract class AbstractSceneCommand extends AbstractCommand {
      * 账号id
      */
     private String accountId;
+    /**
+     * 场景对象
+     */
+    private AbstractScene scene;
 
-    public AbstractSceneCommand(int mapId,int sceneId,String accountId){
+    /**
+     * @param mapId
+     * @param sceneId
+     * @param accountId
+     */
+    public AbstractSceneCommand(int mapId, int sceneId, String accountId) {
         this.mapId = mapId;
         this.sceneId = sceneId;
         this.accountId = accountId;
+    }
+
+    public AbstractSceneCommand(AbstractScene scene, String accountId) {
+        this.mapId = scene.getMapId();
+        this.sceneId = scene.getSceneId();
+        this.accountId = accountId;
+        this.scene = scene;
     }
 
     public int getMapId() {
         return mapId;
     }
 
+    public AbstractScene getScene() {
+        return scene;
+    }
+
+    public void setScene(AbstractScene scene) {
+        this.scene = scene;
+    }
+
     @Override
-    public Object getKey() {
-        return mapId;
+    public Integer getKey() {
+        return (mapId | sceneId);
     }
 
     @Override
     public int modIndex(int poolsize) {
-        return Math.abs(mapId % poolsize);
+        return Math.abs(getKey() % poolsize);
     }
 
     public void setMapId(int mapId) {

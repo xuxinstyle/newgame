@@ -1,11 +1,15 @@
 package com.game.scence.monster.service;
 
 import com.game.SpringContext;
+import com.game.base.gameobject.constant.ObjectType;
 import com.game.common.exception.RequestException;
+import com.game.role.player.model.Player;
 import com.game.scence.base.model.FieldFightScene;
 import com.game.scence.fight.model.MonsterUnit;
 import com.game.scence.monster.resource.MonsterResource;
 import com.game.scence.visible.constant.MapType;
+import com.game.scence.visible.model.MonsterDef;
+import com.game.scence.visible.model.Position;
 import com.game.scence.visible.resource.MapResource;
 import com.game.util.SendPacketUtil;
 import org.slf4j.Logger;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,26 +32,39 @@ public class MonsterServiceImpl implements MonsterService {
     @Autowired
     private MonsterManager monsterManager;
     @Override
-    public List<MonsterResource> getMapMonsterResources(int mapId){
+    public Map<Long, MonsterUnit> getMonsterUnits(int mapId) {
         MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(mapId);
-        List<Integer> monsterList = mapResource.getMonsterList();
-        if(monsterList==null){
-            if (logger.isDebugEnabled()) {
-                logger.error("地图[{}]没有怪物", mapId);
+        List<MonsterDef> monsterList = mapResource.getMonsterList();
+        Map<Long, MonsterUnit> monsterUnitMap = new HashMap<>();
+        for (MonsterDef def : monsterList) {
+            MonsterResource monsterResource = SpringContext.getMonsterService().getMonsterResource(def.getMonsterId());
+            for (int i = 0; i < def.getNum(); i++) {
+                MonsterUnit monsterUnit = MonsterUnit.valueOf(monsterResource);
+                monsterUnit.setId(SpringContext.getIdentifyService().getNextIdentify(ObjectType.MONSTER));
+                monsterUnit.setMapId(mapId);
+                monsterUnit.setPosition(Position.valueOf(def.getX(), def.getY()));
+                if (!checkPosition(monsterUnit.getPosition(), mapResource)) {
+                    Position newInitPosition = Position.randomPosition(mapId);
+                    monsterUnit.setPosition(newInitPosition);
+                }
+                monsterUnitMap.put(monsterUnit.getId(), monsterUnit);
             }
-            return null;
         }
-        List<MonsterResource> monsterResourceList = new ArrayList<>();
-        for(int monsterId:monsterList){
-            MonsterResource monsterResource = monsterManager.getMonsterResource(monsterId);
-            if(monsterResource==null){
-                continue;
-            }
-            monsterResourceList.add(monsterResource);
-        }
-        return monsterResourceList;
+        return monsterUnitMap;
     }
 
+
+    private boolean checkPosition(Position initPos, MapResource mapResource) {
+        int[][] mapcontext = mapResource.getMapcontext();
+        int upY = mapcontext.length;
+        int upX = mapcontext[0].length;
+        int x = initPos.getX();
+        int y = initPos.getY();
+        if (x >= upX || y >= upY || x < 0 || y < 0 || mapcontext[x][y] != 0) {
+            return false;
+        }
+        return true;
+    }
     @Override
     public MonsterResource getMonsterResource(int monsterId) {
 
@@ -55,11 +73,12 @@ public class MonsterServiceImpl implements MonsterService {
 
     @Override
     public void fieldMonsterAttack(String accountId) {
-        FieldFightScene scene = (FieldFightScene) SpringContext.getScenceSerivce().getScene(MapType.FIELD.getMapId());
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        FieldFightScene scene = (FieldFightScene) SpringContext.getScenceSerivce().getScene(player.getCurrMapId(), accountId);
         Map<Long, MonsterUnit> monsterUnits = scene.getMonsterUnits();
         for (MonsterUnit monsterUnit : monsterUnits.values()) {
             try {
-                monsterUnit.doAttackAfter(monsterUnit.getAttacker());
+                monsterUnit.doAttackAfter(accountId, monsterUnit.getAttacker());
             } catch (RequestException e) {
                 logger.warn("怪物[{}][{}]反击失败,原因[{}]", monsterUnit.getId(), monsterUnit.getVisibleName(), e.getErrorCode());
                 SendPacketUtil.send(accountId, e.getErrorCode());

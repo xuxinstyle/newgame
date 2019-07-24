@@ -1,6 +1,8 @@
 package com.game.scence.visible.resource;
 
 import com.game.base.gameobject.constant.ObjectType;
+import com.game.scence.visible.model.MonsterDef;
+import com.game.scence.visible.model.Position;
 import com.game.util.StringUtil;
 import com.resource.anno.Analyze;
 import com.resource.anno.LoadResource;
@@ -15,23 +17,23 @@ import java.util.List;
  */
 @LoadResource
 public class MapResource {
-    /** 这里的属性必须为public的权限*/
+
     /** 地图id*/
-    public int id;
+    private int id;
     /**
      * 地图名称
      */
     private String mapName;
 
-    public int initX;
+    private int initX;
 
-    public int initY;
+    private int initY;
     /**
      * 复活cd
      */
     private long reviveCd;
     /** 地图实际形状*/
-    public String context;
+    private String context;
 
     @Analyze("analyzeMap")
     private int[][] mapcontext;
@@ -39,15 +41,92 @@ public class MapResource {
      * 可攻击的目标类型目标
      */
     private String targetStr;
+
     @Analyze("analyzetargetTypes")
     private List<ObjectType> targetTypes;
     /**
      * 地图中的怪物
      */
-    private String monsters;
+    private MonsterDef[] monsters;
 
     @Analyze("analyzeMonster")
-    private List<Integer> monsterList;
+    private List<MonsterDef> monsterList;
+    /**
+     * 开服时是否需要初始化
+     */
+    private boolean needToInit;
+    /**
+     * 副本时间
+     */
+    private long duration;
+    /**
+     * 首次通关奖励
+     */
+    private int firstReward;
+    /**
+     * 重复通关奖励
+     */
+    private int repeatReward;
+    /**
+     * 下一关
+     */
+    private int nextFloor;
+    /**
+     * 开启条件
+     */
+    private String openCondition;
+    /**
+     * 地图类型
+     */
+    private int mapType;
+
+    public int getMapType() {
+        return mapType;
+    }
+
+    public void setMapType(int mapType) {
+        this.mapType = mapType;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public int getFirstReward() {
+        return firstReward;
+    }
+
+    public void setFirstReward(int firstReward) {
+        this.firstReward = firstReward;
+    }
+
+    public int getRepeatReward() {
+        return repeatReward;
+    }
+
+    public void setRepeatReward(int repeatReward) {
+        this.repeatReward = repeatReward;
+    }
+
+    public int getNextFloor() {
+        return nextFloor;
+    }
+
+    public void setNextFloor(int nextFloor) {
+        this.nextFloor = nextFloor;
+    }
+
+    public String getOpenCondition() {
+        return openCondition;
+    }
+
+    public void setOpenCondition(String openCondition) {
+        this.openCondition = openCondition;
+    }
 
     public String getTargetStr() {
         return targetStr;
@@ -93,18 +172,29 @@ public class MapResource {
     }
 
 
-    public void analyzeMonster(){
-        if(monsters==null){
+    public void analyzeMonster() {
+        if (monsters == null) {
             return;
         }
-        String[] split = monsters.split(",");
-        for(String str:split){
-            int monsterId = Integer.parseInt(str);
-            if(monsterList==null){
-                monsterList = new ArrayList<>();
-            }
-            monsterList.add(monsterId);
-        }
+        monsterList = Arrays.asList(monsters);
+
+
+    }
+
+    public List<MonsterDef> getMonsterList() {
+        return monsterList;
+    }
+
+    public void setMonsterList(List<MonsterDef> monsterList) {
+        this.monsterList = monsterList;
+    }
+
+    public boolean isNeedToInit() {
+        return needToInit;
+    }
+
+    public void setNeedToInit(boolean needToInit) {
+        this.needToInit = needToInit;
     }
 
     public String getMapName() {
@@ -123,20 +213,12 @@ public class MapResource {
         this.reviveCd = reviveCd;
     }
 
-    public String getMonsters() {
+    public MonsterDef[] getMonsters() {
         return monsters;
     }
 
-    public void setMonsters(String monsters) {
+    public void setMonsters(MonsterDef[] monsters) {
         this.monsters = monsters;
-    }
-
-    public List<Integer> getMonsterList() {
-        return monsterList;
-    }
-
-    public void setMonsterList(List<Integer> monsterList) {
-        this.monsterList = monsterList;
     }
 
     public int[][] getMapcontext() {
