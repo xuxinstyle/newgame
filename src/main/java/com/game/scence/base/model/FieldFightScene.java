@@ -28,7 +28,9 @@ public class FieldFightScene extends AbstractMonsterScene {
         setSceneId(SCENE_ID.getAndDecrement());
         //初始化怪物
         Map<Long, MonsterUnit> monsterUnits = SpringContext.getMonsterService().getMonsterUnits(getMapId());
-
+        for (MonsterUnit monsterUnit : monsterUnits.values()) {
+            monsterUnit.setScene(this);
+        }
         setMonsterUnits(monsterUnits);
 
     }

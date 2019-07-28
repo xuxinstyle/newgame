@@ -9,11 +9,8 @@ import com.game.scence.fight.model.MonsterUnit;
 import com.game.scence.fight.model.PlayerUnit;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.resource.MapResource;
-import com.game.user.item.model.AbstractItem;
-import com.game.user.reward.model.RewardDef;
-import com.game.user.reward.resource.RewardResource;
+import com.game.user.task.event.PassMapEvent;
 import com.game.util.CommonUtil;
-import com.game.util.PlayerUtil;
 import com.game.util.SendPacketUtil;
 import com.game.world.base.entity.MapInfoEnt;
 import com.game.world.base.model.AbstractMapInfo;
@@ -23,9 +20,7 @@ import com.game.world.hopetower.packet.SM_CloseScene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -145,22 +140,13 @@ public class HopeTowerScene extends AbstractMonsterScene {
                 rewardId = mapResource.getRepeatReward();
             }
 
-
-            RewardResource rewardResource = SpringContext.getRewardService().getRewardResource(rewardId);
-            if (rewardResource == null) {
-                return;
-            }
-            // 发奖
-            RewardDef[] rewardContext = rewardResource.getRewardContext();
-            List<AbstractItem> items = new ArrayList<>();
-            for (RewardDef def : rewardContext) {
-                AbstractItem item = SpringContext.getItemService().createItem(def.getItemId(), def.getNum());
-                items.add(item);
-            }
-            // todo:检查背包是否充足
-            // fixme:发奖 这里发奖如果背包满了，会自动清空多余的道具 并且将为发奖的道具打印再日志文件中
-            SpringContext.getItemService().awardToPack(playerUnit.getAccountId(), items);
-            logger.info("玩家[{}]挑战[{}]成功，给玩家发奖[{}]", getPlayerUnit().getId(), getMapId(), items);
+            int finalRewardId = rewardId;
+            // 抛回账号线程发奖
+            SpringContext.getAccountExecutorService().addTask(playerUnit.getAccountId(), "HopeTowerSceneDoEnd", () -> {
+                SpringContext.getRewardService().doReward(playerUnit.getAccountId(), finalRewardId);
+            });
+            // 抛通关事件
+            SpringContext.getEvenManager().syncSubmit(PassMapEvent.valueOf(playerUnit.getAccountId(), getMapId()));
             // 保存通关状态
             SpringContext.getMapInfoService().save(mapInfoEnt);
             // 通知客户端副本通过成功关闭

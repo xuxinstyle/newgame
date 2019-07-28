@@ -1,6 +1,7 @@
 package com.game.login.event;
 
 import com.event.event.IEvent;
+import com.game.role.player.model.Player;
 
 /**
  * @Author：xuxin
@@ -10,20 +11,20 @@ public class LoginEvent implements IEvent {
     /**
      * 账号Id
      */
-    private String accountId;
+    private Player player;
 
-    public static LoginEvent valueOf(String accountId){
+    public static LoginEvent valueOf(Player player) {
         LoginEvent event = new LoginEvent();
-        event.setAccountId(accountId);
+        event.setPlayer(player);
         return event;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     @Override

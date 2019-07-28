@@ -28,7 +28,7 @@ public class HopeTowerServiceImpl implements HopeTowerService {
     private HopeTowerManager hopeTowerManager;
 
     /**
-     * 查看希望之塔信息 fixme: 需要去检查
+     * 查看希望之塔信息
      *
      * @param accountId
      */

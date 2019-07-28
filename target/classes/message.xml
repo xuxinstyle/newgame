@@ -106,5 +106,17 @@
 
     <catalog id="82" value="com.game.world.hopetower.packet.SM_CloseScene"/>
     <catalog id="83" value="com.game.scence.visible.packet.SM_LoginEnterMap"/>
+    <catalog id="84" value="com.game.world.hopetower.packet.CM_ExitHopeTower"/>
+    <catalog id="85" value="com.game.user.task.packet.SM_TaskFinished"/>
+    <catalog id="86" value="com.game.user.task.packet.CM_TalkWithNpc"/>
+    <catalog id="87" value="com.game.user.task.packet.SM_ShowFinishTask"/>
+    <catalog id="88" value="com.game.user.task.packet.CM_ShowFinishTask"/>
+    <catalog id="89" value="com.game.user.task.packet.CM_ReceiveTaskAward"/>
+    <catalog id="90" value="com.game.user.task.packet.SM_ShowCanReceiveTask"/>
+    <catalog id="91" value="com.game.user.task.packet.CM_ShowCanReceiveTask"/>
+    <catalog id="92" value="com.game.user.task.packet.SM_AcceptTask"/>
+    <catalog id="93" value="com.game.user.task.packet.CM_AcceptTask"/>
+    <catalog id="94" value="com.game.user.task.packet.SM_ShowExecuteTask"/>
+    <catalog id="95" value="com.game.user.task.packet.CM_ShowExecuteTask"/>
 
 </protocols>

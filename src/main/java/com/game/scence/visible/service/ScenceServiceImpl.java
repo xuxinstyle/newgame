@@ -16,6 +16,7 @@ import com.game.scence.visible.resource.MapResource;
 import com.game.user.account.entity.AccountEnt;
 import com.game.user.account.model.AccountInfo;
 import com.game.user.account.packet.SM_EnterCreatePlayer;
+import com.game.user.task.event.EnterMapEvent;
 import com.game.util.I18nId;
 import com.game.world.base.entity.MapInfoEnt;
 import com.game.world.base.model.AbstractMapInfo;
@@ -107,6 +108,8 @@ public class ScenceServiceImpl implements ScenceService {
             player.setCurrMapId(scence.getMapId());
             player.setCurrSceneId(scence.getSceneId());
             SpringContext.getPlayerSerivce().save(player);
+            // 抛出进入地图事件
+            SpringContext.getEvenManager().syncSubmit(EnterMapEvent.valueOf(player.getAccountId(), targetMapId));
             /**
              * 通知客户端 登陆时请求进入，
              */

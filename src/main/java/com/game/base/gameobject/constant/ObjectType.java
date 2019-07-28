@@ -25,6 +25,10 @@ public enum ObjectType {
      * 道具
      */
     ITEM(4,"道具"),
+    /**
+     * 工会
+     */
+    UNION(5, "工会")
     ;
 
     private int typeId;

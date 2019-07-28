@@ -25,6 +25,7 @@ import com.game.user.item.service.ItemService;
 import com.game.user.itemeffect.service.ItemEffectService;
 import com.game.role.equipstren.service.EquipStrenService;
 import com.game.user.reward.service.RewardService;
+import com.game.user.task.service.TaskService;
 import com.game.world.base.service.MapInfoService;
 import com.game.world.hopetower.service.HopeTowerService;
 import com.resource.core.InitManager;
@@ -118,7 +119,12 @@ public class SpringContext implements ApplicationContextAware {
     private HopeTowerService hopeTowerService;
     @Autowired
     private RewardService rewardService;
+    @Autowired
+    private TaskService taskService;
 
+    public static TaskService getTaskService() {
+        return instance.taskService;
+    }
 
     public static RewardService getRewardService() {
         return instance.rewardService;

@@ -34,5 +34,9 @@ public class AccountExecutorServiceImpl implements AccountExecutorService{
         }
     }
 
+    @Override
+    public void addTask(final String accountId, final String taskName, final Runnable task) {
+        accountThreadPoolExecutor.addTask(accountId, taskName, task);
+    }
 
 }

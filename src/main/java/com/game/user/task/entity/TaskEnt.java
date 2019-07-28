@@ -21,19 +21,19 @@ public class TaskEnt extends AbstractEntity<String> {
     @Column(columnDefinition = "varchar(255) character set utf8 collate utf8_bin comment '账号Id'", nullable = false)
     private String accountId;
 
-    @Transient
-    private TaskInfo taskInfo;
-
-    public static TaskEnt valueOf() {
-        TaskEnt taskEnt = new TaskEnt();
-        taskEnt.setTaskInfo(TaskInfo.valueOf());
-        return taskEnt;
-    }
-
-
     @Lob
     @Column(columnDefinition = "Blob comment '任务数据'", nullable = false)
     private byte[] taskData;
+
+    @Transient
+    private TaskInfo taskInfo;
+
+    public static TaskEnt valueOf(String accountId) {
+        TaskEnt taskEnt = new TaskEnt();
+        taskEnt.setAccountId(accountId);
+        taskEnt.setTaskInfo(TaskInfo.valueOf());
+        return taskEnt;
+    }
 
     @Override
     public void doSerialize() {

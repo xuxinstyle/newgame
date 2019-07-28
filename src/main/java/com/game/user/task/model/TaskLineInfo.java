@@ -1,63 +1,68 @@
 package com.game.user.task.model;
 
-import com.game.user.task.constant.TaskStatus;
+import com.game.SpringContext;
+import com.game.user.task.resource.TaskLineResource;
+import com.game.user.task.resource.TaskResource;
 
 /**
  * @Author：xuxin
- * @Date: 2019/7/24 22:29
+ * @Date: 2019/7/25 14:43
  */
 public class TaskLineInfo {
     /**
-     * 当前正在执行的任务id
+     * 线路编号
      */
-    private int currTaskId;
+    private int lineId;
     /**
-     * 任务进度
+     * 该条线路正在执行的任务
      */
-    private int progress;
-    /**
-     * 任务状态
-     */
-    private int status;
+    private Task currTask;
 
-    public static TaskLineInfo valueOf(int taskId) {
+    /**
+     * 初始化线路任务
+     * @param lineId
+     * @return
+     */
+    public static TaskLineInfo valueOf(int lineId) {
+        TaskLineResource taskLineResource = SpringContext.getTaskService().getTaskLineResource(lineId);
+        if (taskLineResource == null) {
+            return null;
+        }
         TaskLineInfo taskLineInfo = new TaskLineInfo();
-        taskLineInfo.setCurrTaskId(taskId);
-        // 这个进度应该跟配置表有关
-        taskLineInfo.setProgress(0);
-        taskLineInfo.setStatus(TaskStatus.UN_ACCEPT.getId());
+        taskLineInfo.setLineId(lineId);
         return taskLineInfo;
     }
 
-    public void acceptTask() {
-        this.status = TaskStatus.ACCEPT.getId();
+
+    public int getLineId() {
+        return lineId;
     }
 
-    public void finshTask() {
-        this.status = TaskStatus.FINSH.getId();
+    public void setLineId(int lineId) {
+        this.lineId = lineId;
     }
 
-    public int getCurrTaskId() {
-        return currTaskId;
+    public Task getCurrTask() {
+        return currTask;
     }
 
-    public void setCurrTaskId(int currTaskId) {
-        this.currTaskId = currTaskId;
+    public void setCurrTask(Task currTask) {
+        this.currTask = currTask;
     }
 
-    public int getProgress() {
-        return progress;
+    public Task openTask(int taskId) {
+        Task nextTask = Task.valueOf(taskId);
+        this.currTask = nextTask;
+        return nextTask;
     }
 
-    public void setProgress(int progress) {
-        this.progress = progress;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
+    public boolean haveNextTask() {
+        int taskId = currTask.getTaskId();
+        TaskResource taskResource = SpringContext.getTaskService().getTaskResource(taskId);
+        int[] nextTaskIds = taskResource.getNextTaskIds();
+        if (nextTaskIds == null) {
+            return false;
+        }
+        return true;
     }
 }

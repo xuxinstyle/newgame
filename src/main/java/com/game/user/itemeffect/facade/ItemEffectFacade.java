@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class ItemEffectFacade {
     @EventAnn
     public void doLoginAfter(LoginEvent event){
-        SpringContext.getItemEffectService().doLoginAfter(event.getAccountId());
+        SpringContext.getItemEffectService().doLoginAfter(event.getPlayer().getAccountId());
     }
     @EventAnn
     public void doLogoutAfter(LogoutEvent event){

@@ -63,6 +63,23 @@ public class AccountThreadPoolExecutor{
         });
     }
 
+    public void addTask(final String accountId, final String taskName, final Runnable task) {
+        ACCOUNT_SERVICE[modIndex(accountId)].execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    task.run();
+                } catch (RequestException e) {
+                    SendPacketUtil.send("任务：[" + taskName + "]出错", e.getErrorCode());
+                }
+            }
+        });
+    }
+
+    private int modIndex(String accountId) {
+        return Math.abs(accountId.hashCode() % DEFAULT_INITIAL_THREAD_POOL_SIZE);
+    }
+
     /**
      * 延时任务
      * @param command

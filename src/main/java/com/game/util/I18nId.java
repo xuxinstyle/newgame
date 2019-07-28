@@ -75,5 +75,18 @@ public interface I18nId {
      * 不能前往该地图
      */
     int NOT_ENTER_MAP = 10033;
+    /**
+     * 任务没有完成，无法领奖
+     */
+    int RECEIVE_REWARD_ERROR = 10034;
+    /**
+     * 不能接受该任务
+     */
+    int NOT_ACCEPT_TASK = 10035;
+    /**
+     * 没有该任务
+     */
+    int NOT_TASK = 10036;
+
 
 }

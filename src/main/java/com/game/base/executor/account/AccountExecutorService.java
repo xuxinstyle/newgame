@@ -17,9 +17,13 @@ public interface AccountExecutorService {
      * @param commond
      */
     public void submit(AbstractAccountCommand commond);
-    /**
-     * 延迟任务
-     */
 
+    /**
+     * 执行特定任务
+     * @param accountId
+     * @param taskName
+     * @param task
+     */
+    void addTask(String accountId, final String taskName, final Runnable task);
 
 }

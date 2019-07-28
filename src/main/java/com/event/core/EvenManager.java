@@ -83,7 +83,11 @@ public class EvenManager {
         }
         for( EventInfo defintion: eventInfos){
             if(defintion!=null) {
-                defintion.invoke(event);
+                try {
+                    defintion.invoke(event);
+                } catch (Exception e) {
+                    logger.error("抛事件 [{}] 错误 原因[{}]", event, e);
+                }
             }
         }
     }

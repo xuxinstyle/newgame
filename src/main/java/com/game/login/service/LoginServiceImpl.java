@@ -75,8 +75,11 @@ public class LoginServiceImpl implements LoginService {
         /**
          * 抛出玩家登陆事件
          */
-        LoginEvent event = LoginEvent.valueOf(usernameDB);
-        SpringContext.getEvenManager().syncSubmit(event);
+        if (player != null) {
+            LoginEvent event = LoginEvent.valueOf(player);
+            SpringContext.getEvenManager().syncSubmit(event);
+        }
+
         Set<String> onlineAccounts = SpringContext.getSessionManager().getOnlineAccounts();
         onlineAccounts.add(usernameDB);
         sm.setStatus(1);

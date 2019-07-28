@@ -98,6 +98,7 @@ public class MonsterUnit extends CreatureUnit {
             return;
         }
         PlayerUnit unit = (PlayerUnit) attacker;
+        // 抛回账号线程加道具到背包
         DropItemAddCommand command = DropItemAddCommand.valueOf(unit.getAccountId(), getMonsterResource(), unit.getJobId());
         SpringContext.getAccountExecutorService().submit(command);
     }
