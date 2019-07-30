@@ -87,6 +87,60 @@ public interface I18nId {
      * 没有该任务
      */
     int NOT_TASK = 10036;
-
+    /**
+     * 你已经加入工会了，无法创建工会
+     */
+    int NOT_CREATE_UNION = 10037;
+    /**
+     * 你已经加入行会了，无法申请加入其他行会
+     */
+    int NOT_APPLY_UNION = 10038;
+    /**
+     * 工会不存在
+     */
+    int UNION_NOT_EXIST = 10039;
+    /**
+     * 工会申请达到最大限制
+     */
+    int UNION_APPLY_MAX_LIMIT = 10040;
+    /**
+     * 你不在工会中
+     */
+    int NOT_JOIN_UNION = 10041;
+    /**
+     * 目标已经加入其他工会
+     */
+    int JOIN_OTHER_UNION = 10042;
+    /**
+     * 你没有权限
+     */
+    int NOT_PERMISSION = 10043;
+    /**
+     * 工会人数已满
+     */
+    int UNION_NUM_LIMIT = 10044;
+    /**
+     * 玩家不在申请列表中
+     */
+    int NOT_APPLY = 10045;
+    /**
+     * 不能退出工会，请先移交会长位置
+     */
+    int NOT_EXIT_UNION = 10046;
+    /**
+     * 无法操作
+     */
+    int NOT_HANDLE = 10047;
+    /**
+     * 目标不在工会中
+     */
+    int TARGET_NOT_JOIN_UNION = 10048;
+    /**
+     * 权限不合法
+     */
+    int PERMISSION_ERROR = 10049;
+    /**
+     *
+     */
 
 }

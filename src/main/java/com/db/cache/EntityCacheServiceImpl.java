@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -23,10 +25,11 @@ public class EntityCacheServiceImpl<K extends Serializable & Comparable<K>, T ex
 
     @Override
     public T findOrCreate(Class<T> entityClz, K id, EntityBuilder<K, T> builder) {
-        if(!entityCacheMap.containsKey(entityClz)){
-            entityCacheMap.put(entityClz,new EntityCache<>());
-        }
         EntityCache<K, T> entityCache = entityCacheMap.get(entityClz);
+        if (entityCache == null) {
+            entityCache = new EntityCache<>();
+            entityCacheMap.put(entityClz, entityCache);
+        }
 
         T t = entityCache.get(id);
         if(t == null){
@@ -43,7 +46,8 @@ public class EntityCacheServiceImpl<K extends Serializable & Comparable<K>, T ex
         }
         EntityCache<K, T> entityCache = entityCacheMap.get(entityClz);
         if (entityCache == null) {
-            entityCacheMap.put(entityClz, new EntityCache<>());
+            entityCache = new EntityCache<>();
+            entityCacheMap.put(entityClz, entityCache);
         }
         T t = entityCache.get(id);
         if(t==null){
@@ -57,14 +61,29 @@ public class EntityCacheServiceImpl<K extends Serializable & Comparable<K>, T ex
     }
 
     @Override
+    public List<T> findAll(Class<T> entityClz) {
+        EntityCache<K, T> entityCache = entityCacheMap.get(entityClz);
+        if (entityCache == null) {
+            entityCache = new EntityCache<>();
+            entityCacheMap.put(entityClz, entityCache);
+        }
+        List<T> ts = hibernateDao.findAll(entityClz);
+        for (T t : ts) {
+            entityCache.put(t.getId(), t);
+        }
+        return ts;
+    }
+
+    @Override
     public void saveOrUpdate(T object) {
         if(object == null){
             throw  new RuntimeException("缓存对象被移除了");
         }
-        if(!entityCacheMap.containsKey(object)){
-            entityCacheMap.put(object.getClass(),new EntityCache<>());
-        }
         EntityCache<K, T> entityCache = entityCacheMap.get(object.getClass());
+        if (entityCache == null) {
+            entityCache = new EntityCache<>();
+            entityCacheMap.put(object.getClass(), entityCache);
+        }
         hibernateDao.saveOrUpdate(object.getClass(),object);
         entityCache.put(object.getId(),object);
     }

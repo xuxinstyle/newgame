@@ -17,6 +17,14 @@ public class CommonUtil {
      * 主线任务的初始id
      */
     public static final int MAIN_TASK_INIT_ID = 1;
+    /**
+     * 工会最大成员数
+     */
+    public static int MAX_MEMBER_NUM = 30;
+    /**
+     * 公会申请的列表的最大限制
+     */
+    public static int APPLY_MAX_LIMIT = 30;
 
 
 }

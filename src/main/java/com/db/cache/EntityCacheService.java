@@ -4,6 +4,7 @@ import com.db.EntityBuilder;
 import com.db.IEntity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Author：xuxin
@@ -33,5 +34,13 @@ public interface EntityCacheService<K extends Serializable & Comparable<K>, T ex
      * @param object
      */
     void saveOrUpdate(T object);
+
+    /**
+     * 查找所有
+     *
+     * @param entityClz
+     * @return
+     */
+    List<T> findAll(Class<T> entityClz);
 
 }

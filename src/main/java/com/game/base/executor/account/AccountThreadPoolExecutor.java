@@ -56,9 +56,10 @@ public class AccountThreadPoolExecutor{
                     accountCommond.active();
                 }
             } catch (RequestException e) {
+                logger.error("AccountThreadPoolExecutor执行：" + accountCommond.getName() + ",key:" + key + "错误 原因:", e.getErrorCode());
                 SendPacketUtil.send(accountCommond.getAccountId(), e.getErrorCode());
             } catch (Exception e) {
-                logger.error("AccountThreadPoolExecutor执行：" + accountCommond.getName() + ",key:" + key, e);
+                logger.error("AccountThreadPoolExecutor执行：" + accountCommond.getName() + ",key:" + key + "错误 原因:", e);
             }
         });
     }

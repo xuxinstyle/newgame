@@ -2,12 +2,15 @@ package com.db;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Author：xuxin
@@ -15,7 +18,7 @@ import java.io.Serializable;
  */
 @Transactional(rollbackFor = {})
 @Component
-public class HibernateDao extends HibernateDaoSupport{
+public class HibernateDao extends HibernateDaoSupport {
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -32,6 +35,13 @@ public class HibernateDao extends HibernateDaoSupport{
         return t;
     }
 
+    public <PK extends Serializable, T extends IEntity> List<T> findAll(Class<T> clz) {
+        List<T> ts = getHibernateTemplate().loadAll(clz);
+        for (T t : ts) {
+            t.unserialize();
+        }
+        return ts;
+    }
 
     public <PK extends Serializable,T extends IEntity> PK save(Class<? extends IEntity> clz, T entity){
         entity.serialize();
@@ -54,9 +64,7 @@ public class HibernateDao extends HibernateDaoSupport{
     }
 
     public <PK extends Serializable & Comparable<PK>,T extends IEntity<PK>> T findOrSave(Class<T> clz, PK id, EntityBuilder<PK, T> builder) {
-        Session session = getSession();
-
-        T t = session.get(clz, id);
+        T t = getSession().get(clz, id);
 
         if (t == null) {
             t = builder.newInstance(id);
@@ -68,4 +76,6 @@ public class HibernateDao extends HibernateDaoSupport{
         t.unserialize();
         return t;
     }
+
+
 }

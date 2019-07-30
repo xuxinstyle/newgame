@@ -119,4 +119,28 @@
     <catalog id="94" value="com.game.user.task.packet.SM_ShowExecuteTask"/>
     <catalog id="95" value="com.game.user.task.packet.CM_ShowExecuteTask"/>
 
+
+    <catalog id="96" value="com.game.world.union.packet.CM_AgreeApply"/>
+    <catalog id="97" value="com.game.world.union.packet.CM_ApplyJoinUnion"/>
+    <catalog id="98" value="com.game.world.union.packet.CM_CreateUnion"/>
+    <catalog id="99" value="com.game.world.union.packet.CM_ExitUnion"/>
+    <catalog id="100" value="com.game.world.union.packet.CM_ShowApplyList"/>
+    <catalog id="101" value="com.game.world.union.packet.SM_AgreeApply"/>
+    <catalog id="102" value="com.game.world.union.packet.SM_ApplyJoinUnionSucc"/>
+    <catalog id="103" value="com.game.world.union.packet.SM_CreateUnionSucc"/>
+    <catalog id="104" value="com.game.world.union.packet.SM_ExitUnion"/>
+    <catalog id="105" value="com.game.world.union.packet.SM_ShowApplyList"/>
+    <catalog id="106" value="com.game.world.union.packet.CM_ShowUnionMembers"/>
+    <catalog id="107" value="com.game.world.union.packet.SM_ShowUnionMembers"/>
+    <catalog id="108" value="com.game.world.union.packet.SM_ShowUnionList"/>
+    <catalog id="109" value="com.game.world.union.packet.CM_ShowUnionList"/>
+    <catalog id="110" value="com.game.world.union.packet.CM_RefuseApply"/>
+    <catalog id="111" value="com.game.world.union.packet.SM_KickOther"/>
+    <catalog id="112" value="com.game.world.union.packet.CM_KickOther"/>
+    <catalog id="113" value="com.game.world.union.packet.CM_UpdatePermission"/>
+    <catalog id="114" value="com.game.world.union.packet.SM_UpdatePermission"/>
+    <catalog id="115" value="com.game.world.union.packet.CM_ShowMyselfUnion"/>
+
+
+
 </protocols>

@@ -28,6 +28,7 @@ import com.game.user.reward.service.RewardService;
 import com.game.user.task.service.TaskService;
 import com.game.world.base.service.MapInfoService;
 import com.game.world.hopetower.service.HopeTowerService;
+import com.game.world.union.service.UnionService;
 import com.resource.core.InitManager;
 import com.resource.core.StorageManager;
 import com.socket.core.session.SessionManager;
@@ -121,6 +122,13 @@ public class SpringContext implements ApplicationContextAware {
     private RewardService rewardService;
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private UnionService unionService;
+
+    public static UnionService getUnionService() {
+        return instance.unionService;
+    }
 
     public static TaskService getTaskService() {
         return instance.taskService;
