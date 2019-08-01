@@ -5,33 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93cc0952-b069-437a-9235-91722d943ce6" name="Default" comment="增家副本刷怪功能">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/resource/MonsterGroupResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/packet/SM_RefreshMonster.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/FieldFightScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/FieldFightScene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/HopeTowerScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/base/model/HopeTowerScene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/monster/service/MonsterServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/resource/MapResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/resource/MapResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/scence/visible/service/ScenceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/util/CommonUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/util/CommonUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/base/service/MapInfoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/base/service/MapInfoServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/facade/HopeTowerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/facade/HopeTowerFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/packet/SM_CloseScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/packet/SM_CloseScene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/hopetower/service/HopeTowerServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/rank/model/BattleScoreRank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/rank/model/BattleScoreRank.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/rank/packet/bean/PlayerBattleScoreRankVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/rank/packet/bean/PlayerBattleScoreRankVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/rank/service/RankManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/rank/service/RankManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/rank/service/RankServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/rank/service/RankServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/union/entity/UnionMemberEnt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/union/entity/UnionAccountEnt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/union/service/UnionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/union/service/UnionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/game/world/union/service/UnionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/game/world/union/service/UnionServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/message.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/message.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/resource/MapResource.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/resource/MapResource.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/message.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/message.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -63,11 +37,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RankServiceImpl.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RankServiceImpl.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/rank/service/RankServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="68" column="56" lean-forward="true" selection-start-line="68" selection-start-column="56" selection-end-line="68" selection-end-column="56" />
+            <state relative-caret-position="195">
+              <caret line="69" column="52" selection-start-line="69" selection-start-column="52" selection-end-line="69" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -100,11 +74,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BattleScoreRank.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BattleScoreRank.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/rank/model/BattleScoreRank.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="118" column="20" selection-start-line="118" selection-start-column="20" selection-end-line="118" selection-end-column="20" />
+            <state relative-caret-position="30">
+              <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1936#1937#0" expanded="true" />
@@ -278,8 +252,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/game/world/rank/service/RankManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/util/CommonUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/world/rank/packet/bean/PlayerBattleScoreRankVO.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/game/world/rank/model/BattleScoreRank.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/game/world/rank/service/RankServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/game/world/rank/model/BattleScoreRank.java" />
       </list>
     </option>
   </component>
@@ -299,7 +273,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="46" />
     <option name="y" value="19" />
     <option name="width" value="1085" />
@@ -436,202 +410,7 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="role" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="role" type="462c0819:PsiDirectoryNode" />
-              <item name="battlescore" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="role" type="462c0819:PsiDirectoryNode" />
-              <item name="battlescore" type="462c0819:PsiDirectoryNode" />
-              <item name="event" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="role" type="462c0819:PsiDirectoryNode" />
-              <item name="battlescore" type="462c0819:PsiDirectoryNode" />
-              <item name="facade" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="role" type="462c0819:PsiDirectoryNode" />
-              <item name="battlescore" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="role" type="462c0819:PsiDirectoryNode" />
-              <item name="battlescore" type="462c0819:PsiDirectoryNode" />
-              <item name="util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="role" type="462c0819:PsiDirectoryNode" />
-              <item name="player" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="role" type="462c0819:PsiDirectoryNode" />
-              <item name="player" type="462c0819:PsiDirectoryNode" />
-              <item name="event" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="role" type="462c0819:PsiDirectoryNode" />
-              <item name="player" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
               <item name="world" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="world" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="world" type="462c0819:PsiDirectoryNode" />
-              <item name="hopetower" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="world" type="462c0819:PsiDirectoryNode" />
-              <item name="hopetower" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="world" type="462c0819:PsiDirectoryNode" />
-              <item name="hopetower" type="462c0819:PsiDirectoryNode" />
-              <item name="packet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="world" type="462c0819:PsiDirectoryNode" />
-              <item name="hopetower" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="world" type="462c0819:PsiDirectoryNode" />
-              <item name="rank" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newgame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="world" type="462c0819:PsiDirectoryNode" />
-              <item name="rank" type="462c0819:PsiDirectoryNode" />
-              <item name="facade" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="newgame" type="b2602c69:ProjectViewProjectNode" />
@@ -863,7 +642,7 @@
       <workItem from="1564404211104" duration="4888000" />
       <workItem from="1564448719160" duration="43541000" />
       <workItem from="1564537788607" duration="23857000" />
-      <workItem from="1564621147732" duration="15869000" />
+      <workItem from="1564621147732" duration="16077000" />
     </task>
     <task id="LOCAL-00001" summary="修复怪物掉落物的bug，并将玩家中的攻速和吸血相关的属性删除">
       <created>1563336763999</created>
@@ -925,7 +704,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1431693000" />
+    <option name="totallyTimeSpent" value="1431901000" />
   </component>
   <component name="TodoView" selected-index="5">
     <todo-panel id="selected-file">
@@ -951,7 +730,7 @@
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.24886535" />
       <window_info id="UI Designer" order="4" />
-      <window_info active="true" anchor="bottom" x="375" y="81" width="568" height="553" id="Debug" order="5" sideWeight="0.52879584" visible="true" weight="0.25996533" />
+      <window_info active="true" anchor="bottom" x="375" y="81" width="568" height="553" id="Debug" order="5" sideWeight="0.52879584" visible="true" weight="0.4714038" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3119584" />
       <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.43717277" weight="0.359447" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
@@ -1350,7 +1129,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/game/world/rank/service/RankServiceImpl.java</url>
-          <line>76</line>
+          <line>74</line>
           <properties />
           <option name="timeStamp" value="1034" />
         </line-breakpoint>
@@ -1840,10 +1619,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/rank/facade/RankFacade.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="20" column="48" selection-start-line="20" selection-start-column="48" selection-end-line="20" selection-end-column="48" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/rank/service/RankServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="69" column="52" selection-start-line="69" selection-start-column="52" selection-end-line="69" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/rank/model/BattleScoreRank.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="118" column="20" selection-start-line="118" selection-start-column="20" selection-end-line="118" selection-end-column="20" />
+        <state relative-caret-position="30">
+          <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1936#1937#0" expanded="true" />
@@ -1864,26 +1663,6 @@
             <element signature="e#3942#3943#0" expanded="true" />
             <element signature="e#3977#3978#0" expanded="true" />
             <element signature="e#4007#4008#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/rank/facade/RankFacade.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="20" column="48" selection-start-line="20" selection-start-column="48" selection-end-line="20" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/game/world/rank/service/RankServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="68" column="56" lean-forward="true" selection-start-line="68" selection-start-column="56" selection-end-line="68" selection-end-column="56" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

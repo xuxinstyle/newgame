@@ -23,7 +23,7 @@ public class BattleScoreRank {
     /**
      * 排行榜默认缓存容量
      */
-    public final static int DEFAULT_NUM = 500;
+    public final static int DEFAULT_CAPACITY = 500;
     /**
      * 排行榜缓存容量
      */
@@ -37,7 +37,7 @@ public class BattleScoreRank {
     }
 
     public BattleScoreRank() {
-        this(DEFAULT_NUM);
+        this(DEFAULT_CAPACITY);
     }
 
     /**
