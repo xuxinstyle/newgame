@@ -64,20 +64,27 @@ public class BattleScoreRank {
     }
 
     /**
-     * 向排行榜增加数据
+     * 向排行榜增加数据 数据数量可能会出现线程安全的问题，
      *
      * @param rankInfo
      */
     public void putNewRankInfo(PlayerBattleScoreRankInfo rankInfo) {
         rank.put(rankInfo, rankInfo.getPlayerId());
         cacheRankInfo.put(rankInfo.getPlayerId(), rankInfo);
-        if(isFull()){
+        // 这里加个锁保证数据同步
+        if (isFull()) {
             Map.Entry<PlayerBattleScoreRankInfo, Long> entry = rank.pollLastEntry();
             cacheRankInfo.remove(entry.getValue());
         }
+
     }
 
-    boolean isFull(){
+    /**
+     * 排行榜缓存是否满
+     *
+     * @return
+     */
+    public boolean isFull() {
         return getRank().size()>this.capacity;
     }
 
@@ -99,11 +106,12 @@ public class BattleScoreRank {
     public void updateRandByPlayer(Player player) {
         PlayerBattleScoreRankInfo rankInfo = cacheRankInfo.get(player.getObjectId());
         if (rankInfo == null) {
-            return;
+            rankInfo = PlayerBattleScoreRankInfo.valueOf(player);
         }
         rank.remove(rankInfo);
         rankInfo.setBattleScore(player.getBattleScore());
-        rank.put(rankInfo, rankInfo.getPlayerId());
+        putNewRankInfo(rankInfo);
+
     }
 
     /**

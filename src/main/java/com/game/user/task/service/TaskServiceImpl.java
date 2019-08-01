@@ -5,6 +5,8 @@ import com.db.cache.EntityCacheService;
 import com.game.SpringContext;
 import com.game.common.exception.RequestException;
 import com.game.role.player.model.Player;
+import com.game.scence.npc.resource.NpcResource;
+import com.game.scence.visible.resource.MapResource;
 import com.game.user.task.constant.TaskConditionType;
 import com.game.user.task.constant.TaskLineType;
 import com.game.user.task.entity.TaskEnt;
@@ -102,7 +104,6 @@ public class TaskServiceImpl implements TaskService {
     private void doHandleTask(Player player, TaskConditionType type, String key) {
         TaskEnt taskEnt = getTaskEnt(player.getAccountId());
         TaskInfo taskInfo = taskEnt.getTaskInfo();
-        // 检查是否有触发任务 获取所有的可触发的任务
 
 
         // 获取正在进行的任务集合
@@ -120,16 +121,8 @@ public class TaskServiceImpl implements TaskService {
             }
         }
     }
-
-    @Override
-    public void talkWithNpc(String accountId, int mapId, int npcId) {
-        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
-        SpringContext.getEvenManager().syncSubmit(TalkEvent.valueOf(player, npcId));
-    }
-
     /**
      * 任务进度发生改变
-     *
      * @param task
      * @param player
      */

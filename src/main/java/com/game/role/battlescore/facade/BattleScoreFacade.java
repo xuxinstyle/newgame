@@ -11,8 +11,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BattleScoreFacade {
+
     @EventAnn
     public void doAttributeChange(ChangeAttrbuteEvent event) {
-        SpringContext.getBattleScoreService().freshPlayerAttribute(event.getPlayer());
+        SpringContext.getBattleScoreService().freshPlayerBattleScore(event.getPlayer());
     }
 }

@@ -144,8 +144,13 @@ public interface I18nId {
      */
     int NOT_UPDATE_MYSELF = 10050;
     /**
-     * 必须会长才能解散行会
+     * 不能解散行会
      */
     int NOT_DISBAND = 10051;
+    /**
+     * 地图中没有npc
+     */
+    int NOT_NPC = 10052;
+
 
 }

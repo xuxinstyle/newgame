@@ -1,18 +1,19 @@
-package com.game.role.player.event;
+package com.game.world.rank.event;
 
 import com.event.event.IEvent;
 import com.game.role.player.model.Player;
+import com.game.util.CommonUtil;
 
 /**
  * @Author：xuxin
- * @Date: 2019/7/31 18:26
+ * @Date: 2019/7/31 15:56
  */
-public class CreatePlayerEvent implements IEvent {
+public class BattleScoreChangeAsynEvent implements IEvent {
 
     private Player player;
 
-    public static CreatePlayerEvent valueOf(Player player) {
-        CreatePlayerEvent event = new CreatePlayerEvent();
+    public static BattleScoreChangeAsynEvent valueOf(Player player) {
+        BattleScoreChangeAsynEvent event = new BattleScoreChangeAsynEvent();
         event.setPlayer(player);
         return event;
     }
@@ -27,6 +28,6 @@ public class CreatePlayerEvent implements IEvent {
 
     @Override
     public long getId() {
-        return 0;
+        return CommonUtil.ASYN_EVENT_ZERO;
     }
 }

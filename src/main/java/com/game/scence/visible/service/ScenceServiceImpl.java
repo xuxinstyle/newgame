@@ -293,6 +293,7 @@ public class ScenceServiceImpl implements ScenceService {
         if (!scene.canChangeToMap(targetMapId)) {
             RequestException.throwException(I18nId.NOT_ENTER_MAP);
         }
+        // fixme:如果是分线怎么办
         AbstractScene targetScene = getScene(targetMapId, accountId);
         // 如果当前的地图是副本 切目标地图也是副本 则不能切图 只有目标地图不是副本才能从副本切 每个地图能否切至其他地图 写在抽象方法canChangeMap中
         // 是副本 初始化地图
@@ -310,6 +311,7 @@ public class ScenceServiceImpl implements ScenceService {
 
     public AbstractScene checkAndInitScene(int mapId, Player player) {
         MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(mapId);
+        // 前面已经验证mapResource 此处不需要再验证
         MapType mapType = MapType.getMapTypeMap().get(mapResource.getMapType());
         if (mapType == null) {
             RequestException.throwException(I18nId.NOT_ENTER_MAP);
@@ -345,17 +347,17 @@ public class ScenceServiceImpl implements ScenceService {
             // 判断进入的地图是副本还是普通地图
             // 是副本 初始化副本 不是副本则直接进入地图
             AbstractScene scene = getScene(targetMapId, player.getAccountId());
+            if (!scene.canEnter(player)) {
+                RequestException.throwException(I18nId.ENTER_MAP_ERROR);
+            }
             /**
              * 离开当前地图
              */
             leaveMap(player.getAccountId(), clientRequest);
+
             /**
              * 进入地图
              */
-
-            if (!scene.canEnter(player)) {
-                RequestException.throwException(I18nId.ENTER_MAP_ERROR);
-            }
             EnterMapCommand command = EnterMapCommand.valueOf(player, scene.getSceneId(), targetMapId, false);
             SpringContext.getSceneExecutorService().submit(command);
         }catch (Exception e){

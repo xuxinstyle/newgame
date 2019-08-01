@@ -18,16 +18,12 @@ import java.util.Map;
  * @Date: 2019/7/3 16:10
  */
 public class NoviceVillageScene extends AbstractScene {
-    /**
-     * fixme: 这里先放这里 未来任务有需要在地图中npc信息 npc配置id
-     */
-    private List<Integer> npcInfoList;
+
 
     @Override
     public void init() {
         setMapId(MapType.NoviceVillage.getId());
         setSceneId(0);
-        this.npcInfoList = SpringContext.getNpcService().getNpcIds(getMapId());
     }
 
     @Override
@@ -84,16 +80,8 @@ public class NoviceVillageScene extends AbstractScene {
         if (mapResource == null) {
             return false;
         }
-
         return true;
     }
 
-    public List<Integer> getNpcInfoList() {
-        return npcInfoList;
-    }
-
-    public void setNpcInfoList(List<Integer> npcInfoList) {
-        this.npcInfoList = npcInfoList;
-    }
 
 }

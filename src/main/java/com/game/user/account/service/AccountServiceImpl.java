@@ -2,13 +2,14 @@ package com.game.user.account.service;
 
 import com.db.cache.EntityCacheService;
 import com.game.SpringContext;
-import com.game.role.player.event.CreatePlayerEvent;
+import com.game.role.battlescore.event.ChangeAttrbuteEvent;
 import com.game.user.account.entity.AccountEnt;
 
 import com.game.user.account.model.AccountInfo;
 import com.game.user.account.packet.SM_CreatePlayer;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.scence.visible.constant.MapType;
+import com.game.world.rank.event.BattleScoreChangeAsynEvent;
 import com.socket.core.session.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,8 +64,10 @@ public class AccountServiceImpl implements AccountService {
         accountInfo.setPlayerId(playerId);
         SpringContext.getItemService().createStorage(accountId);
         accountEnt.setAccountInfo(accountInfo);
-        CreatePlayerEvent event = CreatePlayerEvent.valueOf(playerEnt.getPlayer());
+        // 抛属性改变事件
+        ChangeAttrbuteEvent event = ChangeAttrbuteEvent.valueOf(playerEnt.getPlayer());
         SpringContext.getEvenManager().syncSubmit(event);
+
         save(accountEnt);
         SM_CreatePlayer sm = new SM_CreatePlayer();
         sm.setAccountId(accountId);

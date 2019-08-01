@@ -32,14 +32,6 @@ public interface TaskService {
      */
     void doAfterLogin(Player player);
 
-    /**
-     * 做玩家与npc聊天操作 抛聊天事件
-     *
-     * @param accountId
-     * @param mapId
-     * @param npcId
-     */
-    void talkWithNpc(String accountId, int mapId, int npcId);
 
     /**
      * 与npc聊天

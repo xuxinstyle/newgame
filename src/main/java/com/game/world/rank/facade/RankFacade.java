@@ -2,8 +2,7 @@ package com.game.world.rank.facade;
 
 import com.event.anno.EventAnn;
 import com.game.SpringContext;
-import com.game.role.player.event.CreatePlayerEvent;
-import com.game.world.rank.event.BattleScoreChangeEvent;
+import com.game.world.rank.event.BattleScoreChangeAsynEvent;
 import com.game.world.rank.packet.CM_ShowRankList;
 import com.socket.core.session.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
@@ -22,12 +21,8 @@ public class RankFacade {
     }
 
     @EventAnn
-    public void battleScoreChange(BattleScoreChangeEvent event) {
+    public void battleScoreChange(BattleScoreChangeAsynEvent event) {
         SpringContext.getRankListService().doBattleScoreChange(event.getPlayer());
     }
 
-    @EventAnn
-    public void addPlayer(CreatePlayerEvent event) {
-        SpringContext.getRankListService().addPlayerRankInfo(event.getPlayer());
-    }
 }

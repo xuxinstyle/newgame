@@ -24,8 +24,7 @@ public interface UnionService {
 
     /**
      * 同意申请操作
-     *
-     * @param accountId       操作者
+     *  @param accountId       操作者
      * @param targetAccountId 目标账号id
      */
     void agreeApply(String accountId, String targetAccountId);
@@ -113,4 +112,7 @@ public interface UnionService {
      * @param accountId
      */
     void disband(String accountId);
+
+    void doKickOther(String targetAccountId, String unionId, String handleAccountId);
+
 }

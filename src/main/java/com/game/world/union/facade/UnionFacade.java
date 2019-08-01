@@ -73,7 +73,7 @@ public class UnionFacade {
     }
 
     @HandlerAnno
-    public void agreeApply(TSession session, CM_AgreeApply cm) {
+    public void agreeApply(TSession session, CM_HandleApply cm) {
         try {
             SpringContext.getUnionService().agreeApply(session.getAccountId(), cm.getTargetAccountId());
         } catch (RequestException e) {

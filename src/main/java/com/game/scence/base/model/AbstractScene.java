@@ -10,6 +10,7 @@ import com.game.scence.fight.model.CreatureUnit;
 import com.game.scence.fight.model.PlayerUnit;
 import com.game.scence.visible.model.Position;
 import com.game.scence.visible.packet.bean.VisibleVO;
+import com.game.scence.visible.resource.MapResource;
 import com.game.util.I18nId;
 
 import java.util.ArrayList;
@@ -33,10 +34,6 @@ public abstract class AbstractScene {
      * 场景id 唯一id
      */
     private int sceneId;
-    /**
-     * 场景是否结束
-     */
-    private boolean isEnd = false;
 
     /**
      * 玩家战斗单元信息
@@ -47,6 +44,7 @@ public abstract class AbstractScene {
     public AbstractScene(){
 
     }
+
     public AbstractScene(int mapId){
         this(mapId,0);
     }
@@ -152,10 +150,12 @@ public abstract class AbstractScene {
         player.setCurrMapId(getMapId());
         player.setCurrSceneId(getSceneId());
         SpringContext.getPlayerSerivce().save(player);
-        //
-        PlayerUnit playerUnit = PlayerUnit.valueOf(player);
-        creatureUnitMap.put(player.getObjectId(), playerUnit);
+
+        // 默认从缓存中拿
+        PlayerUnit playerUnit = SpringContext.getScenceSerivce().getPlayerUnit(player);
         playerUnit.setScene(this);
+        creatureUnitMap.put(player.getObjectId(), playerUnit);
+
     }
 
     /**
@@ -209,7 +209,13 @@ public abstract class AbstractScene {
      * @param targetMapId
      * @return
      */
-    public abstract boolean canChangeToMap(int targetMapId);
+    public boolean canChangeToMap(int targetMapId) {
+        MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(targetMapId);
+        if (mapResource == null) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * 判断能否进入该地图 有些地图有特殊的进入 如副本中当玩家进入个人副本之后，其他玩家无法进入

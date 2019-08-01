@@ -1,5 +1,7 @@
 package com.game.world.rank.model;
 
+import com.game.role.player.model.Player;
+
 /**
  * 玩家战力排行榜中的 信息
  *
@@ -12,6 +14,15 @@ public class PlayerBattleScoreRankInfo extends AbstractRankInfo implements Compa
     private long battleScore;
 
     private int level;
+
+    public static PlayerBattleScoreRankInfo valueOf(Player player) {
+        PlayerBattleScoreRankInfo rankInfo = new PlayerBattleScoreRankInfo();
+        rankInfo.setBattleScore(player.getBattleScore());
+        rankInfo.setPlayerId(player.getObjectId());
+        rankInfo.setAccountId(player.getAccountId());
+        rankInfo.setLevel(player.getLevel());
+        return rankInfo;
+    }
 
 
     public long getBattleScore() {

@@ -67,18 +67,6 @@ public class TaskFacade {
 
     }
 
-    @HandlerAnno
-    public void talkWithNpc(TSession session, CM_TalkWithNpc cm) {
-        try {
-            SpringContext.getTaskService().talkWithNpc(session.getAccountId(), cm.getMapId(), cm.getNpcId());
-        } catch (RequestException e) {
-            logger.error("与[{}]npc聊天失败失败,原因[{}]", cm.getNpcId(), e.getErrorCode());
-            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
-        } catch (Exception e) {
-            logger.error("与[{}]npc聊天失败失败", cm.getNpcId(), e);
-            SendPacketUtil.send(session.getAccountId(), I18nId.ERROR);
-        }
-    }
 
     @HandlerAnno
     public void showFinishTask(TSession session, CM_ShowFinishTask cm) {

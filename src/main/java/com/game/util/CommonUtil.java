@@ -29,6 +29,10 @@ public class CommonUtil {
      * 排行榜显示数量
      */
     public static int RANK_MAX_NUM = 5;
+    /**
+     * 处理玩家战力更改的 排行榜更新事件的处理线程
+     */
+    public static int ASYN_EVENT_ZERO = 0;
 
 
 }

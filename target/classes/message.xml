@@ -120,7 +120,7 @@
     <catalog id="95" value="com.game.user.task.packet.CM_ShowExecuteTask"/>
 
 
-    <catalog id="96" value="com.game.world.union.packet.CM_AgreeApply"/>
+    <catalog id="96" value="com.game.world.union.packet.CM_HandleApply"/>
     <catalog id="97" value="com.game.world.union.packet.CM_ApplyJoinUnion"/>
     <catalog id="98" value="com.game.world.union.packet.CM_CreateUnion"/>
     <catalog id="99" value="com.game.world.union.packet.CM_ExitUnion"/>

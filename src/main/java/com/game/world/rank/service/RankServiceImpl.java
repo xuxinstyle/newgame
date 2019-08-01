@@ -36,23 +36,11 @@ public class RankServiceImpl implements RankService {
     }
 
     @Override
-    public void addPlayerRankInfo(Player player) {
-        BattleScoreRank battleScoreRank = rankManager.getBattleScoreRank();
-        PlayerBattleScoreRankInfo playerBattleScoreRankInfo = new PlayerBattleScoreRankInfo();
-        playerBattleScoreRankInfo.setBattleScore(player.getBattleScore());
-        playerBattleScoreRankInfo.setLevel(player.getLevel());
-        playerBattleScoreRankInfo.setAccountId(player.getAccountId());
-        playerBattleScoreRankInfo.setPlayerId(player.getObjectId());
-        battleScoreRank.putNewRankInfo(playerBattleScoreRankInfo);
-    }
-
-    @Override
     public void showRankList(String accountId) {
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
         SM_ShowRankList sm = new SM_ShowRankList();
         List<PlayerBattleScoreRankVO> rankVOList = new ArrayList<>();
         BattleScoreRank battleScoreRank = rankManager.getBattleScoreRank();
-
         int num = 1;
         boolean haveMe = false;
         for (PlayerBattleScoreRankInfo rankInfo : battleScoreRank.getRank().keySet()) {

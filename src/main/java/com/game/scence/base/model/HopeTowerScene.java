@@ -117,11 +117,13 @@ public class HopeTowerScene extends AbstractMonsterScene {
      */
     @Override
     public void doLeave(Player player) {
+        setPlayerUnit(null);
         // 停止时间倒计时
         for (ICommand command : getCommandMap().values()) {
             command.cancel();
             getCommandMap().clear();
         }
+        // 清除scene中的数据
     }
 
     public boolean checkMonsterDeadAll() {
@@ -235,10 +237,15 @@ public class HopeTowerScene extends AbstractMonsterScene {
 
     @Override
     public void doEnter(Player player) {
-        super.doEnter(player);
-        // 从缓存中拿playerUnit
-        PlayerUnit playerUnit = SpringContext.getScenceSerivce().getPlayerUnit(player);
+        player.setCurrMapId(getMapId());
+        player.setCurrSceneId(getSceneId());
+        SpringContext.getPlayerSerivce().save(player);
+        // copy一个
+        PlayerUnit playerUnit = PlayerUnit.valueOf(player);
         this.playerUnit = playerUnit;
+
+        playerUnit.setScene(this);
+        getCreatureUnitMap().put(player.getObjectId(), playerUnit);
         //抛出副本定时事件
         countdown();
     }

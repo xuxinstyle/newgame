@@ -12,5 +12,5 @@ public interface BattleScoreService {
      *
      * @param player
      */
-    void freshPlayerAttribute(Player player);
+    void freshPlayerBattleScore(Player player);
 }

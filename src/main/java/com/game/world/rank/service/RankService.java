@@ -26,11 +26,5 @@ public interface RankService {
      */
     void showRankList(String accountId);
 
-    /**
-     * 添加玩家到排行榜
-     *
-     * @param player
-     */
-    void addPlayerRankInfo(Player player);
 
 }
