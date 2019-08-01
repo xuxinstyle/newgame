@@ -3,7 +3,7 @@ package com.game.world.union.service;
 import com.db.EntityBuilder;
 import com.db.cache.EntityCacheService;
 import com.game.world.union.entity.UnionEnt;
-import com.game.world.union.entity.UnionMemberEnt;
+import com.game.world.union.entity.UnionAccountEnt;
 import com.resource.core.StorageManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class UnionManager {
     @Autowired
     private EntityCacheService<String, UnionEnt> unionCacheService;
     @Autowired
-    private EntityCacheService<String, UnionMemberEnt> unionMemberCacheService;
+    private EntityCacheService<String, UnionAccountEnt> unionMemberCacheService;
 
     @Autowired
     private StorageManager storageManager;
@@ -28,11 +28,11 @@ public class UnionManager {
         return unionCacheService.find(UnionEnt.class, unionId);
     }
 
-    public UnionMemberEnt getUnionMember(String accountId) {
-        return unionMemberCacheService.findOrCreate(UnionMemberEnt.class, accountId, new EntityBuilder<String, UnionMemberEnt>() {
+    public UnionAccountEnt getUnionMember(String accountId) {
+        return unionMemberCacheService.findOrCreate(UnionAccountEnt.class, accountId, new EntityBuilder<String, UnionAccountEnt>() {
             @Override
-            public UnionMemberEnt newInstance(String id) {
-                return UnionMemberEnt.valueOf(id);
+            public UnionAccountEnt newInstance(String id) {
+                return UnionAccountEnt.valueOf(id);
             }
         });
     }
@@ -49,8 +49,8 @@ public class UnionManager {
         unionCacheService.saveOrUpdate(unionEnt);
     }
 
-    public void saveUnionMember(UnionMemberEnt unionMemberEnt) {
-        unionMemberCacheService.saveOrUpdate(unionMemberEnt);
+    public void saveUnionMember(UnionAccountEnt unionAccountEnt) {
+        unionMemberCacheService.saveOrUpdate(unionAccountEnt);
     }
 
 }

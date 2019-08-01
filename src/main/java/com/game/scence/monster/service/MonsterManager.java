@@ -1,5 +1,6 @@
 package com.game.scence.monster.service;
 
+import com.game.scence.monster.resource.MonsterGroupResource;
 import com.game.scence.monster.resource.MonsterResource;
 import com.resource.core.StorageManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class MonsterManager {
 
     public Collection<MonsterResource> getAllMonsterResource(){
         return (Collection<MonsterResource>)storageManager.getResourceAll(MonsterResource.class);
+    }
+
+    public MonsterGroupResource getMonsterGroupResource(int groupId) {
+        return storageManager.getResource(groupId, MonsterGroupResource.class);
     }
 
 }

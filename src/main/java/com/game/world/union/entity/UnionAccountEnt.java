@@ -1,8 +1,6 @@
 package com.game.world.union.entity;
 
 import com.db.AbstractEntity;
-import com.game.util.JsonUtils;
-import com.game.world.union.model.UnionMemberInfo;
 import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
@@ -13,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity(name = "account_union")
 @Table(appliesTo = "account_union", comment = "工会成员信息")
-public class UnionMemberEnt extends AbstractEntity<String> {
+public class UnionAccountEnt extends AbstractEntity<String> {
     @Id
     @Column(columnDefinition = "varchar(255) character set utf8 collate utf8_bin comment '账号id'", nullable = false)
     private String accountId;
@@ -21,12 +19,12 @@ public class UnionMemberEnt extends AbstractEntity<String> {
     @Column(columnDefinition = "varchar(255) character set utf8 collate utf8_bin comment '工会id'")
     private String unionId;
 
-    public static UnionMemberEnt valueOf(String accountId) {
-        UnionMemberEnt unionMemberEnt = new UnionMemberEnt();
-        unionMemberEnt.setAccountId(accountId);
-        unionMemberEnt.setUnionId(null);
+    public static UnionAccountEnt valueOf(String accountId) {
+        UnionAccountEnt unionAccountEnt = new UnionAccountEnt();
+        unionAccountEnt.setAccountId(accountId);
+        unionAccountEnt.setUnionId(null);
 
-        return unionMemberEnt;
+        return unionAccountEnt;
     }
 
 

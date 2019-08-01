@@ -137,6 +137,9 @@ public class ScenceServiceImpl implements ScenceService {
         Player player = playerEnt.getPlayer();
         int currMapId = player.getCurrMapId();
         player.setLastLogoutMapId(currMapId);
+        /*if(MapType.getMapType(currMapId)==MapType.HOPE_TOWER){
+
+        }*/
         // 离开地图需要到对应的场景线程中处理数据
         LeaveMapCommand command = new LeaveMapCommand(currMapId, player.getCurrSceneId(), accountId, false);
         SpringContext.getSceneExecutorService().submit(command);

@@ -1,0 +1,11 @@
+任务id,任务类型,下一个任务,是否初始任务,触发条件,完成条件  value   进度值 ：key如怪物id,完成奖励,任务描述
+id,lineId,nextTaskIds,isInitTask,triggerConDefs,finishConDefs,rewardDefs,des
+int,int,array,boolean,array,array,array,string
+1,1,[2],TRUE,"[{""type"":""ACCOUNT_LOGIN"",""value"":""1""}]","[{""type"":""NPC_TALK"",""value"":""1:1""}]","[{""itemId"":3,""num"":700},{""itemId"":12,""num"":1}]",与npc对话
+2,1,"[3,6]",FALSE,"[{""type"":""TASK_FINISH"",""value"":""1""}]","[{""type"":""ENTER_MAP"",""value"":""1:2""}]","[{""itemId"":3,""num"":700},{""itemId"":12,""num"":1}]",进入野外地图
+3,1,[8],FALSE,"[{""type"":""TASK_FINISH"",""value"":""2""}]","[{""type"":""KILL_MONSTER"",""value"":""2:1""}]","[{""itemId"":3,""num"":700},{""itemId"":12,""num"":1}]",杀2只普通小怪
+4,3,,TRUE,"[{""type"":""ACCOUNT_LOGIN"",""value"":""1""}]","[{""type"":""NPC_TALK"",""value"":""1:2""}]","[{""itemId"":3,""num"":700},{""itemId"":12,""num"":1}]",与npc 2对话
+5,3,,TRUE,"[{""type"":""ACCOUNT_LOGIN"",""value"":""1""}]","[{""type"":""PASS_MAP"",""value"":""1:3""}]","[{""itemId"":3,""num"":700},{""itemId"":12,""num"":1}]",通关希望之塔第一层
+6,2,[7],FALSE,"[{""type"":""ACCOUNT_LOGIN"",""value"":""1""}]","[{""type"":""NPC_TALK"",""value"":""1:2""}]","[{""itemId"":3,""num"":700},{""itemId"":12,""num"":1}]",与npc 2对话
+7,2,,FALSE,"[{""type"":""ACCOUNT_LOGIN"",""value"":""1""}]","[{""type"":""PASS_MAP"",""value"":""1:4""}]","[{""itemId"":3,""num"":700},{""itemId"":12,""num"":1}]",通关希望之塔第2层
+8,1,,FALSE,"[{""type"":""ACCOUNT_LOGIN"",""value"":""1""}]","[{""type"":""PLAYER_LEVEL_UP"",""value"":""5""}]","[{""itemId"":3,""num"":700},{""itemId"":12,""num"":1}]",玩家等级达到5级

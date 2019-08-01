@@ -9,7 +9,7 @@ import com.game.util.TimeUtil;
 import com.game.world.union.command.AgreeApplyCommand;
 import com.game.world.union.constant.UnionJob;
 import com.game.world.union.entity.UnionEnt;
-import com.game.world.union.entity.UnionMemberEnt;
+import com.game.world.union.entity.UnionAccountEnt;
 import com.game.world.union.model.UnionInfo;
 import com.game.world.union.model.UnionMemberInfo;
 import com.game.world.union.packet.*;
@@ -47,8 +47,8 @@ public class UnionServiceImpl implements UnionService {
     @Override
     public void createUnion(String accountId, String unionName) {
         // 判断玩家是否加入工会
-        UnionMemberEnt unionMemberEnt = unionManager.getUnionMember(accountId);
-        if (unionMemberEnt == null || unionMemberEnt.getUnionId() != null) {
+        UnionAccountEnt unionAccountEnt = unionManager.getUnionMember(accountId);
+        if (unionAccountEnt == null || unionAccountEnt.getUnionId() != null) {
             RequestException.throwException(I18nId.NOT_CREATE_UNION);
         }
 
@@ -63,7 +63,7 @@ public class UnionServiceImpl implements UnionService {
         unionInfo.setPresidentId(accountId);
 
         // 修改unionMember信息
-        unionMemberEnt.setUnionId(unionId);
+        unionAccountEnt.setUnionId(unionId);
         UnionMemberInfo unionMemberInfo = new UnionMemberInfo();
         unionMemberInfo.setEnterTime(TimeUtil.now());
         unionMemberInfo.setUnionJob(UnionJob.PRESIDENT);
@@ -72,7 +72,7 @@ public class UnionServiceImpl implements UnionService {
         logger.info("玩家[{}]创建公会[{}]成功", accountId, unionId);
         // 保存
         unionManager.saveUnion(unionEnt);
-        unionManager.saveUnionMember(unionMemberEnt);
+        unionManager.saveUnionMember(unionAccountEnt);
         // 通知客户端
         SendPacketUtil.send(accountId, new SM_CreateUnionSucc());
     }
@@ -96,8 +96,8 @@ public class UnionServiceImpl implements UnionService {
             RequestException.throwException(I18nId.UNION_NOT_EXIST);
         }
         // 判断玩家是否加入工会
-        UnionMemberEnt unionMemberEnt = unionManager.getUnionMember(accountId);
-        if (unionMemberEnt == null || unionMemberEnt.getUnionId() != null) {
+        UnionAccountEnt unionAccountEnt = unionManager.getUnionMember(accountId);
+        if (unionAccountEnt == null || unionAccountEnt.getUnionId() != null) {
             RequestException.throwException(I18nId.NOT_APPLY_UNION);
         }
 
@@ -113,14 +113,14 @@ public class UnionServiceImpl implements UnionService {
     public void showApplyList(String accountId) {
 
         // 检查玩家是否加入行会
-        UnionMemberEnt unionMemberEnt = unionManager.getUnionMember(accountId);
-        if (unionMemberEnt.getUnionId() == null) {
+        UnionAccountEnt unionAccountEnt = unionManager.getUnionMember(accountId);
+        if (unionAccountEnt.getUnionId() == null) {
             // 没有加入行会
             logger.info("玩家[{}]没有加入行会,无法查看的申请列表", accountId);
             RequestException.throwException(I18nId.NOT_JOIN_UNION);
         }
         // 检查玩家在行会中的权限
-        String unionId = unionMemberEnt.getUnionId();
+        String unionId = unionAccountEnt.getUnionId();
         UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
         // 检查玩家的工会是否存在
         if (unionEnt == null) {
@@ -147,8 +147,8 @@ public class UnionServiceImpl implements UnionService {
     public void agreeApply(String accountId, String targetAccountId) {
         // double check 防止进入到
         // 验证自己是否在行会中
-        UnionMemberEnt unionMemberEnt = unionManager.getUnionMember(accountId);
-        String unionId = unionMemberEnt.getUnionId();
+        UnionAccountEnt unionAccountEnt = unionManager.getUnionMember(accountId);
+        String unionId = unionAccountEnt.getUnionId();
         if (unionId == null) {
             // 没有加入行会
             RequestException.throwException(I18nId.NOT_JOIN_UNION);
@@ -172,8 +172,8 @@ public class UnionServiceImpl implements UnionService {
         // 有可能在在该方法中 玩家进入其他行会 所以在command中需要再验证一次
         // 这里本应是在目标线程中验证
         // 再这里验证是为了提高效率 为了避免不必要的加入操作  因为加入总是要一个个来 如果通过了太多的不必要的操作会总是阻塞性能降低
-        UnionMemberEnt targetUnionMemberEnt = unionManager.getUnionMember(targetAccountId);
-        String targetUnionId = targetUnionMemberEnt.getUnionId();
+        UnionAccountEnt targetUnionAccountEnt = unionManager.getUnionMember(targetAccountId);
+        String targetUnionId = targetUnionAccountEnt.getUnionId();
         if (targetUnionId != null) {
             RequestException.throwException(I18nId.JOIN_OTHER_UNION);
         }
@@ -210,8 +210,8 @@ public class UnionServiceImpl implements UnionService {
                 return;
             }
             // 验证目标账号是否加入其他工会
-            UnionMemberEnt targetUnionMemberEnt = unionManager.getUnionMember(targetAccountId);
-            if (targetUnionMemberEnt.getUnionId() != null) {
+            UnionAccountEnt targetUnionAccountEnt = unionManager.getUnionMember(targetAccountId);
+            if (targetUnionAccountEnt.getUnionId() != null) {
                 // 加入了其他工会 移除申请列表
                 applyList.remove(targetAccountId);
                 SendPacketUtil.send(handleAccountId, SM_AgreeApply.valueOf(2));
@@ -228,13 +228,13 @@ public class UnionServiceImpl implements UnionService {
             // 将目标加入
 
             // 修改accountIdUnion
-            targetUnionMemberEnt.setUnionId(unionId);
+            targetUnionAccountEnt.setUnionId(unionId);
             UnionMemberInfo unionMemberInfo = new UnionMemberInfo();
             unionMemberInfo.setUnionJob(UnionJob.MEMBER);
             unionMemberInfo.setEnterTime(TimeUtil.now());
             memberInfoMap.put(targetAccountId, unionMemberInfo);
             // 保存 通知客户端
-            unionManager.saveUnionMember(targetUnionMemberEnt);
+            unionManager.saveUnionMember(targetUnionAccountEnt);
             unionManager.saveUnion(unionEnt);
             SendPacketUtil.send(targetAccountId, SM_AgreeApply.valueOf(0));
         } finally {
@@ -245,8 +245,8 @@ public class UnionServiceImpl implements UnionService {
     @Override
     public void refuse(String handleAccounrId, String targetAccountId) {
         // 验证操作者
-        UnionMemberEnt unionMemberEnt = unionManager.getUnionMember(handleAccounrId);
-        String unionId = unionMemberEnt.getUnionId();
+        UnionAccountEnt unionAccountEnt = unionManager.getUnionMember(handleAccounrId);
+        String unionId = unionAccountEnt.getUnionId();
         if (unionId == null) {
             // 操作者不在行会
             RequestException.throwException(I18nId.NOT_JOIN_UNION);
@@ -282,7 +282,7 @@ public class UnionServiceImpl implements UnionService {
 
     @Override
     public void showMySelfUnion(String accountId) {
-        UnionMemberEnt unionMember = unionManager.getUnionMember(accountId);
+        UnionAccountEnt unionMember = unionManager.getUnionMember(accountId);
         String unionId = unionMember.getUnionId();
         if (unionId == null) {
             // 没有加入工会
@@ -302,14 +302,14 @@ public class UnionServiceImpl implements UnionService {
         Lock lock = unionInfo.getLock();
         try {
             lock.lock();
-            UnionMemberEnt unionMemberEnt = unionManager.getUnionMember(accountId);
+            UnionAccountEnt unionAccountEnt = unionManager.getUnionMember(accountId);
             Map<String, UnionMemberInfo> memberInfoMap = unionInfo.getMemberInfoMap();
             List<UnionMemberVO> unionMemberVOList = new ArrayList<>();
 
             for (String memberAccountId : memberInfoMap.keySet()) {
                 UnionMemberInfo unionMemberInfo = memberInfoMap.get(memberAccountId);
 
-                if (unionMemberEnt.getUnionId() == null || !unionId.equals(unionMemberEnt.getUnionId()) || unionMemberInfo.getUnionJob() == null) {
+                if (unionAccountEnt.getUnionId() == null || !unionId.equals(unionAccountEnt.getUnionId()) || unionMemberInfo.getUnionJob() == null) {
                     logger.warn("成员：[{}]不在工会[{}]成员列表中", memberAccountId, unionId);
                     continue;
                 }
@@ -378,8 +378,8 @@ public class UnionServiceImpl implements UnionService {
     @Override
     public void exitUnion(String accountId) {
         // 验证是否加入工会
-        UnionMemberEnt unionMemberEnt = unionManager.getUnionMember(accountId);
-        String unionId = unionMemberEnt.getUnionId();
+        UnionAccountEnt unionAccountEnt = unionManager.getUnionMember(accountId);
+        String unionId = unionAccountEnt.getUnionId();
         if (unionId == null) {
             RequestException.throwException(I18nId.NOT_JOIN_UNION);
         }
@@ -401,18 +401,18 @@ public class UnionServiceImpl implements UnionService {
         }
         // 移除成功 修改自己的工会信息
 
-        unionMemberEnt.setUnionId(null);
+        unionAccountEnt.setUnionId(null);
 
         // 保存 通知客户端
-        unionManager.saveUnionMember(unionMemberEnt);
+        unionManager.saveUnionMember(unionAccountEnt);
         unionManager.saveUnion(unionEnt);
         SendPacketUtil.send(accountId, new SM_ExitUnion());
     }
 
     @Override
     public void kickOther(String accountId, String targetAccountId) {
-        UnionMemberEnt unionMember = unionManager.getUnionMember(accountId);
-        UnionMemberEnt targetUnionMember = unionManager.getUnionMember(targetAccountId);
+        UnionAccountEnt unionMember = unionManager.getUnionMember(accountId);
+        UnionAccountEnt targetUnionMember = unionManager.getUnionMember(targetAccountId);
         // 验证目标是否有工会
 
         if (targetUnionMember == null || targetUnionMember.getUnionId() == null) {
@@ -488,8 +488,8 @@ public class UnionServiceImpl implements UnionService {
             RequestException.throwException(I18nId.PERMISSION_ERROR);
         }
         // 验证自己和目标是否在工会中 double Check
-        UnionMemberEnt unionMember = unionManager.getUnionMember(accountId);
-        UnionMemberEnt targetUnionMember = unionManager.getUnionMember(targetAccountId);
+        UnionAccountEnt unionMember = unionManager.getUnionMember(accountId);
+        UnionAccountEnt targetUnionMember = unionManager.getUnionMember(targetAccountId);
         String unionId = unionMember.getUnionId();
         String targetUnionId = targetUnionMember.getUnionId();
         if (unionMember.getUnionId() == null || targetUnionMember.getUnionId() == null ||
@@ -566,12 +566,12 @@ public class UnionServiceImpl implements UnionService {
     @Override
     public void appoinCaptain(String accountId, String targetAccountId) {
         // 验证自己是否在工会中 权限是否足够
-        UnionMemberEnt unionMember = unionManager.getUnionMember(accountId);
+        UnionAccountEnt unionMember = unionManager.getUnionMember(accountId);
         String unionId = unionMember.getUnionId();
 
         // 验证目标是否在工会中 需要二次验证
         // 验证目标在工会中
-        UnionMemberEnt targetUnionMember = unionManager.getUnionMember(targetAccountId);
+        UnionAccountEnt targetUnionMember = unionManager.getUnionMember(targetAccountId);
         String targetUnionId = targetUnionMember.getUnionId();
         if (targetUnionId == null || !targetUnionId.equals(unionId)) {
             RequestException.throwException(I18nId.TARGET_NOT_JOIN_UNION);
@@ -623,7 +623,7 @@ public class UnionServiceImpl implements UnionService {
 
     @Override
     public void disband(String accountId) {
-        UnionMemberEnt unionMember = unionManager.getUnionMember(accountId);
+        UnionAccountEnt unionMember = unionManager.getUnionMember(accountId);
         // 验证accountId是否有工会，
         String unionId = unionMember.getUnionId();
         if (unionId == null) {
@@ -656,7 +656,7 @@ public class UnionServiceImpl implements UnionService {
             }
             // 遍历移除成员数据
             for (String memberAccountId : memberInfoMap.keySet()) {
-                UnionMemberEnt Member = unionManager.getUnionMember(memberAccountId);
+                UnionAccountEnt Member = unionManager.getUnionMember(memberAccountId);
                 Member.setUnionId(null);
             }
             memberInfoMap.clear();

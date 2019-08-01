@@ -1,7 +1,6 @@
 package com.game.world.base.service;
 
 import com.game.world.base.entity.MapInfoEnt;
-import com.game.world.hopetower.service.HopeTowerManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

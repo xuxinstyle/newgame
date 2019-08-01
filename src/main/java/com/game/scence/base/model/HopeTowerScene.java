@@ -17,6 +17,7 @@ import com.game.world.base.model.AbstractMapInfo;
 import com.game.world.base.model.MapInfo;
 import com.game.world.hopetower.command.HopeTowerSettlementCommand;
 import com.game.world.hopetower.packet.SM_CloseScene;
+import com.game.world.hopetower.packet.SM_RefreshMonster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,16 +46,36 @@ public class HopeTowerScene extends AbstractMonsterScene {
      * 在副本中玩家不能离开
      */
     private boolean isCanLeave = false;
-
+    /**
+     * 当前的怪物波数
+     */
+    private int round = 0;
+    /**
+     * 怪物最大波数
+     */
+    private int MAX_ROUND;
 
     @Override
     public void init() {
         //初始化怪物
-        Map<Long, MonsterUnit> monsterUnits = SpringContext.getMonsterService().getMonsterUnits(getMapId());
+        MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(getMapId());
+        MAX_ROUND = mapResource.getMonsters().length - 1;
+        Map<Long, MonsterUnit> monsterUnits = SpringContext.getMonsterService().getMonsterUnits(getMapId(), round);
         setMonsterUnits(monsterUnits);
         // 设置场景id
         setSceneId(SCENE_ID.getAndDecrement());
+        for (MonsterUnit monsterUnit : monsterUnits.values()) {
+            monsterUnit.setScene(this);
+        }
+    }
 
+    public void freshMonster() {
+        round++;
+        // 刷新怪物
+        SM_RefreshMonster sm = SM_RefreshMonster.valueOf(round);
+        SendPacketUtil.send(playerUnit.getAccountId(), sm);
+        Map<Long, MonsterUnit> monsterUnits = SpringContext.getMonsterService().getMonsterUnits(getMapId(), round);
+        setMonsterUnits(monsterUnits);
         for (MonsterUnit monsterUnit : monsterUnits.values()) {
             monsterUnit.setScene(this);
         }
@@ -71,9 +92,14 @@ public class HopeTowerScene extends AbstractMonsterScene {
     /**
      * 每个怪物死亡一次就check一次
      */
-    public void doCheckEnd() {
-        //如果怪物全死光了 则做结算
+    public void doCheckAndEnd() {
+        //如果怪物全死光了 判断当前波数是否是最后一波
         if (checkMonsterDeadAll()) {
+            if (round < MAX_ROUND) {
+
+                freshMonster();
+                return;
+            }
             // 停止时间倒计时
             for (ICommand command : getCommandMap().values()) {
                 command.cancel();
@@ -150,28 +176,18 @@ public class HopeTowerScene extends AbstractMonsterScene {
             // 保存通关状态
             SpringContext.getMapInfoService().save(mapInfoEnt);
             // 通知客户端副本通过成功关闭
-            Map<Long, CreatureUnit> creatureUnitMap = getCreatureUnitMap();
-            for (CreatureUnit unit : creatureUnitMap.values()) {
-                SM_CloseScene sm = new SM_CloseScene();
-                sm.setStatus(1);
-                SendPacketUtil.send(unit.getAccountId(), sm);
-            }
-
+            SM_CloseScene sm = SM_CloseScene.valueOf(1);
+            SendPacketUtil.send(playerUnit.getAccountId(), sm);
         } else {
-            // 通知客户端副本关闭 通过失败
-            Map<Long, CreatureUnit> creatureUnitMap = getCreatureUnitMap();
-            for (CreatureUnit unit : creatureUnitMap.values()) {
-                SM_CloseScene sm = new SM_CloseScene();
-                sm.setStatus(2);
-                SendPacketUtil.send(unit.getAccountId(), sm);
-            }
-        }
+            // 通知客户端副本关闭 通过失败 单人副本
+            SM_CloseScene sm = SM_CloseScene.valueOf(2);
+            SendPacketUtil.send(playerUnit.getAccountId(), sm);
 
+        }
         setCanLeave(true);
-        // 离开地图，前往新手村
+        // 离开地图，前往新手村 清除当前场景
         SpringContext.getScenceSerivce().changeMap(playerUnit.getAccountId(), CommonUtil.NoviceVillage, false);
         SpringContext.getScenceSerivce().removeCopyScene(playerUnit.getAccountId());
-
 
     }
 

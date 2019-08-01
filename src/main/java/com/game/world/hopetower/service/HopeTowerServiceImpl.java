@@ -24,9 +24,6 @@ import java.util.Map;
  */
 @Component
 public class HopeTowerServiceImpl implements HopeTowerService {
-    @Autowired
-    private HopeTowerManager hopeTowerManager;
-
     /**
      * 查看希望之塔信息
      *
@@ -57,15 +54,10 @@ public class HopeTowerServiceImpl implements HopeTowerService {
         }
         if (scene instanceof HopeTowerScene) {
             HopeTowerScene hopeTowerScene = (HopeTowerScene) scene;
-            hopeTowerScene.doCheckEnd();
+            hopeTowerScene.doCheckAndEnd();
         }
     }
 
-    @Override
-    public void doLogoutAfter(String accountId) {
-        //短线重连
-        //SpringContext.getScenceSerivce().removeCopyScene(accountId);
-    }
 
     @Override
     public void doPlayerDeadEvent(PlayerUnit playerUnit) {

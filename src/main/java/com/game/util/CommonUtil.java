@@ -25,6 +25,10 @@ public class CommonUtil {
      * 公会申请的列表的最大限制
      */
     public static int APPLY_MAX_LIMIT = 30;
+    /**
+     * 排行榜显示数量
+     */
+    public static int RANK_MAX_NUM = 5;
 
 
 }

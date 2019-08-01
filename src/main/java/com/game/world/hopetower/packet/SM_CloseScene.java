@@ -10,6 +10,12 @@ public class SM_CloseScene {
      */
     private int status;
 
+    public static SM_CloseScene valueOf(int status) {
+        SM_CloseScene sm = new SM_CloseScene();
+        sm.setStatus(status);
+        return sm;
+    }
+
     public int getStatus() {
         return status;
     }

@@ -3,9 +3,9 @@ package com.game.world.rank.model;
 import com.game.SpringContext;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
+import com.game.util.CommonUtil;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -16,15 +16,24 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * @Date: 2019/7/31 16:42
  */
 public class BattleScoreRank {
-
-    public final static int DEFAULT_NUM = 100;
-
-    public int capacity;
+    /**
+     * 排行榜显示数量
+     */
+    private int num;
+    /**
+     * 排行榜默认缓存容量
+     */
+    public final static int DEFAULT_NUM = 500;
+    /**
+     * 排行榜缓存容量
+     */
+    private int capacity;
 
     public BattleScoreRank(int capacity) {
         this.capacity = capacity;
         this.rank = new ConcurrentSkipListMap<>();
         cacheRankInfo = new ConcurrentHashMap<>();
+        num= CommonUtil.RANK_MAX_NUM;
     }
 
     public BattleScoreRank() {
@@ -44,7 +53,6 @@ public class BattleScoreRank {
     public void init() {
         List<PlayerEnt> playerAll = SpringContext.getPlayerSerivce().getPlayerAll();
         for (PlayerEnt playerEnt : playerAll) {
-
             PlayerBattleScoreRankInfo playerBattleScoreRankInfo = new PlayerBattleScoreRankInfo();
             Player player = playerEnt.getPlayer();
             playerBattleScoreRankInfo.setBattleScore(player.getBattleScore());
@@ -63,27 +71,39 @@ public class BattleScoreRank {
     public void putNewRankInfo(PlayerBattleScoreRankInfo rankInfo) {
         rank.put(rankInfo, rankInfo.getPlayerId());
         cacheRankInfo.put(rankInfo.getPlayerId(), rankInfo);
+        if(isFull()){
+            Map.Entry<PlayerBattleScoreRankInfo, Long> entry = rank.pollLastEntry();
+            cacheRankInfo.remove(entry.getValue());
+        }
     }
 
+    boolean isFull(){
+        return getRank().size()>this.capacity;
+    }
+
+    public Set<PlayerBattleScoreRankInfo> getInRankInfo(){
+        Set<PlayerBattleScoreRankInfo> inRankInfos = new TreeSet<>();
+        Iterator<PlayerBattleScoreRankInfo> iterator = rank.keySet().iterator();
+        int i = 0;
+        while(iterator.hasNext()&& i<this.num){
+            inRankInfos.add(iterator.next());
+            i++;
+        }
+        return inRankInfos;
+    }
     /**
      * 更新指定玩家的排名
      *
-     * @param rankInfo
      * @param player
      */
-    public void updateRand(PlayerBattleScoreRankInfo rankInfo, Player player) {
+    public void updateRandByPlayer(Player player) {
+        PlayerBattleScoreRankInfo rankInfo = cacheRankInfo.get(player.getObjectId());
         if (rankInfo == null) {
             return;
         }
         rank.remove(rankInfo);
         rankInfo.setBattleScore(player.getBattleScore());
         rank.put(rankInfo, rankInfo.getPlayerId());
-    }
-
-    public void updateRandByPlayer(Player player) {
-        PlayerBattleScoreRankInfo playerBattleScoreRankInfo = cacheRankInfo.get(player.getObjectId());
-
-        updateRand(playerBattleScoreRankInfo, player);
     }
 
     /**
@@ -117,5 +137,13 @@ public class BattleScoreRank {
 
     public void setRank(ConcurrentSkipListMap<PlayerBattleScoreRankInfo, Long> rank) {
         this.rank = rank;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 }

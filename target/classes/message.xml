@@ -146,6 +146,7 @@
     <catalog id="119" value="com.game.world.union.packet.CM_DisbandUnion"/>
     <catalog id="120" value="com.game.world.rank.packet.CM_ShowRankList"/>
     <catalog id="121" value="com.game.world.rank.packet.SM_ShowRankList"/>
+    <catalog id="122" value="com.game.world.hopetower.packet.SM_RefreshMonster"/>
 
 
 </protocols>

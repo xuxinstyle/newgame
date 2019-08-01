@@ -52,29 +52,25 @@ public class RankServiceImpl implements RankService {
         SM_ShowRankList sm = new SM_ShowRankList();
         List<PlayerBattleScoreRankVO> rankVOList = new ArrayList<>();
         BattleScoreRank battleScoreRank = rankManager.getBattleScoreRank();
-        Map<Long, PlayerBattleScoreRankInfo> cacheRankInfo = battleScoreRank.getCacheRankInfo();
-        PlayerBattleScoreRankInfo playerBattleScoreRankInfo = cacheRankInfo.get(player.getObjectId());
+
         int num = 1;
         boolean haveMe = false;
         for (PlayerBattleScoreRankInfo rankInfo : battleScoreRank.getRank().keySet()) {
-
-            PlayerBattleScoreRankVO playerBattleScoreRankVO = new PlayerBattleScoreRankVO();
-            playerBattleScoreRankVO.setAccountId(rankInfo.getAccountId());
-            playerBattleScoreRankVO.setBattleScore(rankInfo.getBattleScore());
-            playerBattleScoreRankVO.setPlayerId(rankInfo.getPlayerId());
-            playerBattleScoreRankVO.setRank(num);
-            if (playerBattleScoreRankInfo.equals(rankInfo)) {
+            if (player.getObjectId()==rankInfo.getPlayerId()) {
+                PlayerBattleScoreRankVO playerBattleScoreRankVO = PlayerBattleScoreRankVO.valueOf(rankInfo);
+                playerBattleScoreRankVO.setRank(num);
                 sm.setMyselfRank(playerBattleScoreRankVO);
                 haveMe = true;
             }
-            if (num <= battleScoreRank.capacity) {
+            if (num <= battleScoreRank.getNum()) {
+                PlayerBattleScoreRankVO playerBattleScoreRankVO = PlayerBattleScoreRankVO.valueOf(rankInfo);
+                playerBattleScoreRankVO.setRank(num);
                 rankVOList.add(playerBattleScoreRankVO);
             }
-            if (haveMe && num > battleScoreRank.capacity) {
+            if (haveMe && num > battleScoreRank.getNum()) {
                 break;
             }
             num++;
-
         }
         sm.setRankVOList(rankVOList);
         SendPacketUtil.send(accountId, sm);

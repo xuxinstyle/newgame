@@ -44,11 +44,6 @@ public class HopeTowerFacade {
     }
 
     @EventAnn
-    public void doLogoutAfter(LogoutEvent event) {
-        SpringContext.getHopeTowerService().doLogoutAfter(event.getAccountId());
-    }
-
-    @EventAnn
     public void doPlayerDead(PlayerDeadEvent event) {
         SpringContext.getHopeTowerService().doPlayerDeadEvent(event.getPlayerUnit());
     }

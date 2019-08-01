@@ -1,0 +1,12 @@
+奖励id,奖励内容,说明
+id,rewardContext,description
+int,array,string
+1,"[{""itemId"":3,""num"":500},{""itemId"":10,""num"":1},{""itemId"":11,""num"":1},{""itemId"":12,""num"":1},{""itemId"":13,""num"":1}]",无尽之塔首次通关奖励
+2,"[{""itemId"":3,""num"":600},{""itemId"":10,""num"":1},{""itemId"":11,""num"":1},{""itemId"":12,""num"":1},{""itemId"":13,""num"":1}]",无尽之塔首次通关奖励
+3,"[{""itemId"":3,""num"":700},{""itemId"":10,""num"":1},{""itemId"":11,""num"":1},{""itemId"":12,""num"":1},{""itemId"":13,""num"":1}]",无尽之塔首次通关奖励
+4,"[{""itemId"":3,""num"":800},{""itemId"":10,""num"":1},{""itemId"":11,""num"":1},{""itemId"":12,""num"":1},{""itemId"":13,""num"":1}]",无尽之塔首次通关奖励
+5,"[{""itemId"":3,""num"":900},{""itemId"":10,""num"":1},{""itemId"":11,""num"":1},{""itemId"":12,""num"":1},{""itemId"":13,""num"":1}]",无尽之塔首次通关奖励
+6,"[{""itemId"":3,""num"":500},{""itemId"":12,""num"":1}]",无尽之塔重复通关奖励
+7,"[{""itemId"":3,""num"":600},{""itemId"":12,""num"":1}]",无尽之塔重复通关奖励
+8,"[{""itemId"":3,""num"":700},{""itemId"":12,""num"":1}]",无尽之塔重复通关奖励
+9,"[{""itemId"":3,""num"":700},{""itemId"":12,""num"":1}]",任务1通关奖励

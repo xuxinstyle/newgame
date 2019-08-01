@@ -6,6 +6,7 @@ import com.game.common.exception.RequestException;
 import com.game.role.player.model.Player;
 import com.game.scence.base.model.FieldFightScene;
 import com.game.scence.fight.model.MonsterUnit;
+import com.game.scence.monster.resource.MonsterGroupResource;
 import com.game.scence.monster.resource.MonsterResource;
 import com.game.scence.visible.model.MonsterDef;
 import com.game.scence.visible.model.Position;
@@ -29,12 +30,15 @@ public class MonsterServiceImpl implements MonsterService {
     private static Logger logger = LoggerFactory.getLogger(MonsterServiceImpl.class);
     @Autowired
     private MonsterManager monsterManager;
+
     @Override
-    public Map<Long, MonsterUnit> getMonsterUnits(int mapId) {
+    public Map<Long, MonsterUnit> getMonsterUnits(int mapId, int round) {
         MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(mapId);
-        List<MonsterDef> monsterList = mapResource.getMonsterList();
+        int[] monsters = mapResource.getMonsters();
+        MonsterGroupResource monsterGroupResource = monsterManager.getMonsterGroupResource(monsters[round]);
+        MonsterDef[] monstersDef = monsterGroupResource.getMonsters();
         Map<Long, MonsterUnit> monsterUnitMap = new HashMap<>();
-        for (MonsterDef def : monsterList) {
+        for (MonsterDef def : monstersDef) {
             MonsterResource monsterResource = SpringContext.getMonsterService().getMonsterResource(def.getMonsterId());
             for (int i = 0; i < def.getNum(); i++) {
                 MonsterUnit monsterUnit = MonsterUnit.valueOf(monsterResource);
@@ -50,7 +54,6 @@ public class MonsterServiceImpl implements MonsterService {
         }
         return monsterUnitMap;
     }
-
 
     private boolean checkPosition(Position initPos, MapResource mapResource) {
         int[][] mapcontext = mapResource.getMapcontext();

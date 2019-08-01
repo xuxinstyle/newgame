@@ -1,5 +1,7 @@
 package com.game.world.rank.packet.bean;
 
+import com.game.world.rank.model.PlayerBattleScoreRankInfo;
+
 /**
  * @Author：xuxin
  * @Date: 2019/7/31 17:53
@@ -21,6 +23,14 @@ public class PlayerBattleScoreRankVO {
      * 排名
      */
     private int rank;
+
+    public static PlayerBattleScoreRankVO valueOf(PlayerBattleScoreRankInfo rankInfo){
+        PlayerBattleScoreRankVO playerBattleScoreRankVO = new PlayerBattleScoreRankVO();
+        playerBattleScoreRankVO.setAccountId(rankInfo.getAccountId());
+        playerBattleScoreRankVO.setBattleScore(rankInfo.getBattleScore());
+        playerBattleScoreRankVO.setPlayerId(rankInfo.getPlayerId());
+        return playerBattleScoreRankVO;
+    }
 
     public int getRank() {
         return rank;

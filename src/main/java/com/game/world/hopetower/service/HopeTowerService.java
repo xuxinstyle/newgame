@@ -24,13 +24,6 @@ public interface HopeTowerService {
     void doMonsterDead(int mapId, int sceneId, String accountId);
 
     /**
-     * 做登出事件
-     *
-     * @param accountId
-     */
-    void doLogoutAfter(String accountId);
-
-    /**
      * 玩家死亡后处理事件
      *
      * @param playerUnit

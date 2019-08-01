@@ -45,12 +45,11 @@ public class MapResource {
     @Analyze("analyzetargetTypes")
     private List<ObjectType> targetTypes;
     /**
-     * 地图中的怪物
+     * 地图中的怪物组
      */
-    private MonsterDef[] monsters;
+    private int[] monsters;
 
-    @Analyze("analyzeMonster")
-    private List<MonsterDef> monsterList;
+
     /**
      * 开服时是否需要初始化
      */
@@ -172,22 +171,8 @@ public class MapResource {
     }
 
 
-    public void analyzeMonster() {
-        if (monsters == null) {
-            return;
-        }
-        monsterList = Arrays.asList(monsters);
 
 
-    }
-
-    public List<MonsterDef> getMonsterList() {
-        return monsterList;
-    }
-
-    public void setMonsterList(List<MonsterDef> monsterList) {
-        this.monsterList = monsterList;
-    }
 
     public boolean isNeedToInit() {
         return needToInit;
@@ -213,11 +198,11 @@ public class MapResource {
         this.reviveCd = reviveCd;
     }
 
-    public MonsterDef[] getMonsters() {
+    public int[] getMonsters() {
         return monsters;
     }
 
-    public void setMonsters(MonsterDef[] monsters) {
+    public void setMonsters(int[] monsters) {
         this.monsters = monsters;
     }
 

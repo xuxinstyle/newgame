@@ -13,7 +13,7 @@ public class RankManager {
     private BattleScoreRank battleScoreRank;
 
     public void init() {
-        BattleScoreRank battleScoreRank = new BattleScoreRank(3);
+        BattleScoreRank battleScoreRank = new BattleScoreRank();
         battleScoreRank.init();
         this.battleScoreRank = battleScoreRank;
     }

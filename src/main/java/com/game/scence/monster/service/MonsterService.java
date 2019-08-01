@@ -12,12 +12,6 @@ import java.util.Map;
  * @Date: 2019/7/3 17:13
  */
 public interface MonsterService {
-    /**
-     * 获取指定地图的怪物
-     * @param mapId
-     * @return
-     */
-    Map<Long, MonsterUnit> getMonsterUnits(int mapId);
 
     /**
      * 获取怪物信息
@@ -31,4 +25,13 @@ public interface MonsterService {
      * 怪物反击
      */
     void fieldMonsterAttack(String accountId);
+
+    /**
+     * 获取地图中第round波的怪物
+     *
+     * @param mapId
+     * @param round
+     * @return
+     */
+    Map<Long, MonsterUnit> getMonsterUnits(int mapId, int round);
 }
