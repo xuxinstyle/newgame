@@ -24,6 +24,22 @@ public class EntityCacheServiceImpl<K extends Serializable & Comparable<K>, T ex
     private Map<Class<?>, EntityCache<K,T>> entityCacheMap = new ConcurrentHashMap<>();
 
     @Override
+    public void remove(Class<T> clz, K k) {
+        EntityCache<K, T> entityCache = entityCacheMap.get(clz);
+        if (entityCache == null) {
+            entityCache = new EntityCache<>();
+            entityCacheMap.put(clz, entityCache);
+        }
+        T t = hibernateDao.find(clz, k);
+        if (t == null) {
+            entityCache = new EntityCache<>();
+            entityCacheMap.put(clz, entityCache);
+        }
+        entityCache.remove(k);
+        hibernateDao.remove(t);
+    }
+
+    @Override
     public T findOrCreate(Class<T> entityClz, K id, EntityBuilder<K, T> builder) {
         EntityCache<K, T> entityCache = entityCacheMap.get(entityClz);
         if (entityCache == null) {
@@ -69,6 +85,7 @@ public class EntityCacheServiceImpl<K extends Serializable & Comparable<K>, T ex
         }
         List<T> ts = hibernateDao.findAll(entityClz);
         for (T t : ts) {
+
             entityCache.put(t.getId(), t);
         }
         return ts;

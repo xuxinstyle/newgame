@@ -6,6 +6,7 @@ import com.game.base.attribute.attributeid.AttributeIdEnum;
 import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.base.gameobject.model.Creature;
+import com.game.role.battlescore.util.BattleScoreCompute;
 import com.game.role.player.resource.PlayerLevelResource;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.Position;
@@ -54,13 +55,16 @@ public class Player extends Creature<Player> {
     /**
      * 玩家当前所在的地图
      */
-    private AtomicInteger currMapId = new AtomicInteger(MapType.NoviceVillage.getId());
+    private int currMapId = MapType.NoviceVillage.getId();
     /**
      * 玩家场景id 同mapId
      *
      */
     private int currSceneId;
-
+    /**
+     * 角色战力
+     */
+    private long battleScore;
     /**
      *
      * @param playerId
@@ -84,6 +88,8 @@ public class Player extends Creature<Player> {
         PlayerLevelResource resource = SpringContext.getPlayerSerivce().getPlayerLevelResource(player.getLevel());
         List<Attribute> baseAttributeList = resource.getBaseAttributeList();
         player.getAttributeContainer().putAndComputeAttributes(AttributeIdEnum.BASE,baseAttributeList);
+        long battleScore = BattleScoreCompute.computePlayerBattleScore(player);
+        player.setBattleScore(battleScore);
         return player;
     }
 
@@ -155,6 +161,15 @@ public class Player extends Creature<Player> {
         this.surviveStatus = surviveStatus;
     }
 
+    public long getBattleScore() {
+        return battleScore;
+    }
+
+    public void setBattleScore(long battleScore) {
+        this.battleScore = battleScore;
+    }
+
+
     @Override
     public ObjectType getObjectType() {
         return ObjectType.PLAYER;
@@ -192,11 +207,10 @@ public class Player extends Creature<Player> {
     }
 
     public int getCurrMapId() {
-        return currMapId.get();
+        return currMapId;
     }
 
     public void setCurrMapId(int currMapId) {
-        this.currMapId.set(currMapId);
-        ;
+        this.currMapId = currMapId;
     }
 }

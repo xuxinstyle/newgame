@@ -175,4 +175,19 @@ public class UnionFacade {
             SendPacketUtil.send(session.getAccountId(), I18nId.ERROR);
         }
     }
+
+    @HandlerAnno
+    public void disbandUnion(TSession session, CM_DisbandUnion cm) {
+        try {
+            SpringContext.getUnionService().disband(session.getAccountId());
+        } catch (RequestException e) {
+            logger.warn("玩家[{}]解散工会失败,原因[{}]", session.getAccountId(), e.getErrorCode());
+            SendPacketUtil.send(session.getAccountId(), e.getErrorCode());
+        } catch (Exception e) {
+            logger.warn("玩家[{}]解散工会失败,原因[{}]", session.getAccountId(), e);
+            SendPacketUtil.send(session.getAccountId(), I18nId.ERROR);
+        }
+    }
+
+
 }

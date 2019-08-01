@@ -43,4 +43,12 @@ public interface EntityCacheService<K extends Serializable & Comparable<K>, T ex
      */
     List<T> findAll(Class<T> entityClz);
 
+    /**
+     * 删除
+     *
+     * @param clz
+     * @param k
+     */
+    void remove(Class<T> clz, K k);
+
 }

@@ -2,6 +2,7 @@ package com.game.user.account.service;
 
 import com.db.cache.EntityCacheService;
 import com.game.SpringContext;
+import com.game.role.player.event.CreatePlayerEvent;
 import com.game.user.account.entity.AccountEnt;
 
 import com.game.user.account.model.AccountInfo;
@@ -62,7 +63,8 @@ public class AccountServiceImpl implements AccountService {
         accountInfo.setPlayerId(playerId);
         SpringContext.getItemService().createStorage(accountId);
         accountEnt.setAccountInfo(accountInfo);
-
+        CreatePlayerEvent event = CreatePlayerEvent.valueOf(playerEnt.getPlayer());
+        SpringContext.getEvenManager().syncSubmit(event);
         save(accountEnt);
         SM_CreatePlayer sm = new SM_CreatePlayer();
         sm.setAccountId(accountId);

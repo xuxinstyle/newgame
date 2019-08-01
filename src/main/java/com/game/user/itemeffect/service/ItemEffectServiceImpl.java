@@ -3,6 +3,7 @@ package com.game.user.itemeffect.service;
 import com.game.SpringContext;
 import com.game.base.attribute.container.AbstractAttributeContainer;
 import com.game.base.attribute.attributeid.MedicineAttributeId;
+import com.game.role.battlescore.event.ChangeAttrbuteEvent;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.event.LogoutEvent;
 import com.game.role.player.model.Player;
@@ -122,7 +123,9 @@ public class ItemEffectServiceImpl implements ItemEffectService {
         RemoveAttributeBuffSynCommand command = RemoveAttributeBuffSynCommand.valueOf(player,
                 MedicineAttributeId.getMedicineAttributeId(itemModelId));
         SpringContext.getSceneExecutorService().submit(command);
-
+        // 计算战力
+        ChangeAttrbuteEvent event = ChangeAttrbuteEvent.valueOf(player);
+        SpringContext.getEvenManager().syncSubmit(event);
         /**
          * 改变玩家身上效果的状态 FIXME: 这里还是不要删数据库信息，如果玩家频繁使用这个道具就会降低效率。
          */

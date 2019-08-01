@@ -37,6 +37,10 @@ public class UnionManager {
         });
     }
 
+    public void delete(String unionId) {
+        unionCacheService.remove(UnionEnt.class, unionId);
+    }
+
     public List<UnionEnt> getUnionList() {
         return unionCacheService.findAll(UnionEnt.class);
     }

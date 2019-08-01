@@ -4,6 +4,7 @@ import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.game.base.attribute.container.AbstractAttributeContainer;
 import com.game.base.attribute.attributeid.EquipAttributeId;
+import com.game.role.battlescore.event.ChangeAttrbuteEvent;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.user.account.entity.AccountEnt;
@@ -119,7 +120,9 @@ public class EquipServiceImpl implements EquipService {
         AddAttributeBuffSynCommand synCommand = AddAttributeBuffSynCommand.valueOf(player,
                 attributeId, newAttributeList);
         SpringContext.getSceneExecutorService().submit(synCommand);
-
+        // 计算战力
+        ChangeAttrbuteEvent event = ChangeAttrbuteEvent.valueOf(player);
+        SpringContext.getEvenManager().syncSubmit(event);
         /**
          * 保存 并响应客户端
          */
@@ -204,6 +207,11 @@ public class EquipServiceImpl implements EquipService {
         // FIXME: 2019/7/17 做战斗同步
         RemoveAttributeBuffSynCommand command = RemoveAttributeBuffSynCommand.valueOf(player, attributeId);
         SpringContext.getSceneExecutorService().submit(command);
+        /**
+         * 计算战力
+         */
+        ChangeAttrbuteEvent event = ChangeAttrbuteEvent.valueOf(player);
+        SpringContext.getEvenManager().syncSubmit(event);
         /**
          * 保存玩家数据和装备栏数据和背包数据
          */

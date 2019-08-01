@@ -5,6 +5,7 @@ import com.game.base.attribute.Attribute;
 import com.game.base.attribute.attributeid.MedicineAttributeId;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.container.AbstractAttributeContainer;
+import com.game.role.battlescore.event.ChangeAttrbuteEvent;
 import com.game.role.player.entity.PlayerEnt;
 import com.game.role.player.model.Player;
 import com.game.scence.fight.command.AddAttributeBuffSynCommand;
@@ -76,6 +77,8 @@ public class MedicineUseEffect extends AbstractUseEffect {
             AbstractAttributeContainer attributeContainer = player.getAttributeContainer();
             attributeContainer.putAndComputeAttributes(MedicineAttributeId.getMedicineAttributeId(itemModelId), addAttributeList);
             SpringContext.getPlayerSerivce().save(playerEnt);
+            ChangeAttrbuteEvent event = ChangeAttrbuteEvent.valueOf(player);
+            SpringContext.getEvenManager().syncSubmit(event);
             /**
              *  TODO 做战斗属性同步
              */

@@ -140,5 +140,9 @@ public class PlayerSerivceImpl implements PlayerService {
         session.sendPacket(sm);
     }
 
+    @Override
+    public List<PlayerEnt> getPlayerAll() {
+        return entityCacheService.findAll(PlayerEnt.class);
+    }
 
 }

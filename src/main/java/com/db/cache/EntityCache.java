@@ -39,4 +39,8 @@ public class EntityCache<K extends Serializable & Comparable<K>, T extends IEnti
     public void setWeakCache(Map<K, T> weakCache) {
         this.weakCache = weakCache;
     }
+
+    public void remove(K k) {
+        weakCache.remove(k);
+    }
 }

@@ -7,7 +7,6 @@ import com.game.role.player.model.Player;
 import com.game.role.skill.model.SkillInfo;
 import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
-import com.game.scence.fight.model.PlayerUnit;
 
 /**
  * @Author：xuxin

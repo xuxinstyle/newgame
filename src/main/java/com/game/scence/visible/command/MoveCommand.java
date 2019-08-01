@@ -4,7 +4,6 @@ import com.game.SpringContext;
 import com.game.base.executor.scene.impl.AbstractSceneCommand;
 import com.game.role.player.model.Player;
 import com.game.scence.visible.model.Position;
-import io.netty.util.collection.CharObjectMap;
 
 /**
  * @Author：xuxin

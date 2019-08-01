@@ -18,6 +18,8 @@ public class AttributeUpdateSet {
      * 改变的模块
      */
     private final AttributeId changeId;
+
+
     /**
      * 本次改变设计的属性类型
      */

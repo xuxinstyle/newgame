@@ -13,6 +13,13 @@ import java.util.Map;
  * @Date: 2019/6/25 15:31
  */
 public class ModelAttribute {
+    /**
+     * 模块战力
+     */
+    private long battleScore;
+    /**
+     * 属性id
+     */
     private AttributeId attributeId;
 
     /**
@@ -47,5 +54,13 @@ public class ModelAttribute {
 
     public void setAttributeMap(Map<AttributeType, Attribute> attributeMap) {
         this.attributeMap = attributeMap;
+    }
+
+    public long getBattleScore() {
+        return battleScore;
+    }
+
+    public void setBattleScore(long battleScore) {
+        this.battleScore = battleScore;
     }
 }

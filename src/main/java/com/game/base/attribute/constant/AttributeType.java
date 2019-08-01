@@ -29,6 +29,11 @@ public enum AttributeType {
         public AttributeType[] getFirstAttributes() {
             return new AttributeType[]{POWER};
         }
+
+        @Override
+        public long getScore() {
+            return 100;
+        }
     },
     /**
      * 法术攻击  实际伤害=A/(1+B/100)  A是攻击力或法强伤害 B是护甲 或魔抗
@@ -44,6 +49,10 @@ public enum AttributeType {
             return new AttributeType[]{INTELLIGENCE};
         }
 
+        @Override
+        public long getScore() {
+            return 100;
+        }
     },
 
     /**
@@ -61,6 +70,11 @@ public enum AttributeType {
             return new AttributeType[]{PHYSICAL};
         }
 
+        @Override
+        public long getScore() {
+            return 100;
+        }
+
     },
     /**
      * 法术防御
@@ -72,6 +86,10 @@ public enum AttributeType {
             return new AttributeType[]{MAGIC_DEFENSE_PERCENTAGE};
         }
 
+        @Override
+        public long getScore() {
+            return 100;
+        }
     },
     /**
      * 最大血量
@@ -87,6 +105,10 @@ public enum AttributeType {
             return new AttributeType[]{ PHYSICAL,POWER};
         }
 
+        @Override
+        public long getScore() {
+            return 100;
+        }
     },
     /**
      * 最大蓝量
@@ -101,15 +123,30 @@ public enum AttributeType {
         public AttributeType[] getFirstAttributes() {
             return new AttributeType[]{INTELLIGENCE,AGILE};
         }
+
+        @Override
+        public long getScore() {
+            return 100;
+        }
     },
     /**
      * 物理穿透率 对方防御= 原始防御*（1-%X） x为物理穿透率
      */
-    PHYSICAL_PENETRATION(13,"物理穿透率",AttributeKind.SECOND_ATTRIBUTE),
+    PHYSICAL_PENETRATION(13, "物理穿透率", AttributeKind.SECOND_ATTRIBUTE) {
+        @Override
+        public long getScore() {
+            return 100;
+        }
+    },
     /**
      * 法术穿透率
      */
-    SPEEL_PENETRATION(14,"法术穿透率",AttributeKind.SECOND_ATTRIBUTE),
+    SPEEL_PENETRATION(14, "法术穿透率", AttributeKind.SECOND_ATTRIBUTE) {
+        @Override
+        public long getScore() {
+            return 100;
+        }
+    },
 
     /**
      * -------------------------------------- 一级属性 ----------------------------
@@ -249,7 +286,9 @@ public enum AttributeType {
 
     private AttributeKind kind;
 
-
+    public long getScore() {
+        return 0L;
+    }
     /**
      * 用于获取影响对应二级属性的其他属性集合
      * @return

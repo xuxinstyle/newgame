@@ -7,9 +7,6 @@ import com.game.util.I18nId;
 import com.game.util.SendPacketUtil;
 import com.game.util.TimeUtil;
 import com.game.world.union.command.AgreeApplyCommand;
-import com.game.world.union.command.AppoinCaptainCommand;
-import com.game.world.union.command.KickCommand;
-import com.game.world.union.command.UpdatePermissionCommand;
 import com.game.world.union.constant.UnionJob;
 import com.game.world.union.entity.UnionEnt;
 import com.game.world.union.entity.UnionMemberEnt;
@@ -25,7 +22,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
 
 /**
  * @Author：xuxin
@@ -62,12 +61,14 @@ public class UnionServiceImpl implements UnionService {
         // 设置默认的会长id 添加自己为成员
         unionInfo.setUnionName(unionName);
         unionInfo.setPresidentId(accountId);
-        unionInfo.addMember(accountId);
+
         // 修改unionMember信息
         unionMemberEnt.setUnionId(unionId);
-        UnionMemberInfo unionMemberInfo = unionMemberEnt.getUnionMemberInfo();
+        UnionMemberInfo unionMemberInfo = new UnionMemberInfo();
         unionMemberInfo.setEnterTime(TimeUtil.now());
         unionMemberInfo.setUnionJob(UnionJob.PRESIDENT);
+        Map<String, UnionMemberInfo> memberInfoMap = unionInfo.getMemberInfoMap();
+        memberInfoMap.put(accountId, unionMemberInfo);
         logger.info("玩家[{}]创建公会[{}]成功", accountId, unionId);
         // 保存
         unionManager.saveUnion(unionEnt);
@@ -89,6 +90,7 @@ public class UnionServiceImpl implements UnionService {
         if (unionEnt == null) {
             RequestException.throwException(I18nId.UNION_NOT_EXIST);
         }
+        // fixme:这里的申请列表没有上限所以没有加锁
         UnionInfo unionInfo = unionEnt.getUnionInfo();
         if (unionInfo == null) {
             RequestException.throwException(I18nId.UNION_NOT_EXIST);
@@ -102,11 +104,14 @@ public class UnionServiceImpl implements UnionService {
         // 添加到申请列表
         unionInfo.getApplyList().add(accountId);
         logger.info("玩家[{}]申请进入行会[{}]", accountId, unionId);
+        // 保存
+        unionManager.saveUnion(unionEnt);
         SendPacketUtil.send(accountId, new SM_ApplyJoinUnionSucc());
     }
 
     @Override
     public void showApplyList(String accountId) {
+
         // 检查玩家是否加入行会
         UnionMemberEnt unionMemberEnt = unionManager.getUnionMember(accountId);
         if (unionMemberEnt.getUnionId() == null) {
@@ -122,15 +127,25 @@ public class UnionServiceImpl implements UnionService {
             RequestException.throwException(I18nId.UNION_NOT_EXIST);
         }
         UnionInfo unionInfo = unionEnt.getUnionInfo();
-        Set<String> applyList = unionInfo.getApplyList();
-        // 通知客户端
-        SM_ShowApplyList sm = new SM_ShowApplyList();
-        sm.setApplyList(applyList);
-        SendPacketUtil.send(accountId, sm);
+        if (unionInfo == null) {
+            RequestException.throwException(I18nId.UNION_NOT_EXIST);
+        }
+        Lock lock = unionInfo.getLock();
+        try {
+            lock.lock();
+            Set<String> applyList = unionInfo.getApplyList();
+            // 通知客户端
+            SM_ShowApplyList sm = new SM_ShowApplyList();
+            sm.setApplyList(applyList);
+            SendPacketUtil.send(accountId, sm);
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
     public void agreeApply(String accountId, String targetAccountId) {
+        // double check 防止进入到
         // 验证自己是否在行会中
         UnionMemberEnt unionMemberEnt = unionManager.getUnionMember(accountId);
         String unionId = unionMemberEnt.getUnionId();
@@ -138,14 +153,16 @@ public class UnionServiceImpl implements UnionService {
             // 没有加入行会
             RequestException.throwException(I18nId.NOT_JOIN_UNION);
         }
+        UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
+
+        UnionInfo unionInfo = unionEnt.getUnionInfo();
         // 验证自己的行会权限
-        UnionMemberInfo unionMemberInfo = unionMemberEnt.getUnionMemberInfo();
+        UnionMemberInfo unionMemberInfo = unionInfo.getMemberInfoMap().get(accountId);
         if (unionMemberInfo.getUnionJob().getPermission() <= UnionJob.VICE_PRESIDENT.getPermission()) {
             // 没有权限
             RequestException.throwException(I18nId.NOT_PERMISSION);
         }
-        UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
-        UnionInfo unionInfo = unionEnt.getUnionInfo();
+
         // 玩家不在申请列表中  需要二次验证
         if (!unionInfo.getApplyList().contains(targetAccountId)) {
             RequestException.throwException(I18nId.NOT_APPLY);
@@ -162,10 +179,12 @@ public class UnionServiceImpl implements UnionService {
         }
 
         // 验证行会人数是否已经满了 需要二次验证
-        if (unionInfo.getMemberIds().size() >= unionInfo.getMaxNum()) {
+        if (unionInfo.getMemberInfoMap().size() >= unionInfo.getMaxNum()) {
             // 工会人数已满
             RequestException.throwException(I18nId.UNION_NUM_LIMIT);
         }
+
+        // 抛到对应的玩家线程去同意 防止多个工会同时同意他加入行会
         AgreeApplyCommand command = AgreeApplyCommand.valueOf(accountId, targetAccountId, unionId);
         SpringContext.getAccountExecutorService().submit(command);
 
@@ -173,11 +192,16 @@ public class UnionServiceImpl implements UnionService {
 
     @Override
     public void doAgreeApply(String handleAccountId, String unionId, String targetAccountId) {
-
+        // fixme:因为没有解散工会的方法，所以这里不用验证空指针
         UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
+        if (unionEnt == null) {
+            return;
+        }
+        UnionInfo unionInfo = unionEnt.getUnionInfo();
+        Lock lock = unionInfo.getLock();
         // 对工会对象加锁 因为下列代码修改了申请列表和工会成员列表
-        synchronized (unionEnt) {
-            UnionInfo unionInfo = unionEnt.getUnionInfo();
+        try {
+            lock.lock();
             Set<String> applyList = unionInfo.getApplyList();
             // 验证玩家是否在申请列表中
             if (!applyList.contains(targetAccountId)) {
@@ -193,25 +217,28 @@ public class UnionServiceImpl implements UnionService {
                 SendPacketUtil.send(handleAccountId, SM_AgreeApply.valueOf(2));
                 return;
             }
-
+            Map<String, UnionMemberInfo> memberInfoMap = unionInfo.getMemberInfoMap();
             // 验证行会人数是否已经满了 二次验证
-            if (unionInfo.getMemberIds().size() >= unionInfo.getMaxNum()) {
+            if (memberInfoMap.size() >= unionInfo.getMaxNum()) {
                 // 工会人数已满
                 SendPacketUtil.send(handleAccountId, SM_AgreeApply.valueOf(3));
                 return;
             }
             applyList.remove(targetAccountId);
             // 将目标加入
-            unionInfo.addMember(targetAccountId);
+
             // 修改accountIdUnion
             targetUnionMemberEnt.setUnionId(unionId);
-            UnionMemberInfo unionMemberInfo = targetUnionMemberEnt.getUnionMemberInfo();
+            UnionMemberInfo unionMemberInfo = new UnionMemberInfo();
             unionMemberInfo.setUnionJob(UnionJob.MEMBER);
             unionMemberInfo.setEnterTime(TimeUtil.now());
+            memberInfoMap.put(targetAccountId, unionMemberInfo);
             // 保存 通知客户端
             unionManager.saveUnionMember(targetUnionMemberEnt);
             unionManager.saveUnion(unionEnt);
             SendPacketUtil.send(targetAccountId, SM_AgreeApply.valueOf(0));
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -224,20 +251,24 @@ public class UnionServiceImpl implements UnionService {
             // 操作者不在行会
             RequestException.throwException(I18nId.NOT_JOIN_UNION);
         }
+        UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
+        if (unionEnt == null) {
+            return;
+        }
+
+        UnionInfo unionInfo = unionEnt.getUnionInfo();
+        Map<String, UnionMemberInfo> memberInfoMap = unionInfo.getMemberInfoMap();
+        UnionMemberInfo unionMemberInfo = memberInfoMap.get(handleAccounrId);
         // 验证操作者权限
-        UnionJob unionJob = unionMemberEnt.getUnionMemberInfo().getUnionJob();
+        UnionJob unionJob = unionMemberInfo.getUnionJob();
         if (unionJob == null) {
             return;
         }
         if (unionJob.getPermission() < UnionJob.VICE_PRESIDENT.getPermission()) {
             RequestException.throwException(I18nId.NOT_PERMISSION);
         }
-        UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
-        if (unionEnt == null) {
-            return;
-        }
-        // 从列表移除 由于集合是线程安全的所以不需要加锁
-        UnionInfo unionInfo = unionEnt.getUnionInfo();
+
+        // 从列表移除 由于集合容器 是线程安全的所以不需要加锁
         if (!unionInfo.getApplyList().remove(targetAccountId)) {
             RequestException.throwException(I18nId.NOT_APPLY);
         }
@@ -268,32 +299,40 @@ public class UnionServiceImpl implements UnionService {
             RequestException.throwException(I18nId.UNION_NOT_EXIST);
         }
         UnionInfo unionInfo = unionEnt.getUnionInfo();
-        Set<String> memberIds = unionInfo.getMemberIds();
-        List<UnionMemberVO> unionMemberVOList = new ArrayList<>();
-        for (String memberAccountId : memberIds) {
-            UnionMemberEnt unionMemberEnt = unionManager.getUnionMember(memberAccountId);
-            UnionMemberInfo unionMemberInfo = unionMemberEnt.getUnionMemberInfo();
-            if (unionMemberEnt.getUnionId() == null || !unionId.equals(unionMemberEnt.getUnionId()) || unionMemberInfo.getUnionJob() == null) {
-                logger.warn("成员：[{}]不在工会[{}]成员列表中", memberAccountId, unionId);
-                continue;
+        Lock lock = unionInfo.getLock();
+        try {
+            lock.lock();
+            UnionMemberEnt unionMemberEnt = unionManager.getUnionMember(accountId);
+            Map<String, UnionMemberInfo> memberInfoMap = unionInfo.getMemberInfoMap();
+            List<UnionMemberVO> unionMemberVOList = new ArrayList<>();
+
+            for (String memberAccountId : memberInfoMap.keySet()) {
+                UnionMemberInfo unionMemberInfo = memberInfoMap.get(memberAccountId);
+
+                if (unionMemberEnt.getUnionId() == null || !unionId.equals(unionMemberEnt.getUnionId()) || unionMemberInfo.getUnionJob() == null) {
+                    logger.warn("成员：[{}]不在工会[{}]成员列表中", memberAccountId, unionId);
+                    continue;
+                }
+                UnionMemberVO unionMemberVO = new UnionMemberVO();
+                int permission = unionMemberInfo.getUnionJob().getPermission();
+                unionMemberVO.setAccountId(memberAccountId);
+                unionMemberVO.setPermission(permission);
+                unionMemberVO.setEnterTime(unionMemberInfo.getEnterTime());
+                unionMemberVOList.add(unionMemberVO);
             }
-            UnionMemberVO unionMemberVO = new UnionMemberVO();
-            int permission = unionMemberInfo.getUnionJob().getPermission();
-            unionMemberVO.setAccountId(memberAccountId);
-            unionMemberVO.setPermission(permission);
-            unionMemberVO.setEnterTime(unionMemberInfo.getEnterTime());
-            unionMemberVOList.add(unionMemberVO);
+            UnionVO unionVO = new UnionVO();
+            unionVO.setUnionName(unionInfo.getUnionName());
+            unionVO.setMaxNum(unionInfo.getMaxNum());
+            unionVO.setCurrNum(memberInfoMap.size());
+            unionVO.setPresidentId(unionInfo.getPresidentId());
+            unionVO.setUnionId(unionId);
+            SM_ShowUnionMembers sm = new SM_ShowUnionMembers();
+            sm.setUnionVO(unionVO);
+            sm.setUnionMemberVOList(unionMemberVOList);
+            SendPacketUtil.send(accountId, sm);
+        } finally {
+            lock.unlock();
         }
-        UnionVO unionVO = new UnionVO();
-        unionVO.setUnionName(unionInfo.getUnionName());
-        unionVO.setMaxNum(unionInfo.getMaxNum());
-        unionVO.setCurrNum(unionInfo.getMemberIds().size());
-        unionVO.setPresidentId(unionInfo.getPresidentId());
-        unionVO.setUnionId(unionId);
-        SM_ShowUnionMembers sm = new SM_ShowUnionMembers();
-        sm.setUnionVO(unionVO);
-        sm.setUnionMemberVOList(unionMemberVOList);
-        SendPacketUtil.send(accountId, sm);
     }
 
     /**
@@ -303,26 +342,37 @@ public class UnionServiceImpl implements UnionService {
      */
     @Override
     public void showUnionList(String accountId) {
+
+
         List<UnionEnt> unionList = unionManager.getUnionList();
         List<UnionVO> unionVOList = new ArrayList<>();
         for (UnionEnt unionEnt : unionList) {
             UnionInfo unionInfo = unionEnt.getUnionInfo();
-            UnionVO unionVO = new UnionVO();
-            unionVO.setUnionId(unionEnt.getUnionId());
-            unionVO.setPresidentId(unionInfo.getPresidentId());
-            unionVO.setCurrNum(unionInfo.getMemberIds().size());
-            unionVO.setMaxNum(unionInfo.getMaxNum());
-            unionVO.setUnionName(unionInfo.getUnionName());
-            unionVOList.add(unionVO);
+            Lock lock = unionInfo.getLock();
+            try {
+                lock.lock();
+                Map<String, UnionMemberInfo> memberInfoMap = unionInfo.getMemberInfoMap();
+                UnionVO unionVO = new UnionVO();
+                unionVO.setUnionId(unionEnt.getUnionId());
+                unionVO.setPresidentId(unionInfo.getPresidentId());
+                unionVO.setCurrNum(memberInfoMap.size());
+                unionVO.setMaxNum(unionInfo.getMaxNum());
+                unionVO.setUnionName(unionInfo.getUnionName());
+                unionVOList.add(unionVO);
+            } finally {
+                lock.unlock();
+            }
         }
         SM_ShowUnionList sm = new SM_ShowUnionList();
         sm.setUnionVOList(unionVOList);
         SendPacketUtil.send(accountId, sm);
+
     }
 
     /**
      * 退出当前工会
-     *
+     * 因为踢人也是在我的线程踢 所以不需要加锁
+     * 如果解散行会 的时候退出就会报错
      * @param accountId
      */
     @Override
@@ -333,27 +383,26 @@ public class UnionServiceImpl implements UnionService {
         if (unionId == null) {
             RequestException.throwException(I18nId.NOT_JOIN_UNION);
         }
-        UnionMemberInfo unionMemberInfo = unionMemberEnt.getUnionMemberInfo();
+        UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
+
+        UnionInfo unionInfo = unionEnt.getUnionInfo();
+        Map<String, UnionMemberInfo> memberInfoMap = unionInfo.getMemberInfoMap();
+        UnionMemberInfo unionMemberInfo = memberInfoMap.get(accountId);
         UnionJob unionJob = unionMemberInfo.getUnionJob();
         // 验证权限 是工会会长的玩家需要先移交会长位置
         if (unionJob.getPermission() >= UnionJob.PRESIDENT.getPermission()) {
             RequestException.throwException(I18nId.NOT_EXIT_UNION);
         }
 
-        UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
         // 验证行会中是否有自己
-        UnionInfo unionInfo = unionEnt.getUnionInfo();
-        Set<String> memberIds = unionInfo.getMemberIds();
-        if (!memberIds.remove(accountId)) {
+        if (memberInfoMap.remove(accountId) == null) {
             // 移除失败 不在行会中
             RequestException.throwException(I18nId.NOT_JOIN_UNION);
         }
-
         // 移除成功 修改自己的工会信息
 
         unionMemberEnt.setUnionId(null);
-        unionMemberInfo.setEnterTime(0);
-        unionMemberInfo.setUnionJob(null);
+
         // 保存 通知客户端
         unionManager.saveUnionMember(unionMemberEnt);
         unionManager.saveUnion(unionEnt);
@@ -363,19 +412,30 @@ public class UnionServiceImpl implements UnionService {
     @Override
     public void kickOther(String accountId, String targetAccountId) {
         UnionMemberEnt unionMember = unionManager.getUnionMember(accountId);
-        UnionMemberInfo unionMemberInfo = unionMember.getUnionMemberInfo();
         UnionMemberEnt targetUnionMember = unionManager.getUnionMember(targetAccountId);
         // 验证目标是否有工会
-        String unionId = unionMember.getUnionId();
+
         if (targetUnionMember == null || targetUnionMember.getUnionId() == null) {
             // 目标不在工会中
             RequestException.throwException(I18nId.TARGET_NOT_JOIN_UNION);
         }
-        UnionMemberInfo targetUnionMemberInfo = targetUnionMember.getUnionMemberInfo();
+        String targetUnionId = targetUnionMember.getUnionId();
+        String unionId = unionMember.getUnionId();
+
         // 验证操作者是否在目标工会 需要二次验证 防止在进入command后其他人也移除了他 让他不在工会
-        if (unionId == null || !targetUnionMember.getUnionId().equals(unionId)) {
+        if (!targetUnionId.equals(unionId)) {
             // 无法操作 其他工会成员
             RequestException.throwException(I18nId.NOT_HANDLE);
+        }
+        UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
+        if (unionEnt == null) {
+            RequestException.throwException(I18nId.UNION_NOT_EXIST);
+        }
+        Map<String, UnionMemberInfo> memberInfoMap = unionEnt.getUnionInfo().getMemberInfoMap();
+        UnionMemberInfo targetUnionMemberInfo = memberInfoMap.get(targetAccountId);
+        UnionMemberInfo unionMemberInfo = memberInfoMap.get(accountId);
+        if (unionMemberInfo == null || unionMemberInfo.getUnionJob() == null) {
+            RequestException.throwException(I18nId.NOT_JOIN_UNION);
         }
         // 验证权限
 
@@ -385,44 +445,43 @@ public class UnionServiceImpl implements UnionService {
             // 没有权限
             RequestException.throwException(I18nId.NOT_PERMISSION);
         }
-        KickCommand command = KickCommand.valueOf(accountId, unionId, targetAccountId);
-        SpringContext.getAccountExecutorService().submit(command);
-
-    }
-
-    @Override
-    public void doKickOther(String handleAccountId, String unionId, String targetAccountId) {
-        UnionMemberEnt unionMember = unionManager.getUnionMember(targetAccountId);
         // 二次验证目标是否在工会中
-        if (unionMember.getUnionId() == null) {
-            SendPacketUtil.send(handleAccountId, SM_KickOther.valueOf(2));
-            return;
-        }
-        if (!unionMember.getUnionId().equals(unionId)) {
-            SendPacketUtil.send(handleAccountId, SM_KickOther.valueOf(2));
-            return;
-        }
-        UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
-
-        synchronized (unionEnt) {
-            UnionInfo unionInfo = unionEnt.getUnionInfo();
+        UnionInfo unionInfo = unionEnt.getUnionInfo();
+        Lock lock = unionInfo.getLock();
+        try {
+            lock.lock();
+            unionMember = unionManager.getUnionMember(targetAccountId);
+            if (unionMember.getUnionId() == null || !unionMember.getUnionId().equals(unionId)) {
+                SendPacketUtil.send(accountId, SM_KickOther.valueOf(2));
+                return;
+            }
+            memberInfoMap = unionInfo.getMemberInfoMap();
+            unionMemberInfo = memberInfoMap.get(targetAccountId);
+            if (unionMemberInfo == null) {
+                SendPacketUtil.send(accountId, SM_KickOther.valueOf(2));
+                return;
+            }
             // 从工会成员列表中 移除目标
-            unionInfo.getMemberIds().remove(targetAccountId);
+            memberInfoMap.remove(targetAccountId);
+            // 修改自己的数据
+            unionMember.setUnionId(null);
+            // 保存
+            unionManager.saveUnion(unionEnt);
+            unionManager.saveUnionMember(unionMember);
+            // 通知目标和操作者
+            SendPacketUtil.send(accountId, SM_KickOther.valueOf(1));
+            SendPacketUtil.send(targetAccountId, SM_KickOther.valueOf(3));
+        } finally {
+            lock.unlock();
         }
-        UnionMemberInfo unionMemberInfo = unionMember.getUnionMemberInfo();
-        unionMemberInfo.setUnionJob(null);
-        unionMemberInfo.setEnterTime(0);
-        unionMember.setUnionId(null);
-        // 保存
-        unionManager.saveUnion(unionEnt);
-        unionManager.saveUnionMember(unionMember);
-        // 通知目标和操作者
-        SendPacketUtil.send(handleAccountId, SM_KickOther.valueOf(1));
-        SendPacketUtil.send(targetAccountId, SM_KickOther.valueOf(3));
     }
+
 
     @Override
     public void updatePermission(String accountId, String targetAccountId, int permission) {
+        if (accountId.equals(targetAccountId)) {
+            RequestException.throwException(I18nId.NOT_UPDATE_MYSELF);
+        }
         // 验证权限是否合法
         UnionJob unionJob = UnionJob.getUnionJob(permission);
         if (unionJob == null) {
@@ -431,16 +490,29 @@ public class UnionServiceImpl implements UnionService {
         // 验证自己和目标是否在工会中 double Check
         UnionMemberEnt unionMember = unionManager.getUnionMember(accountId);
         UnionMemberEnt targetUnionMember = unionManager.getUnionMember(targetAccountId);
+        String unionId = unionMember.getUnionId();
+        String targetUnionId = targetUnionMember.getUnionId();
         if (unionMember.getUnionId() == null || targetUnionMember.getUnionId() == null ||
-                !unionMember.getUnionId().equals(targetUnionMember.getUnionId())) {
+                !unionId.equals(targetUnionId)) {
             logger.warn("操作者工会[{}]和目标工会[{}]不一致，无法修改权限", unionMember.getUnionId(), targetUnionMember.getUnionId());
             RequestException.throwException(I18nId.TARGET_NOT_JOIN_UNION);
         }
-        // 验证权限 需要二次验证
-        UnionMemberInfo unionMemberInfo = unionMember.getUnionMemberInfo();
-        UnionMemberInfo targetUnionMemberInfo = targetUnionMember.getUnionMemberInfo();
-        if (unionMemberInfo.getUnionJob() == null || targetUnionMemberInfo.getUnionJob() == null) {
+
+        // 验证权限 需要二次验证 验证目标权限
+        UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
+        if (unionEnt == null) {
+            RequestException.throwException(I18nId.UNION_NOT_EXIST);
             return;
+        }
+        UnionInfo unionInfo = unionEnt.getUnionInfo();
+        Map<String, UnionMemberInfo> memberInfoMap = unionInfo.getMemberInfoMap();
+        UnionMemberInfo unionMemberInfo = memberInfoMap.get(accountId);
+        UnionMemberInfo targetUnionMemberInfo = memberInfoMap.get(targetAccountId);
+        UnionJob handleUnionJob = unionMemberInfo.getUnionJob();
+        UnionJob targetUnionJob = targetUnionMemberInfo.getUnionJob();
+        // 与自己权限相同的人无法修改权限 且自己不能修改自己的权限
+        if (handleUnionJob == null || targetUnionJob == null || handleUnionJob.getPermission() <= targetUnionJob.getPermission()) {
+            RequestException.throwException(I18nId.NOT_PERMISSION);
         }
         if (unionMemberInfo.getUnionJob().getPermission() <= permission) {
             logger.warn("玩家[{}-{}]修改玩家[{}-{}]权限至[{}]失败", accountId, unionMemberInfo.getUnionJob().getPermission(),
@@ -448,58 +520,55 @@ public class UnionServiceImpl implements UnionService {
             // 权限不足
             RequestException.throwException(I18nId.NOT_PERMISSION);
         }
-        // 抛到目标玩家线程去修改玩家的权限
-        UpdatePermissionCommand command = UpdatePermissionCommand.valueOf(accountId, targetAccountId, permission, false);
-        SpringContext.getAccountExecutorService().submit(command);
+
+        Lock lock = unionInfo.getLock();
+        try {
+            lock.lock();
+            // 防止玩家退出了行会
+            unionMember = unionManager.getUnionMember(accountId);
+            targetUnionMember = unionManager.getUnionMember(targetAccountId);
+            unionId = unionMember.getUnionId();
+            targetUnionId = targetUnionMember.getUnionId();
+            if (unionMember.getUnionId() == null || targetUnionMember.getUnionId() == null ||
+                    !unionId.equals(targetUnionId)) {
+                logger.warn("操作者工会[{}]和目标工会[{}]不一致，无法修改权限", unionMember.getUnionId(), targetUnionMember.getUnionId());
+                SendPacketUtil.send(accountId, SM_UpdatePermission.valueOf(2));
+                return;
+            }
+            // 验证权限 二次验证
+            memberInfoMap = unionInfo.getMemberInfoMap();
+            unionMemberInfo = memberInfoMap.get(accountId);
+            targetUnionMemberInfo = memberInfoMap.get(targetAccountId);
+            handleUnionJob = unionMemberInfo.getUnionJob();
+            targetUnionJob = targetUnionMemberInfo.getUnionJob();
+            if (handleUnionJob == null || targetUnionJob == null || handleUnionJob.getPermission() <= targetUnionJob.getPermission()) {
+                RequestException.throwException(I18nId.NOT_PERMISSION);
+            }
+            if (unionMemberInfo.getUnionJob().getPermission() <= permission) {
+                logger.warn("玩家[{}-{}]修改玩家[{}-{}]权限至[{}]失败", accountId, unionMemberInfo.getUnionJob().getPermission(),
+                        targetAccountId, targetUnionMemberInfo.getUnionJob().getPermission(), permission);
+                // 权限不足
+                SendPacketUtil.send(accountId, SM_UpdatePermission.valueOf(2));
+                return;
+            }
+            // 修改
+            targetUnionMemberInfo.setUnionJob(unionJob);
+            // 保存 通知客户端
+            unionManager.saveUnionMember(targetUnionMember);
+            SendPacketUtil.send(accountId, SM_UpdatePermission.valueOf(1));
+        } finally {
+            lock.unlock();
+        }
 
     }
 
-    @Override
-    public void doUpdatePermission(String handleAccountId, String targetAccountId, int permission, boolean isAppointCaptain) {
-        // 防止玩家退出了行会
-        UnionMemberEnt unionMember = unionManager.getUnionMember(handleAccountId);
-        UnionMemberEnt targetUnionMember = unionManager.getUnionMember(targetAccountId);
-        if (unionMember.getUnionId() == null || targetUnionMember.getUnionId() == null ||
-                !unionMember.getUnionId().equals(targetUnionMember.getUnionId())) {
-            logger.warn("操作者工会[{}]和目标工会[{}]不一致，无法修改权限", unionMember.getUnionId(), targetUnionMember.getUnionId());
-            SendPacketUtil.send(handleAccountId, SM_UpdatePermission.valueOf(2));
-            return;
-        }
-
-        // 验证权限 二次验证
-        UnionMemberInfo unionMemberInfo = unionMember.getUnionMemberInfo();
-        UnionMemberInfo targetUnionMemberInfo = targetUnionMember.getUnionMemberInfo();
-        if (unionMemberInfo.getUnionJob() == null || targetUnionMemberInfo.getUnionJob() == null) {
-            return;
-        }
-        if (unionMemberInfo.getUnionJob().getPermission() <= permission && !isAppointCaptain) {
-            logger.warn("玩家[{}-{}]修改玩家[{}-{}]权限至[{}]失败", handleAccountId, unionMemberInfo.getUnionJob().getPermission(),
-                    targetAccountId, targetUnionMemberInfo.getUnionJob().getPermission(), permission);
-            // 权限不足
-            SendPacketUtil.send(handleAccountId, SM_UpdatePermission.valueOf(2));
-            return;
-        }
-        UnionJob unionJob = UnionJob.getUnionJob(permission);
-        if (unionJob == null) {
-            SendPacketUtil.send(handleAccountId, SM_UpdatePermission.valueOf(2));
-            return;
-        }
-        // 修改
-        targetUnionMemberInfo.setUnionJob(unionJob);
-        // 保存 通知客户端
-        unionManager.saveUnionMember(targetUnionMember);
-        SendPacketUtil.send(handleAccountId, SM_UpdatePermission.valueOf(1));
-
-    }
 
     @Override
     public void appoinCaptain(String accountId, String targetAccountId) {
         // 验证自己是否在工会中 权限是否足够
         UnionMemberEnt unionMember = unionManager.getUnionMember(accountId);
         String unionId = unionMember.getUnionId();
-        if (unionId == null) {
-            RequestException.throwException(I18nId.NOT_JOIN_UNION);
-        }
+
         // 验证目标是否在工会中 需要二次验证
         // 验证目标在工会中
         UnionMemberEnt targetUnionMember = unionManager.getUnionMember(targetAccountId);
@@ -512,44 +581,93 @@ public class UnionServiceImpl implements UnionService {
         if (unionEnt == null) {
             RequestException.throwException(I18nId.NOT_JOIN_UNION);
         }
-        UnionMemberInfo unionMemberInfo = unionMember.getUnionMemberInfo();
+        Map<String, UnionMemberInfo> memberInfoMap = unionEnt.getUnionInfo().getMemberInfoMap();
+        UnionMemberInfo unionMemberInfo = memberInfoMap.get(accountId);
         if (unionMemberInfo.getUnionJob().getPermission() < UnionJob.PRESIDENT.getPermission()) {
             RequestException.throwException(I18nId.NOT_PERMISSION);
         }
-        AppoinCaptainCommand command = AppoinCaptainCommand.valueOf(accountId, unionId, targetAccountId);
-        SpringContext.getAccountExecutorService().submit(command);
+
+        // 验证工会是否存在 有可能点完任命后立刻 解散工会
+        UnionInfo unionInfo = unionEnt.getUnionInfo();
+        Lock lock = unionInfo.getLock();
+        try {
+            lock.lock();
+            // 验证目标在工会中
+            unionMember = unionManager.getUnionMember(accountId);
+            targetUnionId = unionMember.getUnionId();
+            if (targetUnionId == null || !targetUnionId.equals(unionId)) {
+                SendPacketUtil.send(accountId, SM_AppointCaptain.valueOf(2));
+                return;
+            }
+            // 修改会长
+
+            unionInfo.setPresidentId(targetAccountId);
+            // 修改目标会员信息 中的职位
+            memberInfoMap = unionEnt.getUnionInfo().getMemberInfoMap();
+            unionMemberInfo = memberInfoMap.get(targetAccountId);
+            if (unionMemberInfo == null) {
+                SendPacketUtil.send(accountId, SM_AppointCaptain.valueOf(2));
+                return;
+            }
+            UnionJob oldUnionJob = unionMemberInfo.getUnionJob();
+            unionMemberInfo.setUnionJob(UnionJob.PRESIDENT);
+            UnionMemberInfo handleUnionMemberInfo = memberInfoMap.get(accountId);
+            handleUnionMemberInfo.setUnionJob(oldUnionJob);
+            unionManager.saveUnion(unionEnt);
+            SendPacketUtil.send(accountId, SM_AppointCaptain.valueOf(1));
+        } finally {
+            lock.unlock();
+        }
 
     }
 
-    // 如果handleAccountId 同时点两下 点了任命不同的人怎么办 在accountId 需要修改handleAccountId的数据
     @Override
-    public void doAppoinCaptain(String handleAccountId, String unionId, String accountId) {
-        // 验证目标在工会中
+    public void disband(String accountId) {
         UnionMemberEnt unionMember = unionManager.getUnionMember(accountId);
-        String targetUnionId = unionMember.getUnionId();
-        if (targetUnionId == null || !targetUnionId.equals(unionId)) {
-            SendPacketUtil.send(handleAccountId, SM_AppointCaptain.valueOf(2));
-            return;
+        // 验证accountId是否有工会，
+        String unionId = unionMember.getUnionId();
+        if (unionId == null) {
+            RequestException.throwException(I18nId.NOT_JOIN_UNION);
+
         }
-        // 验证工会是否存在 有可能点完任命后立刻 解散工会
+        //验证对应的工会中是否有我的信息
         UnionEnt unionEnt = unionManager.getUnionEnt(unionId);
-        if (unionEnt == null) {
-            return;
+        UnionInfo unionInfo = unionEnt.getUnionInfo();
+        Map<String, UnionMemberInfo> memberInfoMap = unionInfo.getMemberInfoMap();
+        UnionMemberInfo unionMemberInfo = memberInfoMap.get(accountId);
+        if (unionMemberInfo == null) {
+            RequestException.throwException(I18nId.NOT_JOIN_UNION);
         }
-        synchronized (unionEnt) {
-
-            // 修改会长
-            UnionInfo unionInfo = unionEnt.getUnionInfo();
-            unionInfo.setPresidentId(accountId);
-            // 修改目标会员信息 中的职位
-            UnionMemberInfo unionMemberInfo = unionMember.getUnionMemberInfo();
-            UnionJob oldUnionJob = unionMemberInfo.getUnionJob();
-            unionMemberInfo.setUnionJob(UnionJob.PRESIDENT);
-
-            // 修改操作者的信息 应该在操作者的线程修改 并且要在那个线程验证权限
-            UpdatePermissionCommand command = UpdatePermissionCommand.valueOf(handleAccountId, handleAccountId, oldUnionJob.getPermission(), true);
-            SpringContext.getAccountExecutorService().submit(command);
+        // 验证权限
+        if (unionMemberInfo.getUnionJob() != UnionJob.PRESIDENT) {
+            RequestException.throwException(I18nId.NOT_DISBAND);
         }
+        Lock lock = unionInfo.getLock();
+        try {
+            lock.lock();
+            memberInfoMap = unionInfo.getMemberInfoMap();
+            unionMemberInfo = memberInfoMap.get(accountId);
+            if (unionMemberInfo == null) {
+                RequestException.throwException(I18nId.NOT_JOIN_UNION);
+            }
+            // 验证权限
+            if (unionMemberInfo.getUnionJob() != UnionJob.PRESIDENT) {
+                RequestException.throwException(I18nId.NOT_DISBAND);
+            }
+            // 遍历移除成员数据
+            for (String memberAccountId : memberInfoMap.keySet()) {
+                UnionMemberEnt Member = unionManager.getUnionMember(memberAccountId);
+                Member.setUnionId(null);
+            }
+            memberInfoMap.clear();
+            unionManager.saveUnion(unionEnt);
+            // 通知客户端
+            SM_DisbandUnionSucc sm = new SM_DisbandUnionSucc();
+            SendPacketUtil.send(accountId, sm);
 
+        } finally {
+            lock.unlock();
+        }
+        unionManager.delete(unionId);
     }
 }

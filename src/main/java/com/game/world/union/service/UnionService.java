@@ -76,14 +76,6 @@ public interface UnionService {
     void showUnionList(String accountId);
 
     /**
-     * 做真实的踢人操作
-     *
-     * @param unionId
-     * @param accountId
-     */
-    void doKickOther(String accountId, String unionId, String targetAccountId);
-
-    /**
      * 踢人操作
      *
      * @param accountId
@@ -91,15 +83,6 @@ public interface UnionService {
      */
     void kickOther(String accountId, String targetAccountId);
 
-    /**
-     * 真正的做修改玩家权限操作
-     *
-     * @param handleAccountId
-     * @param accountId
-     * @param permission
-     * @param isAppointCaptain
-     */
-    void doUpdatePermission(String handleAccountId, String accountId, int permission, boolean isAppointCaptain);
 
     /**
      * 修改玩家权限
@@ -126,11 +109,8 @@ public interface UnionService {
     void appoinCaptain(String accountId, String targetAccountId);
 
     /**
-     * 实际委任队长的操作
-     *
-     * @param handleAccountId
-     * @param unionId
+     * 解散队伍
      * @param accountId
      */
-    void doAppoinCaptain(String handleAccountId, String unionId, String accountId);
+    void disband(String accountId);
 }

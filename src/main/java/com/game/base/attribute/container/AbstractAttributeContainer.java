@@ -4,6 +4,7 @@ import com.game.base.attribute.Attribute;
 import com.game.base.attribute.attributeid.AttributeId;
 import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.util.AttributeUtil;
+import com.game.role.battlescore.event.ChangeAttrbuteEvent;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,7 @@ public abstract class AbstractAttributeContainer {
             setAttributeModel(id,attrs,updateSet);
             recompute(updateSet);
         }
+
     }
 
     /**

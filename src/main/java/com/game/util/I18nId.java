@@ -140,7 +140,12 @@ public interface I18nId {
      */
     int PERMISSION_ERROR = 10049;
     /**
-     *
+     * 自己不能修改自己的权限
      */
+    int NOT_UPDATE_MYSELF = 10050;
+    /**
+     * 必须会长才能解散行会
+     */
+    int NOT_DISBAND = 10051;
 
 }

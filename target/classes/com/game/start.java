@@ -31,6 +31,8 @@ public class Start {
         SpringContext.getInitManager().init();
         logger.info("开始构建场景...");
         SpringContext.getScenceSerivce().init();
+        logger.info("初始化排行榜");
+        SpringContext.getRankListService().init();
         logger.info("初始化完毕...");
         int port = SpringContext.getServerConfigValue().getPort();
         Server.openBind(port);

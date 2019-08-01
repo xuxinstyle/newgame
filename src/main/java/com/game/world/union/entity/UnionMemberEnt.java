@@ -21,30 +21,23 @@ public class UnionMemberEnt extends AbstractEntity<String> {
     @Column(columnDefinition = "varchar(255) character set utf8 collate utf8_bin comment '工会id'")
     private String unionId;
 
-    @Lob
-    @Column(columnDefinition = "Blob comment '工会数据'", nullable = false)
-    private byte[] unionMemberData;
-
-    @Transient
-    private UnionMemberInfo unionMemberInfo;
-
     public static UnionMemberEnt valueOf(String accountId) {
         UnionMemberEnt unionMemberEnt = new UnionMemberEnt();
         unionMemberEnt.setAccountId(accountId);
         unionMemberEnt.setUnionId(null);
-        unionMemberEnt.setUnionMemberInfo(new UnionMemberInfo());
+
         return unionMemberEnt;
     }
 
 
     @Override
     public void doSerialize() {
-        unionMemberData = JsonUtils.object2Bytes(unionMemberInfo);
+
     }
 
     @Override
     public void doDeserialize() {
-        unionMemberInfo = JsonUtils.bytes2Object(unionMemberData, UnionMemberInfo.class);
+
     }
 
     @Override
@@ -68,19 +61,4 @@ public class UnionMemberEnt extends AbstractEntity<String> {
         this.unionId = unionId;
     }
 
-    public byte[] getUnionMemberData() {
-        return unionMemberData;
-    }
-
-    public void setUnionMemberData(byte[] unionMemberData) {
-        this.unionMemberData = unionMemberData;
-    }
-
-    public UnionMemberInfo getUnionMemberInfo() {
-        return unionMemberInfo;
-    }
-
-    public void setUnionMemberInfo(UnionMemberInfo unionMemberInfo) {
-        this.unionMemberInfo = unionMemberInfo;
-    }
 }

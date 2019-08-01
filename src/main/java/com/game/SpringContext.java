@@ -5,6 +5,7 @@ import com.game.base.identify.service.SessionService;
 import com.game.base.executor.account.AccountExecutorService;
 import com.game.base.executor.common.CommonExecutorService;
 import com.game.base.executor.scene.SceneExecutorService;
+import com.game.role.battlescore.service.BattleScoreService;
 import com.game.role.skill.service.SkillService;
 import com.game.gm.service.GmService;
 import com.game.role.skilleffect.service.SkillEffectService;
@@ -28,11 +29,11 @@ import com.game.user.reward.service.RewardService;
 import com.game.user.task.service.TaskService;
 import com.game.world.base.service.MapInfoService;
 import com.game.world.hopetower.service.HopeTowerService;
+import com.game.world.rank.service.RankService;
 import com.game.world.union.service.UnionService;
 import com.resource.core.InitManager;
 import com.resource.core.StorageManager;
 import com.socket.core.session.SessionManager;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -125,6 +126,20 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private UnionService unionService;
+
+    @Autowired
+    private BattleScoreService battleScoreService;
+
+    @Autowired
+    private RankService rankService;
+
+    public static RankService getRankListService() {
+        return instance.rankService;
+    }
+
+    public static BattleScoreService getBattleScoreService() {
+        return instance.battleScoreService;
+    }
 
     public static UnionService getUnionService() {
         return instance.unionService;

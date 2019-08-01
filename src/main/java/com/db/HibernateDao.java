@@ -9,6 +9,7 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
 import java.util.List;
 
@@ -36,11 +37,13 @@ public class HibernateDao extends HibernateDaoSupport {
     }
 
     public <PK extends Serializable, T extends IEntity> List<T> findAll(Class<T> clz) {
-        List<T> ts = getHibernateTemplate().loadAll(clz);
-        for (T t : ts) {
+        CriteriaQuery<T> query = getSession().getCriteriaBuilder().createQuery(clz);
+        query.from(clz);
+        List<T> resultList = getSession().createQuery(query).getResultList();
+        for (T t : resultList) {
             t.unserialize();
         }
-        return ts;
+        return resultList;
     }
 
     public <PK extends Serializable,T extends IEntity> PK save(Class<? extends IEntity> clz, T entity){
@@ -48,7 +51,7 @@ public class HibernateDao extends HibernateDaoSupport {
         return (PK) getSession().save(entity);
     }
 
-    public <PK extends Serializable,T extends IEntity> void remove(Class<T> clz, T entity){
+    public <PK extends Serializable, T extends IEntity> void remove(T entity) {
         getSession().delete(entity);
     }
 

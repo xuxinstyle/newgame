@@ -2,15 +2,24 @@ package com.game.world.union.model;
 
 import com.game.util.CommonUtil;
 import com.game.util.TimeUtil;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
+import javax.persistence.Transient;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * @Author：xuxin
  * @Date: 2019/7/28 12:51
  */
 public class UnionInfo {
+
+    @JsonIgnore
+    private Lock lock = new ReentrantLock();
     /**
      * 工会名称
      */
@@ -22,7 +31,7 @@ public class UnionInfo {
     /**
      * 工会成员
      */
-    private Set<String> memberIds;
+    private Map<String, UnionMemberInfo> memberInfoMap;
 
     /**
      * 申请入会列表
@@ -41,14 +50,26 @@ public class UnionInfo {
         UnionInfo unionInfo = new UnionInfo();
         unionInfo.setApplyList(Collections.synchronizedSet(new HashSet()));
         unionInfo.setCreateTime(TimeUtil.now());
-        unionInfo.setMemberIds(Collections.synchronizedSet(new HashSet()));
+        unionInfo.setMemberInfoMap(new ConcurrentHashMap<>());
         unionInfo.setMaxNum(CommonUtil.MAX_MEMBER_NUM);
 
         return unionInfo;
     }
 
-    public void addMember(String accountId) {
-        memberIds.add(accountId);
+    public Lock getLock() {
+        return lock;
+    }
+
+    public void setLock(Lock lock) {
+        this.lock = lock;
+    }
+
+    public Map<String, UnionMemberInfo> getMemberInfoMap() {
+        return memberInfoMap;
+    }
+
+    public void setMemberInfoMap(Map<String, UnionMemberInfo> memberInfoMap) {
+        this.memberInfoMap = memberInfoMap;
     }
 
     public String getUnionName() {
@@ -67,13 +88,6 @@ public class UnionInfo {
         this.presidentId = presidentId;
     }
 
-    public Set<String> getMemberIds() {
-        return memberIds;
-    }
-
-    public void setMemberIds(Set<String> memberIds) {
-        this.memberIds = memberIds;
-    }
 
     public Set<String> getApplyList() {
         return applyList;

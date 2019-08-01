@@ -51,6 +51,7 @@ public class AddAttributeBuffSynCommand extends AbstractSceneCommand {
         CreatureUnit unit = scene.getUnit(ObjectType.PLAYER, player.getObjectId());
         CreatureAttributeContainer attributeContainerUnit = unit.getAttributeContainer();
         attributeContainerUnit.putAndComputeAttributes(attrId, attrs);
+
     }
 
     public AttributeId getAttrId() {

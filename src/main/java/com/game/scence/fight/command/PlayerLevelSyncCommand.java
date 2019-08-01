@@ -7,6 +7,7 @@ import com.game.base.attribute.constant.AttributeType;
 import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.attribute.container.ModelAttribute;
 import com.game.base.executor.scene.impl.AbstractSceneCommand;
+import com.game.role.battlescore.event.ChangeAttrbuteEvent;
 import com.game.role.player.model.Player;
 import com.game.scence.base.model.AbstractScene;
 import com.game.scence.fight.model.CreatureUnit;
@@ -56,9 +57,13 @@ public class PlayerLevelSyncCommand extends AbstractSceneCommand {
         List<Attribute> attrs = new ArrayList<>(attributeMap.values());
         CreatureAttributeContainer attributeContainer = playerUnit.getAttributeContainer();
         attributeContainer.putAndComputeAttributes(AttributeIdEnum.BASE, attrs);
+        // 计算战力
+        ChangeAttrbuteEvent event = ChangeAttrbuteEvent.valueOf(player);
+        SpringContext.getEvenManager().syncSubmit(event);
         playerUnit.setCurrHp(playerUnit.getMaxHp());
         playerUnit.setCurrMp(playerUnit.getMaxMp());
         playerUnit.setLevel(player.getLevel());
+        SpringContext.getPlayerSerivce().save(player);
 
     }
 

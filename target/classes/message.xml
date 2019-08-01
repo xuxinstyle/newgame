@@ -140,7 +140,12 @@
     <catalog id="113" value="com.game.world.union.packet.CM_UpdatePermission"/>
     <catalog id="114" value="com.game.world.union.packet.SM_UpdatePermission"/>
     <catalog id="115" value="com.game.world.union.packet.CM_ShowMyselfUnion"/>
-
+    <catalog id="116" value="com.game.world.union.packet.CM_AppointCaptain"/>
+    <catalog id="117" value="com.game.world.union.packet.SM_AppointCaptain"/>
+    <catalog id="118" value="com.game.world.union.packet.SM_DisbandUnionSucc"/>
+    <catalog id="119" value="com.game.world.union.packet.CM_DisbandUnion"/>
+    <catalog id="120" value="com.game.world.rank.packet.CM_ShowRankList"/>
+    <catalog id="121" value="com.game.world.rank.packet.SM_ShowRankList"/>
 
 
 </protocols>

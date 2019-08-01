@@ -5,6 +5,8 @@ import com.game.role.player.model.Player;
 import com.game.role.player.resource.PlayerLevelResource;
 import com.socket.core.session.TSession;
 
+import java.util.List;
+
 public interface PlayerService {
     /**
      * 保存玩家数据
@@ -69,5 +71,11 @@ public interface PlayerService {
      */
     void save(Player player);
 
+    /**
+     * 获取所以的player
+     *
+     * @return
+     */
+    List<PlayerEnt> getPlayerAll();
 
 }

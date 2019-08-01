@@ -7,7 +7,6 @@ import com.game.role.player.model.Player;
 import com.game.scence.base.model.FieldFightScene;
 import com.game.scence.fight.model.MonsterUnit;
 import com.game.scence.monster.resource.MonsterResource;
-import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.model.MonsterDef;
 import com.game.scence.visible.model.Position;
 import com.game.scence.visible.resource.MapResource;
@@ -17,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
