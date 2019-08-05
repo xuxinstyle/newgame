@@ -33,6 +33,8 @@ public class Start {
         SpringContext.getScenceSerivce().init();
         logger.info("初始化排行榜");
         SpringContext.getRankListService().init();
+        logger.info("初始化异步事件线程池..");
+        SpringContext.getEvenManager().init();
         logger.info("初始化完毕...");
         int port = SpringContext.getServerConfigValue().getPort();
         Server.openBind(port);

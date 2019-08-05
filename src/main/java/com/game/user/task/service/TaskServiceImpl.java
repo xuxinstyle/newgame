@@ -5,12 +5,8 @@ import com.db.cache.EntityCacheService;
 import com.game.SpringContext;
 import com.game.common.exception.RequestException;
 import com.game.role.player.model.Player;
-import com.game.scence.npc.resource.NpcResource;
-import com.game.scence.visible.resource.MapResource;
 import com.game.user.task.constant.TaskConditionType;
-import com.game.user.task.constant.TaskLineType;
 import com.game.user.task.entity.TaskEnt;
-import com.game.user.task.event.TalkEvent;
 import com.game.user.task.model.*;
 import com.game.user.task.packet.*;
 import com.game.user.task.packet.bean.TaskVO;
@@ -175,14 +171,7 @@ public class TaskServiceImpl implements TaskService {
                 taskList.add(taskLineInfo.getCurrTask());
             }
         }
-        // 遍历每日任务
-        for (Task task : taskInfo.getDailyTaskMap().values()) {
-            int taskId = task.getTaskId();
-            TaskResource taskResource = getTaskResource(taskId);
-            if (taskResource.isExecutEventType(type)) {
-                taskList.add(task);
-            }
-        }
+
         return taskList;
     }
 
@@ -257,7 +246,7 @@ public class TaskServiceImpl implements TaskService {
         }
         TaskEnt taskEnt = getTaskEnt(accountId);
         TaskInfo taskInfo = taskEnt.getTaskInfo();
-        // 发将
+
         Set<Integer> finishedTask = taskInfo.getFinishedTasks();
         // 没有在完成任务的列表
         if (!finishedTask.contains(taskId)) {
@@ -272,19 +261,7 @@ public class TaskServiceImpl implements TaskService {
         logger.info("玩家成功[{}]领取任务[{}]奖励", accountId, taskId);
 
         // 移除当前任务
-        // 每日任务
-        int lineId = taskResource.getLineId();
-        if (lineId == TaskLineType.DAILY_TASK.getId()) {
-            Map<Integer, Task> dailyTaskMap = taskInfo.getDailyTaskMap();
-            Task task = dailyTaskMap.get(taskId);
-            if (task != null) {
-                dailyTaskMap.remove(taskId);
-                logger.info("每日任务[{}]领取完成，从任务列表移除", taskId);
-            }
-            // 每日任务不需要开启下一个任务
-            save(taskEnt);
-            return;
-        }
+        save(taskEnt);
         // 线路任务
         // 开启下组任务
         openNextTaskOrRemove(taskInfo, taskResource);
@@ -329,7 +306,7 @@ public class TaskServiceImpl implements TaskService {
         TaskEnt taskEnt = getTaskEnt(accountId);
         TaskInfo taskInfo = taskEnt.getTaskInfo();
         Set<Integer> canReceiveTasks = taskInfo.getCanAcceptTasks();
-        SM_ShowCanReceiveTask sm = new SM_ShowCanReceiveTask();
+        SM_ShowCanAcceptTask sm = new SM_ShowCanAcceptTask();
         sm.setCanReceiveTasks(canReceiveTasks);
         SendPacketUtil.send(accountId, sm);
     }
@@ -352,11 +329,8 @@ public class TaskServiceImpl implements TaskService {
                 executeTasks.add(TaskVO.valueOf(currTask));
             }
         }
-        // 每日任务
-        Map<Integer, Task> dailyTaskMap = taskInfo.getDailyTaskMap();
-        for (Task task : dailyTaskMap.values()) {
-            executeTasks.add(TaskVO.valueOf(task));
-        }
+
+        // 返回客户端
         SM_ShowExecuteTask sm = new SM_ShowExecuteTask();
         sm.setExecuteTasks(executeTasks);
         SendPacketUtil.send(accountId, sm);

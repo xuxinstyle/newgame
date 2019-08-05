@@ -17,7 +17,7 @@ public class Task {
      */
     private int[] excuteProgress;
     /**
-     * 任务触发进度
+     * 任务触发
      */
     private int[] triggerProgress;
 

@@ -95,10 +95,10 @@ public interface ScenceService {
     /**
      * 实际做切换地图的地方
      * @param player
-     * @param targetMapId
+     * @param targetScene
      * @param clientRequest
      */
-    void doChangeMap(Player player, int targetMapId, boolean clientRequest);
+    void doChangeMap(Player player, AbstractScene targetScene, boolean clientRequest);
 
     /**
      * 做登出时场景相关操作
@@ -109,9 +109,10 @@ public interface ScenceService {
     /**
      * 做离开地图的操作
      * @param accountId
+     * @param targetScene
      * @param clientRequest
      */
-    void leaveMap(String accountId, boolean clientRequest);
+    void leaveMap(String accountId, AbstractScene targetScene, boolean clientRequest);
 
     /**
      * 获取地图信息

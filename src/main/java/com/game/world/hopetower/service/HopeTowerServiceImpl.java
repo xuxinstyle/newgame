@@ -1,9 +1,12 @@
 package com.game.world.hopetower.service;
 
 import com.game.SpringContext;
+import com.game.base.executor.ICommand;
+import com.game.role.player.model.Player;
 import com.game.scence.base.model.AbstractScene;
 import com.game.scence.base.model.HopeTowerScene;
 import com.game.scence.fight.model.PlayerUnit;
+import com.game.scence.visible.command.EnterMapCommand;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.resource.MapResource;
 import com.game.scence.visible.service.ScenceManger;
@@ -11,6 +14,7 @@ import com.game.util.SendPacketUtil;
 import com.game.world.base.entity.MapInfoEnt;
 import com.game.world.base.model.AbstractMapInfo;
 import com.game.world.base.model.MapInfo;
+import com.game.world.hopetower.command.HopeTowerSettlementCommand;
 import com.game.world.hopetower.model.HopeTowerInfo;
 import com.game.world.hopetower.packet.SM_ShowHopeTowerInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +58,9 @@ public class HopeTowerServiceImpl implements HopeTowerService {
         }
         if (scene instanceof HopeTowerScene) {
             HopeTowerScene hopeTowerScene = (HopeTowerScene) scene;
-            hopeTowerScene.doCheckAndEnd();
+            if (hopeTowerScene.doCheckAndEnd()) {
+                SpringContext.getScenceSerivce().removeCopyScene(accountId);
+            }
         }
     }
 
@@ -70,17 +76,27 @@ public class HopeTowerServiceImpl implements HopeTowerService {
         AbstractScene scene = playerUnit.getScene();
         if (scene != null) {
             scene.doEnd();
+            SpringContext.getScenceSerivce().removeCopyScene(playerUnit.getAccountId());
         }
 
     }
 
     @Override
     public void exit(String accountId) {
-        ScenceManger scenceMangaer = SpringContext.getScenceSerivce().getScenceMangaer();
-        Map<String, AbstractScene> copySceneMap = scenceMangaer.getCopySceneMap();
-        AbstractScene abstractScene = copySceneMap.get(accountId);
-        if (abstractScene != null) {
-            abstractScene.doEnd();
+        Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
+        int currMapId = player.getCurrMapId();
+        MapType mapType = MapType.getMapType(currMapId);
+        if (mapType != MapType.HOPE_TOWER) {
+            return;
+        }
+
+        AbstractScene scene = SpringContext.getScenceSerivce().getScene(currMapId, accountId);
+        if (scene != null) {
+            // 停止时间倒计时
+            scene.clearCommand();
+            // 立刻结算
+            HopeTowerSettlementCommand command = new HopeTowerSettlementCommand(scene.getMapId(), scene.getSceneId(), 0, accountId);
+            SpringContext.getSceneExecutorService().submit(command);
         }
     }
 }

@@ -3,6 +3,7 @@ package com.game.scence.visible.command;
 import com.game.SpringContext;
 import com.game.base.executor.scene.impl.AbstractSceneCommand;
 import com.game.role.player.model.Player;
+import com.game.scence.base.model.AbstractScene;
 
 /**
  * @Author：xuxin
@@ -14,21 +15,21 @@ public class ChangeMapCommand extends AbstractSceneCommand {
     /**
      * 目标地图id
      */
-    private int targetMapId;
+    private AbstractScene targetScene;
     /**
      * 是否第一次进入
      */
     private boolean clientRequest;
 
-    public ChangeMapCommand(Player player,int mapId,int sceneId){
-        super(mapId,sceneId,player.getAccountId());
+    public ChangeMapCommand(Player player, AbstractScene scene) {
+        super(scene, player.getAccountId());
         this.player = player;
 
     }
 
-    public static ChangeMapCommand valueOf(Player player, int sceneId, int targetMapId, boolean clientRequest) {
-        ChangeMapCommand command = new ChangeMapCommand(player, player.getCurrMapId(), sceneId);
-        command.setTargetMapId(targetMapId);
+    public static ChangeMapCommand valueOf(Player player, AbstractScene scene, boolean clientRequest) {
+        ChangeMapCommand command = new ChangeMapCommand(player, scene);
+        command.setTargetScene(scene);
         command.setClientRequest(clientRequest);
         return command;
     }
@@ -41,12 +42,12 @@ public class ChangeMapCommand extends AbstractSceneCommand {
         this.clientRequest = clientRequest;
     }
 
-    public int getTargetMapId() {
-        return targetMapId;
+    public AbstractScene getTargetScene() {
+        return targetScene;
     }
 
-    public void setTargetMapId(int targetMapId) {
-        this.targetMapId = targetMapId;
+    public void setTargetScene(AbstractScene targetScene) {
+        this.targetScene = targetScene;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class ChangeMapCommand extends AbstractSceneCommand {
 
     @Override
     public void active() {
-        SpringContext.getScenceSerivce().doChangeMap(player, targetMapId, clientRequest);
+        SpringContext.getScenceSerivce().doChangeMap(player, targetScene, clientRequest);
     }
 
     public Player getPlayer() {

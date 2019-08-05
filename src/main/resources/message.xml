@@ -112,7 +112,7 @@
     <catalog id="87" value="com.game.user.task.packet.SM_ShowFinishTask"/>
     <catalog id="88" value="com.game.user.task.packet.CM_ShowFinishTask"/>
     <catalog id="89" value="com.game.user.task.packet.CM_ReceiveTaskAward"/>
-    <catalog id="90" value="com.game.user.task.packet.SM_ShowCanReceiveTask"/>
+    <catalog id="90" value="com.game.user.task.packet.SM_ShowCanAcceptTask"/>
     <catalog id="91" value="com.game.user.task.packet.CM_ShowCanReceiveTask"/>
     <catalog id="92" value="com.game.user.task.packet.SM_AcceptTask"/>
     <catalog id="93" value="com.game.user.task.packet.CM_AcceptTask"/>

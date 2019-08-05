@@ -89,7 +89,7 @@ public class LoginServiceImpl implements LoginService {
         }
         session.sendPacket(sm);
         SpringContext.getScenceSerivce().loginAfterEnterMap(session, session.getAccountId(), targetMapId);
-        logger.info(usernameDB + "登录成功！");
+        logger.info(usernameDB + "登录成功！正在进入地图。。");
     }
 
     @Override

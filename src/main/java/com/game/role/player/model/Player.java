@@ -6,6 +6,7 @@ import com.game.base.attribute.attributeid.AttributeIdEnum;
 import com.game.base.attribute.container.CreatureAttributeContainer;
 import com.game.base.gameobject.constant.ObjectType;
 import com.game.base.gameobject.model.Creature;
+import com.game.role.battlescore.event.ChangeAttrbuteEvent;
 import com.game.role.battlescore.util.BattleScoreCompute;
 import com.game.role.player.resource.PlayerLevelResource;
 import com.game.scence.visible.constant.MapType;
@@ -124,6 +125,7 @@ public class Player extends Creature<Player> {
 
     public void setChangeIngMap(boolean changeIngMap) {
         getAccount(this.getAccountId()).getIsChangeMap().getAndSet(changeIngMap);
+
     }
     public void setAccountId(String accountId) {
         this.accountId = accountId;

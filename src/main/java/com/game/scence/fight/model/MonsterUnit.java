@@ -106,11 +106,9 @@ public class MonsterUnit extends CreatureUnit {
     @Override
     public void afterDead(CreatureUnit attacker) {
         super.afterDead(attacker);
-        if (getType() == ObjectType.MONSTER) {
-            MonsterResource monsterResource = getMonsterResource();
-            MonsterDeadEvent event = MonsterDeadEvent.valueOf(attacker, monsterResource.getId());
-            SpringContext.getEvenManager().syncSubmit(event);
-        }
+        MonsterDeadEvent event = MonsterDeadEvent.valueOf(attacker, monsterResource.getId());
+        SpringContext.getEvenManager().syncSubmit(event);
+
     }
 
     @Override

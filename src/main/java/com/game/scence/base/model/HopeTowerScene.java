@@ -7,15 +7,16 @@ import com.game.role.player.model.Player;
 import com.game.scence.fight.model.CreatureUnit;
 import com.game.scence.fight.model.MonsterUnit;
 import com.game.scence.fight.model.PlayerUnit;
+import com.game.scence.visible.command.EnterMapCommand;
 import com.game.scence.visible.constant.MapType;
 import com.game.scence.visible.resource.MapResource;
 import com.game.user.task.event.PassMapEvent;
-import com.game.util.CommonUtil;
 import com.game.util.SendPacketUtil;
 import com.game.world.base.entity.MapInfoEnt;
 import com.game.world.base.model.AbstractMapInfo;
 import com.game.world.base.model.MapInfo;
 import com.game.world.hopetower.command.HopeTowerSettlementCommand;
+import com.game.world.hopetower.model.HopeTowerInfo;
 import com.game.world.hopetower.packet.SM_CloseScene;
 import com.game.world.hopetower.packet.SM_RefreshMonster;
 import org.slf4j.Logger;
@@ -55,6 +56,7 @@ public class HopeTowerScene extends AbstractMonsterScene {
      */
     private int MAX_ROUND;
 
+
     @Override
     public void init() {
         //初始化怪物
@@ -89,25 +91,32 @@ public class HopeTowerScene extends AbstractMonsterScene {
         commandMap.put(command.getClass(), command);
     }
 
+    public boolean isPass() {
+        if (checkMonsterDeadAll()) {
+            if (round < MAX_ROUND) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
     /**
      * 每个怪物死亡一次就check一次
      */
-    public void doCheckAndEnd() {
+    public boolean doCheckAndEnd() {
         //如果怪物全死光了 判断当前波数是否是最后一波
         if (checkMonsterDeadAll()) {
             if (round < MAX_ROUND) {
 
                 freshMonster();
-                return;
-            }
-            // 停止时间倒计时
-            for (ICommand command : getCommandMap().values()) {
-                command.cancel();
-                getCommandMap().clear();
+                return false;
             }
             // 做结算
+
             doEnd();
+            return true;
         }
+        return false;
     }
 
     /**
@@ -117,13 +126,22 @@ public class HopeTowerScene extends AbstractMonsterScene {
      */
     @Override
     public void doLeave(Player player) {
-        setPlayerUnit(null);
         // 停止时间倒计时
+        /*for (ICommand command : getCommandMap().values()) {
+            command.cancel();
+            getCommandMap().clear();
+        }*/
+        // 清除scene中的数据
+
+    }
+
+
+    @Override
+    public void clearCommand() {
         for (ICommand command : getCommandMap().values()) {
             command.cancel();
             getCommandMap().clear();
         }
-        // 清除scene中的数据
     }
 
     public boolean checkMonsterDeadAll() {
@@ -147,31 +165,25 @@ public class HopeTowerScene extends AbstractMonsterScene {
      */
     @Override
     public void doEnd() {
+        if (isEnd()) {
+            return;
+        }
+        setEnd(true);
+        setCanLeave(true);
+        // 停止时间倒计时
+        clearCommand();
         // 如果怪物死光了则发送奖励
         // 通过
-        if (checkMonsterDeadAll()) {
+        if (isPass()) {
             MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(getMapId());
 
             //如果是首次通关则发送首次通关奖励
             MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(playerUnit.getAccountId());
-            MapInfo mapInfo = mapInfoEnt.getMapInfo();
-            Map<Integer, AbstractMapInfo> infoMap = mapInfo.getInfoMap();
-            AbstractMapInfo abstractMapInfo = infoMap.get(getMapId());
-            int rewardId = 0;
-            // 首次通关
-            if (!abstractMapInfo.isPass(getMapId())) {
-                rewardId = mapResource.getFirstReward();
-                // 开启下一个关卡
-                abstractMapInfo.openNext(getMapId());
-            } else {
-                // 非首次通关
-                rewardId = mapResource.getRepeatReward();
-            }
-
-            int finalRewardId = rewardId;
+            // 获取通关奖励id
+            int rewardId = getRewardId(mapResource, mapInfoEnt);
             // 抛回账号线程发奖
             SpringContext.getAccountExecutorService().addTask(playerUnit.getAccountId(), "HopeTowerSceneDoEnd", () -> {
-                SpringContext.getRewardService().doReward(playerUnit.getAccountId(), finalRewardId);
+                SpringContext.getRewardService().doReward(playerUnit.getAccountId(), rewardId);
             });
             // 抛通关事件
             SpringContext.getEvenManager().syncSubmit(PassMapEvent.valueOf(playerUnit.getAccountId(), getMapId()));
@@ -186,11 +198,41 @@ public class HopeTowerScene extends AbstractMonsterScene {
             SendPacketUtil.send(playerUnit.getAccountId(), sm);
 
         }
-        setCanLeave(true);
-        // 离开地图，前往新手村 清除当前场景
-        SpringContext.getScenceSerivce().changeMap(playerUnit.getAccountId(), CommonUtil.NoviceVillage, false);
-        SpringContext.getScenceSerivce().removeCopyScene(playerUnit.getAccountId());
 
+        // 离开地图，前往新手村 清除当前场景数据
+        AbstractScene targetScene = SpringContext.getScenceSerivce().getScene(MapType.NoviceVillage.getMapId(), playerUnit.getAccountId());
+        SpringContext.getScenceSerivce().leaveMap(playerUnit.getAccountId(), targetScene, false);
+        Player player = SpringContext.getPlayerSerivce().getPlayer(playerUnit.getAccountId());
+        EnterMapCommand command = EnterMapCommand.valueOf(player, 0, MapType.NoviceVillage.getMapId(), false);
+        SpringContext.getSceneExecutorService().submit(command);
+        // 清除场景中玩家数据
+        setPlayerUnit(null);
+        getCreatureUnitMap().clear();
+
+    }
+
+    private int getRewardId(MapResource mapResource, MapInfoEnt mapInfoEnt) {
+        MapInfo mapInfo = mapInfoEnt.getMapInfo();
+        Map<Integer, AbstractMapInfo> infoMap = mapInfo.getInfoMap();
+        MapType mapType = MapType.getMapType(getMapId());
+
+        AbstractMapInfo abstractMapInfo = infoMap.get(mapType.getId());
+        if (abstractMapInfo == null) {
+            HopeTowerInfo hopeTowerInfo = new HopeTowerInfo();
+            hopeTowerInfo.setCurrMapId(mapResource.getId());
+            infoMap.put(MapType.HOPE_TOWER.getId(), hopeTowerInfo.valueOf());
+        }
+        int rewardId = 0;
+        // 首次通关
+        if (!abstractMapInfo.isPass(getMapId())) {
+            rewardId = mapResource.getFirstReward();
+            // 开启下一个关卡
+            abstractMapInfo.openNext(getMapId());
+        } else {
+            // 非首次通关
+            rewardId = mapResource.getRepeatReward();
+        }
+        return rewardId;
     }
 
 
@@ -206,7 +248,7 @@ public class HopeTowerScene extends AbstractMonsterScene {
     }
 
     @Override
-    public boolean canChangeToMap(int targetMapId) {
+    public boolean canChangeToMap(Player player, int targetMapId) {
         if (!isCanLeave()) {
             return false;
         }
@@ -222,8 +264,8 @@ public class HopeTowerScene extends AbstractMonsterScene {
 
     @Override
     public boolean canEnter(Player player) {
-        int currMapId = player.getCurrMapId();
-        if (currMapId == MapType.NoviceVillage.getMapId()) {
+        // 防止玩家发包进入一个有人的副本
+        if (playerUnit == null || playerUnit.getId() == player.getObjectId()) {
             return true;
         }
         return false;
@@ -243,7 +285,6 @@ public class HopeTowerScene extends AbstractMonsterScene {
         // copy一个
         PlayerUnit playerUnit = PlayerUnit.valueOf(player);
         this.playerUnit = playerUnit;
-
         playerUnit.setScene(this);
         getCreatureUnitMap().put(player.getObjectId(), playerUnit);
         //抛出副本定时事件
@@ -274,4 +315,5 @@ public class HopeTowerScene extends AbstractMonsterScene {
     public void setPlayerUnit(PlayerUnit playerUnit) {
         this.playerUnit = playerUnit;
     }
+
 }

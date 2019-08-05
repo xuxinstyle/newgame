@@ -55,6 +55,7 @@ public class AccountInfo {
     }
 
     public AtomicBoolean getIsChangeMap() {
+
         return isChangeMap;
     }
 

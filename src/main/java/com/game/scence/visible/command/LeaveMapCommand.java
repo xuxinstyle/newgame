@@ -4,6 +4,7 @@ import com.game.SpringContext;
 import com.game.base.executor.scene.impl.AbstractSceneCommand;
 
 /**
+ * 玩家登出的时候才抛该command
  * @Author：xuxin
  * @Date: 2019/7/5 14:25
  */
@@ -32,6 +33,6 @@ public class LeaveMapCommand extends AbstractSceneCommand {
 
     @Override
     public void active() {
-        SpringContext.getScenceSerivce().leaveMap(getAccountId(), clientRequest);
+        SpringContext.getScenceSerivce().leaveMap(getAccountId(), null, clientRequest);
     }
 }

@@ -51,7 +51,7 @@ public class FieldFightScene extends AbstractMonsterScene {
     }
 
     @Override
-    public boolean canChangeToMap(int targetMapId) {
+    public boolean canChangeToMap(Player player, int targetMapId) {
         MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(targetMapId);
         if (mapResource == null) {
             return false;

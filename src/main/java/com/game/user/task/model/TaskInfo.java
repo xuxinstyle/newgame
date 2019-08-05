@@ -22,10 +22,6 @@ public class TaskInfo {
      */
     private Map<Integer, TaskLineInfo> taskLineInfoMap = new HashMap<>();
 
-    /**
-     * 正在进行的 每日任务 自动领取
-     */
-    private Map<Integer, Task> dailyTaskMap = new HashMap<>();
 
     /**
      * 已经完成的任务id 用来领取奖励
@@ -58,17 +54,8 @@ public class TaskInfo {
         TaskLineResource mainLineResource = SpringContext.getTaskService().getTaskLineResource(mainLineId);
         int initTaskId = mainLineResource.getInitTaskId();
         taskInfo.addCanReceiveTask(initTaskId);
-        // 初始化每日任务 并自动领取
-        TaskLineType type = TaskLineType.DAILY_TASK;
-        TaskLineResource taskLineResource = SpringContext.getTaskService().getTaskLineResource(type.getId());
-        int[] taskIds = taskLineResource.getTaskIds();
-        Map<Integer, Task> dailyTaskMap = new HashMap<>();
-        for (int i = 0; i < taskIds.length; i++) {
-            // 新建任务
-            // 初始化任务进度
-            dailyTaskMap.put(taskIds[i], Task.valueOf(taskIds[i]));
-        }
-        taskInfo.setDailyTaskMap(dailyTaskMap);
+
+
         return taskInfo;
     }
 
@@ -95,13 +82,5 @@ public class TaskInfo {
 
     public void setTaskLineInfoMap(Map<Integer, TaskLineInfo> taskLineInfoMap) {
         this.taskLineInfoMap = taskLineInfoMap;
-    }
-
-    public Map<Integer, Task> getDailyTaskMap() {
-        return dailyTaskMap;
-    }
-
-    public void setDailyTaskMap(Map<Integer, Task> dailyTaskMap) {
-        this.dailyTaskMap = dailyTaskMap;
     }
 }

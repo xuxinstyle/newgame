@@ -7,7 +7,7 @@ import java.util.Set;
  * @Author：xuxin
  * @Date: 2019/7/26 14:06
  */
-public class SM_ShowCanReceiveTask {
+public class SM_ShowCanAcceptTask {
     /**
      * 可领取的任务列表
      */

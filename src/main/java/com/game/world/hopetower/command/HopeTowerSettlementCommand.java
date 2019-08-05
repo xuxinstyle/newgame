@@ -29,7 +29,10 @@ public class HopeTowerSettlementCommand extends AbstractSceneDelayCommand {
 
     @Override
     public void active() {
-        HopeTowerScene scene = (HopeTowerScene) getScene();
-        scene.doEnd();
+        if (getScene().isEnd()) {
+            return;
+        }
+        getScene().doEnd();
+        SpringContext.getScenceSerivce().removeCopyScene(getAccountId());
     }
 }

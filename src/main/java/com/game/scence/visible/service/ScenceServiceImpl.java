@@ -95,9 +95,8 @@ public class ScenceServiceImpl implements ScenceService {
             player.setPosition(Position.valueOf(mapResource.getInitX(), mapResource.getInitY()));
 
             AbstractScene scence = scenceMangaer.getScence(targetMapId, player.getAccountId());
-            // 如果 scene==null 且是第一次登陆 直接进入新手村   可能做断线重连也有可能
-            // 断线重连的话 则需要 在玩家退出的时候不清理副本的数据，而是在后台继续运行，直到副本时间到才清理
-            if (scence == null && loginEnterRequest) {
+            // 只要场景为null,就进入新手村
+            if (scence == null) {
                 // 第一次进入的地图为空时直接让玩家 进入新手村
                 scence = scenceMangaer.getScence(MapType.NoviceVillage.getId(), player.getAccountId());
             }
@@ -105,10 +104,7 @@ public class ScenceServiceImpl implements ScenceService {
             /** 在新的场景中添加玩家战斗单元信息.*/
             scence.doEnter(player);
             player.setChangeIngMap(false);
-            player.setCurrMapId(scence.getMapId());
-            player.setCurrSceneId(scence.getSceneId());
-            SpringContext.getPlayerSerivce().save(player);
-            // 抛出进入地图事件
+            // 抛 进入地图事件
             SpringContext.getEvenManager().syncSubmit(EnterMapEvent.valueOf(player.getAccountId(), targetMapId));
             /**
              * 通知客户端 登陆时请求进入，
@@ -122,11 +118,10 @@ public class ScenceServiceImpl implements ScenceService {
             /**
              * 进入地图错误返回新手村
              */
-            logger.error("[{}]进入地图失败原因[{}]", player.getAccountId(), e);
-            AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(player.getAccountId());
-            player.setChangeIngMap(false);
-            SpringContext.getAccountService().save(accountEnt);
-            SpringContext.getScenceSerivce().changeMap(player.getAccountId(), MapType.NoviceVillage.getId(), false);
+            logger.error("[{}]进入地图失败，原因[{}] 进入新手村", player.getAccountId(), e);
+            //player.setChangeIngMap(false);
+            EnterMapCommand command = EnterMapCommand.valueOf(player, player.getCurrSceneId(), MapType.NoviceVillage.getMapId(), loginEnterRequest);
+            SpringContext.getSceneExecutorService().submit(command);
             SendPacketUtil.send(player, SM_EnterMapErr.valueOf(2));
         }
     }
@@ -135,24 +130,22 @@ public class ScenceServiceImpl implements ScenceService {
     public void doLogoutBefore(String accountId) {
         PlayerEnt playerEnt = SpringContext.getPlayerSerivce().getPlayerEnt(accountId);
         Player player = playerEnt.getPlayer();
-        int currMapId = player.getCurrMapId();
-        player.setLastLogoutMapId(currMapId);
-        /*if(MapType.getMapType(currMapId)==MapType.HOPE_TOWER){
+        player.setLastLogoutMapId(player.getCurrMapId());
 
-        }*/
         // 离开地图需要到对应的场景线程中处理数据
-        LeaveMapCommand command = new LeaveMapCommand(currMapId, player.getCurrSceneId(), accountId, false);
+        LeaveMapCommand command = new LeaveMapCommand(player.getCurrMapId(), player.getCurrSceneId(), accountId, false);
         SpringContext.getSceneExecutorService().submit(command);
     }
 
     /**
      * 做进入地图前需要做的事，即离开地图需要做的事,清除之前的场景中的信息
-     *  @param
      * @param
+     * @param
+     * @param targetScene
      * @param clientRequest
      */
     @Override
-    public void leaveMap(String accountId, boolean clientRequest) {
+    public void leaveMap(String accountId, AbstractScene targetScene, boolean clientRequest) {
         /**
          *
          * 离开失败的时候留在原地图
@@ -162,21 +155,26 @@ public class ScenceServiceImpl implements ScenceService {
         Player player = SpringContext.getPlayerSerivce().getPlayer(accountId);
         int currentMapId = player.getCurrMapId();
         /** 1.清除上次地图中玩家存的信息*/
-        AbstractScene scence = scenceMangaer.getScence(currentMapId, player.getAccountId());
+        AbstractScene oldScence = scenceMangaer.getScence(currentMapId, player.getAccountId());
+        // 登出，强制让玩家离开
         if (!clientRequest) {
-            if (scence == null) {
+            if (oldScence == null) {
                 return;
             }
-            scence.doLeave(player);
+            oldScence.doLeave(player);
             return;
         }
-
-        if (!scence.isCanLeave()) {
+        // 能否离开
+        if (!oldScence.isCanLeave()) {
             RequestException.throwException(I18nId.LEAVE_MAP_ERROR);
         }
-
+        // 能否进入目标地图  只有玩家登出的时候才调用LeaveMapCommand
+        if (!oldScence.canChangeToMap(player, targetScene.getMapId())) {
+            RequestException.throwException(I18nId.NOT_ENTER_MAP);
+        }
         player.setChangeIngMap(true);
-        scence.doLeave(player);
+        // 离开
+        oldScence.doLeave(player);
         /**
          * 显示地图
          */
@@ -289,23 +287,28 @@ public class ScenceServiceImpl implements ScenceService {
         if (scene == null) {
             RequestException.throwException(I18nId.CHANGE_MAP_ERROE);
         }
+        if (!scene.isCanLeave()) {
+            RequestException.throwException(I18nId.LEAVE_MAP_ERROR);
+        }
         // 玩家当前地图无法去目标地图
-        if (!scene.canChangeToMap(targetMapId)) {
+        if (!scene.canChangeToMap(player, targetMapId)) {
             RequestException.throwException(I18nId.NOT_ENTER_MAP);
         }
-        // fixme:如果是分线怎么办
+
+        // 个人副本通过accountId获取场景
         AbstractScene targetScene = getScene(targetMapId, accountId);
         // 如果当前的地图是副本 切目标地图也是副本 则不能切图 只有目标地图不是副本才能从副本切 每个地图能否切至其他地图 写在抽象方法canChangeMap中
         // 是副本 初始化地图
         if (targetScene == null) {
             targetScene = checkAndInitScene(targetMapId, player);
         }
-        // 副本未开启
-        if (targetScene == null) {
-            RequestException.throwException(I18nId.NOT_OPEN_MAP);
+
+        // 判断目标地图能否进入
+        if (!targetScene.canEnter(player)) {
+            RequestException.throwException(I18nId.ENTER_MAP_ERROR);
         }
 
-        ChangeMapCommand command = ChangeMapCommand.valueOf(player, targetScene.getSceneId(), targetMapId, clientRequest);
+        ChangeMapCommand command = ChangeMapCommand.valueOf(player, targetScene, clientRequest);
         SpringContext.getSceneExecutorService().submit(command);
     }
 
@@ -341,30 +344,27 @@ public class ScenceServiceImpl implements ScenceService {
     }
 
     @Override
-    public void doChangeMap(Player player, int targetMapId, boolean clientRequest) {
+    public void doChangeMap(Player player, AbstractScene targetScene, boolean clientRequest) {
         try {
 
-            // 判断进入的地图是副本还是普通地图
-            // 是副本 初始化副本 不是副本则直接进入地图
-            AbstractScene scene = getScene(targetMapId, player.getAccountId());
-            if (!scene.canEnter(player)) {
-                RequestException.throwException(I18nId.ENTER_MAP_ERROR);
+            if (player.isChangeIngMap()) {
+                return;
             }
             /**
              * 离开当前地图
              */
-            leaveMap(player.getAccountId(), clientRequest);
+            leaveMap(player.getAccountId(), targetScene, clientRequest);
 
             /**
              * 进入地图
              */
-            EnterMapCommand command = EnterMapCommand.valueOf(player, scene.getSceneId(), targetMapId, false);
+            EnterMapCommand command = EnterMapCommand.valueOf(player, targetScene.getSceneId(), targetScene.getMapId(), false);
             SpringContext.getSceneExecutorService().submit(command);
         }catch (Exception e){
-            AccountEnt accountEnt = SpringContext.getAccountService().getAccountEnt(player.getAccountId());
+
             //设置切图状态
-            accountEnt.getAccountInfo().getIsChangeMap().getAndSet(false);
-            logger.error("玩家[{}]请求从[{}]进入[{}]地图失败,失败原因[{}]",player.getAccountId(),player.getCurrMapId(),targetMapId,e);
+            player.setChangeIngMap(false);
+            logger.error("玩家[{}]请求从[{}]进入[{}]地图失败,失败原因[{}]", player.getAccountId(), player.getCurrMapId(), targetScene.getMapId(), e);
             SM_ChangeMapErr sm = SM_ChangeMapErr.valueOf(2);
             SendPacketUtil.send(player, sm);
         }

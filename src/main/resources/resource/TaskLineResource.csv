@@ -1,5 +1,6 @@
 任务线路id,初始任务id,该线路的任务集合
 id,initTaskId,taskIds
 int,int,array
-1,1,[1]
+1,1,"[1,2,3]"
 3,,"[4,5]"
+2,6,"[6,7]"

@@ -34,7 +34,10 @@ public abstract class AbstractScene {
      * 场景id 唯一id
      */
     private int sceneId;
-
+    /**
+     * 是否结算
+     */
+    private boolean isEnd = false;
     /**
      * 玩家战斗单元信息
      */
@@ -153,6 +156,7 @@ public abstract class AbstractScene {
 
         // 默认从缓存中拿
         PlayerUnit playerUnit = SpringContext.getScenceSerivce().getPlayerUnit(player);
+        playerUnit.setMapId(getMapId());
         playerUnit.setScene(this);
         creatureUnitMap.put(player.getObjectId(), playerUnit);
 
@@ -172,6 +176,14 @@ public abstract class AbstractScene {
         creatureUnit.clearAllCommand();
         creatureUnitMap.remove(player.getObjectId());
     }
+
+    /**
+     * 清理副本中的倒计时结算
+     */
+    public void clearCommand() {
+
+    }
+
     public Map<Long, CreatureUnit> getCreatureUnitMap() {
         return creatureUnitMap;
     }
@@ -206,10 +218,12 @@ public abstract class AbstractScene {
     /**
      * 判断从当前地图能否进入到目标地图
      *
+     *
+     * @param player
      * @param targetMapId
      * @return
      */
-    public boolean canChangeToMap(int targetMapId) {
+    public boolean canChangeToMap(Player player, int targetMapId) {
         MapResource mapResource = SpringContext.getScenceSerivce().getMapResource(targetMapId);
         if (mapResource == null) {
             return false;
@@ -236,6 +250,11 @@ public abstract class AbstractScene {
         return true;
     }
 
+    public boolean isEnd() {
+        return isEnd;
+    }
 
-
+    public void setEnd(boolean end) {
+        isEnd = end;
+    }
 }
