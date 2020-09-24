@@ -29,11 +29,11 @@
             <artifactId>dom4j</artifactId>
             <version>1.6.1</version>
         </dependency>
-        <dependency>
-            <groupId>oracle</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>11.2.0.3</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>oracle</groupId>-->
+<!--            <artifactId>ojdbc6</artifactId>-->
+<!--            <version>11.2.0.3</version>-->
+<!--        </dependency>-->
 
 
         <dependency>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.30.Final</version>
+            <version>4.1.42.Final</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.msgpack/msgpack  是 Messagepck 序列化开发包-->
@@ -142,7 +142,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.6</version>
+            <version>5.1.45</version>
         </dependency>
 
         <dependency>
